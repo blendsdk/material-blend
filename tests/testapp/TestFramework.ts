@@ -98,6 +98,24 @@ namespace Blend.testing {
             }
         }
 
+        public assertExists(actual: any, assertDescription?: string) {
+            var me = this;
+            if (actual !== null && actual !== undefined) {
+                me.pass(assertDescription);
+            } else {
+                me.fail(`Failed to assert that ${actual} is not null/undefined`, actual, 'not null/undefined', assertDescription);
+            }
+        }
+
+        public assertEquals(actual: any, expected: any, assertDescription?: string) {
+            var me = this;
+            if (me._equal(actual, expected)) {
+                me.pass(assertDescription)
+            } else {
+                me.fail(`Failed to assert that ${actual} equals to ${expected}`, actual, expected, assertDescription);
+            }
+        }
+
         public assertTrue(actual: boolean, assertDescription?: string) {
             var me = this;
             if (actual !== true) {
@@ -106,7 +124,7 @@ namespace Blend.testing {
                 me.pass(assertDescription);
             }
         }
-        
+
         public assertFalse(actual: boolean, assertDescription?: string) {
             var me = this;
             if (actual !== false) {
@@ -115,7 +133,129 @@ namespace Blend.testing {
                 me.pass(assertDescription);
             }
         }
-        
+
+        private _equal(actual: any, expected: any) {
+            var me = this;
+            var check = function(a: any, b: any): boolean {
+                if (me.get_obj_type(a) === me.get_obj_type(b)) {
+                    if (me.is_array(a)) {
+                        if (a.length === b.length) {
+                            for (var i = 0; i !== a.length; i++) {
+                                if (!check(a[i], b[i])) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else if (me.is_object(a)) {
+                        var akeys = Object.keys(a),
+                            bkeys = Object.keys(b);
+                        if (akeys.length === bkeys.length) {
+                            for (var k in a) {
+                                if (!check(a[k], b[k])) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+
+                    } else if (me.is_function(a)) {
+                        return a.length === b.length;
+                    } else if (me.is_regexp(a)) {
+                        throw new Error("Don't know how to compare RegExps!");
+                    } else {
+                        return a === b;
+                    }
+                } else {
+                    return false;
+                }
+            };
+            return check(actual, expected);
+        }
+
+        /**
+         * Check if the value is an array
+         */
+        private is_array(value: any): boolean {
+            return Object.prototype.toString.apply(value) === '[object Array]';
+        }
+
+
+        /**
+         * Check if the value is a function
+         */
+        private is_function(value: any): boolean {
+            return typeof (value) === 'function';
+        }
+
+        /**
+         * Check if the value is a string
+         */
+        private is_string(value: any): boolean {
+            return typeof value === 'string';
+        }
+
+        /**
+         * Check if the value is null
+         */
+        private is_null(value: any): boolean {
+            return value === null || value === undefined;
+        }
+
+        /**
+         * Check if the value is an object
+         */
+        private is_object(value: any): boolean {
+            var me = this;
+            return (typeof (value) === "object" &&
+                !me.is_array(value) &&
+                !me.is_function(value) &&
+                !me.is_null(value) &&
+                !me.is_string(value)
+            );
+        }
+
+        /**
+         * Check if the value is a number
+         */
+        private is_number(value: any): boolean {
+            // Original source: JQuery
+            return value - parseFloat(value) >= 0;
+        }
+
+        /**
+         * Check if the value is regexp
+         */
+        private is_regexp(value: any): boolean {
+            return (value instanceof RegExp);
+        }
+
+        /**
+         * Gets the type of an object
+         */
+        private get_obj_type(obj: any): string {
+            var me = this;
+            if (me.is_string(obj)) {
+                return 'string';
+            } else if (me.is_array(obj)) {
+                return 'array';
+            } else if (me.is_number(obj)) {
+                return 'number';
+            } else if (me.is_object(obj)) {
+                return 'object';
+            } else if (me.is_function(obj)) {
+                return 'function';
+            } else if (me.is_null(obj)) {
+                return 'null';
+            } else if (me.is_regexp(obj)) {
+                return 'regexp';
+            }
+        }
+
 
         /**
          * Logs a test as failed
