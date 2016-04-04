@@ -21,7 +21,7 @@ namespace Blend.testing {
             link.rel = 'stylesheet';
             link.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
             head.appendChild(link);
-            
+
             this.info("Finished at " + (new Date()));
 
             this.logtext += "</tbody></table></div>";
@@ -36,6 +36,8 @@ namespace Blend.testing {
                 this.logtext += `<tr class="fail"><td>${context.test}</td><td>${message}</td><td><pre>${JSON.stringify(context, null, 2)}</pre></td></tr>`;
             } else if (type !== "pass") {
                 this.logtext += `<tr class="${type}"><td colspan="3">${message}</td></tr>`;
+            } else {
+                console.log(type, message);
             }
         }
 
