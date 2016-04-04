@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "amd",
         "sourceMap": true,
-        "outDir": "dist"        
+        "noImplicitAny": true,
+        "outFile": "dist/blend-debug.js"
     },
     "exclude": [
         "node_modules"
