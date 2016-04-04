@@ -25,8 +25,10 @@ namespace Blend.testing {
             this.info("Finished at " + (new Date()));
 
             this.logtext += "</tbody></table></div>";
-            var logEl: HTMLElement = document.getElementById("log");
+            var logEl: HTMLElement = document.createElement("div");
             logEl.innerHTML = this.logtext;
+            document.body.innerHTML = "";
+            document.body.appendChild(logEl);
         }
 
         log(type: string, message: string, context?: any): any {
