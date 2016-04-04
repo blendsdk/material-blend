@@ -3,3 +3,4 @@ build
 node_modules
 tests/blend
 tests/testrunner/blend
+tests/testrunner/sources

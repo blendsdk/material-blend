@@ -10,15 +10,18 @@ $DIRNAME/build-blend
 rm $TESTS_DIR/blend
 ln -s $BUILD_DIR/blend $TESTS_DIR
 
-rm 
-
-
-
 echo "Preparing the TestRunner"
+
 rm -fR $TEST_RUNNER_DIR/js
 rm $TEST_RUNNER_DIR/blend
-ln -s $BUILD_DIR/blend $TEST_RUNNER_DIR
 
+rm -fR $TEST_RUNNER_DIR/sources
+mkdir -p $TEST_RUNNER_DIR/sources
+
+ln -s $BUILD_DIR/blend $TEST_RUNNER_DIR
+ln -s $DIRNAME/../blend/src $TEST_RUNNER_DIR/sources/blend
+ln -s $TESTS_DIR/testapp $TEST_RUNNER_DIR/sources/testapp
+ln -s $TESTS_DIR/tests $TEST_RUNNER_DIR/sources/tests
 
 echo "Building Tests";
 cd $TESTS_DIR

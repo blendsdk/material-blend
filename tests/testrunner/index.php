@@ -29,8 +29,8 @@ function getTestFiles() {
     <body>
         <div id="log"></div>
         <script src="blend/blend.js" type="text/javascript"></script>
-        <script src="js/src/ConsoleLogger.js" type="text/javascript"></script>
-        <script src="js/src/TestFramework.js" type="text/javascript"></script>
+        <script src="js/testapp/ConsoleLogger.js" type="text/javascript"></script>
+        <script src="js/testapp/TestFramework.js" type="text/javascript"></script>
         <script>var TestApp = new Blend.testing.TestRunner(new Blend.testing.ConsoleLogger());</script>
         <?php echo getTestFiles(); ?>
         <script>TestApp.run();</script>

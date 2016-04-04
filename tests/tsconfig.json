@@ -5,11 +5,14 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "declaration": false,
-        "module": "commonjs"
+        "module": "commonjs",
+        "sourceMap": true,
+        "sourceRoot": "/sources"
     },
     "exclude": [
         "node_modules",
         "testrunner",
-        "blend"
+        "blend",
+        "blend-sources"
     ]
 }
