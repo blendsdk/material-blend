@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Building BlendJS"
+
+DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BUILD_DIR=$DIRNAME/../build
+
+rm -fR $BUILD_DIR
+cd $DIRNAME/../blend
+tsc
+

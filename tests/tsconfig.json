@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "./testrunner/js",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "declaration": false,
+        "module": "commonjs"
+    },
+    "exclude": [
+        "node_modules",
+        "testrunner",
+        "blend"
+    ]
+}

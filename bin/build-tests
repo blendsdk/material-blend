@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BUILD_DIR=$DIRNAME/../build
+TESTS_DIR=$DIRNAME/../tests
+TEST_RUNNER_DIR=$TESTS_DIR/testrunner
+
+$DIRNAME/build-blend
+
+rm $TESTS_DIR/blend
+ln -s $BUILD_DIR/blend $TESTS_DIR
+
+rm 
+
+
+
+echo "Preparing the TestRunner"
+rm -fR $TEST_RUNNER_DIR/js
+rm $TEST_RUNNER_DIR/blend
+ln -s $BUILD_DIR/blend $TEST_RUNNER_DIR
+
+
+echo "Building Tests";
+cd $TESTS_DIR
+tsc

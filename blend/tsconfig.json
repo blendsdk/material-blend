@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "sourceMap": true,
+        "sourceRoot": "/sources/blend",
+        "noImplicitAny": true,
+        "declaration":true,
+        "outFile": "../build/blend/blend.js"
+    },
+    "exclude": [
+        "node_modules",
+        "tests",
+        "dist"
+    ]
+}
