@@ -107,6 +107,15 @@ namespace Blend.testing {
             }
         }
 
+        public assertNotEquals(actual: any, expected: any, assertDescription?: string) {
+            var me = this;
+            if (!me._equal(actual, expected)) {
+                me.pass(assertDescription)
+            } else {
+                me.fail(`Failed to assert that ${actual} NOT equals to ${expected}`, actual, expected, assertDescription);
+            }
+        }
+
         public assertEquals(actual: any, expected: any, assertDescription?: string) {
             var me = this;
             if (me._equal(actual, expected)) {
