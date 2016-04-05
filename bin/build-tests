@@ -14,11 +14,13 @@ ln -s $BUILD_DIR/blend $TESTS_DIR
 
 rm -fR $TEST_RUNNER_DIR/js
 rm -fR $TEST_RUNNER_DIR/blend
+rm -fR $TEST_RUNNER_DIR/css
 
 rm -fR $TEST_RUNNER_DIR/sources
 mkdir -p $TEST_RUNNER_DIR/sources
 
 ln -s $BUILD_DIR/blend $TEST_RUNNER_DIR
+ln -s $BUILD_DIR/css $TEST_RUNNER_DIR
 ln -s $DIRNAME/../blend/src $TEST_RUNNER_DIR/sources/blend
 ln -s $TESTS_DIR/testapp $TEST_RUNNER_DIR/sources/testapp
 ln -s $TESTS_DIR/tests $TEST_RUNNER_DIR/sources/tests
