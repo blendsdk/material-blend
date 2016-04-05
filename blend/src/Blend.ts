@@ -1,4 +1,5 @@
 /// <reference path="dom/Element.ts" />
+/// <reference path="./Runtime.ts" />
 
 namespace Blend {
 
