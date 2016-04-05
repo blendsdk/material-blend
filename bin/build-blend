@@ -6,6 +6,7 @@ DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_DIR=$DIRNAME/../build
 
 if [ -d $BUILD_DIR ]; then
+    echo "Removing " $BUILD_DIR;
 	rm -fR $BUILD_DIR
 fi
 
