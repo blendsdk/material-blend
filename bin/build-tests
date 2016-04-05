@@ -7,13 +7,13 @@ TEST_RUNNER_DIR=$TESTS_DIR/testrunner
 
 $DIRNAME/build-blend
 
-rm $TESTS_DIR/blend
+rm -fR $TESTS_DIR/blend
 ln -s $BUILD_DIR/blend $TESTS_DIR
 
-echo "Preparing the TestRunner"
+#echo "Preparing the TestRunner"
 
 rm -fR $TEST_RUNNER_DIR/js
-rm $TEST_RUNNER_DIR/blend
+rm -fR $TEST_RUNNER_DIR/blend
 
 rm -fR $TEST_RUNNER_DIR/sources
 mkdir -p $TEST_RUNNER_DIR/sources
