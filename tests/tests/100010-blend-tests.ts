@@ -35,7 +35,53 @@ TestApp.defineTest("Blend Singleton", function(t: Blend.testing.TestRunner) {
     t.assertFalse(Blend.isObject(""), '"" not object');
     t.assertFalse(Blend.isObject(11), '11 not object');
 
+    var a = 1;
+    t.assertEquals([1], Blend.wrapInArray(a), 'Blend.wrapInArray:1');
+
+    //Blend.apply
+    var src: any = { a: 1, b: 2 }
+    var dst: any = {};
+    Blend.apply(dst, src)
+    t.assertEquals(dst, src, 'src equals to dst');
+    /////////////////////////////
+
+    dst['x'] = 26
+    t.assertNotEquals(dst, src, 'dst doest not equal to src');
+
+    var ar1: any = [1, 2, 3, 4]
+    var ar2: any = []
+    Blend.apply(ar2, ar1);
+    t.assertEquals(ar1, ar2, 'ar1 equals to ar2');
+    /////////////////////////////
+
+
+    var o1: any = {
+        nu: 1,
+        ar: [1, 2]
+    }
+
+    var o2: any = {
+        nu: 1,
+        ar: [3, 4]
+    }
+
+    Blend.apply(o2, o1, false, true);
+    t.assertEquals(o2.ar, [3, 4, 1, 2], 'arrays merged');
+    //////////////////////////////
 
     t.done();
 });
 
+TestApp.defineTest("Blend forEach", function(t: Blend.testing.TestRunner) {
+
+    var el = document.createElement('div');
+    el.innerHTML = "<span>a</span><span>b</span><span>c</span>";
+    var text: Array<string> = [];
+    Blend.forEach(el.children, function(item: HTMLElement, key: number) {
+        text.push(item.innerHTML);
+    });
+    
+    t.assertEquals(text, ['a', 'b', 'c'], 'forEach HTMLCollection');
+    
+    t.done();
+});
