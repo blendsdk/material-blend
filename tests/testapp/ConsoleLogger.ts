@@ -22,6 +22,9 @@ namespace Blend.testing {
             link.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
             head.appendChild(link);
 
+			var theme = document.getElementById("theme");
+			theme.parentNode.removeChild(theme);
+
             this.info("Finished at " + (new Date()));
 
             this.logtext += "</tbody></table></div>";

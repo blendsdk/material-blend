@@ -14,6 +14,7 @@ ln -s $BUILD_DIR/blend $TESTS_DIR
 
 rm -fR $TEST_RUNNER_DIR/js
 rm -fR $TEST_RUNNER_DIR/blend
+rm -fR $TEST_RUNNER_DIR/css
 
 rm -fR $TEST_RUNNER_DIR/sources
 mkdir -p $TEST_RUNNER_DIR/sources

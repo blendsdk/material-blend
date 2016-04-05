@@ -1,0 +1,16 @@
+@mixin blend-theme(
+    $name,
+    $basecolor:$base-color,
+
+    $font-family: $default-font-family,
+    $font-size: $default-font-size
+)
+{
+    body {
+        background-color: $basecolor;
+    }
+
+    .#{$name} {
+		background-color: $basecolor;
+    }
+}
