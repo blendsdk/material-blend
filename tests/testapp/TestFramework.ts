@@ -63,7 +63,7 @@ namespace Blend.testing {
         }
 
         /**
-         * Kick start the test 
+         * Kick start the test
          */
         public run() {
 
@@ -96,6 +96,21 @@ namespace Blend.testing {
                 me.addEventListener(document, 'DOMContentLoaded', doCallback);
                 me.addEventListener(window, 'load', doCallback);
             }
+        }
+
+        /**
+         * Executes the given function with delay
+         */
+        public delay(fn: Function, amount?: number) {
+            var me = this,
+                curTitle = document.title;
+            amount = amount || 1000;
+
+            document.title = `${amount} delay for ${me.currentTest.name}`;
+            setTimeout(function() {
+                fn();
+                document.title = curTitle;
+            }, amount);
         }
 
         public assertExists(actual: any, assertDescription?: string) {
