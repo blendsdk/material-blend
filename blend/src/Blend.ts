@@ -1,12 +1,8 @@
+/// <reference path="common/Utils.ts" />
 /// <reference path="dom/Element.ts" />
 /// <reference path="./Runtime.ts" />
 
 namespace Blend {
-
-    /**
-     * CSS Prefix value made available from code
-     */
-    export var CSS_PREFIX = 'b-';
 
     /**
      * Put the framework in DEBUG mode
@@ -63,7 +59,7 @@ namespace Blend {
     /**
      * Wraps an object in an array if the object is not an array itself
      */
-    export function wrapInArray(obj: any): Array<any> {
+    export function wrapInArray<T>(obj: any): Array<T> {
         return Blend.isArray(obj) ? obj : Blend.isNullOrUndef(obj) ? [] : [obj];
     }
 
@@ -177,11 +173,4 @@ namespace Blend {
         }
     }
 
-}
-
-/**
- * Shorthand function to wrap a HTMLElement into a Blend.dom.Element
- */
-var wrapEl = function(el: HTMLElement) {
-    return new Blend.dom.Element(el);
 }
