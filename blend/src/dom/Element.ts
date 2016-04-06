@@ -35,7 +35,7 @@ namespace Blend.dom {
             this.el.setAttribute('data-' + name, value);
             return this;
         }
-        
+
         /**
          * Gets a data attribute or returns a default value if the attribute does
          * not exist
@@ -44,6 +44,13 @@ namespace Blend.dom {
             var me = this,
                 attr:string = 'data-' + name;
             return me.el.hasAttribute(attr) ? me.el.getAttribute(attr) : defaultValue;
+        }
+
+        /**
+         * Enables/Disables the text select state of this element
+         */
+        public selectable(state: boolean) {
+            this.setData('selectable', state === true ? 'on' : 'off');
         }
 
     }
