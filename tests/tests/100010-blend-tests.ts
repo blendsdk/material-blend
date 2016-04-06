@@ -2,9 +2,6 @@
 
 TestApp.defineTest("Blend Singleton", function(t: Blend.testing.TestRunner) {
 
-    t.assertEquals('b-', Blend.CSS_PREFIX);
-    t.assertExists(wrapEl);
-
     var f = function() { };
     t.assertTrue(Blend.isFunction(f), 'Blend.isFunction:true');
     t.assertFalse(Blend.isFunction(1), 'Blend.isFunction:false');
@@ -80,8 +77,8 @@ TestApp.defineTest("Blend forEach", function(t: Blend.testing.TestRunner) {
     Blend.forEach(el.children, function(item: HTMLElement, key: number) {
         text.push(item.innerHTML);
     });
-    
+
     t.assertEquals(text, ['a', 'b', 'c'], 'forEach HTMLCollection');
-    
+
     t.done();
 });
