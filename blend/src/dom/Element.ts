@@ -13,12 +13,69 @@ namespace Blend.dom {
          * CSS Prefix value made available from code
          */
         public CSS_PREFIX = 'b-';
-
-
         private el: HTMLElement;
+        private pixelRe = /px$/;
+        private UNIT: string = 'px';
+        private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
+        private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
 
         constructor(el: HTMLElement) {
             this.el = el;
+        }
+
+        /**
+         * Sets the style of this element
+         */
+        public setStyle(styles: StyleInterface): Blend.dom.Element {
+            var me = this;
+            if (styles) {
+                Blend.forEach(styles, function(v: any, k: string) {
+                    if (v === null || (<string>v) === 'auto') {
+                        me.el.style.removeProperty(k);
+                    } else {
+                        me.el.style.setProperty(k, me.toUnit(k, v));
+                    }
+                });
+            }
+            return this;
+        }
+
+        /**
+         * Gets the computed styles of en element
+         */
+        public getStyle(styles: string | Array<string>): StyleInterface {
+            var me = this,
+                cs = window.getComputedStyle(me.el, null),
+                r: StyleInterface = {},
+                names = Blend.wrapInArray<string>(styles);
+            Blend.forEach(names, function(key: string) {
+                r[key] = me.fromUnit(cs.getPropertyValue(key));
+            });
+            return r;
+        }
+
+        /**
+         * Checks and converts the value to px based on the given key
+         */
+        private toUnit(key: string, value: any) {
+            var me = this;
+            if (value !== null && me.unitPropertyRe.test(key) && !me.unitTypeRe.test(value)) {
+                value = value + me.UNIT;
+            }
+            return value;
+        }
+
+
+        /**
+         * Given the value it converts px value to a number, otherwise it returns the original
+         * value.
+         */
+        private fromUnit(value: any): any {
+            var me = this;
+            if (value !== null && me.pixelRe.test(value)) {
+                value = parseFloat(value.replace(me.UNIT, ''));
+            }
+            return value;
         }
 
         /**
@@ -100,9 +157,7 @@ namespace Blend.dom {
         public selectable(state: boolean) {
             this.setData('selectable', state === true ? 'on' : 'off');
         }
-
     }
-
 }
 
 /**

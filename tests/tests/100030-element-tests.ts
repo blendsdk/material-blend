@@ -39,5 +39,22 @@ TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
     t.assertEquals(withClass.addCssClass('hello-world', false, true).getCssClass(), 'hello-world', 'replaced no prefix');
     t.assertEquals(withClass.addCssClass('hello-world', true, true).getCssClass(), 'b-hello-world', 'replaced with prefix');
     t.assertEquals(withClass.clearCssClass().getCssClass(), '', 'cleared');
+
     t.done();
+});
+
+TestApp.defineTest('Element Srtyle', function(t: Blend.testing.TestRunner) {
+
+    Blend.Runtime.ready(function() {
+
+        var p = document.createElement('p');
+        document.body.appendChild(p);
+        var el = wrapEl(p);
+
+        t.assertEquals(el.setStyle({ width: 100, position: 'absolute' }).getStyle('width'), { width: 100 }, 'set and get style');
+
+        t.done();
+    });
+    Blend.Runtime.kickStart();
+
 });
