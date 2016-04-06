@@ -157,6 +157,85 @@ namespace Blend.dom {
         public selectable(state: boolean) {
             this.setData('selectable', state === true ? 'on' : 'off');
         }
+
+        /**
+         * Gets the native HTMLElement
+         */
+        public getEl(): HTMLElement {
+            return this.el;
+        }
+
+        /**
+         * Created an Element based on CreateElementInterface
+         */
+        public static create(config: CreateElementInterface, elCallback?: Function, elCallbackScope?: any): Blend.dom.Element {
+            var me = this;
+            if (Blend.isObject(config)) {
+                var el: HTMLElement = document.createElement(config.tag || 'div');
+                for (var cfg in config) {
+                    var val: any = (<any>config)[cfg];
+                    if (cfg !== 'tag' && cfg !== 'scope' && cfg !== 'oid') {
+                        if (cfg === 'cls') {
+                            cfg = 'class';
+                            if (Blend.isArray(val)) {
+                                val = <Array<string>>val.join(' ');
+                            }
+                        } else if (cfg === 'innerHTML') {
+                            cfg = null;
+                            el.innerHTML = val;
+                        } else if (cfg === 'text') {
+                            cfg = null;
+                            var textNd = document.createTextNode(val);
+                            el.appendChild(textNd);
+                        } else if (cfg === 'listeners' && Blend.isObject(val)) {
+                            cfg = null;
+                            for (var e in val) {
+                                var handler = val[e];
+                                Blend.Runtime.addEventListener(el, e, function() {
+                                    handler.apply(config.scope || window, arguments);
+                                });
+                            }
+                        } else if (cfg === 'children') {
+                            if (!Blend.isArray(val)) {
+                                val = [val];
+                            }
+                            val.forEach(function(child: HTMLElement | CreateElementInterface | Blend.dom.Element) {
+                                if (child instanceof HTMLElement) {
+                                    el.appendChild(<HTMLElement>child);
+                                } else if (child instanceof Blend.dom.Element) {
+                                    el.appendChild((<Blend.dom.Element>child).getEl());
+                                } else {
+                                    el.appendChild(Blend.dom.Element.create(<CreateElementInterface>child, elCallback, elCallbackScope).getEl());
+                                }
+                            });
+                            cfg = null;
+                        } else if (cfg === 'data') {
+                            Blend.forEach(val, function(v: any, k: string) {
+                                el.setAttribute('data-' + k, v);
+                            });
+                            cfg = null;
+                        } else if (cfg === 'style') {
+                            cfg = null;
+                            wrapEl(el).setStyle(<StyleInterface>val);
+                        } else if (cfg == 'selectable') {
+                            if (val === false) {
+                                wrapEl(el).selectable(false);
+                            }
+                            cfg = null;
+                        }
+                        if (cfg) {
+                            el.setAttribute(cfg, val);
+                        }
+                    }
+                }
+                if (elCallback && config.oid) {
+                    elCallback.apply(elCallbackScope || window, [el, config.oid]);
+                }
+                return new Blend.dom.Element(el);
+            } else {
+                return null;
+            }
+        }
     }
 }
 
@@ -166,3 +245,5 @@ namespace Blend.dom {
 var wrapEl = function(el: HTMLElement) {
     return new Blend.dom.Element(el);
 }
+
+var createEl = Blend.dom.Element.create;
