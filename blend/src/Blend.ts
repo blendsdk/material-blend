@@ -173,4 +173,19 @@ namespace Blend {
         }
     }
 
+    /**
+     *  Create a new Blend.Component object
+     */
+    export function createComponent(clazz: ComponentTypes, config: any = null): Blend.Component {
+        if (typeof (clazz) === 'string') {
+            throw Error('Not implemented!');
+        } else if (typeof (clazz) === 'function') {
+            return new (<ComponentClass>clazz)(config);
+        } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
+            var ctype = (<ComponentConfig>clazz).ctype;
+            delete ((<ComponentConfig>clazz).ctype);
+            return Blend.createComponent(ctype, Blend.apply(clazz, config));
+        }
+    }
+
 }

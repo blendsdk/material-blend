@@ -25,6 +25,32 @@ function getTestFiles() {
             pre, .log, tr td {
                 font-size: 0.8em !important;
             }
+
+            .status {
+                margin:10px;
+            }
+
+            .status span {
+                padding:10px;
+                margin-right:10px;
+            }
+
+            .status .total {
+                background-color:blue;
+                color:#FFF;
+            }
+
+            .status .pass {
+                background-color:green;
+                color:#FFF;
+            }
+
+            .status .fail {
+                background-color:red;
+                color:#FFF;
+            }
+
+
         </style>
     </head>
     <script src="blend/blend.js" type="text/javascript"></script>

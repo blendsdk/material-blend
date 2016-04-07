@@ -27,3 +27,24 @@ interface CreateElementInterface {
     style?: StyleInterface,
     selectable?:boolean
 }
+
+/**
+ * Interface for describing a Blend.Component class
+ */
+interface ComponentClass {
+	new (config:any):Blend.Component
+}
+
+/**
+ * Interface for describing a Component for configuration
+ *  with a config type ctype
+ */
+interface ComponentConfig {
+	ctype?:ComponentTypes,
+	[name:string]:any
+}
+
+/**
+ * Custom type describing a ctype
+ */
+type ComponentTypes = ComponentClass | ComponentConfig | string;
