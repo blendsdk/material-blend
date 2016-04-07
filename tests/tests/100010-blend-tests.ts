@@ -104,6 +104,8 @@ TestApp.defineTest("Blend createComponent", function(t: Blend.testing.TestRunner
         }
     }
 
+    Blend.registerClassWithAlias('my.greeter', Greeter);
+
     var o1 = Blend.createComponent(Greeter);
     t.assertTrue(Blend.isInstanceOf(o1, Greeter));
 
@@ -120,6 +122,11 @@ TestApp.defineTest("Blend createComponent", function(t: Blend.testing.TestRunner
         name: 'o4'
     })
     t.assertEquals(o4.sayHello(), 'Hello o4');
+
+    var o5 = <Greeter>Blend.createComponent('my.greeter', {
+        name: 'o5'
+    });
+    t.assertEquals(o5.sayHello(), 'Hello o5');
 
     t.done();
 });

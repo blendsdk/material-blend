@@ -19,20 +19,24 @@ interface CreateElementInterface {
     tag?: string
     scope?: any
     oid?: string
-    cls?: string|Array<string>
+    cls?: string | Array<string>
     listeners?: CreateElementEventListenersInterface
     text?: string
-    children?: Array<CreateElementInterface|HTMLElement>
+    children?: Array<CreateElementInterface | HTMLElement>
     data?: any
     style?: StyleInterface,
-    selectable?:boolean
+    selectable?: boolean
 }
 
 /**
  * Interface for describing a Blend.Component class
  */
 interface ComponentClass {
-	new (config:any):Blend.Component
+    new (config: any): Blend.Component
+}
+
+interface ClassRegistryInterface {
+    [name: string]: ComponentClass;
 }
 
 /**
@@ -40,8 +44,8 @@ interface ComponentClass {
  *  with a config type ctype
  */
 interface ComponentConfig {
-	ctype?:ComponentTypes,
-	[name:string]:any
+    ctype?: ComponentTypes,
+    [name: string]: any
 }
 
 /**

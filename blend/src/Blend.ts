@@ -4,6 +4,8 @@
 
 namespace Blend {
 
+    export var registry: ClassRegistryInterface = {};
+
     /**
      * Put the framework in DEBUG mode
      */
@@ -178,7 +180,11 @@ namespace Blend {
      */
     export function createComponent(clazz: ComponentTypes, config: any = null): Blend.Component {
         if (typeof (clazz) === 'string') {
-            throw Error('Not implemented!');
+            if (Blend.registry[(<string>clazz)]) {
+                return Blend.createComponent(Blend.registry[(<string>clazz)], config);
+            } else {
+                throw new Error(`Unknown class alias ${clazz}`);
+            }
         } else if (typeof (clazz) === 'function') {
             return new (<ComponentClass>clazz)(config || {});
         } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
@@ -187,5 +193,18 @@ namespace Blend {
             return Blend.createComponent(ctype, Blend.apply(clazz, config));
         }
     }
+
+    /**
+     * Registers a class with a given alias into the class registry so we can
+     * instantiate an object with createObjectWithAlias.
+     */
+    export function registerClassWithAlias(alias: string, clazz: ComponentClass) {
+        if (!registry[alias]) {
+            Blend.registry[alias] = clazz;
+        } else {
+            throw new Error(`A Class with alias ${alias} is already registered!`);
+        }
+    }
+
 
 }
