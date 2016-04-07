@@ -5,6 +5,9 @@ namespace Blend.testing {
     export class ConsoleLogger implements LoggerInterface {
 
         private logtext: string;
+        private numAsserts = 0;
+        private numPasses = 0;
+        private numFailed = 0;
 
         open(): any {
             this.logtext = '<div class="container-fluid"><table class="table table-bordered" >'
@@ -25,7 +28,8 @@ namespace Blend.testing {
 			var theme = document.getElementById("theme");
 			theme.parentNode.removeChild(theme);
 
-            this.info("Finished at " + (new Date()));
+            this.info(`<div class='status'><span class='total'>${this.numAsserts} ASSERTS</span><span class='pass'>${this.numPasses} PASSED</span><span class='fail'>${this.numFailed} FAILED</span></div>`);
+
 
             this.logtext += "</tbody></table></div>";
             var logEl: HTMLElement = document.createElement("div");
@@ -34,7 +38,22 @@ namespace Blend.testing {
             document.body.appendChild(logEl);
         }
 
+        private updateCounts(type: string) {
+            var me = this;
+            if (type === 'pass' || type === 'fail') {
+                me.numAsserts += 1;
+                if (type === 'pass') {
+                    me.numPasses += 1;
+                } else {
+                    me.numFailed += 1;
+                }
+            }
+        }
+
         log(type: string, message: string, context?: any): any {
+
+            this.updateCounts(type);
+
             if (type === 'fail') {
                 this.logtext += `<tr class="fail"><td>${context.test}</td><td>${message}</td><td><pre>${JSON.stringify(context, null, 2)}</pre></td></tr>`;
             } else if (type !== "pass") {
