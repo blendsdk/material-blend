@@ -76,13 +76,13 @@ namespace Blend {
             if (!me.kickStarted) {
                 me.kickStarted = true;
                 if (document.readyState === "complete") {
-                    setTimeout(doCallback, 5);
+                    doCallback.apply(me, []);
                 } else {
                     me.addEventListener(document, 'DOMContentLoaded', doCallback);
                     me.addEventListener(window, 'load', doCallback);
                 }
             } else {
-                setTimeout(doCallback, 5);
+                doCallback.apply(me, []);
             }
         }
 
