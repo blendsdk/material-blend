@@ -180,7 +180,7 @@ namespace Blend {
         if (typeof (clazz) === 'string') {
             throw Error('Not implemented!');
         } else if (typeof (clazz) === 'function') {
-            return new (<ComponentClass>clazz)(config);
+            return new (<ComponentClass>clazz)(config || {});
         } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);
