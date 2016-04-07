@@ -45,6 +45,7 @@ TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
 
 TestApp.defineTest('Element Srtyle', function(t: Blend.testing.TestRunner) {
 
+    Blend.Runtime.reset();
     Blend.Runtime.ready(function() {
 
         var p = document.createElement('p');
@@ -55,6 +56,49 @@ TestApp.defineTest('Element Srtyle', function(t: Blend.testing.TestRunner) {
 
         t.done();
     });
+    Blend.Runtime.kickStart();
+
+});
+
+TestApp.defineTest('Element Create Element', function(t: Blend.testing.TestRunner) {
+    Blend.Runtime.reset();
+    Blend.Runtime.ready(function() {
+
+        var e1 = createEl({}).getEl();
+        document.body.appendChild(e1);
+        t.assertEquals(e1.outerHTML, '<div></div>', 'div created');
+        ////////////////////////////////////////////////
+
+        var e2 = createEl({
+            style: {
+                'background-color': 'red'
+            }
+        }).getEl();
+        document.body.appendChild(e2);
+        t.assertTrue(e2.outerHTML.indexOf('background-color') !== -1, 'style set');
+        ////////////////////////////////////////////////
+
+        var e3 = createEl({
+            cls: ['c1']
+        }).getEl();
+        document.body.appendChild(e3);
+        t.assertTrue(e3.outerHTML.indexOf('c1') !== -1, 'cls set');
+        ////////////////////////////////////////////////
+
+        var e4 = createEl({
+            children: [
+                {
+                    tag: 'span'
+                }
+            ]
+        }).getEl();
+        document.body.appendChild(e4);
+        t.assertEquals(e4.outerHTML, '<div><span></span></div>', 'child added');
+
+        t.done();
+
+    });
+
     Blend.Runtime.kickStart();
 
 });
