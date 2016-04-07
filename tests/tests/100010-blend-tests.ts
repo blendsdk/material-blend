@@ -82,3 +82,44 @@ TestApp.defineTest("Blend forEach", function(t: Blend.testing.TestRunner) {
 
     t.done();
 });
+
+
+TestApp.defineTest("Blend createComponent", function(t: Blend.testing.TestRunner) {
+
+    interface GreeterInterface {
+        name?: string;
+    }
+
+    class Greeter extends Blend.Component {
+
+        private name: string;
+
+        constructor(config: GreeterInterface) {
+            super(config);
+            this.name = config.name || 'Blend';
+        }
+
+        public sayHello() {
+            return 'Hello ' + this.name;
+        }
+    }
+
+    var o1 = Blend.createComponent(Greeter);
+    t.assertTrue(Blend.isInstanceOf(o1, Greeter));
+
+    var o2 = Blend.createComponent({
+        ctype: Greeter
+    });
+    t.assertTrue(Blend.isInstanceOf(o2, Greeter));
+
+    var o3 = <Greeter>Blend.createComponent(Greeter, { name: 'o3' });
+    t.assertEquals(o3.sayHello(), 'Hello o3');
+
+    var o4 = <Greeter>Blend.createComponent({
+        ctype: Greeter,
+        name: 'o4'
+    })
+    t.assertEquals(o4.sayHello(), 'Hello o4');
+
+    t.done();
+});
