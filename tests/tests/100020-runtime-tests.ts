@@ -2,12 +2,11 @@
 
 TestApp.defineTest('Runtime', function(t: Blend.testing.TestRunner) {
     var kickstarted = false;
-    Blend.Runtime.ready(function(){
+    Blend.Runtime.reset();
+    Blend.Runtime.ready(function() {
         kickstarted = true;
-    });
-    Blend.Runtime.kickStart();
-    t.delay(function(){
-        t.assertTrue(kickstarted,'ready works');
+        t.assertTrue(kickstarted, 'ready works');
         t.done();
     });
+    Blend.Runtime.kickStart();
 });
