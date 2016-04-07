@@ -228,12 +228,13 @@ namespace Blend.dom {
                         }
                     }
                 }
+                var wEl = new Blend.dom.Element(el)
                 if (elCallback && config.oid) {
-                    elCallback.apply(elCallbackScope || window, [el, config.oid]);
+                    elCallback.apply(elCallbackScope || window, [wEl, config.oid]);
                 }
-                return new Blend.dom.Element(el);
+                return wEl;
             } else {
-                return null;
+                return createEl({});
             }
         }
     }
