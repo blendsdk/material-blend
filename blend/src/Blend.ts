@@ -185,12 +185,16 @@ namespace Blend {
             } else {
                 throw new Error(`Unknown class alias ${clazz}`);
             }
-        } else if (typeof (clazz) === 'function') {
+        } else if (typeof (clazz) === 'function'
+            && (<any>clazz).isComponent !== undefined
+            && (<any>clazz).isComponent === true) {
             return new (<ComponentClass>clazz)(config || {});
         } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);
             return Blend.createComponent(ctype, Blend.apply(clazz, config));
+        } else {
+            throw new Error(`Unable to create an object from ${clazz}`);
         }
     }
 
