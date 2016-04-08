@@ -185,9 +185,7 @@ namespace Blend {
             } else {
                 throw new Error(`Unknown class alias ${clazz}`);
             }
-        } else if (typeof (clazz) === 'function'
-            && (<any>clazz).isComponent !== undefined
-            && (<any>clazz).isComponent === true) {
+        } else if (typeof (clazz) === 'function' && !!Object.keys((<any>clazz).prototype).length === true) {
             return new (<ComponentClass>clazz)(config || {});
         } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
