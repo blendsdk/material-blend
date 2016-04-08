@@ -19,17 +19,11 @@ namespace Blend {
 
         private readyCallbacks: Array<IReadCallback>;
         private kickStarted: boolean = false;
-        private binder: Blend.binding.BindingProvider;
 
+        public Binder: Blend.binding.BindingProvider;
 
-        /**
-         * References to the runtime availble BindingProvider instance
-         */
-        public getBinder(): Blend.binding.BindingProvider {
-            if (!this.binder) {
-                this.binder = new Blend.binding.BindingProvider();
-            }
-            return this.binder;
+        public constructor() {
+            this.Binder = new Blend.binding.BindingProvider();
         }
 
         private isSupportedBrowser(): boolean {
