@@ -27,7 +27,6 @@ TestApp.defineTest('Component Binding', function(t: Blend.testing.TestRunner) {
 
         public setLastname(value: string): Person {
             this.lastname = value;
-            console.log(`Call on class number ${this.index}`);
             return this;
         }
 
