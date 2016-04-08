@@ -29,6 +29,14 @@ interface CreateElementInterface {
 }
 
 /**
+ *  Interface for describing a Component
+ */
+interface BindableInterface {
+    hasFunction(fname: string): boolean;
+    applyFunction(name: string, args: Array<any> | IArguments): any;
+}
+
+/**
  * Interface for describing a Blend.Component class
  */
 interface ComponentClass {

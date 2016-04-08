@@ -1,9 +1,12 @@
+/// <reference path="Blend.ts" />
+/// <reference path="binding/BindingProvider.ts" />
+
 namespace Blend {
 
     /**
      * Base class for a component in Blend
      */
-    export class Component {
+    export class Component implements BindableInterface {
 
         protected config: any;
 
