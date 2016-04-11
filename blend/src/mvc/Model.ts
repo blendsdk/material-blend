@@ -2,6 +2,9 @@
 
 namespace Blend.mvc {
 
+    /**
+     * Provides ageneric and bindable Model
+     */
     export class Model extends Blend.Component {
 
         public constructor(config: any = {}) {
