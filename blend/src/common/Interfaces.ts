@@ -1,3 +1,7 @@
+interface DictionaryInterface {
+    [name: string]: any
+}
+
 /**
  * @interface StyleInterface
  */

@@ -1,3 +1,4 @@
+/// <reference path="common/Interfaces.ts" />
 /// <reference path="Blend.ts" />
 /// <reference path="binding/BindingProvider.ts" />
 
@@ -10,7 +11,7 @@ namespace Blend {
 
         protected config: any;
 
-        constructor(config: any = null) {
+        constructor(config: DictionaryInterface = null) {
             var me = this;
             me.config = config || {};
         }
