@@ -25,7 +25,7 @@ namespace Blend.mvc {
         /**
          * Add a Model to the current MVC context
          */
-        public addModel(name:string, model:Blend.mvc.Model) {
+        public addModel(name: string, model: Blend.mvc.Model) {
             var me = this;
             if (!me.models[name]) {
                 me.models[name] = model;

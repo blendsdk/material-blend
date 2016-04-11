@@ -185,7 +185,7 @@ namespace Blend {
             } else {
                 throw new Error(`Unknown class alias ${clazz}`);
             }
-        } else if (typeof (clazz) === 'function' && !!Object.keys((<any>clazz).prototype).length === true) {
+        } else if (Blend.isClass(clazz)) {
             return new (<ComponentClass>clazz)(config || {});
         } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
@@ -194,6 +194,10 @@ namespace Blend {
         } else {
             throw new Error(`Unable to create an object from ${clazz}`);
         }
+    }
+
+    export function isClass(clazz: any) {
+        return typeof (clazz) === 'function' && !!Object.keys((<any>clazz).prototype).length === true;
     }
 
     /**

@@ -4,7 +4,7 @@
 namespace Blend.mvc {
 
     /**
-     * Provides ageneric and bindable Model
+     * Provides a generic and bindable Model
      */
     export class Model extends Blend.Component {
 
