@@ -28,6 +28,13 @@ namespace Blend.mvc {
             });
         }
 
+        /**
+         * Gets the current data in this Model
+         */
+        public getData() : DictionaryInterface {
+            return this.config;
+        }
+
         private createProperties() {
             var me = this,
                 sname: string, gname: string;
