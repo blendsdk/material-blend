@@ -84,3 +84,11 @@ interface MvcViewInterface extends MvcClientInterface {
     reference?: string
     [name: string]: any
 }
+
+/**
+ * Interface for implementing a UI View
+ */
+interface UIViewInterface extends MvcViewInterface {
+    parent?: Blend.ui.View
+    css?: string | Array<string>
+}
