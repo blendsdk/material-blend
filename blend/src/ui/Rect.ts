@@ -1,3 +1,4 @@
+/// <reference path="../Blend.ts" />
 /// <reference path="View.ts" />
 
 namespace Blend.ui {
@@ -11,8 +12,10 @@ namespace Blend.ui {
         constructor(config: RectangleConfig = {}) {
             super(config);
             var me = this;
-            me.cssClass = 'rectangle';
+            me.cssClass.push('rectangle');
         }
 
     }
+
+    registerClassWithAlias('ui.rect', Blend.ui.Rectangle);
 }

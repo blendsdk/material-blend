@@ -87,7 +87,7 @@ namespace Blend.dom {
             if (asArray === true) {
                 return css === "" ? [] : css.split(' ')
             } else {
-                return css;
+                return css === "" ? null : css;
             }
         }
 
@@ -108,7 +108,8 @@ namespace Blend.dom {
         public addCssClass(css: string | string[], prefix: boolean = true, replace: boolean = false): Blend.dom.Element {
             var me = this,
                 r = Blend.wrapInArray<string>(css),
-                cur = replace === true ? [] : <Array<string>>me.getCssClass(true);
+                cur = replace === true ? [] : <Array<string>>me.getCssClass(true),
+                v: string = null;
             if (prefix === true) {
                 r = r.map(function(itm: string) {
                     if (itm !== null) {
@@ -118,7 +119,10 @@ namespace Blend.dom {
                     }
                 });
             }
-            me.el.setAttribute('class', cur.concat(r).unique().join(' ').trim());
+            v = cur.concat(r).unique().join(' ').trim();
+            if (v !== '') {
+                me.el.setAttribute('class', v);
+            }
             return this;
         }
 
@@ -127,13 +131,6 @@ namespace Blend.dom {
          */
         public clearCssClass(): Blend.dom.Element {
             this.el.setAttribute('class', '');
-            return this;
-        }
-
-        /**
-         * Sets the styles for this element;
-         */
-        public setStyles(style: StyleInterface): Blend.dom.Element {
             return this;
         }
 

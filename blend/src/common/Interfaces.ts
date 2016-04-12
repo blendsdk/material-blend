@@ -91,4 +91,5 @@ interface MvcViewInterface extends MvcClientInterface {
 interface UIViewInterface extends MvcViewInterface {
     parent?: Blend.ui.View
     css?: string | Array<string>
+    style?: StyleInterface
 }

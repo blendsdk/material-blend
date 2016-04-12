@@ -5,19 +5,19 @@ TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
     var el: HTMLElement;
 
     var noclass = wrapEl(document.createElement('p'));
-    t.assertEquals('', noclass.getCssClass(), 'get noclass as string');
+    t.assertEquals(null, noclass.getCssClass(), 'get noclass as string');
     t.assertEquals([], noclass.getCssClass(true), 'get noclass as array');
 
     el = document.createElement('p');
     el.setAttribute('class', '');
     var emptyClass = wrapEl(el);
-    t.assertEquals('', emptyClass.getCssClass(), 'get emptyClass as string');
+    t.assertEquals(null, emptyClass.getCssClass(), 'get emptyClass as string');
     t.assertEquals([], emptyClass.getCssClass(true), 'get emptyClass as array');
 
     el = document.createElement('p');
     el.setAttribute('class', '   ');
     var trimClass = wrapEl(el);
-    t.assertEquals('', trimClass.getCssClass(), 'get trimClass as string');
+    t.assertEquals(null, trimClass.getCssClass(), 'get trimClass as string');
     t.assertEquals([], trimClass.getCssClass(true), 'get trimClass as array');
 
     el = document.createElement('p');
@@ -38,7 +38,7 @@ TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
     t.assertEquals(withClass.addCssClass('no-prefix', false).getCssClass(true), ['b-css1', 'b-css2', 'b-css3', 'no-prefix'], 'added one css class no prefix');
     t.assertEquals(withClass.addCssClass('hello-world', false, true).getCssClass(), 'hello-world', 'replaced no prefix');
     t.assertEquals(withClass.addCssClass('hello-world', true, true).getCssClass(), 'b-hello-world', 'replaced with prefix');
-    t.assertEquals(withClass.clearCssClass().getCssClass(), '', 'cleared');
+    t.assertEquals(withClass.clearCssClass().getCssClass(), null, 'cleared');
 
     t.done();
 });
