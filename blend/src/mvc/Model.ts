@@ -8,8 +8,11 @@ namespace Blend.mvc {
      */
     export class Model extends Blend.Component {
 
+        protected data: DictionaryInterface
+
         public constructor(config: DictionaryInterface = {}) {
             super(config);
+            this.data = config;
             this.createProperties();
         }
 
@@ -31,8 +34,8 @@ namespace Blend.mvc {
         /**
          * Gets the current data in this Model
          */
-        public getData() : DictionaryInterface {
-            return this.config;
+        public getData(): DictionaryInterface {
+            return this.data;
         }
 
         /**
@@ -42,17 +45,17 @@ namespace Blend.mvc {
         private createProperties() {
             var me = this,
                 sname: string, gname: string;
-            Blend.forEach(me.config, function(value: any, name: string) {
+            Blend.forEach(me.data, function(value: any, name: string) {
                 gname = 'get' + name.ucfirst(),
                     sname = 'set' + name.ucfirst();
                 if (!me.hasFunction(gname)) {
                     (<any>me)[gname] = function() {
-                        return me.config[name];
+                        return me.data[name];
                     }
                 }
                 if (!me.hasFunction(sname)) {
                     (<any>me)[sname] = function(data: any) {
-                        me.config[name] = data;
+                        me.data[name] = data;
                         return me;
                     }
                 }

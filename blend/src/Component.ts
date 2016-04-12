@@ -9,11 +9,8 @@ namespace Blend {
      */
     export class Component implements BindableInterface {
 
-        protected config: any;
-
         constructor(config: DictionaryInterface = null) {
             var me = this;
-            me.config = config || {};
         }
 
         /**
