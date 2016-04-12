@@ -27,9 +27,7 @@ namespace Blend.mvc {
             var me = this;
             Blend.forEach(Blend.wrapInArray(me.config.controllers || []), function(ctrl: ComponentClass) {
                 if (Blend.isClass(ctrl)) {
-                    me.controllers.push(<Blend.mvc.Controller>Blend.createComponent(ctrl, {
-                        hostView:me
-                    }));
+                    me.controllers.push(<Blend.mvc.Controller>Blend.createComponent(ctrl));
                 }
             });
         }
@@ -39,18 +37,31 @@ namespace Blend.mvc {
         }
 
         /**
+         * Fires an event towards the Controllers within this View
+         */
+        protected fireEvent(eventName: string, ...args: any[]) {
+            var me = this,
+                controller: Controller;
+            if (me.controllers) {
+                Blend.forEach(me.controllers, function(controllerItem: Controller) {
+                    controller.delegate(eventName, me.reference, me, args);
+                });
+            }
+        }
+
+        /**
          * Initializes the event chain for this View
          * @internal
          */
-        initControllerChain(parentView?:View) {
+        initControllerChain(parentView?: View) {
             var me = this;
             if (!me.mvcReady) {
                 me.initControllers();
-                if(parentView !== null && me.parent === null) {
+                if (parentView !== null && me.parent === null) {
                     me.parent = parentView;
                     if (me.reference !== null) {
                         Blend.forEach(me.parent.getControllers, function(ctrl: Blend.mvc.Controller) {
-                            ctrl.bindView(me.reference,me);
+                            ctrl.bindView(me.reference, me);
                         });
                         me.controllers.concat(me.parent.getControllers());
                     }
