@@ -12,7 +12,7 @@ namespace Blend.mvc {
 
         protected controllers: Array<Blend.mvc.Controller>;
 
-        public constructor(config: MvcViewInterface = {}) {
+        public constructor(config: MvcClientInterface = {}) {
             super(config);
             var me = this;
             me.controllers = [];
@@ -36,6 +36,9 @@ namespace Blend.mvc {
             }
         }
 
+        /**
+         * Adds (registers) Controllers with this client
+         */
         public addController(controllers: ControllerType | Array<ControllerType>) {
             var me = this,
                 ctrl: Controller;

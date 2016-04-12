@@ -16,6 +16,9 @@ namespace Blend.mvc {
             me.reference = config.reference || null;
         }
 
+        /**
+         * Gets the reference identifier for this View
+         */
         public  getReference() {
             return this.reference || null;
         }

@@ -35,6 +35,10 @@ namespace Blend.mvc {
             return this.config;
         }
 
+        /**
+         * Creates automatic properties for this Model when there are no
+         * custom getters/setters available
+         */
         private createProperties() {
             var me = this,
                 sname: string, gname: string;

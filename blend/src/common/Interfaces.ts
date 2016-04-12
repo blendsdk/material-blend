@@ -69,9 +69,18 @@ interface FunctionAsController {
 type ComponentTypes = ComponentClass | ComponentConfig | string;
 type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsController | string;
 
-interface MvcViewInterface {
-    reference?: string
+/**
+ * Interface for describing a MVC Client (Used by View and Context)
+ */
+interface MvcClientInterface {
     controller?: ControllerType | Array<ControllerType>
     context?: Blend.mvc.Context
+}
+
+/**
+ * Interface for describing a MVC View
+ */
+interface MvcViewInterface extends MvcClientInterface {
+    reference?: string
     [name: string]: any
 }
