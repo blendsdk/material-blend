@@ -111,10 +111,14 @@ namespace Blend.dom {
                 cur = replace === true ? [] : <Array<string>>me.getCssClass(true);
             if (prefix === true) {
                 r = r.map(function(itm: string) {
-                    return me.CSS_PREFIX + itm;
+                    if (itm !== null) {
+                        return me.CSS_PREFIX + itm;
+                    } else {
+                        return null;
+                    }
                 });
             }
-            me.el.setAttribute('class', cur.concat(r).unique().join(' '));
+            me.el.setAttribute('class', cur.concat(r).unique().join(' ').trim());
             return this;
         }
 
