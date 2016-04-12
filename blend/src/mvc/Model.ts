@@ -4,7 +4,7 @@
 namespace Blend.mvc {
 
     /**
-     * Provides ageneric and bindable Model
+     * Provides a generic and bindable Model
      */
     export class Model extends Blend.Component {
 
@@ -35,6 +35,10 @@ namespace Blend.mvc {
             return this.config;
         }
 
+        /**
+         * Creates automatic properties for this Model when there are no
+         * custom getters/setters available
+         */
         private createProperties() {
             var me = this,
                 sname: string, gname: string;

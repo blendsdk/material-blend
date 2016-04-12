@@ -44,7 +44,7 @@ interface BindableInterface {
  * Interface for describing a Blend.Component class
  */
 interface ComponentClass {
-    new (config: any): Blend.Component
+    new (config?: any): Blend.Component
 }
 
 interface ClassRegistryInterface {
@@ -60,7 +60,27 @@ interface ComponentConfig {
     [name: string]: any
 }
 
+interface FunctionAsController {
+    (client: Blend.mvc.Client, eventName: string, ...args: any[]): void
+}
 /**
  * Custom type describing a ctype
  */
 type ComponentTypes = ComponentClass | ComponentConfig | string;
+type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsController | string;
+
+/**
+ * Interface for describing a MVC Client (Used by View and Context)
+ */
+interface MvcClientInterface {
+    controller?: ControllerType | Array<ControllerType>
+    context?: Blend.mvc.Context
+}
+
+/**
+ * Interface for describing a MVC View
+ */
+interface MvcViewInterface extends MvcClientInterface {
+    reference?: string
+    [name: string]: any
+}

@@ -5,8 +5,6 @@ namespace Blend.binding {
     /**
      * Provides signal/slot style object binding.
      * The mapping can be one of the following styles
-     *  { source: 'target' } translate to setSource/getSource/setTarget
-     *
      */
     export class BindingProvider {
 
