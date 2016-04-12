@@ -66,11 +66,10 @@ interface ComponentConfig {
 type ComponentTypes = ComponentClass | ComponentConfig | string;
 
 interface ControllerInterface {
-    hostView?: Blend.mvc.View;
 }
 
 interface MvcViewInterface {
-    ref?: string,
+    reference?: string,
     controller?: Blend.mvc.Controller | Array<Blend.mvc.Controller>
     [name: string]: any
 }
