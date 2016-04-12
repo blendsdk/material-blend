@@ -85,7 +85,6 @@ namespace Blend.ui {
 
         protected render(): Blend.dom.Element {
             return Blend.dom.Element.create({});
-
         }
 
         /**
