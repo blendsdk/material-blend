@@ -104,6 +104,13 @@ namespace Blend {
     }
 
     /**
+     * Checks if the given value is a boolean
+     */
+    export function isBoolean(value: any): boolean {
+        return (typeof (value) === "boolean");
+    }
+
+    /**
      * Checks if the give value is instance of another class/function
      */
     export function isInstanceOf(obj: any, clazz: any): boolean {
