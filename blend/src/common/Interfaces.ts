@@ -64,7 +64,7 @@ interface ComponentConfig {
  * Custom type describing a ctype
  */
 type ComponentTypes = ComponentClass | ComponentConfig | string;
-type ControllerType = ComponentClass | Object | string;
+type ControllerType = ComponentClass | Blend.mvc.Controller | Object | Function | string ;
 
 interface MvcViewInterface {
     reference?: string

@@ -1,6 +1,7 @@
 /// <reference path="../common/Interfaces.ts" />
 /// <reference path="../Component.ts" />
 /// <reference path="View.ts" />
+/// <reference path="Client.ts" />
 
 interface ControllerEventHandler {
     (view: Blend.mvc.View, ...args: any[]): void
@@ -15,13 +16,23 @@ module Blend.mvc {
 
         private handlers: DictionaryInterface = {}
 
+        public constructor(config: any = {}) {
+            super(config);
+            this.initEvents();
+        }
+
+        protected initEvents() {
+
+        }
+
         /**
          * @internal
          * Delegates an event to the regisreted handlers in this controller
          */
-        delegate(eventName: string, reference: string, view: View, args: any[]) {
+        delegate(eventName: string, view: Client, args: any[]) {
             var me = this,
-                handlers = me.handlers[eventName] || me.handlers[(reference || '') + '.' + eventName] || null;
+                reference = (<any>view).getReference ? (<any>view).getReference() : '',
+                handlers = me.handlers[eventName] || me.handlers[reference + '.' + eventName] || null;
             if (handlers && handlers.length !== 0) {
                 handlers.forEach(function(handler: ControllerEventHandler) {
                     setTimeout(function() {
@@ -51,13 +62,14 @@ module Blend.mvc {
          * @internal
          * Registers a View's reference within this controller
          */
-        bindView(reference: string, view: View): void {
-            var me: any = this;
+        bindView(view: Client | View): void {
+            var me: any = this,
+                reference = ((<View>view).getReference ? (<View>view).getReference() : null); // trick to bypass the Context object
             if (reference !== null) {
                 if (me[reference] === null) {
                     me[reference] = view;
                 } else if (Blend.isArray(me[reference])) {
-                    (<Array<Blend.mvc.View>>me[reference]).push((view));
+                    (<Array<Blend.mvc.View>>me[reference]).push(<View>view);
                 }
 
             }
