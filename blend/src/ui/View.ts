@@ -6,6 +6,7 @@ namespace Blend.ui {
 
     export class View extends Blend.mvc.View {
 
+        protected parent: Blend.ui.View;
         protected element: Blend.dom.Element;
         protected isRendered: boolean;
         protected config: UIViewInterface;
@@ -14,6 +15,7 @@ namespace Blend.ui {
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
+            me.parent = config.parent || null;
             me.isRendered = false;
             me.cssClass = [];
             me.config = {
@@ -22,6 +24,29 @@ namespace Blend.ui {
             };
             me.setCssClass(config.css || [], true);
             me.setStyle(config.style || {});
+        }
+
+        /**
+         * Destroys this View by setting the properties to null,
+         * deleting them and removing its HTMLElement
+         */
+        public destroy() {
+            var me = this,
+                pNode: Node,
+                cNode: Node;
+
+            if (me.isRendered) {
+                cNode = me.element.getEl();
+                pNode = cNode.parentNode || null;
+                if (pNode) {
+                    pNode.removeChild(cNode);
+                }
+            }
+
+            Blend.forEach(me, function(value: any, key: string) {
+                (<any>me)[key] = null;
+                delete ((<any>me)[key]);
+            });
         }
 
         /**

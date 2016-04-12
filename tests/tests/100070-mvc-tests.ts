@@ -84,7 +84,7 @@ TestApp.defineTest('MVC fire event', function(t: Blend.testing.TestRunner) {
 
         t.done();
 
-    }, 1000);
+    }, 250);
 
 
 });

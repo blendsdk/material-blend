@@ -40,3 +40,23 @@ TestApp.defineTest('UI View Style', function(t: Blend.testing.TestRunner) {
     t.done();
 
 });
+
+TestApp.defineTest('UI View Delete', function(t: Blend.testing.TestRunner) {
+
+    Blend.Runtime.ready(function() {
+        var view1: Blend.ui.View = Blend.createComponent<Blend.ui.View>(Blend.ui.View, {
+            style: {
+                'border-width': 1
+            }
+        });
+        document.body.innerHTML = '';
+        document.body.appendChild(view1.getElement());
+        t.delay(function() {
+            t.assertEquals(document.body.children.length, 1, 'View added to body');
+            view1.destroy();
+            t.assertEquals(document.body.children.length, 0, 'View destroyed');
+            t.done();
+        });
+    });
+    Blend.Runtime.kickStart();
+});
