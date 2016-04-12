@@ -24,6 +24,13 @@ namespace Blend.dom {
         }
 
         /**
+         * Retuns the computed bounds
+         */
+        public getBounds(): ElementBoundsInterface {
+            return this.getStyle(['top', 'left', 'width', 'height', 'visible']);
+        }
+
+        /**
          * Sets the style of this element
          */
         public setStyle(styles: StyleInterface): Blend.dom.Element {

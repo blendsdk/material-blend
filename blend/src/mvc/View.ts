@@ -8,7 +8,7 @@ namespace Blend.mvc {
 
         private reference: string;
         private context: Blend.mvc.Context;
-        private eventsEnabled: boolean;
+        protected eventsEnabled: boolean;
 
         public constructor(config: MvcViewInterface = {}) {
             super(config);

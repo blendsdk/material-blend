@@ -9,21 +9,152 @@ namespace Blend.ui {
         protected parent: Blend.ui.View;
         protected element: Blend.dom.Element;
         protected isRendered: boolean;
+        protected visible: boolean;
         protected config: UIViewInterface;
         protected cssClass: Array<string>;
+        protected layoutEnabled: boolean;
+        protected layoutTriggers: Array<string>
+        private sizeHash: string;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
+            me.sizeHash = null;
             me.parent = config.parent || null;
             me.isRendered = false;
+            me.visible = true;
+            me.layoutEnabled = true;
             me.cssClass = [];
             me.config = {
                 css: [],
-                style: {}
+                style: {},
+                visible: true,
+                top: null,
+                left: null,
+                width: null,
+                height: null
             };
+            me.layoutTriggers = [
+                'redo-layout',
+                'boundsChanged',
+                'visibilityChanged'
+            ];
             me.setCssClass(config.css || [], true);
             me.setStyle(config.style || {});
+            me.setVisible(Blend.isBoolean(config.visible) ? config.visible : true);
+            me.setBounds({
+                top: config.top || null,
+                left: config.left || null,
+                width: config.width || null,
+                height: config.height || null
+            });
+        }
+
+        /////////////////////////////////////////////////////////////////////////
+        // BOUNDS
+        /////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Returns the bounds of this View based on the ViewBoundsInterface interface
+         */
+        getBounds(): ElementBoundsInterface {
+            var me = this;
+            if (me.isRendered) {
+                return me.element.getBounds();
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Sets the bounds of this View based on the ViewBoundsInterface interface
+         */
+        setBounds(bounds: ElementBoundsInterface) {
+            var me = this;
+            if (me.isRendered) {
+                me.setStyle(<StyleInterface>bounds);
+            } else {
+                Blend.apply(me.config, bounds);
+            }
+            me.notifyBoundsChanged();
+        }
+
+        /**
+         * Sends boundsChanged notification
+         */
+        notifyBoundsChanged() {
+            var me = this;
+            if (me.isRendered) {
+                me.fireEvent('boundsChanged', me.getBounds());
+            }
+        }
+
+
+        /////////////////////////////////////////////////////////////////////////
+        // VISIBILITY
+        //////////////////////////////////////////////////////////////////////////
+        /**
+         * Sets the visibility state for this View
+         */
+        setVisible(visible: boolean = true) {
+            var me = this
+            me.visible = visible === true ? true : false;
+            if (me.isRendered) {
+                me.element.setData('visible', me.visible);
+            } else {
+                me.config.visible = me.visible;
+            }
+            me.notifyVisibilityChanged();
+        }
+
+        /**
+         * gets the visibility state of this View
+         */
+        isVisible() {
+            var me = this;
+            return me.visible;
+        }
+
+        /**
+         * Sends a visibilityChanged notification
+         */
+        protected notifyVisibilityChanged() {
+            var me = this;
+            me.fireEvent('visibilityChanged', me.visible);
+        }
+        /////////////////////////////////////////////////////////////////////////
+
+
+        /**
+         * Creates and retrives the current size hash on this View
+         */
+        private getSizeHash(): string {
+            var me = this,
+                cs = <ElementBoundsInterface>me.getBounds();
+            return [cs.height, cs.width].join('-');
+        }
+
+        /**
+         * Checks if this View can be placed in a layout cycle
+         */
+        protected canLayout() {
+            return this.layoutEnabled
+                && this.isRendered
+                && this.visible;
+        }
+
+        /**
+         * Temporary suspends the layout cycle
+         */
+        public suspendLayout() {
+            this.layoutEnabled = false;
+        }
+
+        /**
+         * Resumes the layout cycle
+         */
+        public resumeLayout() {
+            this.layoutEnabled = true;
         }
 
         /**
@@ -80,7 +211,17 @@ namespace Blend.ui {
             var me = this;
             me.setCssClass(me.cssClass, true);
             me.setCssClass(me.config.css, false);
+            me.setBounds({
+                top: me.config.top,
+                left: me.config.left,
+                width: me.config.width,
+                height: me.config.height
+            });
             me.setStyle(me.config.style);
+            if (!me.visible) {
+                // should be set only when not visible
+                me.setVisible(false);
+            }
         }
 
         protected render(): Blend.dom.Element {
@@ -102,6 +243,19 @@ namespace Blend.ui {
             }
             return me.element.getEl();
         }
-    }
 
+        protected fireEvent(eventName: string, ...args: any[]) {
+            /**
+             * Override of the fireEvent function to trigger
+             * performLayout on registered events.
+             */
+            var me = this;
+            if (me.isRendered === true && me.eventsEnabled === true) {
+                //me.handleLayoutTriggers(eventName);
+                //if (eventName !== 'redo-layout') {
+                super.fireEvent.apply(me, arguments);
+                //}
+            }
+        }
+    }
 }

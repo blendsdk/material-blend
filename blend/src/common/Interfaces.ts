@@ -92,4 +92,20 @@ interface UIViewInterface extends MvcViewInterface {
     parent?: Blend.ui.View
     css?: string | Array<string>
     style?: StyleInterface
+    visible?: boolean
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string
+}
+
+/**
+ * Interface for defining View bounds and visibility
+ */
+interface ElementBoundsInterface {
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string
+    visible?: boolean
 }
