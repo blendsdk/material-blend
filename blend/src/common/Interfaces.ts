@@ -69,7 +69,8 @@ interface ControllerInterface {
 }
 
 interface MvcViewInterface {
-    reference?: string,
+    reference?: string
     controller?: Blend.mvc.Controller | Array<Blend.mvc.Controller>
+    parent?: Blend.mvc.View
     [name: string]: any
 }

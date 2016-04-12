@@ -19,8 +19,19 @@ namespace Blend.mvc {
             var me = this;
             me.controllers = [];
             me.mvcReady = false;
-            me.reference = null;
-            me.parent = null;
+            me.reference = config.reference || null;
+            me.setParent(config.parent || null);
+        }
+
+        /**
+         *  Assigned a parent View and initialized the controller event chain
+         */
+        public setParent(view: Blend.mvc.View) {
+            var me = this;
+            if (me.parent === null && view !== null) {
+                me.parent = view;
+                me.initControllerChain();
+            }
         }
 
         private initControllers() {
@@ -32,6 +43,9 @@ namespace Blend.mvc {
             });
         }
 
+        /**
+         * Retrives the current controllers
+         */
         public getControllers(): Array<Blend.mvc.Controller> {
             return this.controllers;
         }
@@ -50,22 +64,43 @@ namespace Blend.mvc {
         }
 
         /**
+         * This function will try to find any Controllers within the parent View chain
+         * if this View has a reference.
+         */
+        private resolveControllers(): void {
+            var me = this;
+            if (me.reference !== null && me.parent !== null) {
+                var view: View = me.parent,
+                    search: boolean = true;
+                while (search && view) {
+                    if (view.hasControllers()) {
+                        me.controllers.concat(view.controllers);
+                        search = false;
+                    } else {
+                        view = view.parent;
+                    }
+                }
+            }
+        }
+        /**
+         * Provides information if the View has any Controllers.
+         */
+        public hasControllers(): boolean {
+            var me = this;
+            return (me.controllers && me.controllers.length !== 0);
+        }
+
+        /**
          * Initializes the event chain for this View
          * @internal
          */
-        initControllerChain(parentView?: View) {
+        initControllerChain() {
             var me = this;
             if (!me.mvcReady) {
-                me.initControllers();
-                if (parentView !== null && me.parent === null) {
-                    me.parent = parentView;
-                    if (me.reference !== null) {
-                        Blend.forEach(me.parent.getControllers, function(ctrl: Blend.mvc.Controller) {
-                            ctrl.bindView(me.reference, me);
-                        });
-                        me.controllers.concat(me.parent.getControllers());
-                    }
-                }
+                me.resolveControllers();
+                Blend.forEach(me.controllers, function(ctrl: Blend.mvc.Controller) {
+                    ctrl.bindView(me.reference, me);
+                });
                 me.mvcReady = true;
             }
         }
