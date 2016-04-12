@@ -37,6 +37,7 @@ TestApp.defineTest('MVC create controller', function(t: Blend.testing.TestRunner
 TestApp.defineTest('MVC fire event', function(t: Blend.testing.TestRunner) {
 
     class Controller1 extends Blend.mvc.Controller {
+
         protected initEvents() {
             var me = this;
             me.on('log', me.log);

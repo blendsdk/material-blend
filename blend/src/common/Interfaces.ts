@@ -60,11 +60,14 @@ interface ComponentConfig {
     [name: string]: any
 }
 
+interface FunctionAsController {
+    (client: Blend.mvc.Client, eventName: string, ...args: any[]): void
+}
 /**
  * Custom type describing a ctype
  */
 type ComponentTypes = ComponentClass | ComponentConfig | string;
-type ControllerType = ComponentClass | Blend.mvc.Controller | Object | Function | string ;
+type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsController | string;
 
 interface MvcViewInterface {
     reference?: string
