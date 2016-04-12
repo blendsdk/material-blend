@@ -8,18 +8,34 @@ namespace Blend.mvc {
 
         private reference: string;
         private context: Blend.mvc.Context;
+        private eventsEnabled: boolean;
 
         public constructor(config: MvcViewInterface = {}) {
             super(config);
             var me = this;
             me.context = config.context || null;
             me.reference = config.reference || null;
+            me.eventsEnabled = true;
+        }
+
+        /**
+         * Disables the event and notification on this View
+         */
+        protected dispableEvents() {
+            this.eventsEnabled = false;
+        }
+
+        /**
+         * Enables the event and notification on this view
+         */
+        protected enableEvents() {
+            this.eventsEnabled = true;
         }
 
         /**
          * Gets the reference identifier for this View
          */
-        public  getReference() {
+        public getReference() {
             return this.reference || null;
         }
 
@@ -29,9 +45,11 @@ namespace Blend.mvc {
          */
         protected fireEvent(eventName: string, ...args: any[]) {
             var me = this;
-            this.fireEventWithScope(me, eventName, args);
-            if (me.context !== null) {
-                me.context.delegate(eventName, me, args);
+            if (me.eventsEnabled === true) {
+                this.fireEventWithScope(me, eventName, args);
+                if (me.context !== null) {
+                    me.context.delegate(eventName, me, args);
+                }
             }
         }
     }
