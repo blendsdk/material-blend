@@ -31,7 +31,7 @@ namespace Blend.ui {
                 width: null,
                 height: null
             };
-            me.setCssClass(config.css || [], true);
+            me.setCssClass(config.css || []);
             me.setStyle(config.style || {});
             me.setVisible(Blend.isBoolean(config.visible) ? config.visible : true);
             me.setBounds({
@@ -146,7 +146,7 @@ namespace Blend.ui {
                 me.element.addCssClass(css, blendPrefix);
             } else {
                 Blend.wrapInArray(css).forEach(function(itm: string) {
-                    (<Array<string>>me.config.css).push(blendPrefix ? cssPrefix(itm) : itm)
+                    (<Array<string>>me.config.css).push(blendPrefix === true ? cssPrefix(itm) : itm)
                 });
             }
             me.notifyStyleOrCSSChanged();
