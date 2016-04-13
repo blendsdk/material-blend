@@ -12,7 +12,7 @@ namespace Blend.ui {
      */
     export class ContainerViewBase extends Blend.ui.View {
 
-        protected items: Array<Blend.ui.View | Blend.ui.ContainerViewBase>;
+        protected items: Array<Blend.ui.ViewBase | Blend.ui.ContainerViewBase>;
         protected bodyElement: Blend.dom.Element;
         protected itemCSSClass: string;
         protected config: UIContainerViewInterface;
@@ -22,29 +22,59 @@ namespace Blend.ui {
             var me = this;
             me.items = [];
             me.layoutTriggers.push('itemAdded');
+            me.layoutTriggers.push('itemRemoved');
             me.config.items = config.items || [];
         }
 
         public addView(item: UIType | Array<UIType>) {
-            var me = this;
+            var me = this, view: Blend.ui.ViewBase;
             Blend.forEach(Blend.wrapInArray(item), function(itm: UIType) {
-                var view: Blend.ui.View = Blend.createComponent<Blend.ui.View>(itm, {
-                    parent: me,
-                    css: [me.itemCSSClass]
-                });
-                if (view.getProperty<boolean>('useParentController') === true) {
-                    view.addController(me.controllers);
-                }
+                view = me.createViewItem(itm);
                 me.items.push(view);
-                if (me.isRendered) {
-                    me.bodyElement.append(view.getElement());
-                }
                 me.notifyItemAdded(view);
             });
         }
 
         /**
-         * Sendsan itemAdded notification
+         * Creates a View item to be added to the items collection
+         */
+        protected createViewItem(itm: UIType): Blend.ui.ViewBase {
+            var me = this;
+            var view: Blend.ui.View = Blend.createComponent<Blend.ui.View>(itm, {
+                parent: me,
+                css: [me.itemCSSClass]
+            });
+            if (view.getProperty<boolean>('useParentController') === true) {
+                view.addController(me.controllers);
+            }
+            return view;
+        }
+
+        /**
+         * Removed a View from this container
+         */
+        public removeView(view: number | Blend.ui.ViewBase): Blend.ui.ViewBase {
+            var me = this,
+                index: number = Blend.isObject(view) ? me.items.indexOf(<any>view) : <number>view,
+                removed: Array<Blend.ui.ViewBase> = me.items.splice(index, 1);
+            if (removed.length !== 0) {
+                me.notifyItemRemoved(removed[0])
+                return removed[0];
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Sends an itemRemoved notification
+         */
+        protected notifyItemRemoved(view: Blend.ui.ViewBase) {
+            var me = this;
+            me.fireEvent('itemRemoved', view);
+        }
+
+        /**
+         * Sends an itemAdded notification
          */
         protected notifyItemAdded(view: Blend.ui.ViewBase) {
             var me = this;
