@@ -26,6 +26,9 @@ namespace Blend.ui {
             me.config.items = config.items || [];
         }
 
+        /**
+         * Adds one or more Views to this Conatiner
+         */
         public addView(item: UIType | Array<UIType>) {
             var me = this, view: Blend.ui.ViewBase;
             Blend.forEach(Blend.wrapInArray(item), function(itm: UIType) {
