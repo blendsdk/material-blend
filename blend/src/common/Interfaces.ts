@@ -111,8 +111,13 @@ interface UIViewInterface extends MvcViewInterface {
     height?: number | string
 }
 
-type UIType = ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.ViewBase;
+type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.ViewBase;
 
 interface UIContainerViewInterface extends UIViewInterface {
     items?: UIType | Array<UIType>
+}
+
+interface ApplicationInterface extends UIViewInterface {
+    mainView?: UIType
+    theme?: string;
 }

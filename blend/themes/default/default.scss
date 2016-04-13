@@ -1,2 +1,6 @@
 @import "_variables";
 @import "../etc/_bootstrap";
+
+@include blend-theme(
+    $name:'default'
+);
