@@ -1,5 +1,5 @@
 /// <reference path="../Blend.ts" />
-/// <reference path="View.ts" />
+/// <reference path="../ui/View.ts" />
 
 namespace Blend.ui {
 

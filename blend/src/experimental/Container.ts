@@ -1,5 +1,5 @@
-/// <reference path="../../common/Interfaces.ts" />
-/// <reference path="../ContainerViewBase.ts" />
+/// <reference path="../common/Interfaces.ts" />
+/// <reference path="../ui/ContainerViewBase.ts" />
 
 namespace Blend.ui.container {
 
