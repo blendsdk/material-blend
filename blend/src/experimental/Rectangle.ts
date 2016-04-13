@@ -11,6 +11,8 @@ namespace Blend.ui {
     export class Rectangle extends Blend.ui.View {
 
         protected config: RectangleConfig;
+        private layoutCount: number;
+
         constructor(config: RectangleConfig = {}) {
             super(config);
             var me = this;
@@ -24,6 +26,18 @@ namespace Blend.ui {
                 'border': config.border == true ? '1px solid #000' : null,
                 display: 'inline-block'
             });
+            me.layoutCount = 0;
+        }
+
+        protected layoutView() {
+            var me = this;
+            me.layoutCount++;
+            me.log();
+        }
+
+        private log() {
+            var me = this;
+            me.element.setHtml(`<pre>Layouts: ${me.layoutCount}</pre>`);
         }
 
     }
