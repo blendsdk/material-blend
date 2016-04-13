@@ -86,6 +86,17 @@ interface MvcViewInterface extends MvcClientInterface {
 }
 
 /**
+ * Interface for defining View bounds and visibility
+ */
+interface ElementBoundsInterface {
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string
+    visible?: boolean
+}
+
+/**
  * Interface for implementing a UI View
  */
 interface UIViewInterface extends MvcViewInterface {
@@ -99,13 +110,8 @@ interface UIViewInterface extends MvcViewInterface {
     height?: number | string
 }
 
-/**
- * Interface for defining View bounds and visibility
- */
-interface ElementBoundsInterface {
-    top?: number
-    left?: number
-    width?: number | string
-    height?: number | string
-    visible?: boolean
+type UIType = ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.BaseView;
+
+interface UIContainerViewInterface extends UIViewInterface {
+    items?:UIType|Array<UIType>
 }

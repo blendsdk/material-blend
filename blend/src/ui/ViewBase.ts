@@ -4,7 +4,7 @@
 
 namespace Blend.ui {
 
-    export class BaseView extends Blend.mvc.View {
+    export class ViewBase extends Blend.mvc.View {
 
         protected parent: Blend.ui.View;
         protected element: Blend.dom.Element;
