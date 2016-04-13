@@ -6,17 +6,19 @@ namespace Blend.ui {
 
     export class ViewBase extends Blend.mvc.View {
 
-        protected parent: Blend.ui.View;
+        protected parent: Blend.ui.ViewBase;
         protected element: Blend.dom.Element;
         protected isRendered: boolean;
         protected visible: boolean;
         protected config: UIViewInterface;
         protected cssClass: Array<string>;
+        protected useParentControllers:boolean
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
             me.parent = config.parent || null;
+            me.useParentControllers = config.useParentController || false;
             me.isRendered = false;
             me.visible = true;
             me.cssClass = [];
@@ -179,7 +181,7 @@ namespace Blend.ui {
         /**
         * Retrives the HTMLElement for this View
         */
-        public getElement(): HTMLElement {
+        public getElement(): Blend.dom.Element {
             var me = this;
             if (!me.isRendered) {
                 me.dispableEvents();
@@ -189,7 +191,7 @@ namespace Blend.ui {
                 me.enableEvents();
                 delete (me.config);
             }
-            return me.element.getEl();
+            return me.element;
         }
 
         /**

@@ -26,7 +26,7 @@ interface CreateElementInterface {
     cls?: string | Array<string>
     listeners?: CreateElementEventListenersInterface
     text?: string
-    children?: Array<CreateElementInterface | HTMLElement>
+    children?: Array<CreateElementInterface | HTMLElement | Blend.dom.Element>
     data?: any
     style?: StyleInterface,
     selectable?: boolean
@@ -100,7 +100,8 @@ interface ElementBoundsInterface {
  * Interface for implementing a UI View
  */
 interface UIViewInterface extends MvcViewInterface {
-    parent?: Blend.ui.View
+    parent?: Blend.ui.ViewBase
+    useParentController?: boolean
     css?: string | Array<string>
     style?: StyleInterface
     visible?: boolean
@@ -110,8 +111,8 @@ interface UIViewInterface extends MvcViewInterface {
     height?: number | string
 }
 
-type UIType = ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.BaseView;
+type UIType = ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.ViewBase;
 
 interface UIContainerViewInterface extends UIViewInterface {
-    items?:UIType|Array<UIType>
+    items?: UIType | Array<UIType>
 }
