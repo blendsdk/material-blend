@@ -134,6 +134,18 @@ namespace Blend.dom {
         }
 
         /**
+         * Removes the child elements from this Element
+         */
+        clearElement() {
+            var me = this;
+            if (me.el) {
+                while (me.el.firstChild) {
+                    me.el.removeChild(me.el.firstChild);
+                }
+            }
+        }
+
+        /**
          * Clears the value of the class attribute of this element
          */
         public clearCssClass(): Blend.dom.Element {
@@ -178,6 +190,21 @@ namespace Blend.dom {
          */
         public append(child: Blend.dom.Element) {
             this.el.appendChild((child.getEl()));
+        }
+
+        /**
+         * Sets the inner HTML of this element
+         */
+        public setHtml(html: string): Blend.dom.Element {
+            this.el.innerHTML = html;
+            return this;
+        }
+
+        /**
+         * Gets the inner HTML of this element
+         */
+        public getHtml(): string {
+            return this.el.innerHTML;
         }
 
         /**
