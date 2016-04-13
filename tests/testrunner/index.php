@@ -2,14 +2,18 @@
 
 function getTestFiles() {
     $result = array();
-    //$files = glob(__DIR__ . '/js/tests/*.js');
-    $files = array(
-        '100090-application-tests'
-    );
+    $files = glob(__DIR__ . '/js/tests/*.js');
+    foreach ($files as $index => $file) {
+        $files[$index] = str_replace(__DIR__ . '/', '', $file);
+    }
+    if(isset($_GET['tests'])) {
+        $files = explode(',',$_GET['tests']);
+        foreach ($files as $index => $file) {
+            $files[$index] = "js/tests/{$file}.js";
+        }
+    }
     foreach ($files as $file) {
-        //$script = str_replace(__DIR__ . '/', '', $file);
-        $script = "js/tests/{$file}.js";
-        $result[] = "<script src=\"$script\" type=\"text/javascript\"></script>";
+        $result[] = "<script src=\"$file\" type=\"text/javascript\"></script>";
     }
     return implode("\n", $result) . "\n";
 }
