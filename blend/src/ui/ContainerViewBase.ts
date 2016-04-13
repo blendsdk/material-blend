@@ -15,12 +15,14 @@ namespace Blend.ui {
         protected items: Array<Blend.ui.View | Blend.ui.ContainerViewBase>;
         protected bodyElement: Blend.dom.Element;
         protected itemCSSClass: string;
+        protected config: UIContainerViewInterface;
 
         public constructor(config: UIContainerViewInterface = {}) {
             super(config);
             var me = this;
-            me.itemCSSClass = cssPrefix(me.cssClass + '-item');
-            me.addView(config.items || []);
+            me.items = [];
+            me.layoutTriggers.push('itemAdded');
+            me.config.items = config.items || [];
         }
 
         public addView(item: UIType | Array<UIType>) {
@@ -37,7 +39,16 @@ namespace Blend.ui {
                 if (me.isRendered) {
                     me.bodyElement.append(view.getElement());
                 }
+                me.notifyItemAdded(view);
             });
+        }
+
+        /**
+         * Sendsan itemAdded notification
+         */
+        protected notifyItemAdded(view: Blend.ui.ViewBase) {
+            var me = this;
+            me.fireEvent('itemAdded', view);
         }
 
         protected renderChild(view: Blend.ui.ViewBase): Blend.dom.Element {
@@ -47,6 +58,7 @@ namespace Blend.ui {
         protected renderChildren(): Array<Blend.dom.Element> {
             var me = this,
                 children: Array<Blend.dom.Element> = [];
+            me.addView(me.config.items);
             me.items.forEach(function(view: Blend.ui.ViewBase) {
                 children.push(me.renderChild(view));
             });

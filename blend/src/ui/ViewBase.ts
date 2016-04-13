@@ -11,7 +11,7 @@ namespace Blend.ui {
         protected isRendered: boolean;
         protected visible: boolean;
         protected config: UIViewInterface;
-        protected cssClass: Array<string>;
+        protected cssClass: string;
         protected useParentControllers:boolean
 
         public constructor(config: UIViewInterface = {}) {
@@ -21,7 +21,7 @@ namespace Blend.ui {
             me.useParentControllers = config.useParentController || false;
             me.isRendered = false;
             me.visible = true;
-            me.cssClass = [];
+            me.cssClass = null;
             me.config = {
                 css: [],
                 style: {},

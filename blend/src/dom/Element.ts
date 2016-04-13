@@ -262,7 +262,7 @@ var wrapEl = function(el: HTMLElement) {
     return new Blend.dom.Element(el);
 }
 
-var cssPrefix = function(css: string) {
+var cssPrefix = function(name: string) {
     return Blend.dom.Element.CSS_PREFIX + name;
 }
 
