@@ -14,6 +14,15 @@ namespace Blend {
         }
 
         /**
+         * Get the value of a perperty of this component. This is used to
+         * Read the private-ish value of a component
+          */
+        public getProperty<T>(name: string, defaultValue: any = null): T {
+            var me: any = this;
+            return (me[name] === undefined ? defaultValue : me[name]);
+        }
+
+        /**
          * Check if this Component implements a function
          */
         public hasFunction(fname: string) {
@@ -24,7 +33,7 @@ namespace Blend {
         /**
          * Dynamically run a function within this Component
          */
-        public applyFunction(name: string, args: Array<any>|IArguments): any {
+        public applyFunction(name: string, args: Array<any> | IArguments): any {
             var me: any = this,
                 fn: Function = <Function>me[name];
             if (Blend.isFunction(fn)) {
