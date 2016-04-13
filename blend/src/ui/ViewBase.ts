@@ -12,7 +12,7 @@ namespace Blend.ui {
         protected visible: boolean;
         protected config: UIViewInterface;
         protected cssClass: string;
-        protected useParentControllers:boolean
+        protected useParentControllers: boolean
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
@@ -40,6 +40,10 @@ namespace Blend.ui {
                 width: config.width || null,
                 height: config.height || null
             });
+        }
+
+        protected render(): Blend.dom.Element {
+            return Blend.dom.Element.create({});
         }
 
         /////////////////////////////////////////////////////////////////////////
@@ -141,7 +145,9 @@ namespace Blend.ui {
             if (me.isRendered) {
                 me.element.addCssClass(css, blendPrefix);
             } else {
-                Blend.apply(me.config.css, css, false, true);
+                Blend.wrapInArray(css).forEach(function(itm: string) {
+                    (<Array<string>>me.config.css).push(blendPrefix ? cssPrefix(itm) : itm)
+                });
             }
             me.notifyStyleOrCSSChanged();
         }
@@ -172,10 +178,6 @@ namespace Blend.ui {
                 // should be set only when not visible
                 me.setVisible(false);
             }
-        }
-
-        protected render(): Blend.dom.Element {
-            return Blend.dom.Element.create({});
         }
 
         /**
