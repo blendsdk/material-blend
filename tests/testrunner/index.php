@@ -2,9 +2,13 @@
 
 function getTestFiles() {
     $result = array();
-    $files = glob(__DIR__ . '/js/tests/*.js');
+    //$files = glob(__DIR__ . '/js/tests/*.js');
+    $files = array(
+        '100090-application-tests'
+    );
     foreach ($files as $file) {
-        $script = str_replace(__DIR__ . '/', '', $file);
+        //$script = str_replace(__DIR__ . '/', '', $file);
+        $script = "js/tests/{$file}.js";
         $result[] = "<script src=\"$script\" type=\"text/javascript\"></script>";
     }
     return implode("\n", $result) . "\n";
@@ -22,7 +26,11 @@ function getTestFiles() {
                 background-color: #F78181 !important;
             }
 
-            pre, .log, tr td {
+            pre {
+                font-size: 12px !important;
+            }
+
+            .log, tr td {
                 font-size: 0.8em !important;
             }
 
