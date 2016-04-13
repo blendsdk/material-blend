@@ -194,7 +194,7 @@ namespace Blend {
             }
         } else if (Blend.isClass(clazz)) {
             return <T> new (<ComponentClass>clazz)(config || {});
-        } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
+        } else if (clazz !== null && clazz !== undefined && typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);
             return Blend.createComponent<T>(ctype, Blend.apply(clazz, config));
