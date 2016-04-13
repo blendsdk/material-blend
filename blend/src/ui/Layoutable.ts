@@ -21,7 +21,7 @@ namespace Blend.ui {
             me.layoutEnabled = true;
             me.sizeHash = null;
             me.layoutTriggers = [
-                'redo-layout',
+                'styleChanged',
                 'boundsChanged',
                 'visibilityChanged'
             ];
@@ -136,9 +136,7 @@ namespace Blend.ui {
             var me = this;
             if (me.isRendered === true && me.eventsEnabled === true) {
                 me.handleLayoutTriggers(eventName);
-                if (eventName !== 'styleChanged') {
-                    super.fireEvent.apply(me, arguments);
-                }
+                super.fireEvent.apply(me, arguments);
             }
         }
     }
