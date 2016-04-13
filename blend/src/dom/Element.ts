@@ -12,7 +12,7 @@ namespace Blend.dom {
         /**
          * CSS Prefix value made available from code
          */
-        public CSS_PREFIX = 'b-';
+        public static CSS_PREFIX = 'b-';
         private el: HTMLElement;
         private pixelRe = /px$/;
         private UNIT: string = 'px';
@@ -103,7 +103,7 @@ namespace Blend.dom {
          */
         public hasCssClass(name: string, checkPrefixed: boolean = true): boolean {
             var me = this,
-                check = checkPrefixed === true ? me.CSS_PREFIX + name : name;
+                check = checkPrefixed === true ? Blend.dom.Element.CSS_PREFIX + name : name;
             return (this.el.getAttribute('class') || '').trim().indexOf(check, 0) !== -1;
         }
 
@@ -120,7 +120,7 @@ namespace Blend.dom {
             if (prefix === true) {
                 r = r.map(function(itm: string) {
                     if (itm !== null) {
-                        return me.CSS_PREFIX + itm;
+                        return Blend.dom.Element.CSS_PREFIX + itm;
                     } else {
                         return null;
                     }
@@ -171,6 +171,13 @@ namespace Blend.dom {
          */
         public getEl(): HTMLElement {
             return this.el;
+        }
+
+        /**
+         * Appends a child Element to this Element
+         */
+        public append(child: Blend.dom.Element) {
+            this.el.appendChild((child.getEl()));
         }
 
         /**
@@ -253,6 +260,10 @@ namespace Blend.dom {
  */
 var wrapEl = function(el: HTMLElement) {
     return new Blend.dom.Element(el);
+}
+
+var cssPrefix = function(css: string) {
+    return Blend.dom.Element.CSS_PREFIX + name;
 }
 
 var createEl = Blend.dom.Element.create;
