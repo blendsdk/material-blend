@@ -25,8 +25,8 @@ namespace Blend.testing {
             link.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
             head.appendChild(link);
 
-			var theme = document.getElementById("theme");
-			theme.parentNode.removeChild(theme);
+            var theme = document.getElementById("theme");
+            theme.parentNode.removeChild(theme);
 
             this.info(`<div class='status'><span class='total'>${this.numAsserts} ASSERTS</span><span class='pass'>${this.numPasses} PASSED</span><span class='fail'>${this.numFailed} FAILED</span></div>`);
 

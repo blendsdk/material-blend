@@ -6,11 +6,13 @@
     $font-size: $default-font-size
 )
 {
-    body {
-        background-color: $basecolor;
-    }
-
     .#{$name} {
 		background-color: $basecolor;
+
+        @include blend-application(
+            $font-family,
+            $font-size
+        );
     }
+
 }

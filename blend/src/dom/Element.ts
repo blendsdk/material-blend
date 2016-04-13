@@ -12,7 +12,7 @@ namespace Blend.dom {
         /**
          * CSS Prefix value made available from code
          */
-        public CSS_PREFIX = 'b-';
+        public static CSS_PREFIX = 'b-';
         private el: HTMLElement;
         private pixelRe = /px$/;
         private UNIT: string = 'px';
@@ -21,6 +21,13 @@ namespace Blend.dom {
 
         constructor(el: HTMLElement) {
             this.el = el;
+        }
+
+        /**
+         * Retuns the computed bounds
+         */
+        public getBounds(): ElementBoundsInterface {
+            return this.getStyle(['top', 'left', 'width', 'height', 'visible']);
         }
 
         /**
@@ -87,7 +94,7 @@ namespace Blend.dom {
             if (asArray === true) {
                 return css === "" ? [] : css.split(' ')
             } else {
-                return css;
+                return css === "" ? null : css;
             }
         }
 
@@ -96,7 +103,7 @@ namespace Blend.dom {
          */
         public hasCssClass(name: string, checkPrefixed: boolean = true): boolean {
             var me = this,
-                check = checkPrefixed === true ? me.CSS_PREFIX + name : name;
+                check = checkPrefixed === true ? Blend.dom.Element.CSS_PREFIX + name : name;
             return (this.el.getAttribute('class') || '').trim().indexOf(check, 0) !== -1;
         }
 
@@ -108,14 +115,34 @@ namespace Blend.dom {
         public addCssClass(css: string | string[], prefix: boolean = true, replace: boolean = false): Blend.dom.Element {
             var me = this,
                 r = Blend.wrapInArray<string>(css),
-                cur = replace === true ? [] : <Array<string>>me.getCssClass(true);
+                cur = replace === true ? [] : <Array<string>>me.getCssClass(true),
+                v: string = null;
             if (prefix === true) {
                 r = r.map(function(itm: string) {
-                    return me.CSS_PREFIX + itm;
+                    if (itm !== null) {
+                        return Blend.dom.Element.CSS_PREFIX + itm;
+                    } else {
+                        return null;
+                    }
                 });
             }
-            me.el.setAttribute('class', cur.concat(r).unique().join(' '));
+            v = cur.concat(r).unique().join(' ').trim();
+            if (v !== '') {
+                me.el.setAttribute('class', v);
+            }
             return this;
+        }
+
+        /**
+         * Removes the child elements from this Element
+         */
+        clearElement() {
+            var me = this;
+            if (me.el) {
+                while (me.el.firstChild) {
+                    me.el.removeChild(me.el.firstChild);
+                }
+            }
         }
 
         /**
@@ -123,13 +150,6 @@ namespace Blend.dom {
          */
         public clearCssClass(): Blend.dom.Element {
             this.el.setAttribute('class', '');
-            return this;
-        }
-
-        /**
-         * Sets the styles for this element;
-         */
-        public setStyles(style: StyleInterface): Blend.dom.Element {
             return this;
         }
 
@@ -163,6 +183,28 @@ namespace Blend.dom {
          */
         public getEl(): HTMLElement {
             return this.el;
+        }
+
+        /**
+         * Appends a child Element to this Element
+         */
+        public append(child: Blend.dom.Element) {
+            this.el.appendChild((child.getEl()));
+        }
+
+        /**
+         * Sets the inner HTML of this element
+         */
+        public setHtml(html: string): Blend.dom.Element {
+            this.el.innerHTML = html;
+            return this;
+        }
+
+        /**
+         * Gets the inner HTML of this element
+         */
+        public getHtml(): string {
+            return this.el.innerHTML;
         }
 
         /**
@@ -245,6 +287,10 @@ namespace Blend.dom {
  */
 var wrapEl = function(el: HTMLElement) {
     return new Blend.dom.Element(el);
+}
+
+var cssPrefix = function(name: string) {
+    return Blend.dom.Element.CSS_PREFIX + name;
 }
 
 var createEl = Blend.dom.Element.create;

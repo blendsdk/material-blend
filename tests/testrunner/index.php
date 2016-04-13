@@ -3,9 +3,17 @@
 function getTestFiles() {
     $result = array();
     $files = glob(__DIR__ . '/js/tests/*.js');
+    foreach ($files as $index => $file) {
+        $files[$index] = str_replace(__DIR__ . '/', '', $file);
+    }
+    if(isset($_GET['tests'])) {
+        $files = explode(',',$_GET['tests']);
+        foreach ($files as $index => $file) {
+            $files[$index] = "js/tests/{$file}.js";
+        }
+    }
     foreach ($files as $file) {
-        $script = str_replace(__DIR__ . '/', '', $file);
-        $result[] = "<script src=\"$script\" type=\"text/javascript\"></script>";
+        $result[] = "<script src=\"$file\" type=\"text/javascript\"></script>";
     }
     return implode("\n", $result) . "\n";
 }
@@ -22,7 +30,11 @@ function getTestFiles() {
                 background-color: #F78181 !important;
             }
 
-            pre, .log, tr td {
+            pre {
+                font-size: 12px !important;
+            }
+
+            .log, tr td {
                 font-size: 0.8em !important;
             }
 

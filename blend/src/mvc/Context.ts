@@ -1,42 +1,24 @@
 /// <reference path="../common/Interfaces.ts" />
-/// <reference path="Model.ts" />
+/// <reference path="../Blend.ts" />
+/// <reference path="Controller.ts" />
+/// <reference path="Client.ts" />
+
+
 
 namespace Blend.mvc {
+
     /**
-     * Profiles a global MVC context to register and use Models and Controllers
+     * Represents a context that hols instanses of controllers an other
+     *  mvc related state
      */
-    export class Context {
-
-        private models: DictionaryInterface
-
-        constructor() {
-            var me = this;
-            me.models = {};
-        }
+    export class Context extends Blend.mvc.Client {
 
         /**
-         * Gets a Model from the MVC context
+         * Delegates an event to the Controllers within this Context
          */
-        public getModel(name: string) {
-            var me = this;
-            return me.models[name] || null;
+        public delegate(eventName: string, sender: Client, args: Array<any>) {
+            this.fireEventWithScope(sender, eventName, args);
         }
-
-        /**
-         * Add a Model to the current MVC context
-         */
-        public addModel(name:string, model:Blend.mvc.Model) {
-            var me = this;
-            if (!me.models[name]) {
-                me.models[name] = model;
-            } else {
-                throw new Error(`A model with thaname ${name} is already registered!`);
-            }
-        }
-
     }
-}
 
-namespace Blend {
-    export var mvcContext = new Blend.mvc.Context();
 }

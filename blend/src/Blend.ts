@@ -83,7 +83,7 @@ namespace Blend {
 
         if (target && source) {
             for (key in source) {
-                if (key) {
+                if (key && source.hasOwnProperty(key)) {
                     if (targetHasKey(key) && Blend.isObject(target[key])) {
                         if (overwrite) {
                             target[key] = source[key];
@@ -101,6 +101,13 @@ namespace Blend {
             }
         }
         return target;
+    }
+
+    /**
+     * Checks if the given value is a boolean
+     */
+    export function isBoolean(value: any): boolean {
+        return (typeof (value) === "boolean");
     }
 
     /**
@@ -178,22 +185,26 @@ namespace Blend {
     /**
      *  Create a new Blend.Component object
      */
-    export function createComponent(clazz: ComponentTypes, config: any = null): Blend.Component {
+    export function createComponent<T extends Blend.Component>(clazz: ComponentTypes, config: any = null): T {
         if (typeof (clazz) === 'string') {
             if (Blend.registry[(<string>clazz)]) {
-                return Blend.createComponent(Blend.registry[(<string>clazz)], config);
+                return Blend.createComponent<T>(Blend.registry[(<string>clazz)], config);
             } else {
                 throw new Error(`Unknown class alias ${clazz}`);
             }
-        } else if (typeof (clazz) === 'function' && !!Object.keys((<any>clazz).prototype).length === true) {
-            return new (<ComponentClass>clazz)(config || {});
-        } else if (typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
+        } else if (Blend.isClass(clazz)) {
+            return <T> new (<ComponentClass>clazz)(config || {});
+        } else if (clazz !== null && clazz !== undefined && typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);
-            return Blend.createComponent(ctype, Blend.apply(clazz, config));
+            return Blend.createComponent<T>(ctype, Blend.apply(clazz, config));
         } else {
             throw new Error(`Unable to create an object from ${clazz}`);
         }
+    }
+
+    export function isClass(clazz: any) {
+        return typeof (clazz) === 'function' && !!Object.keys((<any>clazz).prototype).length === true;
     }
 
     /**

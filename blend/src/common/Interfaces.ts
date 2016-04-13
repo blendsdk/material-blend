@@ -26,7 +26,7 @@ interface CreateElementInterface {
     cls?: string | Array<string>
     listeners?: CreateElementEventListenersInterface
     text?: string
-    children?: Array<CreateElementInterface | HTMLElement>
+    children?: Array<CreateElementInterface | HTMLElement | Blend.dom.Element>
     data?: any
     style?: StyleInterface,
     selectable?: boolean
@@ -44,7 +44,7 @@ interface BindableInterface {
  * Interface for describing a Blend.Component class
  */
 interface ComponentClass {
-    new (config: any): Blend.Component
+    new (config?: any): Blend.Component
 }
 
 interface ClassRegistryInterface {
@@ -60,7 +60,64 @@ interface ComponentConfig {
     [name: string]: any
 }
 
+interface FunctionAsController {
+    (client: Blend.mvc.Client, eventName: string, ...args: any[]): void
+}
 /**
  * Custom type describing a ctype
  */
 type ComponentTypes = ComponentClass | ComponentConfig | string;
+type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsController | string;
+
+/**
+ * Interface for describing a MVC Client (Used by View and Context)
+ */
+interface MvcClientInterface {
+    controller?: ControllerType | Array<ControllerType>
+    context?: Blend.mvc.Context
+}
+
+/**
+ * Interface for describing a MVC View
+ */
+interface MvcViewInterface extends MvcClientInterface {
+    reference?: string
+    [name: string]: any
+}
+
+/**
+ * Interface for defining View bounds and visibility
+ */
+interface ElementBoundsInterface {
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string
+    visible?: boolean
+}
+
+/**
+ * Interface for implementing a UI View
+ */
+interface UIViewInterface extends MvcViewInterface {
+    parent?: Blend.ui.ViewBase
+    useParentController?: boolean
+    css?: string | Array<string>
+    style?: StyleInterface
+    visible?: boolean
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string
+}
+
+type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.ViewBase;
+
+interface UIContainerViewInterface extends UIViewInterface {
+    items?: UIType | Array<UIType>
+}
+
+interface ApplicationInterface extends UIViewInterface {
+    mainView?: UIType
+    theme?: string;
+}
