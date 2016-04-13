@@ -6,7 +6,7 @@ TestApp.defineTest('Application Run', function(t: Blend.testing.TestRunner) {
         controller: function(view: any, event: string) {
             if (event === 'applicationReady') {
                 t.assertTrue(true, 'applicationReady fired');
-                //t.done();
+                t.done();
             }
         }
     });
