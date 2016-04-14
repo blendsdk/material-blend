@@ -5,7 +5,7 @@
 
 namespace Blend.container {
 
-    export class Fit extends Blend.ui.ContainerView {
+    export class Fit extends Blend.ui.PaddableContainer {
 
         protected config: FitContainerInterface;
         protected fittedView: Blend.ui.View;

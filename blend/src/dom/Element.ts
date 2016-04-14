@@ -27,7 +27,17 @@ namespace Blend.dom {
          * Retuns the computed bounds
          */
         public getBounds(): ElementBoundsInterface {
-            return this.getStyle(['top', 'left', 'width', 'height', 'visible']);
+            var bounds: ElementBoundsInterface = this.getStyle(['top', 'left', 'width', 'height', 'visible']),
+                borderSize: StyleInterface;
+
+            if (Blend.Runtime.IE && Blend.Runtime.IEVersion < 12) {
+                borderSize = this.getStyle(['border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width']);
+                bounds.width += <any>borderSize['border-left-width'] + <any>borderSize['border-right-width'];
+                bounds.height += <any>borderSize['border-top-width'] + <any>borderSize['border-bottom-width'];
+                return bounds;
+            } else {
+                return bounds;
+            }
         }
 
         /**
