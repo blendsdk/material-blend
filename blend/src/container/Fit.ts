@@ -5,6 +5,10 @@
 
 namespace Blend.container {
 
+    /**
+     * A container that can 100% fit a child View with possibility
+     * to apply a padding to the container body
+     */
     export class Fit extends Blend.ui.PaddableContainer {
 
         protected config: FitContainerInterface;

@@ -1,9 +1,12 @@
+/**
+ * Interface to describ a dictioany
+ */
 interface DictionaryInterface {
     [name: string]: any
 }
 
 /**
- * @interface StyleInterface
+ * Interface to describe a StyleInterface
  */
 interface StyleInterface {
     [name: string]: string | number
@@ -47,19 +50,25 @@ interface ComponentClass {
     new (config?: any): Blend.Component
 }
 
+/**
+ * Class registery item interface
+ */
 interface ClassRegistryInterface {
     [name: string]: ComponentClass;
 }
 
 /**
  * Interface for describing a Component for configuration
- *  with a config type ctype
+ * with a config type ctype
  */
 interface ComponentConfig {
     ctype?: ComponentTypes,
     [name: string]: any
 }
 
+/**
+ * Interface for describing a function thet can be used as a controller
+ */
 interface FunctionAsController {
     (client: Blend.mvc.Client, eventName: string, ...args: any[]): void
 }
@@ -111,8 +120,14 @@ interface UIViewInterface extends MvcViewInterface {
     height?: number | string
 }
 
+/**
+ * UI Types definition
+ */
 type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.View;
 
+/**
+ * Interface for describing a UI Container
+ */
 interface UIContainerViewInterface extends UIViewInterface {
     items?: UIType | Array<UIType>
 }
@@ -126,7 +141,7 @@ interface ApplicationInterface extends UIViewInterface {
 }
 
 /**
- * Describes padding
+ * Interface for describing padding
  */
 interface UIPaddingInterface {
     top?: number | string
@@ -146,5 +161,12 @@ interface PaddableContainerInterface extends UIContainerViewInterface {
  * Interface for describing a Fit container
  */
 interface FitContainerInterface extends PaddableContainerInterface {
+
+}
+
+/**
+ * Interface for describing a Stack container
+ */
+interface StackContainerInterface extends PaddableContainerInterface {
 
 }
