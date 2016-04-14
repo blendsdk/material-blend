@@ -13,6 +13,8 @@
             $font-family,
             $font-size
         );
+
+        @include blend-container-fit();
     }
 
 }

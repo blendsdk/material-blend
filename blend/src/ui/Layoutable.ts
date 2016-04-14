@@ -86,14 +86,23 @@ namespace Blend.ui {
          * Initiates a layout cycle on this View
          */
         public performLayout() {
-            var me = this;
+            var me = this,
+                cycled = false;;
             if (me.canLayout()) {
                 me.suspendLayout();
+                me.dispableEvents();
                 if (me.shouldLayout()) {
                     me.layoutView.apply(me, arguments);
+                    me.sizeHash = me.getSizeHash();
+                    cycled = true;
                 }
                 me.resumeLayout();
+                me.enableEvents();
+                if (cycled) {
+                    me.fireEvent('layoutCycleFinished')
+                }
             }
+
         }
 
         /**

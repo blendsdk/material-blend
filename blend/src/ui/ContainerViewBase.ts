@@ -26,6 +26,19 @@ namespace Blend.ui {
             me.config.items = config.items || [];
         }
 
+        protected performLayoutChildren() {
+            var me = this;
+            Blend.forEach(me.items, function(view: Blend.ui.View) {
+                view.placeInALayoutContext(true);
+                me.layoutChild(view);
+                view.placeInALayoutContext(false);
+            });
+        }
+
+        protected layoutChild(view: Blend.ui.View) {
+            view.performLayout();
+        }
+
         /**
          * Adds one or more Views to this Conatiner
          */
@@ -47,7 +60,7 @@ namespace Blend.ui {
                 parent: me,
                 css: [me.itemCSSClass]
             });
-            if (view.getProperty<boolean>('useParentController') === true) {
+            if (view.getProperty<boolean>('useParentController', true) === true) {
                 view.addController(me.controllers);
             }
             return view;
@@ -102,7 +115,7 @@ namespace Blend.ui {
             var me = this;
             return this.bodyElement
                 = Blend.dom.Element.create({
-                    cls: cssPrefix(me.cssClass + '-items'),
+                    cls: cssPrefix(me.cssClass + '-body'),
                     children: me.renderChildren()
                 });
         }

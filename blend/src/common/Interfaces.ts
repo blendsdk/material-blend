@@ -111,7 +111,7 @@ interface UIViewInterface extends MvcViewInterface {
     height?: number | string
 }
 
-type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.ViewBase;
+type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.View;
 
 interface UIContainerViewInterface extends UIViewInterface {
     items?: UIType | Array<UIType>
@@ -120,4 +120,15 @@ interface UIContainerViewInterface extends UIViewInterface {
 interface ApplicationInterface extends UIViewInterface {
     mainView?: UIType
     theme?: string;
+}
+
+interface UIPaddingInterface {
+    top?: number | string
+    right?: number | string
+    bottom?: number | string
+    left?: number | string
+}
+
+interface FitContainerInterface extends UIContainerViewInterface {
+    contentPadding?:number|UIPaddingInterface
 }
