@@ -24,7 +24,7 @@ namespace Blend.ui {
             me.config.mainView = config.mainView || null;
             me.config.theme = config.theme || 'default';
             me.config.style = {}; // remove use provided styles
-            me.layoutTriggers.push('applicationResized');
+            me.addLayoutTriggerEvent('applicationResized');
             me.createMainView();
         }
 

@@ -20,18 +20,26 @@ namespace Blend.ui {
             me.isInALayoutContext = false;
             me.layoutEnabled = true;
             me.sizeHash = null;
-            me.layoutTriggers = [
+            me.layoutTriggers = [];
+            me.addLayoutTriggerEvent([
                 'styleChanged',
                 'boundsChanged',
                 'visibilityChanged'
-            ];
+            ]);
+        }
+
+        public addLayoutTriggerEvent(eventName: string | Array<string>) {
+            var me = this;
+            Blend.wrapInArray(eventName).forEach(function(evt:string) {
+                me.layoutTriggers.push(evt);
+            });
         }
 
         /**
          * Makes sure the layout state is invalid so it can be placed in
          * the next layout cycle
          */
-        invalidateLayout(performLayout?: boolean) {
+        public invalidateLayout(performLayout?: boolean) {
             var me = this;
             me.sizeHash = null;
             if (performLayout === true) {

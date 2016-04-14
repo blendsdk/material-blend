@@ -21,8 +21,7 @@ namespace Blend.ui {
             super(config);
             var me = this;
             me.items = [];
-            me.layoutTriggers.push('itemAdded');
-            me.layoutTriggers.push('itemRemoved');
+            me.addLayoutTriggerEvent(['itemAdded', 'itemRemoved']);
             me.config.items = config.items || [];
         }
 
