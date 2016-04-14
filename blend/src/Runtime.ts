@@ -21,6 +21,8 @@ namespace Blend {
         private kickStarted: boolean = false;
 
         public Binder: Blend.binding.BindingProvider;
+        public IE: boolean;
+        public IEVersion: number;
 
         public constructor() {
             this.Binder = new Blend.binding.BindingProvider();
@@ -29,6 +31,8 @@ namespace Blend {
         private isSupportedBrowser(): boolean {
             var me = this,
                 ie = me.detectIE();
+            me.IE = ie !== 0;
+            me.IEVersion = ie;
             if (ie !== 0 && ie < 11) {
                 document.write('<div id="noblend">Unable to run this application. Please upgrade your Internet Explorer to version 11 or above, otherwise use Google Chrome or Firefox!</div>');
                 return false;

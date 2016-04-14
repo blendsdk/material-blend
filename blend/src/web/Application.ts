@@ -1,6 +1,6 @@
-/// <reference path="../ui/ApplicationBase.ts" />
+/// <reference path="../ui/Application.ts" />
 
 namespace Blend.web {
-    export class Application extends Blend.ui.ApplicationBase {
+    export class Application extends Blend.ui.Application {
     }
 }

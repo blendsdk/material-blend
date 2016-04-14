@@ -18,6 +18,8 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
                     var bounds = view.getBounds();
                     t.assertEquals(bounds.width, 420, 'rect fitted width ok');
                     t.assertEquals(bounds.height, 400, 'rect fitted height ok');
+                    t.assertEquals(bounds.top, 0, 'top is correct');
+                    t.assertEquals(bounds.left, 0, 'left is correct');
                     t.done(1000);
                 }
             },

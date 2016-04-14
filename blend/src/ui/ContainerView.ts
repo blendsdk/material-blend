@@ -10,9 +10,9 @@ namespace Blend.ui {
     /**
      * Common baseclass for a UI View component
      */
-    export abstract class ContainerViewBase extends Blend.ui.View {
+    export abstract class ContainerView extends Blend.ui.View {
 
-        protected items: Array<Blend.ui.ViewBase | Blend.ui.ContainerViewBase>;
+        protected items: Array<Blend.ui.View | Blend.ui.ContainerView>;
         protected bodyElement: Blend.dom.Element;
         protected itemCSSClass: string;
         protected config: UIContainerViewInterface;
@@ -42,7 +42,7 @@ namespace Blend.ui {
          * Adds one or more Views to this Conatiner
          */
         public addView(item: UIType | Array<UIType>) {
-            var me = this, view: Blend.ui.ViewBase;
+            var me = this, view: Blend.ui.View;
             Blend.forEach(Blend.wrapInArray(item), function(itm: UIType) {
                 view = me.createViewItem(itm);
                 me.items.push(view);
@@ -53,7 +53,7 @@ namespace Blend.ui {
         /**
          * Creates a View item to be added to the items collection
          */
-        protected createViewItem(itm: UIType): Blend.ui.ViewBase {
+        protected createViewItem(itm: UIType): Blend.ui.View {
             var me = this;
             var view: Blend.ui.View = Blend.createComponent<Blend.ui.View>(itm, {
                 parent: me,

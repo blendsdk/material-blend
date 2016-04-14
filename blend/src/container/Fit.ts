@@ -1,14 +1,18 @@
 /// <reference path="../common/Interfaces.ts" />
 /// <reference path="../Blend.ts" />
 /// <reference path="../dom/Element.ts" />
-/// <reference path="../ui/ContainerViewBase.ts" />
+/// <reference path="../ui/PaddableContainer.ts" />
 
 namespace Blend.container {
 
-    export class Fit extends Blend.ui.ContainerViewBase {
+    /**
+     * A container that can 100% fit a child View with possibility
+     * to apply a padding to the container body
+     */
+    export class Fit extends Blend.ui.PaddableContainer {
 
         protected config: FitContainerInterface;
-        protected fittedView: Blend.ui.ViewBase;
+        protected fittedView: Blend.ui.View;
 
         public constructor(config: FitContainerInterface = {}) {
             super(config);
@@ -16,8 +20,6 @@ namespace Blend.container {
             me.cssClass = 'fit-container';
             me.itemCSSClass = cssPrefix(me.cssClass + '-item');
             me.fittedView = null;
-            me.setContentPadding(config.contentPadding || 0);
-            me.layoutTriggers.push('contentPaddingChanged');
         }
 
         protected layoutView() {
@@ -28,39 +30,6 @@ namespace Blend.container {
                 me.fittedView.setStyle({ display: null });
             }
             me.performLayoutChildren();
-        }
-
-        public setContentPadding(value: number | UIPaddingInterface) {
-            var me = this;
-            if (me.isRendered) {
-                me.getElement().setPadding(value);
-            } else {
-                me.config.contentPadding = value;
-            }
-            me.notifyContentPaddingChanged(value);
-        }
-
-        /**
-         * Creates and retrives the current size hash on this View
-         */
-        protected getSizeHash(): string {
-            var me = this,
-                bs = me.bodyElement.getBounds();
-            return super.getSizeHash() + ([bs.width, bs.height].join('-'));
-        }
-
-        /**
-         * Sends a visibilityChanged notification
-         */
-        protected notifyContentPaddingChanged(value: number | UIPaddingInterface) {
-            var me = this;
-            me.fireEvent('contentPaddingChanged', value);
-        }
-
-        protected finalizeRender() {
-            var me = this;
-            super.finalizeRender.apply(me, arguments);
-            me.setContentPadding(me.config.contentPadding);
         }
 
         protected render(): Blend.dom.Element {

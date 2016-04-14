@@ -31,7 +31,8 @@
                 {
                 ctype:'ui.rect',
                 border:true,
-                color:'orange'
+                color:'orange',
+                id:'rect1'
                 }
             ]
             });
