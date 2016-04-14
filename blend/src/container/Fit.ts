@@ -17,6 +17,7 @@ namespace Blend.container {
             me.itemCSSClass = cssPrefix(me.cssClass + '-item');
             me.fittedView = null;
             me.setContentPadding(config.contentPadding || 0);
+            me.layoutTriggers.push('contentPaddingChanged');
         }
 
         protected layoutView() {
@@ -37,6 +38,15 @@ namespace Blend.container {
                 me.config.contentPadding = value;
             }
             me.notifyContentPaddingChanged(value);
+        }
+
+        /**
+         * Creates and retrives the current size hash on this View
+         */
+        protected getSizeHash(): string {
+            var me = this,
+                bs = me.bodyElement.getBounds();
+            return super.getSizeHash() + ([bs.width, bs.height].join('-'));
         }
 
         /**
