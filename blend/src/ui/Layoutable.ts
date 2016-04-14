@@ -98,8 +98,8 @@ namespace Blend.ui {
                 }
                 me.resumeLayout();
                 me.enableEvents();
-                if (cycled) {
-                    me.fireEvent('layoutCycleFinished')
+                if (cycled && Blend.DEBUG === true) {
+                    me.fireEvent('layoutCycleFinished');
                 }
             }
 

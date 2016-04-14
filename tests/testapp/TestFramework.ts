@@ -310,13 +310,19 @@ namespace Blend.testing {
         /**
          * Should be called after a test is done to let the test runner to continue
          */
-        done() {
+        done(delayDone: number = 0) {
             var me = this;
             if (me.currentTest.pass === 0 && me.currentTest.fail === 0) {
                 me.logger.warn(`Nothing was tested in [${me.currentTest.name}]!`);
             }
             me.nextTestIndex++;
-            me.runNextTest();
+            if (delayDone !== 0) {
+                setTimeout(function() {
+                    me.runNextTest();
+                }, delayDone);
+            } else {
+                me.runNextTest();
+            }
         }
 
         /**

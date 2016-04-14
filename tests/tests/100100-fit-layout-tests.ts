@@ -18,7 +18,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
                     var bounds = view.getBounds();
                     t.assertEquals(bounds.width, 420, 'rect fitted width ok');
                     t.assertEquals(bounds.height, 400, 'rect fitted height ok');
-                    t.done();
+                    t.done(1000);
                 }
             },
             items: [
@@ -43,7 +43,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
         fc.performLayout();
 
     });
-    Blend.Runtime.kickStart(1000);
+    Blend.Runtime.kickStart();
 });
 
 TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
@@ -73,7 +73,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
                             var bounds = view.getBounds();
                             t.assertEquals(bounds.width, 280, 'rect fitted width ok');
                             t.assertEquals(bounds.height, 180, 'rect fitted height ok');
-                            //t.done();
+                            t.done(1000);
                         }
                     },
                 }
@@ -92,5 +92,5 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
         fc.performLayout();
 
     });
-    Blend.Runtime.kickStart(1000);
+    Blend.Runtime.kickStart();
 });
