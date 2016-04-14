@@ -1,9 +1,9 @@
 /// <reference path="../common/Interfaces.ts" />
-/// <reference path="../ui/ContainerViewBase.ts" />
+/// <reference path="../ui/ContainerView.ts" />
 
 namespace Blend.ui.container {
 
-    export class Container extends Blend.ui.ContainerViewBase {
+    export class Container extends Blend.ui.ContainerView {
 
         constructor(config: UIContainerViewInterface = {}) {
             super(config);

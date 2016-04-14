@@ -117,11 +117,17 @@ interface UIContainerViewInterface extends UIViewInterface {
     items?: UIType | Array<UIType>
 }
 
+/**
+ * Interface for describing an Application
+ */
 interface ApplicationInterface extends UIViewInterface {
     mainView?: UIType
     theme?: string;
 }
 
+/**
+ * Describes padding
+ */
 interface UIPaddingInterface {
     top?: number | string
     right?: number | string
@@ -129,6 +135,16 @@ interface UIPaddingInterface {
     left?: number | string
 }
 
-interface FitContainerInterface extends UIContainerViewInterface {
-    contentPadding?:number|UIPaddingInterface
+/**
+ * Interface for descrining a paddable container
+ */
+interface PaddableContainerInterface extends UIContainerViewInterface {
+    contentPadding?: number | UIPaddingInterface
+}
+
+/**
+ * Interface for describing a Fit container
+ */
+interface FitContainerInterface extends PaddableContainerInterface {
+
 }
