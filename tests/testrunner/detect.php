@@ -39,6 +39,7 @@
             var host =  wrapEl(document.getElementById('host'));
             host.append(fc.getElement());
             fc.performLayout();
+            window.fc = fc;
 
         });
         Blend.Runtime.kickStart();
