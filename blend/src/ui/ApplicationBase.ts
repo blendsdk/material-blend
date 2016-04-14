@@ -149,7 +149,5 @@ namespace Blend.ui {
                 Blend.Runtime.kickStart();
             }
         }
-
-
     }
 }
