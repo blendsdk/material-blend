@@ -3,9 +3,11 @@
 /// <reference path="../dom/Element.ts" />
 /// <reference path="View.ts" />
 
-
-
 namespace Blend.ui {
+
+    /**
+     * Base class for implementing an Application component
+     */
     export class ApplicationBase extends Blend.ui.View {
 
         protected config: ApplicationInterface;
