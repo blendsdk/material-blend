@@ -8,7 +8,7 @@ namespace Blend.ui {
     /**
      * Base class for implementing an Application component
      */
-    export class ApplicationBase extends Blend.ui.View {
+    export abstract class ApplicationBase extends Blend.ui.View {
 
         protected config: ApplicationInterface;
         protected isStarted: boolean;

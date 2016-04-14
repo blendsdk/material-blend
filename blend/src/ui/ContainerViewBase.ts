@@ -10,7 +10,7 @@ namespace Blend.ui {
     /**
      * Common baseclass for a UI View component
      */
-    export class ContainerViewBase extends Blend.ui.View {
+    export abstract class ContainerViewBase extends Blend.ui.View {
 
         protected items: Array<Blend.ui.ViewBase | Blend.ui.ContainerViewBase>;
         protected bodyElement: Blend.dom.Element;

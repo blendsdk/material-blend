@@ -7,7 +7,7 @@ namespace Blend.ui {
     /**
      * Base class for an MVC View that capricipate in a layout cycle
      */
-    export class Layoutable extends Blend.ui.ViewBase {
+    export abstract class Layoutable extends Blend.ui.ViewBase {
 
         protected layoutEnabled: boolean;
         protected layoutTriggers: Array<string>

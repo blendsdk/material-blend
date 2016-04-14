@@ -4,7 +4,10 @@
 
 namespace Blend.ui {
 
-    export class ViewBase extends Blend.mvc.View {
+    /**
+     * Abstract base class for a View
+     */
+    export abstract class ViewBase extends Blend.mvc.View {
 
         protected parent: Blend.ui.ViewBase;
         protected element: Blend.dom.Element;
