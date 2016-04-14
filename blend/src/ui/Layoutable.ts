@@ -61,7 +61,7 @@ namespace Blend.ui {
         /**
          * Creates and retrives the current size hash on this View
          */
-        private getSizeHash(): string {
+        protected getSizeHash(): string {
             var me = this,
                 cs = <ElementBoundsInterface>me.getBounds();
             return [cs.height, cs.width].join('-');
