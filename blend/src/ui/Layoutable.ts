@@ -48,7 +48,7 @@ namespace Blend.ui {
          */
         private handleLayoutTriggers(eventName: string) {
             var me = this;
-            // only fire and event when the component is rendered and ready
+            // only fire the event when the component is rendered and ready
             if (me.layoutTriggers.indexOf(eventName) !== -1 && me.canLayout()) {
                 if (!me.isInALayoutContext && me.parent) {
                     (<View>me.parent).invalidateLayout(true);
