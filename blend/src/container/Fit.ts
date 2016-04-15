@@ -26,8 +26,8 @@ namespace Blend.container {
             var me = this;
             if (me.fittedView) {
                 // first time cleanup
-                me.fittedView.setBounds({ top: null, left: null, width: null, height: null });
-                me.fittedView.setStyle({ display: null });
+                me.fittedView.setBounds(null);
+                me.fittedView.setVisible(true);
             }
             me.performLayoutChildren();
         }
@@ -42,7 +42,7 @@ namespace Blend.container {
         public addView(item: UIType | Array<UIType>) {
             var me = this;
             if (me.items.length === 0) {
-                super.addView.apply(me, arguments);
+                super.addView(item);
                 me.fittedView = me.items[0];
             } else {
                 throw new Error('Fit container can only have one child view!');
