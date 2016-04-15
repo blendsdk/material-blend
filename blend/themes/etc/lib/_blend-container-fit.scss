@@ -2,7 +2,7 @@
 ) {
     #{$prefix}-fit-container {
 
-        &> #{$prefix}-fit-container-body {
+        #{$prefix}-fit-container-body {
 
             width:100%;
             height:100%;
