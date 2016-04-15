@@ -49,5 +49,8 @@ namespace Blend.container {
             }
         }
     }
+}
 
+namespace Blend {
+    registerClassWithAlias('layout.fit', Blend.container.Fit);
 }

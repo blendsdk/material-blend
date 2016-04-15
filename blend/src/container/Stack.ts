@@ -120,5 +120,8 @@ namespace Blend.container {
             });
         }
     }
+}
 
+namespace Blend {
+    registerClassWithAlias('layout.stack', Blend.container.Stack);
 }
