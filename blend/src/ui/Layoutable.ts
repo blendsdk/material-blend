@@ -30,7 +30,7 @@ namespace Blend.ui {
 
         public addLayoutTriggerEvent(eventName: string | Array<string>) {
             var me = this;
-            Blend.wrapInArray(eventName).forEach(function(evt:string) {
+            Blend.wrapInArray(eventName).forEach(function(evt: string) {
                 me.layoutTriggers.push(evt);
             });
         }
@@ -98,14 +98,12 @@ namespace Blend.ui {
                 cycled = false;;
             if (me.canLayout()) {
                 me.suspendLayout();
-                me.dispableEvents();
                 if (me.shouldLayout()) {
                     me.layoutView.apply(me, arguments);
                     me.sizeHash = me.getSizeHash();
                     cycled = true;
                 }
                 me.resumeLayout();
-                me.enableEvents();
                 if (cycled && Blend.DEBUG === true) {
                     me.fireEvent('layoutCycleFinished');
                 }
@@ -145,13 +143,13 @@ namespace Blend.ui {
             this.layoutEnabled = true;
         }
 
-        protected fireEvent(eventName: string, ...args: any[]) {
+        public fireEvent(eventName: string, ...args: any[]) {
             /**
              * Override of the fireEvent function to trigger
              * performLayout on registered events.
              */
             var me = this;
-            if (me.isRendered === true && me.eventsEnabled === true) {
+            if (me.isRendered === true && me.eventsEnabled === true && me.canFireEvents() === true) {
                 me.handleLayoutTriggers(eventName);
                 super.fireEvent.apply(me, arguments);
             }

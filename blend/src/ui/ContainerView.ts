@@ -34,15 +34,23 @@ namespace Blend.ui {
             });
         }
 
+        protected layoutView() {
+            var me = this;
+            me.performLayoutChildren();
+        }
+
         protected layoutChild(view: Blend.ui.View) {
             view.performLayout();
         }
 
-        protected renderAddedView(view: Blend.ui.View) {
+        protected renderAddedView(view: Blend.ui.View): boolean {
             var me = this;
             if (me.isRendered) {
                 me.bodyElement.append(view.getElement());
                 me.invalidateLayout(true);
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -74,14 +82,21 @@ namespace Blend.ui {
             return view;
         }
 
-        protected renderRemovedView(view: Blend.ui.View) {
-            view.getElement().remove();
+        protected renderRemovedView(view: Blend.ui.View): boolean {
+            var me = this;
+            if (me.isRendered) {
+                view.getElement().remove();
+                me.invalidateLayout(true);
+                return true;
+            } else {
+                return false;
+            }
         }
 
         /**
          * Removed a View from this container
          */
-        public removeView(view: number | Blend.ui.ViewBase): Blend.ui.ViewBase {
+        public removeView(view: number | Blend.ui.View): Blend.ui.View {
             var me = this,
                 index: number = Blend.isObject(view) ? me.items.indexOf(<any>view) : <number>view,
                 removed: Array<Blend.ui.View> = me.items.splice(index, 1);
@@ -97,7 +112,7 @@ namespace Blend.ui {
         /**
          * Sends an itemRemoved notification
          */
-        protected notifyItemRemoved(view: Blend.ui.ViewBase) {
+        protected notifyItemRemoved(view: Blend.ui.View) {
             var me = this;
             me.fireEvent('itemRemoved', view);
         }
@@ -105,12 +120,12 @@ namespace Blend.ui {
         /**
          * Sends an itemAdded notification
          */
-        protected notifyItemAdded(view: Blend.ui.ViewBase) {
+        protected notifyItemAdded(view: Blend.ui.View) {
             var me = this;
             me.fireEvent('itemAdded', view);
         }
 
-        protected renderChild(view: Blend.ui.ViewBase): Blend.dom.Element {
+        protected renderChild(view: Blend.ui.View): Blend.dom.Element {
             return view.getElement();
         }
 
@@ -118,7 +133,8 @@ namespace Blend.ui {
             var me = this,
                 children: Array<Blend.dom.Element> = [];
             me.addView(me.config.items);
-            me.items.forEach(function(view: Blend.ui.ViewBase) {
+            me.items.forEach(function(view: Blend.ui.View) {
+                view.setInRenderContext(true);
                 children.push(me.renderChild(view));
             });
             return children;
@@ -131,6 +147,14 @@ namespace Blend.ui {
                     cls: cssPrefix(me.cssClass + '-body'),
                     children: me.renderChildren()
                 });
+        }
+
+        protected finalizeRender() {
+            var me = this;
+            super.finalizeRender();
+            me.items.forEach(function(view: Blend.ui.View) {
+                view.setInRenderContext(false);
+            });
         }
 
     }
