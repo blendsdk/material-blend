@@ -203,6 +203,20 @@ namespace Blend.dom {
         }
 
         /**
+         * Removes this element from its parent
+         */
+        public remove() {
+            var me = this,
+                pNode: Node,
+                cNode: Node;
+            cNode = me.el;
+            pNode = cNode.parentNode || null;
+            if (pNode) {
+                pNode.removeChild(cNode);
+            }
+        }
+
+        /**
          * Sets the inner HTML of this element
          */
         public setHtml(html: string): Blend.dom.Element {
