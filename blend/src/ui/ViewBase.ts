@@ -16,12 +16,14 @@ namespace Blend.ui {
         protected config: UIViewInterface;
         protected cssClass: string;
         protected useParentControllers: boolean
+        protected isInRenderContext: boolean;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
             me.parent = config.parent || null;
             me.useParentControllers = config.useParentController || false;
+            me.isInRenderContext = false;
             me.isRendered = false;
             me.visible = true;
             me.cssClass = null;
@@ -49,6 +51,14 @@ namespace Blend.ui {
             return Blend.dom.Element.create({});
         }
 
+        public setInRenderContext(state: boolean) {
+            this.isInRenderContext = state;
+        }
+
+        protected canFireEvents() {
+            return this.isInRenderContext === false;
+        }
+
         /////////////////////////////////////////////////////////////////////////
         // BOUNDS
         /////////////////////////////////////////////////////////////////////////
@@ -69,11 +79,11 @@ namespace Blend.ui {
          * Sets the bounds of this View based on the ViewBoundsInterface interface
          */
         setBounds(bounds: ElementBoundsInterface) {
-            var me = this;
+            var me = this, nullBounds: StyleInterface = { top: null, left: null, width: null, height: null };
             if (me.isRendered) {
-                me.setStyle(<StyleInterface>bounds);
+                me.setStyle(bounds === null ? nullBounds : <StyleInterface>bounds);
             } else {
-                Blend.apply(me.config, bounds);
+                Blend.apply(me.config, bounds === null ? nullBounds : bounds);
             }
             me.notifyBoundsChanged();
         }
@@ -189,9 +199,9 @@ namespace Blend.ui {
         public getElement(): Blend.dom.Element {
             var me = this;
             if (!me.isRendered) {
-                me.dispableEvents();
+                me.disableEvents();
                 me.element = me.render();
-                me.isRendered = true
+                me.isRendered = true;
                 me.finalizeRender();
                 me.enableEvents();
                 delete (me.config);

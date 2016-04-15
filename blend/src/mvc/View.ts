@@ -21,14 +21,14 @@ namespace Blend.mvc {
         /**
          * Disables the event and notification on this View
          */
-        protected dispableEvents() {
+        public disableEvents() {
             this.eventsEnabled = false;
         }
 
         /**
          * Enables the event and notification on this view
          */
-        protected enableEvents() {
+        public enableEvents() {
             this.eventsEnabled = true;
         }
 
@@ -39,13 +39,17 @@ namespace Blend.mvc {
             return this.reference || null;
         }
 
+        protected canFireEvents() {
+            return true;
+        }
+
         /**
          * Fires an event towards the Controllers within this View
          * and the current global Context is possible
          */
-        protected fireEvent(eventName: string, ...args: any[]) {
+        public fireEvent(eventName: string, ...args: any[]) {
             var me = this;
-            if (me.eventsEnabled === true) {
+            if (me.eventsEnabled === true && me.canFireEvents() === true) {
                 this.fireEventWithScope(me, eventName, args);
                 if (me.context !== null) {
                     me.context.delegate(eventName, me, args);
