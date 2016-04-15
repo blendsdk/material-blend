@@ -71,9 +71,9 @@ TestApp.defineTest('MVC fire event', function(t: Blend.testing.TestRunner) {
         context:context
     });
 
-    view1.fireEvent('log', 'test1');
-    view2.fireEvent('log', 'test2');
-    view3.fireEvent('log', 'test3');
+    view1.enableEvents().fireEvent('log', 'test1');
+    view2.enableEvents().fireEvent('log', 'test2');
+    view3.enableEvents().fireEvent('log', 'test3');
 
     t.delay(function() {
 

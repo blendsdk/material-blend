@@ -16,14 +16,12 @@ namespace Blend.ui {
         protected config: UIViewInterface;
         protected cssClass: string;
         protected useParentControllers: boolean
-        protected isInRenderContext: boolean;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
             me.parent = config.parent || null;
             me.useParentControllers = config.useParentController || false;
-            me.isInRenderContext = false;
             me.isRendered = false;
             me.visible = true;
             me.cssClass = null;
@@ -51,12 +49,18 @@ namespace Blend.ui {
             return Blend.dom.Element.create({});
         }
 
-        public setInRenderContext(state: boolean) {
-            this.isInRenderContext = state;
-        }
+        public canFireEvents(): boolean {
+            var me = this;
+            if (super.canFireEvents()) {
+                if (me.parent !== null) {
+                    return me.parent.canFireEvents();
+                } else {
+                    return true;
+                }
 
-        protected canFireEvents() {
-            return this.isInRenderContext === false;
+            } else {
+                return false;
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////
@@ -107,7 +111,7 @@ namespace Blend.ui {
         /**
          * Sets the visibility state for this View
          */
-        setVisible(visible: boolean = true) : Blend.ui.ViewBase {
+        setVisible(visible: boolean = true): Blend.ui.ViewBase {
             var me = this
             me.visible = visible === true ? true : false;
             if (me.isRendered) {

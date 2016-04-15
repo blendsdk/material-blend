@@ -27,14 +27,15 @@
 
         var fc = new Blend.container.Stack({
             css: 'b-fitted',
+            reference:'stack1',
             controller: function(view, eventName) {
                 var me = this;
-                console.log(view, eventName);
+                console.log(view.getReference(), view, eventName);
             },
             items: [
                 {
                     ctype: 'ui.rect',
-                    reference: 'rect2',
+                    reference: 'rect1',
                     border: true,
                     color: 'red'
                 },

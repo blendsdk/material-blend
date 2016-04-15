@@ -17,7 +17,6 @@ namespace Blend.ui {
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
-            me.isInALayoutContext = false;
             me.layoutEnabled = true;
             me.sizeHash = null;
             me.layoutTriggers = [];
@@ -56,11 +55,11 @@ namespace Blend.ui {
          * called, otherwise if it has a parent then the layout cycle will be deligated
          * from there.
          */
-        private handleLayoutTriggers(eventName: string) {
+        private handleLayoutTriggers() {
             var me = this;
             // only fire the event when the component is rendered and ready
-            if (me.layoutTriggers.indexOf(eventName) !== -1 && me.canLayout() === true) {
-                if (!me.isInALayoutContext && me.parent) {
+            if (me.layoutTriggers.indexOf(me.currentEventName) !== -1) {
+                if (me.parent && (<Blend.ui.Layoutable>me.parent).canLayout()) {
                     (<View>me.parent).invalidateLayout(true);
                 } else {
                     me.performLayout();
@@ -85,19 +84,11 @@ namespace Blend.ui {
         }
 
         /**
-         * Put this View in a parent layout context by passing true
-         * or false otherwise
-         */
-        placeInALayoutContext(state: boolean) {
-            this.isInALayoutContext = state;
-        }
-
-        /**
          * Initiates a layout cycle on this View
          */
         public performLayout() {
             var me = this,
-                cycled = false;;
+                cycled = false;
             if (me.canLayout()) {
                 me.suspendLayout();
                 if (me.shouldLayout()) {
@@ -124,7 +115,7 @@ namespace Blend.ui {
         /**
          * Checks if this View can be placed in a layout cycle
          */
-        protected canLayout() {
+        public canLayout() {
             var me = this;
             return (me.layoutEnabled === true
                 && me.isRendered === true
@@ -147,16 +138,12 @@ namespace Blend.ui {
             return this;
         }
 
-        public fireEvent(eventName: string, ...args: any[]) {
-            /**
-             * Override of the fireEvent function to trigger
-             * performLayout on registered events.
-             */
-            var me = this;
-            if (me.isRendered === true && me.eventsEnabled === true && me.canFireEvents() === true) {
-                me.handleLayoutTriggers(eventName);
-                super.fireEvent.apply(me, arguments);
+        public canFireEvents(): boolean {
+            var me = this, state = super.canFireEvents();
+            if (state === true) {
+                me.handleLayoutTriggers();
             }
+            return state;
         }
     }
 }

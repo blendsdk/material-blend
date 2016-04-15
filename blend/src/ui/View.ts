@@ -18,20 +18,42 @@ namespace Blend.ui {
         }
 
         protected initialize() {
-
         }
 
-        public performLayout() {
+        public suspendLayout(): Blend.ui.Layoutable {
+            /**
+             * We use this function as a hook from inside the performLayout
+             * to to able to call the initialize() method once in the lifetime
+             * of a View
+             */
             var me = this;
+            super.suspendLayout();
             if (me.isInitialized === false) {
-                var curLayoutState = me.layoutEnabled;
-                me.suspendLayout();
+                me.disableEvents();
                 me.initialize();
                 me.isInitialized = true;
-                me.layoutEnabled = curLayoutState;
                 delete (me.config);
+                me.enableEvents();
+                me.notifyViewInitialized();
             }
-            super.performLayout();
+            return this;
+        }
+
+        public canFireEvents(): boolean {
+            var me = this, state = super.canFireEvents();
+            if (state === false && me.currentEventName === 'viewInitialized') {
+                return true;
+            } else {
+                return state;
+            }
+        }
+
+        /**
+         * Sends a viewInitialized notification
+         */
+        protected notifyViewInitialized() {
+            var me = this
+            me.fireEvent('viewInitialized', me);
         }
     }
 }

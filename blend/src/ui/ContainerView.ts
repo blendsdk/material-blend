@@ -28,9 +28,7 @@ namespace Blend.ui {
         protected performLayoutChildren() {
             var me = this;
             Blend.forEach(me.items, function(view: Blend.ui.View) {
-                view.placeInALayoutContext(true);
                 me.layoutChild(view);
-                view.placeInALayoutContext(false);
             });
         }
 
@@ -134,7 +132,6 @@ namespace Blend.ui {
                 children: Array<Blend.dom.Element> = [];
             me.addView(me.config.items);
             me.items.forEach(function(view: Blend.ui.View) {
-                view.setInRenderContext(true);
                 children.push(me.renderChild(view));
             });
             return children;
@@ -148,14 +145,5 @@ namespace Blend.ui {
                     children: me.renderChildren()
                 });
         }
-
-        protected finalizeRender() {
-            var me = this;
-            super.finalizeRender();
-            me.items.forEach(function(view: Blend.ui.View) {
-                view.setInRenderContext(false);
-            });
-        }
-
     }
 }
