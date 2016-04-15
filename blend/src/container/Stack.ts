@@ -24,6 +24,12 @@ namespace Blend.container {
             me.setActiveView(config.activeView || 0);
         }
 
+
+        protected initialize() {
+            var me = this;
+            me.setActiveView(me.config.activeView);
+        }
+
         /**
          * Returns the current active view
          */
@@ -49,6 +55,7 @@ namespace Blend.container {
                     me.notifyActiveViewChanged();
                     me.items.forEach(function(itm: Blend.ui.View) {
                         if (itm !== me.activeView) {
+                            itm.disableEvents();
                             itm.suspendLayout();
                             itm.setStyle({
                                 'z-index': -1,
@@ -56,6 +63,7 @@ namespace Blend.container {
                             });
                             itm.setVisible(false);
                             itm.resumeLayout();
+                            itm.enableEvents();
                         }
                     });
                 }
