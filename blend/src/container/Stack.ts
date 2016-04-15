@@ -45,25 +45,26 @@ namespace Blend.container {
             if (me.isRendered) {
                 me.activeView = me.findView(view);
                 if (me.activeView) {
-                    me.activeView.suspendLayout();
-                    me.activeView.setBounds(null);
-                    me.activeView.getElement().setStyle({
-                        'z-index': me.items.length
-                    });
-                    me.activeView.setVisible(true);
+                    me.activeView.suspendLayout()
+                        .setBounds(null)
+                        .getElement()
+                        .setStyle({
+                            'z-index': me.items.length
+                        });
+                    me.activeView.setVisible(true)
                     me.activeView.resumeLayout();
                     me.notifyActiveViewChanged();
                     me.items.forEach(function(itm: Blend.ui.View) {
                         if (itm !== me.activeView) {
                             itm.disableEvents();
-                            itm.suspendLayout();
-                            itm.setStyle({
-                                'z-index': -1,
-                                width: 1,
-                            });
+                            itm.suspendLayout()
+                                .setStyle({
+                                    'z-index': -1,
+                                    width: 1,
+                                });
                             itm.setVisible(false);
-                            itm.resumeLayout();
-                            itm.enableEvents();
+                            itm.resumeLayout()
+                                .enableEvents();
                         }
                     });
                 }
@@ -77,8 +78,8 @@ namespace Blend.container {
          */
         protected notifyActiveViewChanged() {
             var me = this;
-            me.invalidateLayout(false);
-            me.fireEvent('activeViewChanged', me.activeView);
+            me.invalidateLayout(false)
+                .fireEvent('activeViewChanged', me.activeView);
         }
 
         /**

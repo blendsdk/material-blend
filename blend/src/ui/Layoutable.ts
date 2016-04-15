@@ -28,23 +28,25 @@ namespace Blend.ui {
             ]);
         }
 
-        public addLayoutTriggerEvent(eventName: string | Array<string>) {
+        public addLayoutTriggerEvent(eventName: string | Array<string>): Blend.ui.Layoutable {
             var me = this;
             Blend.wrapInArray(eventName).forEach(function(evt: string) {
                 me.layoutTriggers.push(evt);
             });
+            return this;
         }
 
         /**
          * Makes sure the layout state is invalid so it can be placed in
          * the next layout cycle
          */
-        public invalidateLayout(performLayout?: boolean) {
+        public invalidateLayout(performLayout?: boolean): Blend.ui.Layoutable {
             var me = this;
             me.sizeHash = null;
             if (performLayout === true) {
                 me.performLayout();
             }
+            return this;
         }
 
         /**
@@ -108,7 +110,6 @@ namespace Blend.ui {
                     me.fireEvent('layoutCycleFinished');
                 }
             }
-
         }
 
         /**
@@ -133,15 +134,17 @@ namespace Blend.ui {
         /**
          * Temporary suspends the layout cycle
          */
-        public suspendLayout() {
+        public suspendLayout(): Blend.ui.Layoutable {
             this.layoutEnabled = false;
+            return this;
         }
 
         /**
          * Resumes the layout cycle
          */
-        public resumeLayout() {
+        public resumeLayout(): Blend.ui.Layoutable {
             this.layoutEnabled = true;
+            return this;
         }
 
         public fireEvent(eventName: string, ...args: any[]) {

@@ -78,7 +78,7 @@ namespace Blend.ui {
         /**
          * Sets the bounds of this View based on the ViewBoundsInterface interface
          */
-        setBounds(bounds: ElementBoundsInterface) {
+        setBounds(bounds: ElementBoundsInterface): Blend.ui.ViewBase {
             var me = this, nullBounds: StyleInterface = { top: null, left: null, width: null, height: null };
             if (me.isRendered) {
                 me.setStyle(bounds === null ? nullBounds : <StyleInterface>bounds);
@@ -86,6 +86,7 @@ namespace Blend.ui {
                 Blend.apply(me.config, bounds === null ? nullBounds : bounds);
             }
             me.notifyBoundsChanged();
+            return this;
         }
 
         /**
@@ -106,7 +107,7 @@ namespace Blend.ui {
         /**
          * Sets the visibility state for this View
          */
-        setVisible(visible: boolean = true) {
+        setVisible(visible: boolean = true) : Blend.ui.ViewBase {
             var me = this
             me.visible = visible === true ? true : false;
             if (me.isRendered) {
@@ -115,6 +116,7 @@ namespace Blend.ui {
                 me.config.visible = me.visible;
             }
             me.notifyVisibilityChanged();
+            return this;
         }
 
         /**
