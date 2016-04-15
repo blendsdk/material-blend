@@ -38,6 +38,14 @@ namespace Blend.ui {
             view.performLayout();
         }
 
+        protected renderAddedView(view: Blend.ui.View) {
+            var me = this;
+            if (me.isRendered) {
+                me.bodyElement.append(view.getElement());
+                me.invalidateLayout(true);
+            }
+        }
+
         /**
          * Adds one or more Views to this Conatiner
          */
@@ -46,6 +54,7 @@ namespace Blend.ui {
             Blend.forEach(Blend.wrapInArray(item), function(itm: UIType) {
                 view = me.createViewItem(itm);
                 me.items.push(view);
+                me.renderAddedView(view);
                 me.notifyItemAdded(view);
             });
         }
@@ -65,14 +74,19 @@ namespace Blend.ui {
             return view;
         }
 
+        protected renderRemovedView(view: Blend.ui.View) {
+            view.getElement().remove();
+        }
+
         /**
          * Removed a View from this container
          */
         public removeView(view: number | Blend.ui.ViewBase): Blend.ui.ViewBase {
             var me = this,
                 index: number = Blend.isObject(view) ? me.items.indexOf(<any>view) : <number>view,
-                removed: Array<Blend.ui.ViewBase> = me.items.splice(index, 1);
+                removed: Array<Blend.ui.View> = me.items.splice(index, 1);
             if (removed.length !== 0) {
+                me.renderRemovedView(removed[0]);
                 me.notifyItemRemoved(removed[0])
                 return removed[0];
             } else {
