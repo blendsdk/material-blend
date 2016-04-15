@@ -98,7 +98,8 @@ namespace Blend.ui {
         protected layoutView() {
             var me = this;
             if (!me.isStarted) {
-                // first time cleanup
+                // first time cleanup, We could have implemented this using the initialize cycle
+                // Then then every extend from the applucation needs to call the super.initialize()!!
                 me.mainView.setBounds({ top: null, left: null, width: null, height: null });
                 me.mainView.setStyle({ display: null });
             }
@@ -130,10 +131,18 @@ namespace Blend.ui {
             }
         }
 
+        protected renderMainView(): Blend.dom.Element {
+            var me = this, el: Blend.dom.Element;
+            me.mainView.setInRenderContext(true);
+            el = me.mainView.getElement();
+            me.mainView.setInRenderContext(false);
+            return el;
+        }
+
         protected render(): Blend.dom.Element {
             var me = this;
             return Blend.dom.Element.create({
-                children: [me.mainView.getElement()]
+                children: [me.renderMainView()]
             });
         }
 
