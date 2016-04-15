@@ -18,32 +18,55 @@
     </head>
     <script src="blend/blend.js" type="text/javascript"></script>
     <script>
-        Blend.Runtime.ready(function(){
+        Blend.DEBUG = true;
+    Blend.Runtime.ready(function() {
 
-            console.clear();
-            var body = wrapEl(document.body);
-            body.setHtml('<div id="host"></div>')
-                .addCssClass('default',false);
+        var body = wrapEl(document.body);
+        body.setHtml('<div id="host"></div>')
+            .addCssClass('default', false);
 
-            var fc = new Blend.container.Fit({
-            css:'b-fitted',
-            items:[
+        var fc = new Blend.container.Stack({
+            css: 'b-fitted',
+            controller: function(view, eventName) {
+                var me = this;
+                console.log(view, eventName);
+            },
+            items: [
                 {
-                ctype:'ui.rect',
-                border:true,
-                color:'orange',
-                id:'rect1'
+                    ctype: 'ui.rect',
+                    reference: 'rect2',
+                    border: true,
+                    color: 'red'
+                },
+                {
+                    ctype: 'ui.rect',
+                    reference: 'rect2',
+                    border: true,
+                    color: 'blue'
+                },
+                {
+                    ctype: 'ui.rect',
+                    reference: 'rect3',
+                    border: true,
+                    color: 'orange'
                 }
             ]
-            });
-
-            var host =  wrapEl(document.getElementById('host'));
-            host.append(fc.getElement());
-            fc.performLayout();
-            window.fc = fc;
-
         });
-        Blend.Runtime.kickStart();
+
+        var host = wrapEl(document.getElementById('host'));
+        host.setStyle({
+            position: 'absolute',
+            top: 100,
+            left: 100,
+            width: 400,
+            height: 400
+        });
+        host.append(fc.getElement());
+        fc.performLayout();
+        window.fc = fc;
+
+    });
+    Blend.Runtime.kickStart();
     </script>
     <body>
     </body>
