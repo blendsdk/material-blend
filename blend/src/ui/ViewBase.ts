@@ -110,7 +110,7 @@ namespace Blend.ui {
         /**
          * gets the visibility state of this View
          */
-        isVisible() {
+        public isVisible() {
             var me = this;
             return me.visible;
         }
@@ -204,18 +204,8 @@ namespace Blend.ui {
          * deleting them and removing its HTMLElement
          */
         public destroy() {
-            var me = this,
-                pNode: Node,
-                cNode: Node;
-
-            if (me.isRendered) {
-                cNode = me.element.getEl();
-                pNode = cNode.parentNode || null;
-                if (pNode) {
-                    pNode.removeChild(cNode);
-                }
-            }
-
+            var me = this;
+            me.element.remove();
             Blend.forEach(me, function(value: any, key: string) {
                 (<any>me)[key] = null;
                 delete ((<any>me)[key]);
