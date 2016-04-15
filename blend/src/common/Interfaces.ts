@@ -168,5 +168,5 @@ interface FitContainerInterface extends PaddableContainerInterface {
  * Interface for describing a Stack container
  */
 interface StackContainerInterface extends PaddableContainerInterface {
-
+    activeView?: number | string | Blend.ui.View;
 }
