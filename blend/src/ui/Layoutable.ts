@@ -57,7 +57,7 @@ namespace Blend.ui {
         private handleLayoutTriggers(eventName: string) {
             var me = this;
             // only fire the event when the component is rendered and ready
-            if (me.layoutTriggers.indexOf(eventName) !== -1 && me.canLayout()) {
+            if (me.layoutTriggers.indexOf(eventName) !== -1 && me.canLayout() === true) {
                 if (!me.isInALayoutContext && me.parent) {
                     (<View>me.parent).invalidateLayout(true);
                 } else {
@@ -124,9 +124,10 @@ namespace Blend.ui {
          * Checks if this View can be placed in a layout cycle
          */
         protected canLayout() {
-            return this.layoutEnabled
-                && this.isRendered
-                && this.visible;
+            var me = this;
+            return (me.layoutEnabled === true
+                && me.isRendered === true
+                && me.visible === true);
         }
 
         /**
