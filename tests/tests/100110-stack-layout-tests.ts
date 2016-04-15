@@ -17,9 +17,8 @@ TestApp.defineTest('Stack Layout', function(t: Blend.testing.TestRunner) {
                 var me: Blend.container.Stack = this;
                 if (eventName === 'activeViewChanged') {
                     t.assertEquals(me.getActiveView().getReference(), 'rect2', 'correct active view');
-                    //t.done();
+                    t.done();
                 }
-                console.log(view, eventName);
             },
             items: [
                 <UIViewInterface>{
