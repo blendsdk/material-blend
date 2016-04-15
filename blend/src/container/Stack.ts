@@ -24,6 +24,17 @@ namespace Blend.container {
             me.setActiveView(config.activeView || 0);
         }
 
+        protected notifyViewInitialized() {
+            /**
+             * Override to fire a notifyActiveViewChanged
+             * after the stack is initialized
+             */
+            var me = this;
+            super.notifyViewInitialized();
+            if (me.activeView) {
+                me.notifyActiveViewChanged();
+            }
+        }
 
         protected initialize() {
             var me = this;
