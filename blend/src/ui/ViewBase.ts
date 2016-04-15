@@ -204,7 +204,6 @@ namespace Blend.ui {
                 me.isRendered = true;
                 me.finalizeRender();
                 me.enableEvents();
-                delete (me.config);
             }
             return me.element;
         }
