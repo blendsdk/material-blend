@@ -1,14 +1,14 @@
-@mixin blend-container-fit(
+@mixin blend-container-stack(
 ) {
-    #{$prefix}-fit-container {
+    #{$prefix}-stack-container {
 
-        &> #{$prefix}-fit-container-body {
+        &> #{$prefix}-stack-container-body {
 
             width:100%;
             height:100%;
             position: relative;
 
-            #{$prefix}-fit-container-item {
+            #{$prefix}-stack-container-item {
                 width:100%;
                 height:100%;
                 position: absolute;
