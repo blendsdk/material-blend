@@ -114,12 +114,6 @@ namespace Blend.container {
             }
         }
 
-        protected render(): Blend.dom.Element {
-            var me = this;
-            return Blend.dom.Element.create({
-                children: [me.renderBodyElement()]
-            });
-        }
     }
 }
 

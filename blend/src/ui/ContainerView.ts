@@ -145,5 +145,12 @@ namespace Blend.ui {
                     children: me.renderChildren()
                 });
         }
+
+        protected render(): Blend.dom.Element {
+            var me = this;
+            return Blend.dom.Element.create({
+                children: [me.renderBodyElement()]
+            });
+        }
     }
 }
