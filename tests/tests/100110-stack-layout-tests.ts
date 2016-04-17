@@ -52,7 +52,7 @@ TestApp.defineTest('Stack Layout', function(t: Blend.testing.TestRunner) {
         host.append(fc.getElement());
         fc.performLayout();
         fc.setActiveView(0);
-        t.done(1000);
+        //t.done(1000);
     });
     Blend.Runtime.kickStart();
 });
