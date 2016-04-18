@@ -19,61 +19,53 @@ module Blend.ui {
         protected packProperty: string;
         protected stretchProperty: string;
 
-        protected  pack_start(ilctx: BoxLayoutItemContextInterface) {
+        protected pack_start(ilctx: BoxLayoutItemContextInterface) {
             var me = this, r: number;
             if (me.nextUnit === -1) {
-                me.nextUnit = ilctx.marginBefore;
-            } else {
-                me.nextUnit += ilctx.marginBefore;
+                me.nextUnit = 0;
             }
             r = me.nextUnit;
-            me.nextUnit += <number>(<any>ilctx)[me.boxedProperty] + ilctx.marginAfter;
+            me.nextUnit += <number>(<any>ilctx)[me.boxedProperty];
             (<any>ilctx)[me.packProperty] = r;
         }
 
-        protected  pack_center(ilctx: BoxLayoutItemContextInterface) {
+        protected pack_center(ilctx: BoxLayoutItemContextInterface) {
             var me = this, r: number;
             if (me.nextUnit === -1) {
-                me.nextUnit = ilctx.marginBefore;
-                me.nextUnit += (((<any>me.layoutContext.bounds)[me.boxedProperty] / 2) - (me.requiredSpace / 2));
-            } else {
-                me.nextUnit += ilctx.marginBefore;
+                me.nextUnit = (((<any>me.layoutContext.bounds)[me.boxedProperty] / 2) - (me.requiredSpace / 2));
             }
             r = me.nextUnit;
-            me.nextUnit += <number>(<any>ilctx)[me.boxedProperty] +  ilctx.marginAfter;
+            me.nextUnit += <number>(<any>ilctx)[me.boxedProperty];
             (<any>ilctx)[me.packProperty] = r;
         }
 
-        protected  pack_end(ilctx: BoxLayoutItemContextInterface) {
+        protected pack_end(ilctx: BoxLayoutItemContextInterface) {
             var me = this, r: number;
             if (me.nextUnit === -1) {
-                me.nextUnit = ilctx.marginBefore;
-                me.nextUnit += ((<any>me.layoutContext.bounds)[me.boxedProperty] - (me.requiredSpace));
-            } else {
-                me.nextUnit += ilctx.marginBefore;
+                me.nextUnit = ((<any>me.layoutContext.bounds)[me.boxedProperty] - (me.requiredSpace));
             }
             r = me.nextUnit;
-            me.nextUnit += <number>(<any>ilctx)[me.boxedProperty] + ilctx.marginAfter;
+            me.nextUnit += <number>(<any>ilctx)[me.boxedProperty];
             (<any>ilctx)[me.packProperty] = r;
         }
 
-        protected  align_start(ilctx: BoxLayoutItemContextInterface) {
+        protected align_start(ilctx: BoxLayoutItemContextInterface) {
             var me = this;
             (<any>ilctx)[me.alignProperty] = 0;
         }
 
-        protected  align_stretch(ilctx: BoxLayoutItemContextInterface) {
+        protected align_stretch(ilctx: BoxLayoutItemContextInterface) {
             var me = this;
             (<any>ilctx)[me.alignProperty] = 0;
             (<any>ilctx)[me.stretchProperty] = '100%';
         }
 
-        protected  align_center(ilctx: BoxLayoutItemContextInterface) {
+        protected align_center(ilctx: BoxLayoutItemContextInterface) {
             var me = this;
             (<any>ilctx)[me.alignProperty] = ((<any>me.layoutContext.bounds)[me.stretchProperty] / 2) - (<number>(<any>ilctx)[me.stretchProperty] / 2);
         }
 
-        protected  align_end(ilctx: BoxLayoutItemContextInterface) {
+        protected align_end(ilctx: BoxLayoutItemContextInterface) {
             var me = this;
             (<any>ilctx)[me.alignProperty] = (<any>me.layoutContext.bounds)[me.stretchProperty] - <number>(<any>ilctx)[me.stretchProperty];
         }
@@ -106,7 +98,7 @@ module Blend.ui {
                     maxFlex += ctx.flexSize;
                     flexedItems.push(idx);
                 } else { // fixed
-                    me.requiredSpace += ((<number>(<any>ctx)[me.boxedProperty]) + ctx.marginBefore + ctx.marginAfter);
+                    me.requiredSpace += (<number>(<any>ctx)[me.boxedProperty]);
                 }
             });
 
@@ -115,7 +107,7 @@ module Blend.ui {
                 pixelsPerFlex = availSpace / maxFlex;
                 me.layoutContext.flexPerPixel = maxFlex / availSpace;
                 Blend.forEach(flexedItems, function(idx: number) {
-                    size = (pixelsPerFlex * ilctx[idx].flexSize) - (ilctx[idx].marginBefore + ilctx[idx].marginAfter);
+                    size = (pixelsPerFlex * ilctx[idx].flexSize);
                     size = size > 0 ? size : 0;
                     (<any>ilctx)[idx][me.boxedProperty] = size;
                     me.requiredSpace += size
@@ -131,7 +123,7 @@ module Blend.ui {
             me.layoutContext = lctx;
             var ctx: BoxLayoutItemContextInterface,
                 alignFn: Function = <Function>(<any>me)['align_' + Blend.getEnumValue<string>(eBoxLayoutAlign, me.layoutContext.align)],
-                packFn:Function = <Function>(<any>me)['pack_' + Blend.getEnumValue<string>(eBoxLayoutPack, me.layoutContext.pack)];
+                packFn: Function = <Function>(<any>me)['pack_' + Blend.getEnumValue<string>(eBoxLayoutPack, me.layoutContext.pack)];
             me.resetContext();
             me.prepareContext(ilctx);
             for (var i in ilctx) {

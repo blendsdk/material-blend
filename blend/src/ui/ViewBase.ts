@@ -19,7 +19,6 @@ namespace Blend.ui {
 
         // box properies
         protected flex: number;
-        protected margins: BoxLayoutMarginInterface;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
@@ -51,7 +50,6 @@ namespace Blend.ui {
 
             // box properties
             me.flex = config.flex || 0;
-            me.margins = config.margins || null;
         }
 
         protected render(): Blend.dom.Element {

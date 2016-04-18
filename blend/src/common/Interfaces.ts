@@ -209,22 +209,11 @@ enum eBoxLayoutDirection {
 }
 
 /**
- * Interface for describing margins of the items of a Boxed Conatiner
- */
-interface BoxLayoutMarginInterface {
-    top?: number
-    right?: number
-    bottom?: number
-    left?: number
-}
-
-/**
  * Interface for describing a Box Layout Context
  */
 interface BoxLayoutContextInterface {
     pack: eBoxLayoutPack
     align: eBoxLayoutAlign
-    margin: BoxLayoutMarginInterface
     allowScroll: boolean
     bounds: ElementBoundsInterface
     direction?: eBoxLayoutDirection
@@ -237,8 +226,6 @@ interface BoxLayoutContextInterface {
 interface BoxLayoutItemContextInterface extends ElementBoundsInterface {
     flex: boolean
     flexSize: number
-    marginBefore: number
-    marginAfter: number
 }
 
 /**
@@ -247,7 +234,6 @@ interface BoxLayoutItemContextInterface extends ElementBoundsInterface {
 interface BoxContainerInterface extends PaddableContainerInterface {
     pack?: eBoxLayoutPack
     align?: eBoxLayoutAlign
-    defaultItemMargin?: number | BoxLayoutMarginInterface
     direction?: eBoxLayoutDirection
     allowScroll?: boolean
 }
