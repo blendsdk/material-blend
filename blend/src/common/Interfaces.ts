@@ -247,7 +247,7 @@ interface BoxLayoutItemContextInterface extends ElementBoundsInterface {
 interface BoxContainerInterface extends PaddableContainerInterface {
     pack?: eBoxLayoutPack
     align?: eBoxLayoutAlign
-    defaultItemMargin?: BoxLayoutMarginInterface
+    defaultItemMargin?: number | BoxLayoutMarginInterface
     direction?: eBoxLayoutDirection
     allowScroll?: boolean
 }

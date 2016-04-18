@@ -21,7 +21,7 @@ namespace Blend.ui {
         protected marginAfterProperty: string;
         protected align: eBoxLayoutAlign;
         protected pack: eBoxLayoutPack;
-        protected defaultItemMargin: BoxLayoutMarginInterface;
+        protected defaultItemMargin: number | BoxLayoutMarginInterface;
         protected direction: eBoxLayoutDirection;
         protected allowScroll: boolean;
         protected itemsLayoutContext: Array<BoxLayoutItemContextInterface>;
@@ -55,9 +55,13 @@ namespace Blend.ui {
                 mrgBefore = mrgAfter = 0;
                 if (me.calculateMargins) {
                     margins = view.getProperty<BoxLayoutMarginInterface>('margins') || me.defaultItemMargin || null;
-                    if (margins !== null) {
+                    if (Blend.isObject(margins)) {
                         mrgBefore = (<any>margins)[me.marginBeforeProperty] || 0;
                         mrgAfter = (<any>margins)[me.marginAfterProperty] || 0;
+                    } else if (Blend.isNumeric(margins)) {
+                        mrgBefore = mrgAfter = <number>margins;
+                    } else {
+                        mrgBefore = mrgAfter = 0;
                     }
                 }
                 flex = view.getProperty<number>('flex') || 0;
