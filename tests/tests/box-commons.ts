@@ -12,7 +12,6 @@ function boxPositionTest(layoutConfig: any, viewsConfig: Array<any>, tops: Array
         return index + layoutCaption;
     }
 
-
     TestApp.defineTest(layoutConfig.ctype + ' ' + layoutCaption, function(t: Blend.testing.TestRunner) {
 
         var body = wrapEl(document.body);
