@@ -12,6 +12,18 @@ namespace Blend {
     export var DEBUG: boolean = false;
 
     /**
+     * Returns enum value, either the value as number or its string representation
+     */
+    export function getEnumValue<T>(objEnum: any, value: any, defaultValue?: any): T {
+        var dic: DictionaryInterface = objEnum;
+        if (Blend.isNumeric(value)) {
+            return <T>(dic[parseInt(value)] || Blend.getEnumValue(objEnum, defaultValue));
+        } else {
+            return <T>(dic[value] || Blend.getEnumValue(objEnum, defaultValue));
+        }
+    }
+
+    /**
      * Checks if the given value is a function
      */
     export function isFunction(value: any): boolean {
@@ -193,7 +205,7 @@ namespace Blend {
                 throw new Error(`Unknown class alias ${clazz}`);
             }
         } else if (Blend.isClass(clazz)) {
-            return <T> new (<ComponentClass>clazz)(config || {});
+            return <T>new (<ComponentClass>clazz)(config || {});
         } else if (clazz !== null && clazz !== undefined && typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);

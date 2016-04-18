@@ -170,3 +170,76 @@ interface FitContainerInterface extends PaddableContainerInterface {
 interface StackContainerInterface extends PaddableContainerInterface {
     activeView?: number | string | Blend.ui.View;
 }
+
+/**
+ * Possible values for the Pack property of a Boxed layout
+ */
+enum eBoxLayoutPack {
+    start,
+    center,
+    end
+}
+
+/**
+ * Possible values for the Align property of a Boxed layout
+ */
+enum eBoxLayoutAlign {
+    start,
+    stretch,
+    center,
+    end
+}
+
+/**
+ * Possible values for the Direct property of a Boxed layout
+ */
+enum eBoxLayoutDirection {
+    LeftToRight,
+    RightToLeft,
+    TopToBottom,
+    BottomToTop
+}
+
+/**
+ * Interface for describing margins of the items of a Boxed Conatiner
+ */
+interface BoxLayoutMarginInterface {
+    top?: number
+    right?: number
+    bottom?: number
+    left?: number
+}
+
+/**
+ * Interface for describing a Box Layout Context
+ */
+interface BoxLayoutContextInterface {
+    pack: eBoxLayoutPack
+    align: eBoxLayoutAlign
+    margin: BoxLayoutMarginInterface
+    allowScroll: boolean
+    bounds: ElementBoundsInterface
+    direction?: eBoxLayoutDirection
+    flexPerPixel?: number
+}
+
+/**
+ * Interface for describing the bounds of Box Layout Item
+ */
+interface BoxLayoutItemContextInterface extends ElementBoundsInterface {
+    flex: boolean
+    flexSize: number
+    marginBefore: number
+    marginAfter: number
+}
+
+/**
+ * Interface for describing a Box Container
+ */
+interface BoxContainerInterface extends PaddableContainerInterface {
+    pack?: eBoxLayoutPack
+    align?: eBoxLayoutAlign
+    defaultItemMargin?: BoxLayoutMarginInterface
+    direction?: eBoxLayoutDirection
+    allowScroll?: boolean
+}
