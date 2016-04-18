@@ -71,8 +71,8 @@ function boxPositionTest(layoutConfig: any, viewsConfig: Array<any>, tops: Array
                 });
             }
             if (stop === false) {
-                t.done(500);
+                t.done();
             }
-        },500);
+        },350);
     });
 }
