@@ -15,7 +15,11 @@ namespace Blend.ui {
         protected visible: boolean;
         protected config: UIViewInterface;
         protected cssClass: string;
-        protected useParentControllers: boolean
+        protected useParentControllers: boolean;
+
+        // box properies
+        protected flex: number;
+        protected margins: BoxLayoutMarginInterface;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
@@ -32,7 +36,8 @@ namespace Blend.ui {
                 top: null,
                 left: null,
                 width: null,
-                height: null
+                height: null,
+                flex: 0
             };
             me.setCssClass(config.css || []);
             me.setStyle(config.style || {});
@@ -43,6 +48,10 @@ namespace Blend.ui {
                 width: config.width || null,
                 height: config.height || null
             });
+
+            // box properties
+            me.flex = config.flex || 0;
+            me.margins = config.margins || null;
         }
 
         protected render(): Blend.dom.Element {

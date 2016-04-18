@@ -16,6 +16,7 @@
 
         @include blend-container-fit();
         @include blend-container-stack();
+        @include blend-container-box();
     }
 
 }

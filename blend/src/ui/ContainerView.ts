@@ -25,10 +25,14 @@ namespace Blend.ui {
             me.config.items = config.items || [];
         }
 
+        public getItems() {
+            return this.items;
+        }
+
         protected performLayoutChildren() {
             var me = this;
-            Blend.forEach(me.items, function(view: Blend.ui.View) {
-                me.layoutChild(view);
+            Blend.forEach(me.items, function(view: Blend.ui.View, index: number) {
+                me.layoutChild(view, index);
             });
         }
 
@@ -37,7 +41,7 @@ namespace Blend.ui {
             me.performLayoutChildren();
         }
 
-        protected layoutChild(view: Blend.ui.View) {
+        protected layoutChild(view: Blend.ui.View, index: number) {
             view.performLayout();
         }
 

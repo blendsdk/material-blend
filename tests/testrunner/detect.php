@@ -25,9 +25,10 @@
         body.setHtml('<div id="host"></div>')
             .addCssClass('default', false);
 
-        var fc = new Blend.container.Stack({
+        var fc = new Blend.container.VerticalBox({
             css: 'b-fitted',
-            reference:'stack1',
+            reference:'box1',
+            align:1,
             controller: function(view, eventName) {
                 var me = this;
                 console.log(view.getReference(), view, eventName);
@@ -36,19 +37,17 @@
                 {
                     ctype: 'ui.rect',
                     reference: 'rect1',
-                    border: true,
                     color: 'red'
                 },
                 {
                     ctype: 'ui.rect',
                     reference: 'rect2',
-                    border: true,
+                    flex:1,
                     color: 'blue'
                 },
                 {
                     ctype: 'ui.rect',
                     reference: 'rect3',
-                    border: true,
                     color: 'orange'
                 }
             ]

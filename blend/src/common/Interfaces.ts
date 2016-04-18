@@ -118,6 +118,14 @@ interface UIViewInterface extends MvcViewInterface {
     left?: number
     width?: number | string
     height?: number | string
+    /**
+     * Applies only to Box container
+     */
+    flex?: number;
+    /**
+     * Applies only yo Box container
+     */
+    margins?: number;
 }
 
 /**
