@@ -247,9 +247,14 @@ interface BoxContainerInterface extends PaddableContainerInterface {
     allowScroll?: boolean
 }
 
+enum eSplitType {
+    vertical,
+    horizontal
+}
+
 /**
  * Interface for describing a Splitter view
  */
 interface SplitterInterface extends UIViewInterface {
-    splitType: eBoxType | string;
+    splitType?: eSplitType | string;
 }
