@@ -7,7 +7,7 @@ namespace Blend.container {
 
     /**
      * This container can be used to stack Views on top of eachother
-     *  showing only one View at a time
+     * showing only one View at a time
      */
     export class Stack extends Blend.ui.PaddableContainer {
 

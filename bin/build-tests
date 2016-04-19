@@ -24,6 +24,7 @@ ln -s $BUILD_DIR/css $TEST_RUNNER_DIR
 ln -s $DIRNAME/../blend/src $TEST_RUNNER_DIR/sources/blend
 ln -s $TESTS_DIR/testapp $TEST_RUNNER_DIR/sources/testapp
 ln -s $TESTS_DIR/tests $TEST_RUNNER_DIR/sources/tests
+ln -s $TESTS_DIR/experiments $TEST_RUNNER_DIR/sources/experiments
 
 echo "Building Tests";
 cd $TESTS_DIR
