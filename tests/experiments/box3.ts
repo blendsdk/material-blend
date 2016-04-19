@@ -9,14 +9,6 @@ Blend.Runtime.ready(function() {
                 {
                     ctype: 'ui.rect',
                     color: 'red',
-                    flex: 2
-                },
-                {
-                    ctype: 'ui.splitter'
-                },
-                {
-                    ctype: 'ui.rect',
-                    color: 'blue',
                     flex: 1
                 },
                 {
@@ -24,7 +16,15 @@ Blend.Runtime.ready(function() {
                 },
                 {
                     ctype: 'ui.rect',
-                    color: 'orange',
+                    color: 'purple',
+                    flex: 1
+                },
+                {
+                    ctype: 'ui.splitter'
+                },
+                {
+                    ctype: 'ui.rect',
+                    color: 'yellow',
                     flex: 1
                 },
             ]);
@@ -46,8 +46,8 @@ Blend.Runtime.ready(function() {
 
     var cntr = new SplitContainer(<BoxContainerInterface>{
         ctype: 'layout.box',
-        width: 500,
-        height: 400,
+        width: 800,
+        height: 500,
         style: {
             position: 'relative',
             display: 'inline-block',
