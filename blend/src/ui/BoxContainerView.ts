@@ -25,6 +25,7 @@ namespace Blend.ui {
         protected direction: eBoxLayoutDirection;
         protected allowScroll: boolean;
         protected itemsLayoutContext: Array<BoxLayoutItemContextInterface>;
+        protected flexPerPixel: number;
 
         public constructor(config: BoxContainerInterface = {}) {
             super(config);
@@ -71,6 +72,7 @@ namespace Blend.ui {
         performLayout() {
             var me = this;
             var layoutContext = me.createLayoutContext();
+            me.flexPerPixel = layoutContext.flexPerPixel;
             me.itemsLayoutContext = me.createItemsLayoutContext(layoutContext);
             me.boxProcessor.calculate(me.itemsLayoutContext, layoutContext);
             super.performLayout();
@@ -78,8 +80,15 @@ namespace Blend.ui {
 
         protected layoutChild(view: Blend.ui.View, index: number) {
             var me = this;
+            var ctx: BoxLayoutItemContextInterface = me.itemsLayoutContext[index];
+            view.setProperty('flexPerPixel', me.flexPerPixel);
             view.suspendLayout().disableEvents();
-            view.setBounds(me.itemsLayoutContext[index]);
+            view.setBounds({
+                top: ctx.top,
+                left: ctx.left,
+                width: ctx.width,
+                height: ctx.height
+            });
             view.resumeLayout().enableEvents();
             view.performLayout();
         }
