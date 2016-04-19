@@ -17,7 +17,7 @@
         </style>
     </head>
     <script src="blend/blend.js" type="text/javascript"></script>
-    <script src="js/experiments/box1.js" type="text/javascript"></script>
+    <script src="js/experiments/box2.js" type="text/javascript"></script>
     <body>
     </body>
 </html>
