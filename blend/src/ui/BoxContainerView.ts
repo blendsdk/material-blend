@@ -80,9 +80,15 @@ namespace Blend.ui {
 
         protected layoutChild(view: Blend.ui.View, index: number) {
             var me = this;
+            var ctx: BoxLayoutItemContextInterface = me.itemsLayoutContext[index];
             view.setProperty('flexPerPixel', me.flexPerPixel);
             view.suspendLayout().disableEvents();
-            view.setBounds(me.itemsLayoutContext[index]);
+            view.setBounds({
+                top: ctx.top,
+                left: ctx.left,
+                width: ctx.width,
+                height: ctx.height
+            });
             view.resumeLayout().enableEvents();
             view.performLayout();
         }
