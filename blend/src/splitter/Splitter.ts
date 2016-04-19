@@ -56,7 +56,7 @@ namespace Blend.splitter {
             me.hoverCssClass = cssPrefix('splitter-hover');
             me.isActive = false;
             me.ghostEl = null;
-            me.setBounds({ width: 11, height: 11 });
+            me.setBounds({ width: 9, height: 9 });
         }
 
         protected initialize() {
