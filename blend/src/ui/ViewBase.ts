@@ -38,7 +38,7 @@ namespace Blend.ui {
                 height: null,
                 flex: 0
             };
-            me.setCssClass(config.css || []);
+            me.addCssClass(config.css || []);
             me.setStyle(config.style || {});
             me.setVisible(Blend.isBoolean(config.visible) ? config.visible : true);
             me.setBounds({
@@ -166,7 +166,7 @@ namespace Blend.ui {
         /**
          * Adds one or more CSS classes to this View
          */
-        public setCssClass(css: string | Array<string>, blendPrefix: boolean = false) {
+        public addCssClass(css: string | Array<string>, blendPrefix: boolean = false) {
             var me = this;
             if (me.isRendered) {
                 me.element.addCssClass(css, blendPrefix);
@@ -191,8 +191,8 @@ namespace Blend.ui {
          */
         protected finalizeRender() {
             var me = this;
-            me.setCssClass(me.cssClass, true);
-            me.setCssClass(me.config.css, false);
+            me.addCssClass(me.cssClass, true);
+            me.addCssClass(me.config.css, false);
             me.setBounds({
                 top: me.config.top,
                 left: me.config.left,
