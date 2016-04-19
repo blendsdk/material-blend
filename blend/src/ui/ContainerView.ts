@@ -3,8 +3,6 @@
 /// <reference path="../dom/Element.ts" />
 /// <reference path="View.ts" />
 
-
-
 namespace Blend.ui {
 
     /**
