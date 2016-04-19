@@ -23,6 +23,14 @@ namespace Blend {
         }
 
         /**
+         * Provides a way to externally set a property on this component
+         */
+        public setProperty(name: string, value: any) {
+            var me: any = this;
+            me[name] = value;
+        }
+
+        /**
          * Check if this Component implements a function
          */
         public hasFunction(fname: string) {
