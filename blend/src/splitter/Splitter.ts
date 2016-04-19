@@ -56,7 +56,7 @@ namespace Blend.splitter {
             me.hoverCssClass = cssPrefix('splitter-hover');
             me.isActive = false;
             me.ghostEl = null;
-            me.setBounds({ width: 10, height: 10 });
+            me.setBounds({ width: 11, height: 11 });
         }
 
         protected initialize() {
@@ -191,9 +191,6 @@ namespace Blend.splitter {
                 me.afterView.setBounds({ [me.sizeProperty]: afterSize });
                 me.adjustFlexValue(me.beforeView, beforeSize);
                 me.adjustFlexValue(me.afterView, afterSize);
-
-                me.beforeView.invalidateLayout();
-                me.afterView.invalidateLayout();
                 me.beforeView.resumeLayout().enableEvents();
                 me.afterView.resumeLayout().enableEvents();
             }
