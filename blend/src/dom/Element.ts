@@ -24,6 +24,21 @@ namespace Blend.dom {
         }
 
         /**
+         * Adds an EventListener to an EventTarget
+         */
+        addEventListener(eventName: string, eventHandler: EventListener): void {
+            Blend.Runtime.addEventListener(this.el, eventName, eventHandler);
+        }
+
+        /**
+         * Removes an EventListener from an EventTarget
+         */
+        removeEventListener(eventName: string, eventHandler: EventListener): void {
+            Blend.Runtime.removeEventListener(this.el, eventName, eventHandler);
+        }
+
+
+        /**
          * Retuns the computed bounds
          */
         public getBounds(): ElementBoundsInterface {
@@ -141,6 +156,26 @@ namespace Blend.dom {
                 me.el.setAttribute('class', v);
             }
             return this;
+        }
+
+        public removeCssClass(css: string | string[], prefix = true) {
+            var me = this,
+                cur = <string>me.getCssClass(false),
+                list: Array<string> = <Array<string>>Blend.wrapInArray(css);
+            if (cur !== null) {
+                list.forEach(function(itm) {
+                    if (prefix) {
+                        itm = Blend.dom.Element.CSS_PREFIX + itm;
+                    }
+                    cur = cur.replace(itm, '');
+                });
+                cur = cur.trim();
+                if (cur !== "") {
+                    me.el.setAttribute('class', cur);
+                } else {
+                    me.el.removeAttribute(('class'));
+                }
+            }
         }
 
         /**
