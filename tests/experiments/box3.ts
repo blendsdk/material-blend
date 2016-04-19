@@ -48,6 +48,7 @@ Blend.Runtime.ready(function() {
         ctype: 'layout.box',
         width: 800,
         height: 500,
+        boxType: 'vbox',
         style: {
             position: 'relative',
             display: 'inline-block',

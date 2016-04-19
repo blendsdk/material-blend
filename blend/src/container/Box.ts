@@ -17,8 +17,8 @@ namespace Blend.container {
 
         protected initBoxProcessor(boxType: eBoxType | string, config: BoxContainerInterface): eBoxType {
             var me = this;
-            boxType = Blend.parseEnum<number>(eBoxType, boxType);
-            if (boxType === eBoxType.hbox) {
+            me.boxType = Blend.parseEnum<number>(eBoxType, boxType);
+            if (me.boxType === eBoxType.hbox) {
                 me.cssClass = 'hbox-container';
                 me.itemCSSClass = cssPrefix(me.cssClass + '-item');
                 me.boxedProperty = 'width';
@@ -37,7 +37,7 @@ namespace Blend.container {
                 me.boxProcessor = new Blend.ui.VBoxProcessor();
                 me.direction = config.direction || eBoxLayoutDirection.TopToBottom;
             }
-            return <eBoxType>boxType;
+            return <eBoxType>me.boxType;
         }
     }
 }
