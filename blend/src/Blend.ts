@@ -14,12 +14,11 @@ namespace Blend {
     /**
      * Returns enum value, either the value as number or its string representation
      */
-    export function getEnumValue<T>(objEnum: any, value: any, defaultValue?: any): T {
-        var dic: DictionaryInterface = objEnum;
-        if (Blend.isNumeric(value)) {
-            return <T>(dic[parseInt(value)] || Blend.getEnumValue(objEnum, defaultValue));
+    export function parseEnum<T>(objEnum: any, value: string | number, defaultValue: any = null): T {
+        if (Blend.isString(value)) {
+            return objEnum[value] === undefined ? defaultValue : objEnum[value];
         } else {
-            return <T>(dic[value] || Blend.getEnumValue(objEnum, defaultValue));
+            return objEnum[objEnum[value]] === undefined ? defaultValue : objEnum[objEnum[value]];
         }
     }
 
