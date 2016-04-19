@@ -2,6 +2,7 @@
 /// <reference path="../common/Interfaces.ts" />
 /// <reference path="../Blend.ts" />
 /// <reference path="ContainerView.ts" />
+/// <reference path="PaddableContainer.ts" />
 /// <reference path="BoxProcessor.ts" />
 
 namespace Blend.ui {
@@ -10,7 +11,7 @@ namespace Blend.ui {
      * Base class that is used to implement a container providing a Boxed
      * layout
      */
-    export abstract class BoxContainerView extends PaddableContainer {
+    export abstract class BoxContainerView extends Blend.ui.PaddableContainer {
 
         private calculateMargins: boolean;
         protected config: BoxContainerInterface;

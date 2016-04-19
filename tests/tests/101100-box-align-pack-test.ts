@@ -34,7 +34,7 @@ Blend.forEach(aligns, function(align: eBoxLayoutAlign, align_index: number) {
     Blend.forEach(packs, function(pack: eBoxLayoutPack, pack_index: number) {
 
         boxPositionTest(
-            { ctype: 'layout.hbox', align: align, pack: pack },
+            { ctype: 'layout.box', boxType: 'hbox', align: align, pack: pack },
             [fixedRect1(), fixedRect2(), fixedRect3()],
             hbox_tops[align_index],
             hbox_lefts[pack_index],
@@ -48,7 +48,7 @@ Blend.forEach(aligns, function(align: eBoxLayoutAlign, align_index: number) {
     Blend.forEach(packs, function(pack: eBoxLayoutPack, pack_index: number) {
 
         boxPositionTest(
-            { ctype: 'layout.hbox', align: eBoxLayoutAlign.stretch, pack: pack },
+            { ctype: 'layout.box', boxType: 'hbox', align: eBoxLayoutAlign.stretch, pack: pack },
             [fixedRect1(), fixedRect2(), fixedRect3()],
             [0, 0, 0],
             hbox_lefts[pack_index],
@@ -86,7 +86,7 @@ Blend.forEach(aligns, function(align: eBoxLayoutAlign, align_index: number) {
     Blend.forEach(packs, function(pack: eBoxLayoutPack, pack_index: number) {
 
         boxPositionTest(
-            { ctype: 'layout.vbox', align: align, pack: pack },
+            { ctype: 'layout.box', boxType: 'vbox', align: align, pack: pack },
             [fixedRect1(), fixedRect2(), fixedRect3()],
             vbox_tops[pack_index],
             vbox_lefts[align_index],
@@ -101,7 +101,7 @@ Blend.forEach(aligns, function(align: eBoxLayoutAlign, align_index: number) {
     Blend.forEach(packs, function(pack: eBoxLayoutPack, pack_index: number) {
 
         boxPositionTest(
-            { ctype: 'layout.vbox', align: eBoxLayoutAlign.stretch, pack: pack },
+            { ctype: 'layout.box', boxType: 'vbox', align: eBoxLayoutAlign.stretch, pack: pack },
             [fixedRect1(), fixedRect2(), fixedRect3()],
             vbox_tops[pack_index],
             [0, 0, 0],

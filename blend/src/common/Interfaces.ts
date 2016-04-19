@@ -180,6 +180,14 @@ interface StackContainerInterface extends PaddableContainerInterface {
 }
 
 /**
+ * Possible values for the type of the Box container
+ */
+enum eBoxType {
+    hbox,
+    vbox
+}
+
+/**
  * Possible values for the Pack property of a Boxed layout
  */
 enum eBoxLayoutPack {
@@ -232,6 +240,7 @@ interface BoxLayoutItemContextInterface extends ElementBoundsInterface {
  * Interface for describing a Box Container
  */
 interface BoxContainerInterface extends PaddableContainerInterface {
+    boxType?: eBoxType | string
     pack?: eBoxLayoutPack
     align?: eBoxLayoutAlign
     direction?: eBoxLayoutDirection

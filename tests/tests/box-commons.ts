@@ -5,8 +5,8 @@ var packs = [eBoxLayoutPack.start, eBoxLayoutPack.center, eBoxLayoutPack.end];
 
 function boxPositionTest(layoutConfig: any, viewsConfig: Array<any>, tops: Array<number>, lefts: Array<number>, widths: Array<number>, heights: Array<number>, stop: boolean = false) {
 
-    var layoutCaption = layoutConfig.ctype + ' align:' + Blend.getEnumValue(eBoxLayoutAlign, layoutConfig.align) +
-        ' pack: ' + Blend.getEnumValue(eBoxLayoutPack, layoutConfig.pack);
+    var layoutCaption = layoutConfig.ctype + ' align:' + eBoxLayoutAlign[Blend.parseEnum<number>(eBoxLayoutAlign, layoutConfig.align)] +
+        ' pack: ' + eBoxLayoutPack[Blend.parseEnum<number>(eBoxLayoutPack, layoutConfig.pack)];
 
     var createMessage = function(index: number): string {
         return index + layoutCaption;

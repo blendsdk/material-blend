@@ -2,7 +2,8 @@
 /// <reference path="box-commons.ts" />
 
 var flex_hbox: BoxContainerInterface = {
-    ctype: 'layout.hbox',
+    ctype: 'layout.box',
+    boxType: 'hbox',
     align: eBoxLayoutAlign.stretch,
     pack: eBoxLayoutPack.start
 }
@@ -22,7 +23,8 @@ boxPositionTest(
 
 
 var flex_vbox: BoxContainerInterface = {
-    ctype: 'layout.vbox',
+    ctype: 'layout.box',
+    boxType: 'vbox',
     align: eBoxLayoutAlign.stretch,
     pack: eBoxLayoutPack.start
 }
