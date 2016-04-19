@@ -246,3 +246,10 @@ interface BoxContainerInterface extends PaddableContainerInterface {
     direction?: eBoxLayoutDirection
     allowScroll?: boolean
 }
+
+/**
+ * Interface for describing a Splitter view
+ */
+interface SplitterInterface extends UIViewInterface {
+    splitType: eBoxType | string;
+}
