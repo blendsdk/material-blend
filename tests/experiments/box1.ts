@@ -32,7 +32,7 @@ Blend.Runtime.ready(function() {
                 });
 
                 var txt = document.createElement('DIV');
-                txt.innerHTML = `${ctype} A:${Blend.getEnumValue(eBoxLayoutAlign, align)} P:${Blend.getEnumValue(eBoxLayoutPack, pack)}`;
+                txt.innerHTML = `${ctype} A:${eBoxLayoutAlign[Blend.parseEnum<number>(eBoxLayoutAlign, align)]} P:${eBoxLayoutPack[Blend.parseEnum<number>(eBoxLayoutPack, pack)]}`;
                 dFrag.appendChild(txt);
                 dFrag.appendChild(view.getElement().getEl());
 

@@ -122,8 +122,8 @@ module Blend.ui {
             var me = this;
             me.layoutContext = lctx;
             var ctx: BoxLayoutItemContextInterface,
-                alignFn: Function = <Function>(<any>me)['align_' + Blend.getEnumValue<string>(eBoxLayoutAlign, me.layoutContext.align)],
-                packFn: Function = <Function>(<any>me)['pack_' + Blend.getEnumValue<string>(eBoxLayoutPack, me.layoutContext.pack)];
+                alignFn: Function = <Function>(<any>me)['align_' + eBoxLayoutAlign[Blend.parseEnum<number>(eBoxLayoutAlign, me.layoutContext.align)]],
+                packFn: Function = <Function>(<any>me)['pack_' + eBoxLayoutPack[Blend.parseEnum<number>(eBoxLayoutPack, me.layoutContext.pack)]];
             me.resetContext();
             me.prepareContext(ilctx);
             for (var i in ilctx) {

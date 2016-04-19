@@ -8,7 +8,7 @@ Blend.Runtime.ready(function() {
     var views: Array<Blend.ui.View> = [];
 
     var cntr = Blend.createComponent<Blend.ui.ContainerView>(<BoxContainerInterface>{
-        ctype: 'layout.hbox',
+        ctype: 'layout.box',
         width: 500,
         height: 300,
         style: {
