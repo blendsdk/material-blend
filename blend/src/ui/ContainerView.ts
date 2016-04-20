@@ -74,6 +74,7 @@ namespace Blend.ui {
             var me = this;
             var view: Blend.ui.View = Blend.createComponent<Blend.ui.View>(itm, {
                 parent: me,
+                context: me.context || null,
                 css: [me.itemCSSClass]
             });
             if (view.getProperty<boolean>('useParentController', true) === true) {

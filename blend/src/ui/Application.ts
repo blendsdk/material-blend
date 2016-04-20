@@ -1,6 +1,7 @@
 /// <reference path="../common/Interfaces.ts" />
 /// <reference path="../Blend.ts" />
 /// <reference path="../dom/Element.ts" />
+/// <reference path="../mvc/Context.ts" />
 /// <reference path="View.ts" />
 
 namespace Blend.ui {
@@ -25,6 +26,7 @@ namespace Blend.ui {
             me.config.theme = config.theme || 'default';
             me.config.style = {}; // remove use provided styles
             me.addLayoutTriggerEvent('applicationResized');
+            me.setContext(new Blend.mvc.Context());
             me.createMainView();
         }
 
@@ -116,6 +118,7 @@ namespace Blend.ui {
                     parent: me
                 });
                 if (Blend.isInstanceOf(me.mainView, Blend.ui.View)) {
+                    me.setContext(me.context);
                     me.mainView.addCssClass('mainview', true);
                     if (me.mainView.getProperty('useParentController', true) === true) {
                         me.mainView.addController(me.controllers);

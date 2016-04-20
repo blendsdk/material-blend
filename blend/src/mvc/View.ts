@@ -7,17 +7,32 @@ namespace Blend.mvc {
     export class View extends Blend.mvc.Client {
 
         private reference: string;
-        private context: Blend.mvc.Context;
+        protected context: Blend.mvc.Context;
         protected eventsEnabled: boolean;
         protected currentEventName: string;
 
         public constructor(config: MvcViewInterface = {}) {
             super(config);
             var me = this;
-            me.context = config.context || null;
             me.reference = config.reference || null;
             me.currentEventName = null;
+            me.setContext(config.context || null);
             me.disableEvents();
+        }
+
+        /**
+         * Sets the global MVC context
+          */
+        public setContext(context: Blend.mvc.Context) {
+            var me = this;
+            me.context = context;
+        }
+
+        /**
+         * Checks to see if we have a global MVC context
+         */
+        public hasContext() {
+            return !Blend.isNullOrUndef(this.context);
         }
 
         /**
