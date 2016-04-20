@@ -11,5 +11,6 @@ if [ -d $BUILD_DIR ]; then
 fi
 
 cd $DIRNAME/../blend
-compass compile &
+compass compile
+cp -fR $DIRNAME/../blend/themes/etc/fonts $BUILD_DIR/css/
 tsc
