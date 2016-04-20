@@ -12,18 +12,17 @@ TestApp.defineTest('Stack Layout', function(t: Blend.testing.TestRunner) {
 
         var fc = new Blend.container.Stack({
             css: 'b-fitted',
-            activeView: 'rect2',
+            activeView: 'rect3',
             controller: function(view: Blend.ui.View, eventName: string) {
                 var me: Blend.container.Stack = this;
                 if (eventName === 'activeViewChanged') {
-                    t.assertEquals(me.getActiveView().getReference(), 'rect2', 'correct active view');
-                    t.done();
+                    t.assertEquals(me.getActiveView().getReference(), 'rect1', 'rect1 ' + eventName);
                 }
             },
             items: [
                 <UIViewInterface>{
                     ctype: 'ui.rect',
-                    reference: 'rect2',
+                    reference: 'rect1',
                     border: true,
                     color: 'red'
                 },
@@ -52,7 +51,8 @@ TestApp.defineTest('Stack Layout', function(t: Blend.testing.TestRunner) {
         });
         host.append(fc.getElement());
         fc.performLayout();
-
+        fc.setActiveView(0);
+        t.done(1000);
     });
     Blend.Runtime.kickStart();
 });

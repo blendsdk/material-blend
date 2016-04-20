@@ -3,8 +3,6 @@
 /// <reference path="../dom/Element.ts" />
 /// <reference path="View.ts" />
 
-
-
 namespace Blend.ui {
 
     /**
@@ -25,12 +23,14 @@ namespace Blend.ui {
             me.config.items = config.items || [];
         }
 
+        public getItems() {
+            return this.items;
+        }
+
         protected performLayoutChildren() {
             var me = this;
-            Blend.forEach(me.items, function(view: Blend.ui.View) {
-                view.placeInALayoutContext(true);
-                me.layoutChild(view);
-                view.placeInALayoutContext(false);
+            Blend.forEach(me.items, function(view: Blend.ui.View, index: number) {
+                me.layoutChild(view, index);
             });
         }
 
@@ -39,7 +39,7 @@ namespace Blend.ui {
             me.performLayoutChildren();
         }
 
-        protected layoutChild(view: Blend.ui.View) {
+        protected layoutChild(view: Blend.ui.View, index: number) {
             view.performLayout();
         }
 
@@ -134,7 +134,6 @@ namespace Blend.ui {
                 children: Array<Blend.dom.Element> = [];
             me.addView(me.config.items);
             me.items.forEach(function(view: Blend.ui.View) {
-                view.setInRenderContext(true);
                 children.push(me.renderChild(view));
             });
             return children;
@@ -149,13 +148,11 @@ namespace Blend.ui {
                 });
         }
 
-        protected finalizeRender() {
+        protected render(): Blend.dom.Element {
             var me = this;
-            super.finalizeRender();
-            me.items.forEach(function(view: Blend.ui.View) {
-                view.setInRenderContext(false);
+            return Blend.dom.Element.create({
+                children: [me.renderBodyElement()]
             });
         }
-
     }
 }

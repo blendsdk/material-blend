@@ -3,7 +3,11 @@
     $basecolor:$base-color,
 
     $font-family: $default-font-family,
-    $font-size: $default-font-size
+    $font-size: $default-font-size,
+
+    $splitter-color: $default-splitter-color,
+    $splitter-hover-color: $default-splitter-hover-color,
+    $splitter-active-color: $default-splitter-active-color
 )
 {
     .#{$name} {
@@ -14,8 +18,16 @@
             $font-size
         );
 
+        @include blend-ui-splitter(
+                $splitter-color,
+                $splitter-hover-color,
+                $splitter-active-color
+        );
+
+
         @include blend-container-fit();
         @include blend-container-stack();
+        @include blend-container-box();
     }
 
 }

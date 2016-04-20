@@ -12,6 +12,17 @@ namespace Blend {
     export var DEBUG: boolean = false;
 
     /**
+     * Returns enum value, either the value as number or its string representation
+     */
+    export function parseEnum<T>(objEnum: any, value: string | number, defaultValue: any = null): T {
+        if (Blend.isString(value)) {
+            return objEnum[value] === undefined ? defaultValue : objEnum[value];
+        } else {
+            return objEnum[objEnum[value]] === undefined ? defaultValue : objEnum[objEnum[value]];
+        }
+    }
+
+    /**
      * Checks if the given value is a function
      */
     export function isFunction(value: any): boolean {
@@ -193,7 +204,7 @@ namespace Blend {
                 throw new Error(`Unknown class alias ${clazz}`);
             }
         } else if (Blend.isClass(clazz)) {
-            return <T> new (<ComponentClass>clazz)(config || {});
+            return <T>new (<ComponentClass>clazz)(config || {});
         } else if (clazz !== null && clazz !== undefined && typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);

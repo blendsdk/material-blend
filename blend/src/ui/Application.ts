@@ -115,14 +115,11 @@ namespace Blend.ui {
                 me.mainView = Blend.createComponent<Blend.ui.View>(me.config.mainView, {
                     parent: me
                 });
-                if (Blend.isInstanceOf(me.mainView, Blend.ui.ViewBase)) {
-
-                    me.mainView.setCssClass('mainview', true);
-
+                if (Blend.isInstanceOf(me.mainView, Blend.ui.View)) {
+                    me.mainView.addCssClass('mainview', true);
                     if (me.mainView.getProperty('useParentController', true) === true) {
                         me.mainView.addController(me.controllers);
                     }
-
                 } else {
                     throw new Error('The provide mainView is not a valid View instance!');
                 }
@@ -132,11 +129,7 @@ namespace Blend.ui {
         }
 
         protected renderMainView(): Blend.dom.Element {
-            var me = this, el: Blend.dom.Element;
-            me.mainView.setInRenderContext(true);
-            el = me.mainView.getElement();
-            me.mainView.setInRenderContext(false);
-            return el;
+            return this.mainView.getElement();
         }
 
         protected render(): Blend.dom.Element {

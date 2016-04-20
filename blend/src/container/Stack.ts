@@ -7,7 +7,7 @@ namespace Blend.container {
 
     /**
      * This container can be used to stack Views on top of eachother
-     *  showing only one View at a time
+     * showing only one View at a time
      */
     export class Stack extends Blend.ui.PaddableContainer {
 
@@ -23,7 +23,6 @@ namespace Blend.container {
             me.addLayoutTriggerEvent('activeViewChanged');
             me.setActiveView(config.activeView || 0);
         }
-
 
         protected initialize() {
             var me = this;
@@ -46,22 +45,24 @@ namespace Blend.container {
                 me.activeView = me.findView(view);
                 if (me.activeView) {
                     me.activeView.suspendLayout()
-                        .setBounds(null)
-                        .getElement()
-                        .setStyle({
-                            'z-index': me.items.length
-                        });
+                        .disableEvents();
+                    me.activeView.setBounds(null);
+                    me.activeView.getElement();
+                    me.activeView.setStyle({
+                        'z-index': me.items.length
+                    });
                     me.activeView.setVisible(true)
-                    me.activeView.resumeLayout();
+                    me.activeView.resumeLayout()
+                        .enableEvents();
                     me.notifyActiveViewChanged();
                     me.items.forEach(function(itm: Blend.ui.View) {
                         if (itm !== me.activeView) {
-                            itm.disableEvents();
                             itm.suspendLayout()
-                                .setStyle({
-                                    'z-index': -1,
-                                    width: 1,
-                                });
+                                .disableEvents();
+                            itm.setStyle({
+                                'z-index': -1,
+                                width: 1,
+                            });
                             itm.setVisible(false);
                             itm.resumeLayout()
                                 .enableEvents();
@@ -113,12 +114,6 @@ namespace Blend.container {
             }
         }
 
-        protected render(): Blend.dom.Element {
-            var me = this;
-            return Blend.dom.Element.create({
-                children: [me.renderBodyElement()]
-            });
-        }
     }
 }
 

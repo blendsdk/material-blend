@@ -15,15 +15,16 @@ namespace Blend.ui {
         protected visible: boolean;
         protected config: UIViewInterface;
         protected cssClass: string;
-        protected useParentControllers: boolean
-        protected isInRenderContext: boolean;
+        protected useParentControllers: boolean;
+
+        // box properies
+        protected flex: number;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
             me.parent = config.parent || null;
             me.useParentControllers = config.useParentController || false;
-            me.isInRenderContext = false;
             me.isRendered = false;
             me.visible = true;
             me.cssClass = null;
@@ -34,9 +35,10 @@ namespace Blend.ui {
                 top: null,
                 left: null,
                 width: null,
-                height: null
+                height: null,
+                flex: 0
             };
-            me.setCssClass(config.css || []);
+            me.addCssClass(config.css || []);
             me.setStyle(config.style || {});
             me.setVisible(Blend.isBoolean(config.visible) ? config.visible : true);
             me.setBounds({
@@ -45,18 +47,27 @@ namespace Blend.ui {
                 width: config.width || null,
                 height: config.height || null
             });
+
+            // box properties
+            me.flex = config.flex || 0;
         }
 
         protected render(): Blend.dom.Element {
             return Blend.dom.Element.create({});
         }
 
-        public setInRenderContext(state: boolean) {
-            this.isInRenderContext = state;
-        }
+        public canFireEvents(): boolean {
+            var me = this;
+            if (super.canFireEvents()) {
+                if (me.parent !== null) {
+                    return me.parent.canFireEvents();
+                } else {
+                    return true;
+                }
 
-        protected canFireEvents() {
-            return this.isInRenderContext === false;
+            } else {
+                return false;
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////
@@ -107,7 +118,7 @@ namespace Blend.ui {
         /**
          * Sets the visibility state for this View
          */
-        setVisible(visible: boolean = true) : Blend.ui.ViewBase {
+        setVisible(visible: boolean = true): Blend.ui.ViewBase {
             var me = this
             me.visible = visible === true ? true : false;
             if (me.isRendered) {
@@ -155,7 +166,7 @@ namespace Blend.ui {
         /**
          * Adds one or more CSS classes to this View
          */
-        public setCssClass(css: string | Array<string>, blendPrefix: boolean = false) {
+        public addCssClass(css: string | Array<string>, blendPrefix: boolean = false) {
             var me = this;
             if (me.isRendered) {
                 me.element.addCssClass(css, blendPrefix);
@@ -180,8 +191,8 @@ namespace Blend.ui {
          */
         protected finalizeRender() {
             var me = this;
-            me.setCssClass(me.cssClass, true);
-            me.setCssClass(me.config.css, false);
+            me.addCssClass(me.cssClass, true);
+            me.addCssClass(me.config.css, false);
             me.setBounds({
                 top: me.config.top,
                 left: me.config.left,

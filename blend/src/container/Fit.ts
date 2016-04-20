@@ -25,18 +25,14 @@ namespace Blend.container {
         protected layoutView() {
             var me = this;
             if (me.fittedView) {
-                // first time cleanup
-                me.fittedView.setBounds(null);
+                me.fittedView.suspendLayout();
+                me.fittedView.disableEvents();
+                me.fittedView.setBounds(null)
                 me.fittedView.setVisible(true);
+                me.fittedView.enableEvents();
+                me.fittedView.resumeLayout();
             }
             me.performLayoutChildren();
-        }
-
-        protected render(): Blend.dom.Element {
-            var me = this;
-            return Blend.dom.Element.create({
-                children: [me.renderBodyElement()]
-            });
         }
 
         public addView(item: UIType | Array<UIType>) {
