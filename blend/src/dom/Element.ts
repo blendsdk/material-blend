@@ -217,6 +217,15 @@ namespace Blend.dom {
         }
 
         /**
+         * Set the Scroll state for this Element
+         */
+        public scrollState(state: eScrollState): Blend.dom.Element {
+            var me = this;
+            me.setData('scroll', eScrollState[<number>state]);
+            return this;
+        }
+
+        /**
          * Enables/Disables the text select state of this element
          */
         public selectable(state: boolean) {

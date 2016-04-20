@@ -1,4 +1,14 @@
 /**
+ * Element Scroll values
+ */
+enum eScrollState {
+    none,
+    auto,
+    both,
+    horizontal,
+    vertical
+}
+/**
  * Interface to describ a dictioany
  */
 interface DictionaryInterface {

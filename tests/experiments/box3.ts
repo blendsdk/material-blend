@@ -67,7 +67,7 @@ Blend.Runtime.ready(function() {
     body.getEl().appendChild(dFrag);
     body.setStyle({ overflow: 'inherit' });
     cntr.performLayout();
-
+    (<any>window).cntr = cntr;
 });
 
 Blend.Runtime.kickStart();
