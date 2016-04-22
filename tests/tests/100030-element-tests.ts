@@ -23,7 +23,7 @@ TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
     el = document.createElement('p');
     el.setAttribute('class', 'a b b-c');
     var abcList = wrapEl(el);
-    t.assertEquals(['a', 'b', 'b-c'], abcList.getCssClass(true), 'get abcList');
+    t.assertEquals(abcList.getCssClass(true), ['a', 'b', 'b-c'], 'get abcList');
 
     t.assertTrue(abcList.hasCssClass('b', false), 'has b with no prefix');
     t.assertFalse(abcList.hasCssClass('b'), 'has b with prefix');

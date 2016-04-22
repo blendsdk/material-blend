@@ -1,4 +1,5 @@
 /// <reference path="../common/Interfaces.ts" />
+/// <reference path="ClassList.ts" />
 /// <reference path="../Blend.ts" />
 
 namespace Blend.dom {
@@ -18,9 +19,11 @@ namespace Blend.dom {
         private UNIT: string = 'px';
         private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
         private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
+        private classList: Blend.dom.ClassList;
 
         constructor(el: HTMLElement) {
             this.el = el;
+            this.classList = new Blend.dom.ClassList(this.el);
         }
 
         /**
@@ -115,12 +118,7 @@ namespace Blend.dom {
          * @return string|string[]
          */
         public getCssClass(asArray: boolean = false): (string | Array<string>) {
-            var css = (this.el.getAttribute('class') || '').trim();
-            if (asArray === true) {
-                return css === "" ? [] : css.split(' ')
-            } else {
-                return css === "" ? null : css;
-            }
+            return asArray === true ? this.classList.toArray() : this.classList.toString();
         }
 
         /**
@@ -129,7 +127,7 @@ namespace Blend.dom {
         public hasCssClass(name: string, checkPrefixed: boolean = true): boolean {
             var me = this,
                 check = checkPrefixed === true ? Blend.dom.Element.CSS_PREFIX + name : name;
-            return (this.el.getAttribute('class') || '').trim().indexOf(check, 0) !== -1;
+            return me.classList.has(check);
         }
 
         /**
@@ -138,44 +136,33 @@ namespace Blend.dom {
          * The replace flag will replace the existsing css class value
          */
         public addCssClass(css: string | string[], prefix: boolean = true, replace: boolean = false): Blend.dom.Element {
-            var me = this,
-                r = Blend.wrapInArray<string>(css),
-                cur = replace === true ? [] : <Array<string>>me.getCssClass(true),
-                v: string = null;
-            if (prefix === true) {
-                r = r.map(function(itm: string) {
-                    if (itm !== null) {
-                        return Blend.dom.Element.CSS_PREFIX + itm;
-                    } else {
-                        return null;
-                    }
-                });
+            var me = this, t: Array<string> = [];
+            if (replace === true) {
+                this.classList.clear();
             }
-            v = cur.concat(r).unique().join(' ').trim();
-            if (v !== '') {
-                me.el.setAttribute('class', v);
-            }
+            Blend.wrapInArray(css).forEach(function(c: string) {
+                t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
+            });
+            me.classList.add(t);
+            me.classList.serializeTo(me.el);
             return this;
         }
 
         public removeCssClass(css: string | string[], prefix = true) {
-            var me = this,
-                cur = <string>me.getCssClass(false),
-                list: Array<string> = <Array<string>>Blend.wrapInArray(css);
-            if (cur !== null) {
-                list.forEach(function(itm) {
-                    if (prefix) {
-                        itm = Blend.dom.Element.CSS_PREFIX + itm;
-                    }
-                    cur = cur.replace(itm, '');
-                });
-                cur = cur.trim();
-                if (cur !== "") {
-                    me.el.setAttribute('class', cur);
-                } else {
-                    me.el.removeAttribute(('class'));
-                }
-            }
+            var me = this, t: Array<string> = [];;
+            Blend.wrapInArray(css).forEach(function(c: string) {
+                t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
+            });
+            me.classList.remove(t);
+            me.classList.serializeTo(me.el);
+        }
+
+        /**
+         * Clears the value of the class attribute of this element
+         */
+        public clearCssClass(): Blend.dom.Element {
+            this.classList.clear();
+            return this;
         }
 
         /**
@@ -188,14 +175,6 @@ namespace Blend.dom {
                     me.el.removeChild(me.el.firstChild);
                 }
             }
-        }
-
-        /**
-         * Clears the value of the class attribute of this element
-         */
-        public clearCssClass(): Blend.dom.Element {
-            this.el.setAttribute('class', '');
-            return this;
         }
 
         /**
