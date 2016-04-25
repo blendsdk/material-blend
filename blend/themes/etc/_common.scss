@@ -6,12 +6,7 @@ html, body {
   @include box-sizing(border-box);
 }
 
-#noblend {
-    background-color: red;
-    color:white;
-}
-
-#{$prefix}-fitted {
+html, body, .b-fitted {
     display: inline-block;
     position: absolute;
     top: 0px;
