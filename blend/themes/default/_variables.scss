@@ -5,9 +5,3 @@ $default-font-size: 11px;
 // Global colors
 $base-color: #d1d5d8;
 $default-background-color: $base-color;
-
-//Splitter
-$default-splitter-size: 12;
-$default-splitter-color: darken($base-color,20%);
-$default-splitter-hover-color: darken($default-splitter-color,7%);
-$default-splitter-active-color: darken($default-splitter-color,15%);
