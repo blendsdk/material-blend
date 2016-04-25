@@ -52,7 +52,7 @@ namespace Blend {
         /**
          * Adds a callback function to run when the browser is ready to go
          */
-        ready(callback: Function, scope?: any) {
+        ready(callback: Function, scope?: any) : Blend.RuntimeSingleton {
             var me = this;
             if (!me.readyCallbacks) {
                 me.readyCallbacks = [];
@@ -61,6 +61,7 @@ namespace Blend {
                 fn: callback,
                 sc: scope || me
             });
+            return this;
         }
 
         /**
