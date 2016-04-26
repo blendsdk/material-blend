@@ -27,10 +27,12 @@
     </head>
     <script src="blend/blend.js" type="text/javascript"></script>
     <!--<script src="js/experiments/exp1.js" type="text/javascript"></script>-->
-    <body>
+    <body class="default">
         <div class="row">
-            <div class="col-lg-6">lG6</div>
-            <div class="col-lg-6">lG6</div>
+            <div class="col-lg-6 col-md-4 col-sm-12">Side</div>
+            <div class="col-lg-6 col-md-4 col-sm-12">Side</div>
+            <div class="col-lg-6 col-md-4 col-sm-12">Side</div>
+            <div class="col-lg-6 col-md-12 col-sm-12">Side</div>
         </div>
     </body>
 </html>

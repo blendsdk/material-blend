@@ -5,32 +5,3 @@ $default-font-size: 11px;
 // Global colors
 $base-color: #d1d5d8;
 $default-background-color: $base-color;
-
-$enable-flex:false;
-$enable-grid-classes:true;
-$grid-columns:      12 !default;
-$grid-gutter-width: 30px !default;
-
-// Grid breakpoints
-//
-// Define the minimum dimensions at which your layout will change,
-// adapting to different screen sizes, for use in media queries.
-
-$grid-breakpoints: (
-  xs: 0,
-  sm: 544px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px
-) !default;
-
-// Grid containers
-//
-// Define the maximum width of `.container` for different screen sizes.
-
-$container-max-widths: (
-  sm: 576px,
-  md: 720px,
-  lg: 940px,
-  xl: 1140px
-) !default;
