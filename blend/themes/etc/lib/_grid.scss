@@ -1,0 +1,37 @@
+@mixin grid(
+$containerName:'grid',
+$rowName:'row',
+$columnName:'col',
+$containerWidth:100%,
+$numColumns:12,
+$columnWidth:null
+) {
+    @if( $columnWidth == null) {
+        $columnWidth : (100 / $numColumns);
+    }
+    $columnGutter   : (100 - ($columnWidth * $numColumns)) / ($numColumns - 1);
+
+    .#{$containerName} {
+        @include clearfix();
+        &>.#{$rowName} {
+            @include clearfix();
+            max-width: $containerWidth;
+            &>[class*="#{$columnName}"] {
+                float: left;
+                display: inline;
+                min-height: 1px;
+                position: relative;                
+                margin-left: 1% * $columnGutter;
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+            @for $i from 1 through $numColumns {
+                .#{$columnName}#{$i} {
+                    $colWidth: 1% * ($columnWidth * $i) + ($columnGutter *($i - 1));
+                    width: $colWidth;
+                }
+            }            
+        }
+    }
+}
