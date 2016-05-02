@@ -160,3 +160,11 @@ interface UIContainerViewInterface extends UIViewInterface {
     items?: UIType | Array<UIType>,
     contentPadding?: number | UIPaddingInterface
 }
+
+/**
+ * Interface for describing an Application
+ */
+interface ApplicationInterface extends UIViewInterface {
+    mainView?: UIType
+    theme?: string;
+}
