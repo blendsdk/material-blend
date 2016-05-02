@@ -15,6 +15,7 @@ namespace Blend.application {
         protected isStarted: boolean;
         protected isResizing: boolean;
         protected mainView: Blend.ui.View;
+        protected mqTriggers: DictionaryInterface;
 
         public constructor(config: ApplicationInterface = {}) {
             super(config);
@@ -28,6 +29,11 @@ namespace Blend.application {
             me.addLayoutTriggerEvent('applicationResized');
             me.setContext(new Blend.mvc.Context());
             me.createMainView();
+            me.mqTriggers = {
+                small: '(min-width: 321px)',
+                medium: '(min-width: 769px)',
+                large: '(min-width: 1025px)'
+            }
         }
 
         /**
@@ -36,6 +42,11 @@ namespace Blend.application {
         protected notifyApplicationResized(evt: Event) {
             var me = this;
             me.fireEvent('applicationResized', evt);
+        }
+
+        protected notifyResponsiveChanged(model: string) {
+            var me = this;
+            me.fireEvent('responsiveChanged', model);
         }
 
         /**
@@ -47,6 +58,20 @@ namespace Blend.application {
                 me.isResizing = true;
                 me.notifyApplicationResized.apply(me, arguments);
                 me.isResizing = false;
+            }
+        }
+
+        /**
+         * Install an event listeners to detect common Media Query changes
+          */
+        protected setupResponsiveListeners() {
+            var me = this;
+            if (window && window.matchMedia) {
+                Blend.forEach(me.mqTriggers, function(size: string, model: string) {
+                    window.matchMedia(size).addListener(function() {
+                        me.notifyResponsiveChanged(model);
+                    });
+                });
             }
         }
 
@@ -91,6 +116,7 @@ namespace Blend.application {
                 body.addCssClass(me.config.theme, false);
                 body.append(me.getElement());
                 me.setupWindowListeners();
+                me.setupResponsiveListeners();
                 me.performLayout();
                 me.notifyApplicationReady();
                 me.isStarted = true;
