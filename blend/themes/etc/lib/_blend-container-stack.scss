@@ -1,0 +1,20 @@
+@mixin blend-container-stack(
+) {
+    .b-stack-container {
+
+         .b-stack-container-body {
+
+            width:100%;
+            height:100%;
+            position: relative;
+
+            .b-stack-container-item {
+                width:100%;
+                height:100%;
+                position: absolute;
+                top:0px;
+                left:0px;
+            }
+        }
+    }
+}

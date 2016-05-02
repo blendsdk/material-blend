@@ -34,6 +34,9 @@ $breakpoints: $default-breakpoints
 
             }
         }
+
+        @include blend-container-fit();
+        @include blend-container-stack();
     }
 
 }

@@ -168,3 +168,17 @@ interface ApplicationInterface extends UIViewInterface {
     mainView?: UIType
     theme?: string;
 }
+
+/**
+ * Interface for describing a Fit container
+ */
+interface FitContainerInterface extends UIContainerViewInterface {
+
+}
+
+/**
+ * Interface for describing a Stack container
+ */
+interface StackContainerInterface extends UIContainerViewInterface {
+    activeView?: number | string | Blend.ui.View;
+}
