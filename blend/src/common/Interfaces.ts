@@ -125,3 +125,38 @@ interface UIPaddingInterface {
     left?: number | string
 }
 
+/**
+ * Interface for implementing a UI View
+ */
+interface UIViewInterface extends MvcViewInterface {
+    parent?: Blend.ui.View
+    useParentController?: boolean
+    css?: string | Array<string>
+    style?: StyleInterface
+    visible?: boolean
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string
+    /**
+     * Applies only to Box container
+     */
+    flex?: number;
+    /**
+     * Applies only yo Box container
+     */
+    margins?: number;
+}
+
+/**
+ * UI Types definition
+ */
+type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.View;
+
+/**
+ * Interface for describing a UI Container
+ */
+interface UIContainerViewInterface extends UIViewInterface {
+    items?: UIType | Array<UIType>,
+    contentPadding?: number | UIPaddingInterface
+}
