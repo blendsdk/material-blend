@@ -35,7 +35,7 @@ namespace Blend.container {
                     me.bodyElement.append(row);
                 }
                 viewEl = view.getElement();
-                view.addCssClass('b-grd-c' + (gridConfig.col || 0));
+                viewEl.setData('grid-column', (gridConfig.col || 0));
                 view.setStyle({ width: null, display: 'initial' });
                 row.append(viewEl);
                 return row;
