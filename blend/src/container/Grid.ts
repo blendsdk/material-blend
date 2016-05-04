@@ -11,13 +11,26 @@ namespace Blend.container {
     export class Grid extends Blend.ui.Container {
 
         protected config: GridContainerInterface
+        protected gridRows: Array<Blend.dom.Element>;
 
         public constructor(config: GridContainerInterface = {}) {
             super(config);
             var me = this;
             me.cssClass = 'grid-container';
             me.itemCSSClass = cssPrefix(me.cssClass + '-item');
+            me.gridRows = [];
         }
+
+        protected renderChild(view: Blend.ui.View): Blend.dom.Element {
+            var me = this,gridConfig = view.getProperty('grid', null);
+            if (gridConfig !== null) {
+
+            } else {
+                throw new Error('Items ina Grid container must have a "grid" configuration!')
+            }
+            return view.getElement();
+        }
+
 
     }
 }
