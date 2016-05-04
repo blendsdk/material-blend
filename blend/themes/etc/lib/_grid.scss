@@ -1,7 +1,7 @@
-@mixin grid(
-$containerName:'grid',
-$rowName:'row',
-$columnName:'col',
+@mixin grid-system(
+$containerName:'b-grd',
+$rowName:'b-grd-r',
+$columnName:'b-grd-c',
 $containerWidth:100%,
 $numColumns:12,
 $columnWidth:null
@@ -20,7 +20,7 @@ $columnWidth:null
                 float: left;
                 display: inline;
                 min-height: 1px;
-                position: relative;                
+                position: relative;
                 margin-left: 1% * $columnGutter;
                 &:first-child {
                     margin-left: 0;
@@ -31,7 +31,7 @@ $columnWidth:null
                     $colWidth: 1% * ($columnWidth * $i) + ($columnGutter *($i - 1));
                     width: $colWidth;
                 }
-            }            
+            }
         }
     }
 }

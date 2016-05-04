@@ -139,7 +139,8 @@ interface UIViewInterface extends MvcViewInterface {
     width?: number | string
     height?: number | string,
     responsive?: boolean,
-    responseTo?:Array<string>
+    responseTo?: Array<string>,
+    grid?: GridItemInterface
 }
 
 /**
@@ -175,4 +176,18 @@ interface FitContainerInterface extends UIContainerViewInterface {
  */
 interface StackContainerInterface extends UIContainerViewInterface {
     activeView?: number | string | Blend.ui.View;
+}
+
+/**
+ * Interface for describing a Grid container
+ */
+interface GridContainerInterface extends UIContainerViewInterface {
+
+}
+
+/**
+ * Interface for configuring a View insde a Grid container
+ */
+interface GridItemInterface {
+
 }

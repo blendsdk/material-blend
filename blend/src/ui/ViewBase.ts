@@ -34,7 +34,8 @@ namespace Blend.ui {
                 top: null,
                 left: null,
                 width: null,
-                height: null
+                height: null,
+                grid: config.grid || null,
             };
             me.addCssClass(config.css || []);
             me.setStyle(config.style || {});
