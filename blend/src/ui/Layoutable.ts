@@ -20,12 +20,32 @@ namespace Blend.ui {
             me.layoutEnabled = true;
             me.sizeHash = null;
             me.layoutTriggers = [];
+            Blend.apply(me.config, {
+                responsive: config.responsive === true ? true : false,
+                responseTo: Blend.isArray(config.responseTo) ? config.responseTo : []
+            });
             me.addLayoutTriggerEvent([
                 'styleChanged',
                 'boundsChanged',
-                'visibilityChanged'
+                'visibilityChanged',
+                'mediaChanged'
             ]);
         }
+
+        /**
+         * Performs View initialization as part of the Layout process
+          */
+        protected initialize() {
+
+        }
+
+        /**
+         * Performs the actual layout peration on thie View
+         */
+        protected layoutView() {
+
+        }
+
 
         public addLayoutTriggerEvent(eventName: string | Array<string>): Blend.ui.Layoutable {
             var me = this;
@@ -77,10 +97,35 @@ namespace Blend.ui {
         }
 
         /**
-         * Performs the actual layout peration on thie View
+         * Initialized a responsive listener for this View by adding a listener to the
+         * Runtime.addMediaQueryListener
          */
-        protected layoutView() {
+        protected initializeResponsiveEvents() {
+            var me = this;
+            if (me.config.responsive === true) {
+                me.config.responseTo.forEach(function(mediaQuery) {
+                    Blend.Runtime.addMediaQueryListener(mediaQuery, function(mql:MediaQueryList) {
+                        me.fireEvent('responsiveChanged',mediaQuery,mql);
+                    });
+                });
+            }
+        }
 
+        /**
+         * Initialized the view one the first Layout cycle and installed the Responsive
+         * listeners
+         */
+        protected initializeView() {
+            var me = this;
+            if (me.isInitialized === false) {
+                me.disableEvents();
+                me.initialize();
+                me.initializeResponsiveEvents();
+                me.isInitialized = true;
+                delete (me.config);
+                me.enableEvents();
+                me.notifyViewInitialized();
+            }
         }
 
         /**
@@ -91,6 +136,7 @@ namespace Blend.ui {
                 cycled = false;
             if (me.canLayout()) {
                 me.suspendLayout();
+                me.initializeView();
                 if (me.shouldLayout()) {
                     me.layoutView.apply(me, arguments);
                     me.sizeHash = me.getSizeHash();

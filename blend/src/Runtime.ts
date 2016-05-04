@@ -12,6 +12,23 @@ namespace Blend {
     }
 
     /**
+     * @private
+     * Media Query registery that hold a lisneters for the Views
+     * responding to a media query
+      */
+    interface IMediaQueryRegistery extends DictionaryInterface {
+        [name: string]: Array<Function>
+    }
+
+    /**
+     * @private
+     * Media Query matcher registery
+     */
+    interface IMediaQueryMatcher extends DictionaryInterface {
+        [name: string]: MediaQueryList
+    }
+
+    /**
      * Provides functionality to get Blend kickstarted and check for
      * brower compatibility
      */
@@ -19,6 +36,8 @@ namespace Blend {
 
         private readyCallbacks: Array<IReadCallback>;
         private kickStarted: boolean = false;
+        private mediaQueryRegistery: IMediaQueryRegistery;
+        private mediaQueryMatchers: IMediaQueryMatcher;
 
         public Binder: Blend.binding.BindingProvider;
         public IE: boolean;
@@ -26,8 +45,45 @@ namespace Blend {
 
         public constructor() {
             this.Binder = new Blend.binding.BindingProvider();
+            this.mediaQueryRegistery = {};
+            this.mediaQueryMatchers = {};
         }
 
+        /**
+         * Used to trigger the media query matching on application kickstart
+         */
+        public triggerMediaQueryCheck() {
+            var me = this;
+            Blend.forEach(me.mediaQueryMatchers, function(mql: MediaQueryList, mediaQuery: string) {
+                if (mql.matches) {
+                    me.mediaQueryRegistery[mediaQuery].forEach(function(fn: Function) {
+                        fn.apply(me, [mql]);
+                    });
+                }
+            });
+        }
+
+        /**
+         * Adds a media query listener
+         */
+        public addMediaQueryListener(mediaQuery: string, listener: Function) {
+            var me = this;
+            if (me.mediaQueryRegistery[mediaQuery] === undefined) {
+                me.mediaQueryRegistery[mediaQuery] = [];
+                var mql: MediaQueryList = window.matchMedia(mediaQuery);
+                me.mediaQueryMatchers[mediaQuery] = mql;
+                mql.addListener(function() {
+                    me.mediaQueryRegistery[mediaQuery].forEach(function(fn: Function) {
+                        fn.apply(me, [mql]);
+                    });
+                });
+            }
+            me.mediaQueryRegistery[mediaQuery].push(listener);
+        }
+
+        /**
+         * Checks if the current browser is supported
+          */
         private isSupportedBrowser(): boolean {
             var me = this,
                 ie = me.detectIE();
@@ -52,7 +108,7 @@ namespace Blend {
         /**
          * Adds a callback function to run when the browser is ready to go
          */
-        ready(callback: Function, scope?: any) : Blend.RuntimeSingleton {
+        ready(callback: Function, scope?: any): Blend.RuntimeSingleton {
             var me = this;
             if (!me.readyCallbacks) {
                 me.readyCallbacks = [];
