@@ -23,10 +23,24 @@
 var app = new Blend.web.Application({
     mainView: {
         ctype: 'layout.grid',
+        controller: function(sender: Blend.ui.View, event: string, mediaQuery: string) {
+            if (sender !== this && event === 'responsiveChanged') {
+                console.log(arguments);
+                if (mediaQuery === '(min-width:319px)') {
+                    sender.getElement().removeCssClass('grd-c6');
+                    sender.getElement().addCssClass('grd-c12');
+                } else {
+                    sender.getElement().removeCssClass('grd-c12');
+                    sender.getElement().addCssClass('grd-c6');
+                }
+            }
+        },
         items: [
             {
                 ctype: 'ui.rect',
                 color: 'red',
+                responsive: true,
+                responseTo:['(min-width:319px)','(min-width:767px)'],
                 grid: {
                     row: 0,
                     col: 6
@@ -35,6 +49,8 @@ var app = new Blend.web.Application({
             {
                 ctype: 'ui.rect',
                 color: 'orange',
+                responsive: true,
+                responseTo:['(min-width:319px)','(min-width:767px)'],
                 grid: {
                     row: 0,
                     col: 6
@@ -43,5 +59,4 @@ var app = new Blend.web.Application({
         ]
     }
 });
-console.clear();
 app.run();
