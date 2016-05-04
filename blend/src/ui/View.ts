@@ -15,7 +15,6 @@ namespace Blend.ui {
             super(config);
             var me = this;
             me.isInitialized = false;
-            // Box container additions
         }
 
         protected initialize() {
