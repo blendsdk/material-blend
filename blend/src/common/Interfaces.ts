@@ -1,3 +1,9 @@
+class eMediaQuery {
+    static LARGE: string = 'L'
+    static MEDIUM: string = 'M'
+    static SMALL: string = 'S'
+}
+
 /**
  * Element Scroll values
  */
@@ -125,6 +131,10 @@ interface UIPaddingInterface {
     left?: number | string
 }
 
+interface MediaQueryConfig extends DictionaryInterface {
+    [name: string]: string | Array<string>
+}
+
 /**
  * Interface for implementing a UI View
  */
@@ -139,7 +149,7 @@ interface UIViewInterface extends MvcViewInterface {
     width?: number | string
     height?: number | string,
     responsive?: boolean,
-    responseTo?: Array<string>,
+    responseTo?: MediaQueryConfig,
     grid?: GridItemInterface
 }
 
@@ -190,5 +200,5 @@ interface GridContainerInterface extends UIContainerViewInterface {
  */
 interface GridItemInterface {
     row: number,
-    col:number
+    col: number
 }

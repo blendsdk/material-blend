@@ -1,7 +1,6 @@
 @mixin grid-system(
 $containerName:'b-grd',
 $rowName:'b-grd-r',
-$columnName:'b-grd-c',
 $containerWidth:100%,
 $numColumns:12,
 $columnWidth:null
@@ -16,7 +15,7 @@ $columnWidth:null
         &>.#{$rowName} {
             @include clearfix();
             max-width: $containerWidth;
-            &>[class*="#{$columnName}"] {
+            &>[data-grid-column] {
                 float: left;
                 display: inline;
                 min-height: 1px;
@@ -27,7 +26,7 @@ $columnWidth:null
                 }
             }
             @for $i from 1 through $numColumns {
-                .#{$columnName}#{$i} {
+                &>[data-grid-column="#{$i}"] {
                     $colWidth: 1% * ($columnWidth * $i) + ($columnGutter *($i - 1));
                     width: $colWidth;
                 }

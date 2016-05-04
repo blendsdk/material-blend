@@ -23,16 +23,17 @@
 var app = new Blend.web.Application({
     mainView: {
         ctype: 'layout.grid',
-        controller: function(sender: Blend.ui.View, event: string, mediaQuery: string) {
+        controller: function(sender: Blend.ui.View, event: string, alias: string, mediaQuery: string) {
             if (sender !== this && event === 'responsiveChanged') {
-                console.log(arguments);
-                if (mediaQuery === '(min-width:319px)') {
-                    sender.getElement().removeCssClass('grd-c6');
-                    sender.getElement().addCssClass('grd-c12');
-                } else {
-                    sender.getElement().removeCssClass('grd-c12');
-                    sender.getElement().addCssClass('grd-c6');
+                switch (alias) {
+                    case eMediaQuery.SMALL: sender.getElement().setData('grid-column', 12);
+                        break;
+                    case eMediaQuery.MEDIUM : sender.getElement().setData('grid-column', 3);
+                        break;
+                    default:
+                        sender.getElement().setData('grid-column', 4);
                 }
+                sender.getElement().setHtml(alias);
             }
         },
         items: [
@@ -40,20 +41,27 @@ var app = new Blend.web.Application({
                 ctype: 'ui.rect',
                 color: 'red',
                 responsive: true,
-                responseTo:['(min-width:319px)','(min-width:767px)'],
                 grid: {
                     row: 0,
-                    col: 6
+                    col: 4
+                }
+            },
+            {
+                ctype: 'ui.rect',
+                color: 'blue',
+                responsive: true,
+                grid: {
+                    row: 0,
+                    col: 4
                 }
             },
             {
                 ctype: 'ui.rect',
                 color: 'orange',
                 responsive: true,
-                responseTo:['(min-width:319px)','(min-width:767px)'],
                 grid: {
                     row: 0,
-                    col: 6
+                    col: 4
                 }
             }
         ]
