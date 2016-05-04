@@ -16,10 +16,12 @@ namespace Blend.ui {
         protected config: UIViewInterface;
         protected cssClass: string;
         protected useParentControllers: boolean;
+        protected isInitialized: boolean;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
+            me.isInitialized = false;
             me.parent = config.parent || null;
             me.useParentControllers = config.useParentController || false;
             me.isRendered = false;
@@ -49,17 +51,32 @@ namespace Blend.ui {
             return Blend.dom.Element.create({});
         }
 
+        /**
+         * Sends a viewInitialized notification
+         */
+        protected notifyViewInitialized() {
+            var me = this
+            me.fireEvent('viewInitialized', me);
+        }
+
+        /**
+         * Check if events can be fired on this View
+         */
         public canFireEvents(): boolean {
-            var me = this;
+            var me = this, state: boolean;
             if (super.canFireEvents()) {
                 if (me.parent !== null) {
-                    return me.parent.canFireEvents();
+                    state = me.parent.canFireEvents();
                 } else {
-                    return true;
+                    state = true;
                 }
-
             } else {
-                return false;
+                state = false;
+            }
+            if (state === false && me.currentEventName === 'viewInitialized') {
+                return true;
+            } else {
+                return state;
             }
         }
 
