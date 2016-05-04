@@ -17,24 +17,8 @@ $breakpoints: $default-breakpoints
 
     .#{$name} {
 
-        @each $bpname,$bpsize in $breakpoints {
-
-            @include media("<=" + ($bpsize)) {
-                .b-hide-on-#{$bpname} {
-                    display: none !important;
-                }
-            }
-
-            @include media(">" + $bpsize) {
-                @include grid($containerName:'grid',
-                    $rowName:'row',
-                    $columnName:'col-' + $bpname + '-',
-                    $containerWidth:100%,
-                    $numColumns:$grid-columns);
-
-            }
-        }
-
+        @include grid-system();
+        @include blend-application();
         @include blend-container-fit();
         @include blend-container-stack();
     }

@@ -140,19 +140,22 @@ namespace Blend.ui {
             return children;
         }
 
-        protected renderBodyElement(): Blend.dom.Element {
+        protected renderBodyElement() {
             var me = this;
-            return this.bodyElement
+            this.bodyElement
                 = Blend.dom.Element.create({
-                    cls: cssPrefix(me.cssClass + '-body'),
-                    children: me.renderChildren()
+                    cls: cssPrefix(me.cssClass + '-body')
                 });
+            me.renderChildren().forEach(function(child: Blend.dom.Element) {
+                me.bodyElement.append(child);
+            });
         }
 
         protected render(): Blend.dom.Element {
             var me = this;
+            me.renderBodyElement();
             return Blend.dom.Element.create({
-                children: [me.renderBodyElement()]
+                children: [me.bodyElement]
             });
         }
     }

@@ -137,15 +137,10 @@ interface UIViewInterface extends MvcViewInterface {
     top?: number
     left?: number
     width?: number | string
-    height?: number | string
-    /**
-     * Applies only to Box container
-     */
-    flex?: number;
-    /**
-     * Applies only yo Box container
-     */
-    margins?: number;
+    height?: number | string,
+    responsive?: boolean,
+    responseTo?: Array<string>,
+    grid?: GridItemInterface
 }
 
 /**
@@ -181,4 +176,19 @@ interface FitContainerInterface extends UIContainerViewInterface {
  */
 interface StackContainerInterface extends UIContainerViewInterface {
     activeView?: number | string | Blend.ui.View;
+}
+
+/**
+ * Interface for describing a Grid container
+ */
+interface GridContainerInterface extends UIContainerViewInterface {
+
+}
+
+/**
+ * Interface for configuring a View insde a Grid container
+ */
+interface GridItemInterface {
+    row: number,
+    col:number
 }

@@ -54,7 +54,7 @@ namespace Blend.mvc {
                     ctrl.bindView(me);
                     me.controllers.push(ctrl);
                 } else if (Blend.isFunction(ctrl)) {
-                    me.controllers.push(ctrl);
+                    me.controllers.push(<any>function() { return (<any>ctrl).apply(me, arguments); });
                 } else {
                     throw new Error(`${ctrl} is not a valid Blend.mvc.Controller`);
                 }

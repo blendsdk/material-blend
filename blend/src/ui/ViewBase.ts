@@ -16,13 +16,12 @@ namespace Blend.ui {
         protected config: UIViewInterface;
         protected cssClass: string;
         protected useParentControllers: boolean;
-
-        // box properies
-        protected flex: number;
+        protected isInitialized: boolean;
 
         public constructor(config: UIViewInterface = {}) {
             super(config);
             var me = this;
+            me.isInitialized = false;
             me.parent = config.parent || null;
             me.useParentControllers = config.useParentController || false;
             me.isRendered = false;
@@ -36,7 +35,7 @@ namespace Blend.ui {
                 left: null,
                 width: null,
                 height: null,
-                flex: 0
+                grid: config.grid || null,
             };
             me.addCssClass(config.css || []);
             me.setStyle(config.style || {});
@@ -47,26 +46,48 @@ namespace Blend.ui {
                 width: config.width || null,
                 height: config.height || null
             });
+        }
 
-            // box properties
-            me.flex = config.flex || 0;
+        public getProperty<T>(name: string, defaultValue: any = null): T {
+            var me: any = this;
+            if (name.indexOf('config.', 0) === 0) {
+                name = name.replace('config.', '').trim();
+                return (me.config[name] === undefined ? defaultValue : me.config[name]);
+            } else {
+                return super.getProperty<T>(name, defaultValue);
+            }
         }
 
         protected render(): Blend.dom.Element {
             return Blend.dom.Element.create({});
         }
 
+        /**
+         * Sends a viewInitialized notification
+         */
+        protected notifyViewInitialized() {
+            var me = this
+            me.fireEvent('viewInitialized', me);
+        }
+
+        /**
+         * Check if events can be fired on this View
+         */
         public canFireEvents(): boolean {
-            var me = this;
+            var me = this, state: boolean;
             if (super.canFireEvents()) {
                 if (me.parent !== null) {
-                    return me.parent.canFireEvents();
+                    state = me.parent.canFireEvents();
                 } else {
-                    return true;
+                    state = true;
                 }
-
             } else {
-                return false;
+                state = false;
+            }
+            if (state === false && me.currentEventName === 'viewInitialized') {
+                return true;
+            } else {
+                return state;
             }
         }
 
