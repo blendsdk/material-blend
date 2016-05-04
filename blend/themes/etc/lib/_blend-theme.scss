@@ -18,6 +18,7 @@ $breakpoints: $default-breakpoints
     .#{$name} {
 
         @include grid-system();
+        @include blend-application();
         @include blend-container-fit();
         @include blend-container-stack();
     }
