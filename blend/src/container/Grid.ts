@@ -22,16 +22,33 @@ namespace Blend.container {
         }
 
         protected renderChild(view: Blend.ui.View): Blend.dom.Element {
-            var me = this,gridConfig = view.getProperty('grid', null);
-            if (gridConfig !== null) {
+            var me = this,
+                row: Blend.dom.Element,
+                viewEl: Blend.dom.Element,
+                gridConfig: GridItemInterface = view.getProperty<GridItemInterface>('config.grid', null);
 
+            if (gridConfig !== null) {
+                row = me.gridRows[gridConfig.row || 0] || me.gridRows[0] || null;
+                if (row == null) {
+                    row = Blend.dom.Element.create({ cls: 'b-grd-r' });
+                    me.gridRows.push(row);
+                    me.bodyElement.append(row);
+                }
+                viewEl = view.getElement();
+                view.addCssClass('b-grd-c' + (gridConfig.col || 0));
+                view.setStyle({ width: null, display: 'initial' });
+                row.append(viewEl);
+                return row;
             } else {
                 throw new Error('Items ina Grid container must have a "grid" configuration!')
             }
-            return view.getElement();
         }
 
-
+        protected finalizeRender() {
+            var me = this;
+            super.finalizeRender();
+            me.bodyElement.addCssClass('grd');
+        }
     }
 }
 

@@ -189,5 +189,6 @@ interface GridContainerInterface extends UIContainerViewInterface {
  * Interface for configuring a View insde a Grid container
  */
 interface GridItemInterface {
-
+    row: number,
+    col:number
 }

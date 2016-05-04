@@ -48,6 +48,16 @@ namespace Blend.ui {
             });
         }
 
+        public getProperty<T>(name: string, defaultValue: any = null): T {
+            var me: any = this;
+            if (name.indexOf('config.', 0) === 0) {
+                name = name.replace('config.', '').trim();
+                return (me.config[name] === undefined ? defaultValue : me.config[name]);
+            } else {
+                return super.getProperty<T>(name, defaultValue);
+            }
+        }
+
         protected render(): Blend.dom.Element {
             return Blend.dom.Element.create({});
         }
