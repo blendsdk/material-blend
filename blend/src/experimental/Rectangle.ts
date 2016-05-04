@@ -32,7 +32,7 @@ namespace Blend.ui {
         protected layoutView() {
             var me = this;
             me.layoutCount++;
-            me.log();
+            //me.log();
         }
 
         private log() {

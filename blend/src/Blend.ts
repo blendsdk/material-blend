@@ -11,6 +11,12 @@ namespace Blend {
      */
     export var DEBUG: boolean = false;
 
+    export var COMMON_MEDIA_QUERIES: DictionaryInterface = {}
+
+    COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = 'only screen and (min-width : 1200px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = 'only screen and (min-width : 768px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = 'only screen and (min-width : 320px)';
+
     /**
      * Returns enum value, either the value as number or its string representation
      */

@@ -21,8 +21,8 @@ namespace Blend.ui {
             me.sizeHash = null;
             me.layoutTriggers = [];
             Blend.apply(me.config, {
-                responsive: config.responsive === true ? true : false,
-                responseTo: Blend.isArray(config.responseTo) ? config.responseTo : []
+                responseTo: config.responseTo || null,
+                responsive: config.responsive || false
             });
             me.addLayoutTriggerEvent([
                 'styleChanged',
@@ -101,11 +101,18 @@ namespace Blend.ui {
          * Runtime.addMediaQueryListener
          */
         protected initializeResponsiveEvents() {
-            var me = this;
-            if (me.config.responsive === true) {
-                me.config.responseTo.forEach(function(mediaQuery) {
-                    Blend.Runtime.addMediaQueryListener(mediaQuery, function(mql:MediaQueryList) {
-                        me.fireEvent('responsiveChanged',mediaQuery,mql);
+            var me = this, config: MediaQueryConfig;
+
+            config = me.config.responsive === true ? Blend.COMMON_MEDIA_QUERIES
+                : me.config.responseTo || null;
+
+            if (config !== null) {
+                Blend.forEach(config, function(queries: Array<string>, alias: string) {
+                    queries = Blend.wrapInArray<string>(queries);
+                    queries.forEach(function(mediaQuery: string) {
+                        Blend.Runtime.addMediaQueryListener(mediaQuery, function(mql: MediaQueryList) {
+                            me.fireEvent('responsiveChanged', alias, mql);
+                        });
                     });
                 });
             }
