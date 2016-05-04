@@ -29,11 +29,6 @@ namespace Blend.application {
             me.addLayoutTriggerEvent('applicationResized');
             me.setContext(new Blend.mvc.Context());
             me.createMainView();
-            me.mqTriggers = {
-                small: '(min-width: 321px)',
-                medium: '(min-width: 769px)',
-                large: '(min-width: 1025px)'
-            }
         }
 
         /**
@@ -108,6 +103,10 @@ namespace Blend.application {
             me.fireEvent('applicationReady');
         }
 
+        protected performInitialMediaQuery() {
+            Blend.Runtime.triggerMediaQueryCheck();
+        }
+
         protected asyncRun() {
             var me = this,
                 body: Blend.dom.Element = wrapEl(document.body);
@@ -118,6 +117,7 @@ namespace Blend.application {
                 me.setupWindowListeners();
                 me.setupResponsiveListeners();
                 me.performLayout();
+                me.performInitialMediaQuery();
                 me.notifyApplicationReady();
                 me.isStarted = true;
             }
