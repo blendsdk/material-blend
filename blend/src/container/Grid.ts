@@ -35,6 +35,10 @@ namespace Blend.container {
                     me.bodyElement.append(row);
                 }
                 viewEl = view.getElement();
+                /**
+                 * Adds the css class using the lower API so the View does not go into a
+                 * paint/layout cycle
+                 */
                 viewEl.classList.removeLike(['b-grd-c']);
                 viewEl.classList.add(['b-grd-c' + (gridConfig.col || 0)]);
                 viewEl.classList.serializeTo(viewEl.getEl());
