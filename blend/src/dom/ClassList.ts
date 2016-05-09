@@ -32,6 +32,18 @@ namespace Blend.dom {
             }
         }
 
+        public removeLike(list: Array<string>) {
+            var me = this, i = -1,n:Array<string> = [];
+            list.forEach(function(r: string) {
+                me.list.forEach(function(i: string) {
+                    if (!i.startsWith(r)) {
+                        n.push(i);
+                    }
+                });
+            });
+            me.list = n;
+        }
+
         public remove(list: Array<string>) {
             var me = this, i = -1;
             list.forEach(function(r: string) {

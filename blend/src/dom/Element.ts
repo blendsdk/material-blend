@@ -148,12 +148,28 @@ namespace Blend.dom {
             return this;
         }
 
+        /**
+         * Removes one of more CSS classes from this element
+         */
         public removeCssClass(css: string | string[], prefix = true) {
             var me = this, t: Array<string> = [];;
             Blend.wrapInArray(css).forEach(function(c: string) {
                 t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
             });
             me.classList.remove(t);
+            me.classList.serializeTo(me.el);
+        }
+
+        /**
+         * Removes one or more CSS classes from this element by checking if the
+         * CSS names start with the given request
+         */
+        public removeCssClassLike(css: string | string[], prefix = true) {
+            var me = this, t: Array<string> = [];;
+            Blend.wrapInArray(css).forEach(function(c: string) {
+                t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
+            });
+            me.classList.removeLike(t);
             me.classList.serializeTo(me.el);
         }
 
