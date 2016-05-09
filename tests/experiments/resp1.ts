@@ -34,6 +34,7 @@ var app = new Blend.web.Application({
                         sender.getElement().setData('grid-column', 4);
                 }
                 sender.getElement().setHtml(alias);
+                console.log(alias);
             }
         },
         items: [

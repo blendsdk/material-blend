@@ -50,7 +50,7 @@ namespace Blend {
         }
 
         /**
-         * Used to trigger the media query matching on application kickstart
+         * Used to trigger the media query matching on application.
          */
         public triggerMediaQueryCheck() {
             var me = this;
@@ -59,6 +59,7 @@ namespace Blend {
                     me.mediaQueryRegistery[mediaQuery].forEach(function(fn: Function) {
                         fn.apply(me, [mql]);
                     });
+                    return false;
                 }
             });
         }
@@ -73,9 +74,7 @@ namespace Blend {
                 var mql: MediaQueryList = window.matchMedia(mediaQuery);
                 me.mediaQueryMatchers[mediaQuery] = mql;
                 mql.addListener(function() {
-                    me.mediaQueryRegistery[mediaQuery].forEach(function(fn: Function) {
-                        fn.apply(me, [mql]);
-                    });
+                    me.triggerMediaQueryCheck();
                 });
             }
             me.mediaQueryRegistery[mediaQuery].push(listener);

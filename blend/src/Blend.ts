@@ -13,6 +13,12 @@ namespace Blend {
 
     export var COMMON_MEDIA_QUERIES: DictionaryInterface = {}
 
+    /**
+     * IMPORTANT: For the media queries to work properly, we need to define them from
+     * large to small because the Media Query check will match the first one and
+     * trigger the responsiveChange event and other matching mediea queries will be
+     * ignored!
+     */
     COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = 'only screen and (min-width : 1200px)';
     COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = 'only screen and (min-width : 768px)';
     COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = 'only screen and (min-width : 320px)';
