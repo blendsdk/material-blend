@@ -24,15 +24,17 @@ var app = new Blend.web.Application({
     mainView: {
         ctype: 'layout.grid',
         controller: function(sender: Blend.ui.View, event: string, alias: string, mediaQuery: string) {
+            var col: number;
             if (sender !== this && event === 'responsiveChanged') {
                 switch (alias) {
-                    case eMediaQuery.SMALL: sender.getElement().setData('grid-column', 12);
+                    case eMediaQuery.SMALL: col = 12;
                         break;
-                    case eMediaQuery.MEDIUM : sender.getElement().setData('grid-column', 3);
+                    case eMediaQuery.MEDIUM: col = 3;
                         break;
                     default:
-                        sender.getElement().setData('grid-column', 4);
+                        col = 4;
                 }
+                sender.setGridColumn(col);
                 sender.getElement().setHtml(alias);
                 console.log(alias);
             }

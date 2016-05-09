@@ -16,7 +16,7 @@ namespace Blend.dom {
         private UNIT: string = 'px';
         private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
         private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
-        private classList: Blend.dom.ClassList;
+        public classList: Blend.dom.ClassList;
         public styleList: Blend.dom.StyleList;
 
         constructor(el: HTMLElement) {
@@ -115,20 +115,22 @@ namespace Blend.dom {
         /**
          * Removes one of more CSS classes from this element
          */
-        public removeCssClass(css: string | string[]) {
+        public removeCssClass(css: string | string[]) : Blend.dom.Element {
             var me = this, t: Array<string> = [];;
             me.classList.remove(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
+            return this;
         }
 
         /**
          * Removes one or more CSS classes from this element by checking if the
          * CSS names start with the given request
          */
-        public removeCssClassLike(css: string | string[]) {
+        public removeCssClassLike(css: string | string[]) : Blend.dom.Element {
             var me = this, t: Array<string> = [];;
             me.classList.removeLike(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
+            return this;
         }
 
         /**

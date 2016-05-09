@@ -9,5 +9,14 @@ namespace Blend.ui {
      */
     export class View extends Blend.ui.Layoutable {
 
+        /**
+         * Helper method to the the Grdi column size when this View is part
+         * of a Blend.container.Grid
+         */
+        public setGridColumn(size: number) {
+            var me = this;
+            me.element.removeCssClassLike('b-grd-c').addCssClass('b-grd-c' + size);
+        }
+
     }
 }

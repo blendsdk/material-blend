@@ -35,7 +35,9 @@ namespace Blend.container {
                     me.bodyElement.append(row);
                 }
                 viewEl = view.getElement();
-                viewEl.setData('grid-column', (gridConfig.col || 0));
+                viewEl.classList.removeLike(['b-grd-c']);
+                viewEl.classList.add(['b-grd-c' + (gridConfig.col || 0)]);
+                viewEl.classList.serializeTo(viewEl.getEl());
                 view.setStyle({ width: null});
                 row.append(viewEl);
                 return row;
@@ -47,7 +49,7 @@ namespace Blend.container {
         protected finalizeRender() {
             var me = this;
             super.finalizeRender();
-            me.bodyElement.addCssClass('grd');
+            me.bodyElement.addCssClass('b-grd');
         }
     }
 }
