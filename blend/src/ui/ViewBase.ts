@@ -187,13 +187,13 @@ namespace Blend.ui {
         /**
          * Adds one or more CSS classes to this View
          */
-        public addCssClass(css: string | Array<string>, blendPrefix: boolean = false) {
+        public addCssClass(css: string | Array<string>) {
             var me = this;
             if (me.isRendered) {
-                me.element.addCssClass(css, blendPrefix);
+                me.element.addCssClass(css);
             } else {
                 Blend.wrapInArray(css).forEach(function(itm: string) {
-                    (<Array<string>>me.config.css).push(blendPrefix === true ? cssPrefix(itm) : itm)
+                    (<Array<string>>me.config.css).push(itm)
                 });
             }
             me.notifyStyleOrCSSChanged();
@@ -212,8 +212,8 @@ namespace Blend.ui {
          */
         protected finalizeRender() {
             var me = this;
-            me.addCssClass(me.cssClass, true);
-            me.addCssClass(me.config.css, false);
+            me.addCssClass(me.cssClass);
+            me.addCssClass(me.config.css);
             me.setBounds({
                 top: me.config.top,
                 left: me.config.left,

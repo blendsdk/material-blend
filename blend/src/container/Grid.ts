@@ -16,8 +16,8 @@ namespace Blend.container {
         public constructor(config: GridContainerInterface = {}) {
             super(config);
             var me = this;
-            me.cssClass = 'gc';
-            me.itemCSSClass = cssPrefix(me.cssClass + '-itm');
+            me.cssClass = 'b-gc';
+            me.itemCSSClass = me.cssClass + '-itm';
             me.gridRows = [];
         }
 

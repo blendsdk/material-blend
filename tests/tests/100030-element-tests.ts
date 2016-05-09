@@ -25,19 +25,19 @@ TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
     var abcList = wrapEl(el);
     t.assertEquals(abcList.getCssClass(true), ['a', 'b', 'b-c'], 'get abcList');
 
-    t.assertTrue(abcList.hasCssClass('b', false), 'has b with no prefix');
-    t.assertFalse(abcList.hasCssClass('b'), 'has b with prefix');
-    t.assertTrue(abcList.hasCssClass('c'), 'has c with prefix');
+    t.assertTrue(abcList.hasCssClass('b'), 'has b with no prefix');
+    t.assertFalse(abcList.hasCssClass('b-b'), 'has b with prefix');
+    t.assertTrue(abcList.hasCssClass('b-c'), 'has c with prefix');
 
     el = document.createElement('p');
     var withClass = wrapEl(el);
-    t.assertEquals(withClass.addCssClass('css1').getCssClass(true), ['b-css1'], 'added one css class');
-    t.assertEquals(withClass.addCssClass('css1').getCssClass(true), ['b-css1'], 'added one css class again');
-    t.assertEquals(withClass.addCssClass(['css2', 'css3']).getCssClass(true), ['b-css1', 'b-css2', 'b-css3'], 'added array css class');
-    t.assertEquals(withClass.addCssClass(['css2', 'css3']).getCssClass(true), ['b-css1', 'b-css2', 'b-css3'], 'added array css class again');
-    t.assertEquals(withClass.addCssClass('no-prefix', false).getCssClass(true), ['b-css1', 'b-css2', 'b-css3', 'no-prefix'], 'added one css class no prefix');
-    t.assertEquals(withClass.addCssClass('hello-world', false, true).getCssClass(), 'hello-world', 'replaced no prefix');
-    t.assertEquals(withClass.addCssClass('hello-world', true, true).getCssClass(), 'b-hello-world', 'replaced with prefix');
+    t.assertEquals(withClass.addCssClass('b-css1').getCssClass(true), ['b-css1'], 'added one css class');
+    t.assertEquals(withClass.addCssClass('b-css1').getCssClass(true), ['b-css1'], 'added one css class again');
+    t.assertEquals(withClass.addCssClass(['b-css2', 'b-css3']).getCssClass(true), ['b-css1', 'b-css2', 'b-css3'], 'added array css class');
+    t.assertEquals(withClass.addCssClass(['b-css2', 'b-css3']).getCssClass(true), ['b-css1', 'b-css2', 'b-css3'], 'added array css class again');
+    t.assertEquals(withClass.addCssClass('no-prefix').getCssClass(true), ['b-css1', 'b-css2', 'b-css3', 'no-prefix'], 'added one css class no prefix');
+    t.assertEquals(withClass.addCssClass('hello-world',true).getCssClass(), 'hello-world', 'replaced no prefix');
+    t.assertEquals(withClass.addCssClass('b-hello-world',true).getCssClass(), 'b-hello-world', 'replaced with prefix');
     t.assertEquals(withClass.clearCssClass().getCssClass(), null, 'cleared');
 
     t.done();
