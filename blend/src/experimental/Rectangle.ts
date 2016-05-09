@@ -16,7 +16,7 @@ namespace Blend.ui {
         constructor(config: RectangleConfig = {}) {
             super(config);
             var me = this;
-            me.cssClass = 'rectangle';
+            me.cssClass = 'b-rectangle';
             me.setBounds({
                 width: config.width || 100,
                 height: config.height || 100

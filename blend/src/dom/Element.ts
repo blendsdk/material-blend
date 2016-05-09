@@ -10,10 +10,6 @@ namespace Blend.dom {
      */
     export class Element {
 
-        /**
-         * CSS Prefix value made available from code
-         */
-        public static CSS_PREFIX = 'b-';
         private el: HTMLElement;
         private pixelRe = /px$/;
         private UNIT: string = 'px';
@@ -124,26 +120,20 @@ namespace Blend.dom {
         /**
          * Checks whether this element has a given CSS class
          */
-        public hasCssClass(name: string, checkPrefixed: boolean = true): boolean {
-            var me = this,
-                check = checkPrefixed === true ? Blend.dom.Element.CSS_PREFIX + name : name;
-            return me.classList.has(check);
+        public hasCssClass(name: string): boolean {
+            return this.classList.has(name);
         }
 
         /**
-         * Adds a new css class with prefix to an element if it already does not exist
-         * The prefix flag (defaults to true) will automatically add the CSS_PREFIX to each class
+         * Adds a new css class an element if it already does not exist
          * The replace flag will replace the existsing css class value
          */
-        public addCssClass(css: string | string[], prefix: boolean = true, replace: boolean = false): Blend.dom.Element {
+        public addCssClass(css: string | string[], replace: boolean = false): Blend.dom.Element {
             var me = this, t: Array<string> = [];
             if (replace === true) {
                 this.classList.clear();
             }
-            Blend.wrapInArray(css).forEach(function(c: string) {
-                t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
-            });
-            me.classList.add(t);
+            me.classList.add(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
             return this;
         }
@@ -151,12 +141,9 @@ namespace Blend.dom {
         /**
          * Removes one of more CSS classes from this element
          */
-        public removeCssClass(css: string | string[], prefix = true) {
+        public removeCssClass(css: string | string[]) {
             var me = this, t: Array<string> = [];;
-            Blend.wrapInArray(css).forEach(function(c: string) {
-                t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
-            });
-            me.classList.remove(t);
+            me.classList.remove(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
         }
 
@@ -164,12 +151,9 @@ namespace Blend.dom {
          * Removes one or more CSS classes from this element by checking if the
          * CSS names start with the given request
          */
-        public removeCssClassLike(css: string | string[], prefix = true) {
+        public removeCssClassLike(css: string | string[]) {
             var me = this, t: Array<string> = [];;
-            Blend.wrapInArray(css).forEach(function(c: string) {
-                t.push(prefix === true ? Blend.dom.Element.CSS_PREFIX + c : c);
-            });
-            me.classList.removeLike(t);
+            me.classList.removeLike(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
         }
 
@@ -365,10 +349,6 @@ namespace Blend.dom {
  */
 var wrapEl = function(el: HTMLElement) {
     return new Blend.dom.Element(el);
-}
-
-var cssPrefix = function(name: string) {
-    return Blend.dom.Element.CSS_PREFIX + name;
 }
 
 var createEl = Blend.dom.Element.create;

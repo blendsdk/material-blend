@@ -145,7 +145,7 @@ namespace Blend.application {
                 });
                 if (Blend.isInstanceOf(me.mainView, Blend.ui.View)) {
                     me.setContext(me.context);
-                    me.mainView.addCssClass('mainview', true);
+                    me.mainView.addCssClass('b-mainview');
                     if (me.mainView.getProperty('useParentController', true) === true) {
                         me.mainView.addController(me.controllers);
                     }
