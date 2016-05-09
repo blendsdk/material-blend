@@ -1,5 +1,6 @@
 /// <reference path="../common/Interfaces.ts" />
 /// <reference path="ClassList.ts" />
+/// <reference path="StyleList.ts" />
 /// <reference path="../Blend.ts" />
 
 namespace Blend.dom {
@@ -16,10 +17,12 @@ namespace Blend.dom {
         private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
         private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
         private classList: Blend.dom.ClassList;
+        public styleList: Blend.dom.StyleList;
 
         constructor(el: HTMLElement) {
             this.el = el;
             this.classList = new Blend.dom.ClassList(this.el);
+            this.styleList = new Blend.dom.StyleList(this.el);
         }
 
         /**
@@ -62,11 +65,12 @@ namespace Blend.dom {
             if (styles) {
                 Blend.forEach(styles, function(v: any, k: string) {
                     if (v === null || (<string>v) === 'auto') {
-                        me.el.style.removeProperty(k);
+                        me.styleList.unset(k);
                     } else {
-                        me.el.style.setProperty(k, me.toUnit(k, v));
+                        me.styleList.set(k, v);
                     }
                 });
+                me.styleList.serializeTo(me.el);
             }
             return this;
         }
@@ -75,38 +79,8 @@ namespace Blend.dom {
          * Gets the computed styles of en element
          */
         public getStyle(styles: string | Array<string>): StyleInterface {
-            var me = this,
-                cs = window.getComputedStyle(me.el, null),
-                r: StyleInterface = {},
-                names = Blend.wrapInArray<string>(styles);
-            Blend.forEach(names, function(key: string) {
-                r[key] = me.fromUnit(cs.getPropertyValue(key));
-            });
-            return r;
-        }
-
-        /**
-         * Checks and converts the value to px based on the given key
-         */
-        private toUnit(key: string, value: any) {
-            var me = this;
-            if (value !== null && me.unitPropertyRe.test(key) && !me.unitTypeRe.test(value)) {
-                value = value + me.UNIT;
-            }
-            return value;
-        }
-
-
-        /**
-         * Given the value it converts px value to a number, otherwise it returns the original
-         * value.
-         */
-        private fromUnit(value: any): any {
-            var me = this;
-            if (value !== null && me.pixelRe.test(value)) {
-                value = parseFloat(value.replace(me.UNIT, ''));
-            }
-            return value;
+            return this.styleList.getComputed(this.el,
+                Blend.wrapInArray<string>(styles));
         }
 
         /**

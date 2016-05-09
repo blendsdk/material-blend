@@ -40,7 +40,7 @@ var app = new Blend.web.Application({
         items: [
             {
                 ctype: 'ui.rect',
-                color: 'red',
+                color: '#ededed',
                 responsive: true,
                 grid: {
                     row: 0,
@@ -49,7 +49,7 @@ var app = new Blend.web.Application({
             },
             {
                 ctype: 'ui.rect',
-                color: 'blue',
+                color: '#dedede',
                 responsive: true,
                 grid: {
                     row: 0,
@@ -58,7 +58,7 @@ var app = new Blend.web.Application({
             },
             {
                 ctype: 'ui.rect',
-                color: 'orange',
+                color: '#ebebeb',
                 responsive: true,
                 grid: {
                     row: 0,
