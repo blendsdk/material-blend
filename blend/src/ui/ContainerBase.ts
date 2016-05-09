@@ -144,7 +144,7 @@ namespace Blend.ui {
             var me = this;
             this.bodyElement
                 = Blend.dom.Element.create({
-                    cls: cssPrefix(me.cssClass + '-body')
+                    cls: cssPrefix(me.cssClass + '-bdy')
                 });
             me.renderChildren().forEach(function(child: Blend.dom.Element) {
                 me.bodyElement.append(child);

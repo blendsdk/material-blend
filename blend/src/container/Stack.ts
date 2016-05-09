@@ -17,8 +17,8 @@ namespace Blend.container {
         public constructor(config: StackContainerInterface = {}) {
             super(config);
             var me = this;
-            me.cssClass = 'stack-container';
-            me.itemCSSClass = cssPrefix(me.cssClass + '-item');
+            me.cssClass = 'sc';
+            me.itemCSSClass = cssPrefix(me.cssClass + '-itm');
             me.activeView = null;
             me.addLayoutTriggerEvent('activeViewChanged');
             me.setActiveView(config.activeView || 0);

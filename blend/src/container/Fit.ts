@@ -17,8 +17,8 @@ namespace Blend.container {
         public constructor(config: FitContainerInterface = {}) {
             super(config);
             var me = this;
-            me.cssClass = 'fit-container';
-            me.itemCSSClass = cssPrefix(me.cssClass + '-item');
+            me.cssClass = 'fc';
+            me.itemCSSClass = cssPrefix(me.cssClass + '-itm');
             me.fittedView = null;
         }
 

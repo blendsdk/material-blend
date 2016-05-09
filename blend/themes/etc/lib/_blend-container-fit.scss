@@ -1,14 +1,14 @@
 @mixin blend-container-fit(
 ) {
-    .b-fit-container {
+    .b-fc {
 
-        .b-fit-container-body {
+        .b-fc-bdy {
 
             width:100%;
             height:100%;
             position: relative;
 
-            .b-fit-container-item {
+            .b-fc-itm {
                 width:100%;
                 height:100%;
                 position: absolute;
