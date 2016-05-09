@@ -23,8 +23,7 @@ namespace Blend.ui {
             })
             me.setStyle({
                 'background-color': config.color || 'transparent',
-                'border': config.border == true ? '1px solid #000' : null,
-                display: 'inline-block'
+                'border': config.border == true ? '1px solid #000' : null
             });
             me.layoutCount = 0;
         }

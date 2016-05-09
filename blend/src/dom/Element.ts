@@ -62,18 +62,15 @@ namespace Blend.dom {
          * Sets the style of this element
          */
         public setStyle(styles: StyleInterface): Blend.dom.Element {
-            var me = this,cssText = '';
+            var me = this;
             if (styles) {
                 Blend.forEach(styles, function(v: any, k: string) {
                     if (v === null || (<string>v) === 'auto') {
                         me.el.style.removeProperty(k);
                     } else {
-                        cssText += `${k} : ${me.toUnit(k, v)};`;
+                        me.el.style.setProperty(k, me.toUnit(k, v));
                     }
                 });
-                if (cssText !== '') {
-                    me.el.style.cssText = cssText;
-                }
             }
             return this;
         }

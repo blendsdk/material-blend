@@ -36,7 +36,7 @@ namespace Blend.container {
                 }
                 viewEl = view.getElement();
                 viewEl.setData('grid-column', (gridConfig.col || 0));
-                view.setStyle({ width: null, display: 'initial' });
+                view.setStyle({ width: null});
                 row.append(viewEl);
                 return row;
             } else {
