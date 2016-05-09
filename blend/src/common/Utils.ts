@@ -4,6 +4,7 @@ interface Array<T> {
 
 interface String {
     ucfirst(): string;
+    startsWith(searchString: string, position?: number): boolean
 }
 
 interface Function {
@@ -12,10 +13,17 @@ interface Function {
 
 if (!Function.prototype.async) {
     Function.prototype.async = function() {
-        var me = this,args = arguments;
+        var me = this, args = arguments;
         setTimeout(function() {
             me.apply(me, args);
         }, 1);
+    };
+}
+
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString: string, position: number = 0) {
+        position = position || 0;
+        return this.substr(position, searchString.length) === searchString;
     };
 }
 
