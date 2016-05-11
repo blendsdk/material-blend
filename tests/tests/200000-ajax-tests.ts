@@ -54,11 +54,11 @@ TestApp.defineTest('AJAX 500', function(t: Blend.testing.TestRunner) {
     var test500 = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
         url: '/500.php',
         onFailed: function(request: XMLHttpRequest) {
-            t.assertEquals(request.status, 500);
+            t.assertEquals(request.status, 500,'got 500');
         }
         ,
         onComplete: function() {
-            t.done();
+            t.done(500);
         }
     });
     test500.sendRequest();

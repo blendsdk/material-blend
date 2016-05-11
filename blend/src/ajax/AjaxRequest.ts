@@ -49,7 +49,7 @@ namespace Blend.ajax {
 
         protected transferComplete(request: XMLHttpRequest, evt: Event) {
             var me = this;
-            if (request.status === 404) {
+            if (request.status >= 300) {
                 me.transferFailed.apply(me, arguments);
             }
             me.callHandler('onComplete', arguments);
