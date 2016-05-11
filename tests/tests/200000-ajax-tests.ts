@@ -34,7 +34,7 @@ TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
 
 });
 
-TestApp.defineTest('Send GET AjaxRequest', function(t: Blend.testing.TestRunner) {
+TestApp.defineTest('AJAX 404', function(t: Blend.testing.TestRunner) {
 
     var test404 = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
         url: '/404.php',
@@ -47,4 +47,19 @@ TestApp.defineTest('Send GET AjaxRequest', function(t: Blend.testing.TestRunner)
         }
     });
     test404.sendRequest();
+});
+
+TestApp.defineTest('AJAX 500', function(t: Blend.testing.TestRunner) {
+
+    var test500 = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
+        url: '/500.php',
+        onFailed: function(request: XMLHttpRequest) {
+            t.assertEquals(request.status, 500);
+        }
+        ,
+        onComplete: function() {
+            t.done();
+        }
+    });
+    test500.sendRequest();
 });
