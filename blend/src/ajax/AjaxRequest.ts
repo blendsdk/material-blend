@@ -3,16 +3,18 @@
 
 namespace Blend.ajax {
 
-    export class AjaxRequest extends Blend.Component {
+    export abstract class AjaxRequest extends Blend.Component {
 
         protected config: AjaxRequestInterface;
+        protected xhr: XMLHttpRequest;
+
+        public abstract sendRequest(data: DictionaryInterface): void
 
         public constructor(config: string | AjaxRequestInterface) {
             var cfg: AjaxRequestInterface;
             if (Blend.isString(config)) {
                 cfg = {
                     url: <string>config || null,
-                    method: 'POST'
                 }
             } else {
                 cfg = <AjaxRequestInterface>config
@@ -21,32 +23,56 @@ namespace Blend.ajax {
             var me = this;
             me.config = {
                 url: cfg.url || null,
-                method: cfg.method || 'POST'
+                headers: cfg.headers || {},
+                onCanceled: cfg.onCanceled || null,
+                onComplete: cfg.onComplete || null,
+                onProgress: cfg.onProgress || null,
+                onFailed: cfg.onFailed || null,
+                scope: cfg.scope | <any>me
             }
+            me.initialize();
         }
 
-        protected createGetURI(data: DictionaryInterface = {}) {
-            var me = this,
-                payload:Array<string> = [],
-                url: string;
-            Blend.forEach(data, function(value: any, key: string) {
-                payload.push(`${key}=${me.encodeURIComponent(value)}`);
-            });
-            return (me.config.url
-                + (me.config.url.indexOf('?') === -1 ? '?' : '')
-                + payload.join('&')).trim();
-        }
-
-        public sendRequest(data: DictionaryInterface = {},onSucess:Function,onError:Function,onFinally) {
+        protected initialize() {
             var me = this;
-            if (me.config.method === 'POST') {
+            me.xhr = new XMLHttpRequest();
+            me.xhr.addEventListener("progress", function(evt: Event) { me.updateProgress.apply(me, [me.xhr, evt]) });
+            me.xhr.addEventListener("load", function(evt: Event) { me.transferComplete.apply(me, [me.xhr, evt]) });
+            me.xhr.addEventListener("error", function(evt: Event) { me.transferFailed.apply(me, [me.xhr, evt]) });
+            me.xhr.addEventListener("abort", function(evt: Event) { me.transferCanceled.apply(me, [me.xhr, evt]) });
+        }
 
-            } else {
+        protected updateProgress(request: XMLHttpRequest, evt: Event) {
+            var me = this;
+            me.callHandler('onProgress', arguments);
+        }
 
+        protected transferComplete(request: XMLHttpRequest, evt: Event) {
+            var me = this;
+            if (request.status === 404) {
+                me.transferFailed.apply(me, arguments);
+            }
+            me.callHandler('onComplete', arguments);
+        }
+
+        protected transferFailed(request: XMLHttpRequest, evt: Event) {
+            var me = this;
+            me.callHandler('onFailed', arguments);
+        }
+
+        protected transferCanceled(request: XMLHttpRequest, evt: Event) {
+            var me = this;
+            me.callHandler('onCanceled', arguments);
+        }
+
+        private callHandler(name: string, args: IArguments) {
+            var me = this;
+            if ((<any>me.config)[name]) {
+                (<Function>(<any>me.config)[name]).apply(me.config.scope || me, args);
             }
         }
 
-        private encodeURIComponent(value:string) {
+        protected encodeURIComponent(value: string) {
             return encodeURIComponent(value).replace(/[!'()*]/g, function(c) {
                 return '%' + c.charCodeAt(0).toString(16);
             });

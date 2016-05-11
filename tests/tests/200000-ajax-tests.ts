@@ -2,7 +2,7 @@
 
 TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
 
-    class AjaxRequestTest extends Blend.ajax.AjaxRequest {
+    class AjaxRequestTest extends Blend.ajax.AjaxGetRequest {
 
         public getConfig(): AjaxRequestInterface {
             return this.config;
@@ -36,20 +36,15 @@ TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
 
 TestApp.defineTest('Send GET AjaxRequest', function(t: Blend.testing.TestRunner) {
 
-    class AjaxRequestTest extends Blend.ajax.AjaxRequest {
-
-        public getConfig(): AjaxRequestInterface {
-            return this.config;
+    var test404 = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
+        url: '/404.php',
+        onFailed: function(request: XMLHttpRequest) {
+            t.assertEquals(request.status, 404, 'Got 404');
         }
-
-        public t_createGetURI(data: DictionaryInterface) {
-            return this.createGetURI(data);
+        ,
+        onComplete: function() {
+            t.done();
         }
-    }
-
-    var test1 = new AjaxRequestTest('/echo-get.php');
-    test1.
-
-    t.done();
-
+    });
+    test404.sendRequest();
 });
