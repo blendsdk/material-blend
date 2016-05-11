@@ -9,14 +9,10 @@ namespace Blend.ajax {
             super(config);
         }
 
-        public sendRequest(data: DictionaryInterface = {}) {
+        protected doSendRequest(data: DictionaryInterface = {}) {
             var me = this;
             me.xhr.open('GET', me.createGetURI(data), true);
-            try {
-                me.xhr.send(null);
-            } catch (e) {
-
-            }
+            me.xhr.send(null);
         }
 
         protected createGetURI(data: DictionaryInterface = {}) {
@@ -27,7 +23,7 @@ namespace Blend.ajax {
                 payload.push(`${key}=${me.encodeURIComponent(value)}`);
             });
             return (me.config.url
-                + (me.config.url.indexOf('?') === -1 ? '?' : '')
+                + (me.config.url.indexOf('?') === -1 ? '?' : '&')
                 + payload.join('&')).trim();
         }
 

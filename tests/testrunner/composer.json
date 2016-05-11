@@ -1,0 +1,12 @@
+{
+    "name": "root/testrunner",
+    "authors": [
+        {
+            "name": "Gevik Babakhani",
+            "email": "g.babakhani@truesoftware.nl"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^3.0"
+    }
+}

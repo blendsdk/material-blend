@@ -191,9 +191,10 @@ interface GridItemInterface {
 interface AjaxRequestInterface {
     url: string,
     headers?: DictionaryInterface,
+    onStart?: Function,
     onProgress?: Function
     onComplete?: Function,
+    onSuccess?: Function,
     onFailed?: Function,
-    onCanceled?: Function,
     scope?: any
 }

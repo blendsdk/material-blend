@@ -8,7 +8,7 @@ namespace Blend.ajax {
         protected config: AjaxRequestInterface;
         protected xhr: XMLHttpRequest;
 
-        public abstract sendRequest(data: DictionaryInterface): void
+        protected abstract doSendRequest(data: DictionaryInterface): void
 
         public constructor(config: string | AjaxRequestInterface) {
             var cfg: AjaxRequestInterface;
@@ -24,10 +24,11 @@ namespace Blend.ajax {
             me.config = {
                 url: cfg.url || null,
                 headers: cfg.headers || {},
-                onCanceled: cfg.onCanceled || null,
                 onComplete: cfg.onComplete || null,
                 onProgress: cfg.onProgress || null,
                 onFailed: cfg.onFailed || null,
+                onSuccess: cfg.onSuccess || null,
+                onStart: cfg.onStart || null,
                 scope: cfg.scope | <any>me
             }
             me.initialize();
@@ -42,6 +43,15 @@ namespace Blend.ajax {
             me.xhr.addEventListener("abort", function(evt: Event) { me.transferCanceled.apply(me, [me.xhr, evt]) });
         }
 
+        public sendRequest(data: DictionaryInterface = {}) {
+            var me = this;
+            if (me.callHandler('onStart', arguments) !== false) {
+                me.doSendRequest(data);
+            } else {
+                me.transferCanceled(me.xhr, null);
+            }
+        }
+
         protected updateProgress(request: XMLHttpRequest, evt: Event) {
             var me = this;
             me.callHandler('onProgress', arguments);
@@ -51,6 +61,8 @@ namespace Blend.ajax {
             var me = this;
             if (request.status >= 300) {
                 me.transferFailed.apply(me, arguments);
+            } else if (request.status < 300) {
+                me.callHandler('onSuccess', arguments);
             }
             me.callHandler('onComplete', arguments);
         }
@@ -62,13 +74,15 @@ namespace Blend.ajax {
 
         protected transferCanceled(request: XMLHttpRequest, evt: Event) {
             var me = this;
-            me.callHandler('onCanceled', arguments);
+            me.transferFailed(request, evt);
         }
 
         private callHandler(name: string, args: IArguments) {
             var me = this;
             if ((<any>me.config)[name]) {
-                (<Function>(<any>me.config)[name]).apply(me.config.scope || me, args);
+                return (<Function>(<any>me.config)[name]).apply(me.config.scope || me, args);
+            } else {
+                return undefined;
             }
         }
 
