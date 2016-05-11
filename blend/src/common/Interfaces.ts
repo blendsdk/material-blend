@@ -1,19 +1,3 @@
-class eMediaQuery {
-    static LARGE: string = 'L'
-    static MEDIUM: string = 'M'
-    static SMALL: string = 'S'
-}
-
-/**
- * Element Scroll values
- */
-enum eScrollState {
-    none,
-    auto,
-    both,
-    horizontal,
-    vertical
-}
 /**
  * Interface to describ a dictioany
  */

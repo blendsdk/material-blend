@@ -174,9 +174,9 @@ namespace Blend.dom {
         /**
          * Set the Scroll state for this Element
          */
-        public scrollState(state: eScrollState): Blend.dom.Element {
+        public scrollState(state: Blend.eScrollState): Blend.dom.Element {
             var me = this;
-            me.setData('scroll', eScrollState[<number>state]);
+            me.setData('scroll', Blend.eScrollState[<number>state]);
             return this;
         }
 

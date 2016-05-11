@@ -27,9 +27,9 @@ var app = new Blend.web.Application({
             var col: number;
             if (sender !== this && event === 'responsiveChanged') {
                 switch (alias) {
-                    case eMediaQuery.SMALL: col = 12;
+                    case Blend.eMediaQuery.SMALL: col = 12;
                         break;
-                    case eMediaQuery.MEDIUM: col = 3;
+                    case Blend.eMediaQuery.MEDIUM: col = 3;
                         break;
                     default:
                         col = 4;

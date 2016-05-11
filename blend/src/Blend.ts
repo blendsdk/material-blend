@@ -4,6 +4,23 @@
 
 namespace Blend {
 
+    export class eMediaQuery {
+        static LARGE: string = 'L'
+        static MEDIUM: string = 'M'
+        static SMALL: string = 'S'
+    }
+
+    /**
+     * Element Scroll values
+     */
+    export enum eScrollState {
+        none,
+        auto,
+        both,
+        horizontal,
+        vertical
+    }
+
     export var registry: ClassRegistryInterface = {};
 
     /**
