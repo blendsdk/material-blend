@@ -186,3 +186,9 @@ interface GridItemInterface {
     row: number,
     col: number
 }
+
+
+interface AjaxRequestInterface {
+    url: string,
+    method?:string
+}
