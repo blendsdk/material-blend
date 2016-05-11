@@ -4,13 +4,41 @@ echo "Building BlendJS"
 
 DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_DIR=$DIRNAME/../build
+TYPINGS_DIR=$DIRNAME/../blend/typings
+
+ES6_PROMISE_TYPING=$TYPINGS_DIR/es6-promise.d.ts
+ES6_PROMISE_SCRIPT=$TYPINGS_DIR/es6-promise.js
+ES6_PROMISE_TYPING_URL=https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts
+ES6_PROMISE_SCRIPT_URL=https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/es6-promise.js
 
 if [ -d $BUILD_DIR ]; then
     echo "Removing " $BUILD_DIR;
 	rm -fR $BUILD_DIR
 fi
 
+if [ ! -f $ES6_PROMISE_TYPING ]; then
+    curl -o $ES6_PROMISE_TYPING $ES6_PROMISE_TYPING_URL
+    curl -o $ES6_PROMISE_SCRIPT $ES6_PROMISE_SCRIPT_URL
+fi
+
 cd $DIRNAME/../blend
+# com;ile the themes
 compass compile
 cp -fR $DIRNAME/../blend/themes/etc/fonts $BUILD_DIR/css/
+
+#compile blend
 tsc
+
+#copy the typing for distribution
+cp -fR $TYPINGS_DIR $BUILD_DIR/blend
+
+#merge blend.js with the typings libs
+cat $BUILD_DIR/blend/typings/es6-promise.js \
+    $BUILD_DIR/blend/blend.js > $BUILD_DIR/blend/blend-merged.js
+
+#merge blend.d.ts with the typings def files
+cat $BUILD_DIR/blend/typings/es6-promise.d.ts \
+    $BUILD_DIR/blend/blend.d.ts > $BUILD_DIR/blend/blend-merged.d.ts
+
+mv $BUILD_DIR/blend/blend-merged.js $BUILD_DIR/blend/blend.js
+mv $BUILD_DIR/blend/blend-merged.d.ts $BUILD_DIR/blend/blend.d.ts

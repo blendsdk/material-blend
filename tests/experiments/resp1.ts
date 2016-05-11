@@ -23,7 +23,7 @@
 var app = new Blend.web.Application({
     mainView: {
         ctype: 'layout.grid',
-        controller: function(sender: Blend.ui.View, event: string, alias: string, mediaQuery: string) {
+        controller: function(sender: Blend.ui.View, event: string, alias: string, mediaQuery: any) {
             var col: number;
             if (sender !== this && event === 'responsiveChanged') {
                 switch (alias) {
@@ -36,7 +36,7 @@ var app = new Blend.web.Application({
                 }
                 sender.setGridColumn(col);
                 sender.getElement().setHtml(alias);
-                console.log(alias);
+                console.log(mediaQuery);
             }
         },
         items: [
