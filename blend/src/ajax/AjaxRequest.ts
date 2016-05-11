@@ -48,6 +48,9 @@ namespace Blend.ajax {
                     handler.apply(me, [me.xhr, evt]);
                 })
             });
+            Blend.forEach(me.config.headers, function(value: string, header: string) {
+                me.xhr.setRequestHeader(header, value);
+            });
             me.xhr.withCredentials = me.config.withCredentials;
         }
 
