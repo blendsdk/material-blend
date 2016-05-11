@@ -29,7 +29,8 @@ namespace Blend.ajax {
                 onFailed: cfg.onFailed || null,
                 onSuccess: cfg.onSuccess || null,
                 onStart: cfg.onStart || null,
-                scope: cfg.scope | <any>me
+                scope: cfg.scope | <any>me,
+                withCredentials: cfg.withCredentials === true ? true : false
             }
             me.initialize();
         }
@@ -41,6 +42,7 @@ namespace Blend.ajax {
             me.xhr.addEventListener("load", function(evt: Event) { me.transferComplete.apply(me, [me.xhr, evt]) });
             me.xhr.addEventListener("error", function(evt: Event) { me.transferFailed.apply(me, [me.xhr, evt]) });
             me.xhr.addEventListener("abort", function(evt: Event) { me.transferCanceled.apply(me, [me.xhr, evt]) });
+            me.xhr.withCredentials = me.config.withCredentials;
         }
 
         public sendRequest(data: DictionaryInterface = {}) {

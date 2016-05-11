@@ -196,5 +196,6 @@ interface AjaxRequestInterface {
     onComplete?: Function,
     onSuccess?: Function,
     onFailed?: Function,
-    scope?: any
+    scope?: any,
+    withCredentials?: boolean
 }
