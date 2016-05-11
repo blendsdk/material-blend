@@ -37,7 +37,7 @@ namespace Blend.ajax {
                 + payload.join('&')).trim();
         }
 
-        public sendRequest(data: DictionaryInterface = {}) {
+        public sendRequest(data: DictionaryInterface = {},onSucess:Function,onError:Function,onFinally) {
             var me = this;
             if (me.config.method === 'POST') {
 

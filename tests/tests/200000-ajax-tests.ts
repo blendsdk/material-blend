@@ -33,3 +33,23 @@ TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
     t.done();
 
 });
+
+TestApp.defineTest('Send GET AjaxRequest', function(t: Blend.testing.TestRunner) {
+
+    class AjaxRequestTest extends Blend.ajax.AjaxRequest {
+
+        public getConfig(): AjaxRequestInterface {
+            return this.config;
+        }
+
+        public t_createGetURI(data: DictionaryInterface) {
+            return this.createGetURI(data);
+        }
+    }
+
+    var test1 = new AjaxRequestTest('/echo-get.php');
+    test1.
+
+    t.done();
+
+});
