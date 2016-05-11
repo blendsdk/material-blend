@@ -1,3 +1,4 @@
+/// <reference path="../blend/support.d.ts" />
 /// <reference path="../blend/blend.d.ts" />
 
 Blend.Runtime.ready(function() {

@@ -32,13 +32,10 @@ tsc
 #copy the typing for distribution
 cp -fR $TYPINGS_DIR $BUILD_DIR/blend
 
-#merge blend.js with the typings libs
+#merge 3rd party modules to support.js
 cat $BUILD_DIR/blend/typings/es6-promise.js \
-    $BUILD_DIR/blend/blend.js > $BUILD_DIR/blend/blend-merged.js
+    > $BUILD_DIR/blend/support.js
 
 #merge blend.d.ts with the typings def files
 cat $BUILD_DIR/blend/typings/es6-promise.d.ts \
-    $BUILD_DIR/blend/blend.d.ts > $BUILD_DIR/blend/blend-merged.d.ts
-
-mv $BUILD_DIR/blend/blend-merged.js $BUILD_DIR/blend/blend.js
-mv $BUILD_DIR/blend/blend-merged.d.ts $BUILD_DIR/blend/blend.d.ts
+    > $BUILD_DIR/blend/support.d.ts
