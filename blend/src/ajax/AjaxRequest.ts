@@ -36,12 +36,18 @@ namespace Blend.ajax {
         }
 
         protected initialize() {
-            var me = this;
+            var me = this, handlers: DictionaryInterface = {
+                progress: me.updateProgress,
+                load: me.transferComplete,
+                error: me.transferFailed,
+                abort: me.transferCanceled
+            };
             me.xhr = new XMLHttpRequest();
-            me.xhr.addEventListener("progress", function(evt: Event) { me.updateProgress.apply(me, [me.xhr, evt]) });
-            me.xhr.addEventListener("load", function(evt: Event) { me.transferComplete.apply(me, [me.xhr, evt]) });
-            me.xhr.addEventListener("error", function(evt: Event) { me.transferFailed.apply(me, [me.xhr, evt]) });
-            me.xhr.addEventListener("abort", function(evt: Event) { me.transferCanceled.apply(me, [me.xhr, evt]) });
+            Blend.forEach(handlers, function(handler: Function, eventName: string) {
+                me.xhr.addEventListener(eventName, function(evt: Event) {
+                    handler.apply(me, [me.xhr, evt]);
+                })
+            });
             me.xhr.withCredentials = me.config.withCredentials;
         }
 
