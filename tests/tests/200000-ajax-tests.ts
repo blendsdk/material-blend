@@ -69,7 +69,7 @@ TestApp.defineTest('Ajax Get Echo', function(t: Blend.testing.TestRunner) {
     var test = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
         url: '/ajax.php?cmd=get-echo-test',
         onSuccess: function(request: XMLHttpRequest) {
-            t.assertEquals(request.responseText, 'Hello Blend!','call success');
+            t.assertEquals(request.responseText, 'Hello Blend!', 'call success');
         },
         onComplete: function(request: XMLHttpRequest) {
             if (request.status === 200) {
@@ -80,6 +80,25 @@ TestApp.defineTest('Ajax Get Echo', function(t: Blend.testing.TestRunner) {
         }
     });
     test.sendRequest({
-        'name' : 'Blend!'
+        name: 'Blend!'
+    });
+});
+
+
+TestApp.defineTest('Progress Event Attributes', function(t: Blend.testing.TestRunner) {
+
+    var test = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
+        url: '/ajax.php?cmd=get-echo-test',
+        onProgress: function name(reqiest: XMLHttpRequest, evt: ProgressEvent) {
+            if (evt.lengthComputable !== undefined && evt.loaded !== undefined && evt.total !== undefined) {
+                t.assertTrue(true, 'Progress Event Supported')
+            }
+        },
+        onComplete: function(request: XMLHttpRequest) {
+            t.done();
+        }
+    });
+    test.sendRequest({
+        name:''
     });
 });
