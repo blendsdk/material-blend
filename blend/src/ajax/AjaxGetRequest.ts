@@ -22,8 +22,8 @@ namespace Blend.ajax {
             Blend.forEach(data, function(value: any, key: string) {
                 payload.push(`${key}=${me.encodeURIComponent(value)}`);
             });
-            return (me.config.url
-                + (me.config.url.indexOf('?') === -1 ? '?' : '&')
+            return (me.url
+                + (me.url.indexOf('?') === -1 ? '?' : '&')
                 + payload.join('&')).trim();
         }
 

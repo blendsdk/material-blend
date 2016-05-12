@@ -5,13 +5,22 @@ namespace Blend.ajax {
 
     export abstract class AjaxRequest extends Blend.Component {
 
-        protected config: AjaxRequestInterface;
         protected xhr: XMLHttpRequest;
+        protected xhrConfig: DictionaryInterface;
+        protected url: string;
+        protected headers: DictionaryInterface;
+        protected onComplete: Function;
+        protected onProgress: Function;
+        protected onFailed: Function;
+        protected onSuccess: Function;
+        protected onStart: Function;
+        protected scope: any;
 
         protected abstract doSendRequest(data: DictionaryInterface): void
 
         public constructor(config: string | AjaxRequestInterface) {
-            var cfg: AjaxRequestInterface;
+            super();
+            var me = this, cfg: AjaxRequestInterface;
             if (Blend.isString(config)) {
                 cfg = {
                     url: <string>config || null,
@@ -19,17 +28,15 @@ namespace Blend.ajax {
             } else {
                 cfg = <AjaxRequestInterface>config
             }
-            super(cfg);
-            var me = this;
-            me.config = {
-                url: cfg.url || null,
-                headers: cfg.headers || {},
-                onComplete: cfg.onComplete || null,
-                onProgress: cfg.onProgress || null,
-                onFailed: cfg.onFailed || null,
-                onSuccess: cfg.onSuccess || null,
-                onStart: cfg.onStart || null,
-                scope: cfg.scope | <any>me,
+            me.url = cfg.url || null;
+            me.headers = cfg.headers || {};
+            me.onComplete = cfg.onComplete || null;
+            me.onProgress = cfg.onProgress || null;
+            me.onFailed = cfg.onFailed || null;
+            me.onSuccess = cfg.onSuccess || null;
+            me.onStart = cfg.onStart || null;
+            me.scope = cfg.scope | <any>me;
+            me.xhrConfig = {
                 withCredentials: cfg.withCredentials === true ? true : false
             }
             me.initialize();
@@ -48,10 +55,12 @@ namespace Blend.ajax {
                     handler.apply(me, [me.xhr, evt]);
                 })
             });
-            Blend.forEach(me.config.headers, function(value: string, header: string) {
+            Blend.forEach(me.headers, function(value: string, header: string) {
                 me.xhr.setRequestHeader(header, value);
             });
-            me.xhr.withCredentials = me.config.withCredentials;
+            Blend.forEach(me.xhrConfig, function(value: any, key: string) {
+                (<any>me.xhr)[key] = value;
+            });
         }
 
         public sendRequest(data: DictionaryInterface = {}) {
@@ -90,8 +99,8 @@ namespace Blend.ajax {
 
         private callHandler(name: string, args: IArguments) {
             var me = this;
-            if ((<any>me.config)[name]) {
-                return (<Function>(<any>me.config)[name]).apply(me.config.scope || me, args);
+            if ((<any>me)[name]) {
+                return (<Function>(<any>me)[name]).apply(me.scope || me, args);
             } else {
                 return undefined;
             }
