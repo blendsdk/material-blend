@@ -8,8 +8,8 @@ TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
             return this.url;
         }
 
-        public t_createGetURI(data: DictionaryInterface) {
-            return this.createGetURI(data);
+        public t_createURI(data: DictionaryInterface) {
+            return this.createURI(data);
         }
     }
 
@@ -24,12 +24,12 @@ TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
     //////////////////////////////////////////////////////////////////////////////////
 
     var ax3 = new AjaxRequestTest('/file.php');
-    var url = ax3.t_createGetURI({
+    var url = ax3.t_createURI({
         hello: 'world',
         one: 1,
         spaces: 'this is a test'
     });
-    t.assertEquals(url, '/file.php?hello=world&one=1&spaces=this%20is%20a%20test', 't_createGetURI');
+    t.assertTrue(url.startsWith('/file.php?hello=world&one=1&spaces=this%20is%20a%20test'), 't_createGetURI');
     t.done();
 
 });
@@ -64,12 +64,12 @@ TestApp.defineTest('AJAX 500', function(t: Blend.testing.TestRunner) {
     test500.sendRequest();
 });
 
-TestApp.defineTest('Ajax Get Echo', function(t: Blend.testing.TestRunner) {
+TestApp.defineTest('Ajax GET Echo', function(t: Blend.testing.TestRunner) {
 
     var test = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
-        url: '/ajax.php?cmd=get-echo-test',
+        url: '/ajax.php?cmd=get-hello-test',
         onSuccess: function(request: XMLHttpRequest) {
-            t.assertEquals(request.responseText, 'Hello Blend!', 'call success');
+            t.assertEquals(request.responseText, 'Hello Blend!', 'get call success');
         },
         onComplete: function(request: XMLHttpRequest) {
             if (request.status === 200) {
@@ -88,7 +88,7 @@ TestApp.defineTest('Ajax Get Echo', function(t: Blend.testing.TestRunner) {
 TestApp.defineTest('Progress Event Attributes', function(t: Blend.testing.TestRunner) {
 
     var test = new Blend.ajax.AjaxGetRequest(<AjaxRequestInterface>{
-        url: '/ajax.php?cmd=get-echo-test',
+        url: '/ajax.php?cmd=get-hello-test',
         onProgress: function name(reqiest: XMLHttpRequest, evt: ProgressEvent) {
             if (evt.lengthComputable !== undefined && evt.loaded !== undefined && evt.total !== undefined) {
                 t.assertTrue(true, 'Progress Event Supported')
@@ -99,6 +99,27 @@ TestApp.defineTest('Progress Event Attributes', function(t: Blend.testing.TestRu
         }
     });
     test.sendRequest({
-        name:''
+        name: ''
+    });
+});
+
+TestApp.defineTest('Ajax POST Echo', function(t: Blend.testing.TestRunner) {
+
+    var test = new Blend.ajax.AjaxPostRequest(<AjaxRequestInterface>{
+        url: '/ajax.php?cmd=post-echo-test',
+        onSuccess: function(request: XMLHttpRequest) {
+            t.assertEquals(request.responseText, 'name=BlendJS&lang=TypeScript', 'post call success');
+        },
+        onComplete: function(request: XMLHttpRequest) {
+            if (request.status === 200) {
+                t.done();
+            } else {
+                t.assertTrue(false, 'call failed' + request.statusText);
+            }
+        }
+    });
+    test.sendRequest({
+        name: 'BlendJS',
+        lang: 'TypeScript'
     });
 });

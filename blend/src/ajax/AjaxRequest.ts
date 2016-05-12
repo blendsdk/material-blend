@@ -15,6 +15,7 @@ namespace Blend.ajax {
         protected onSuccess: Function;
         protected onStart: Function;
         protected scope: any;
+        protected callID: number;
 
         protected abstract doSendRequest(data: DictionaryInterface): void
 
@@ -65,6 +66,7 @@ namespace Blend.ajax {
 
         public sendRequest(data: DictionaryInterface = {}) {
             var me = this;
+            me.callID = (new Date()).getTime();
             if (me.callHandler('onStart', arguments) !== false) {
                 me.doSendRequest(data);
             } else {
@@ -111,6 +113,24 @@ namespace Blend.ajax {
                 return '%' + c.charCodeAt(0).toString(16);
             });
         }
+
+        protected urlEncodeData(data: DictionaryInterface): string {
+            var me = this, payload: Array<string> = [];
+            Blend.forEach(data, function(value: any, key: string) {
+                payload.push(`${key}=${me.encodeURIComponent(value)}`);
+            });
+            return payload.join('&').trim();
+        }
+
+        protected createURI(data: DictionaryInterface = {}) {
+            var me = this;
+            data = data || {};
+            data['_c'] = me.callID;
+            return (me.url
+                + (me.url.indexOf('?') === -1 ? '?' : '&')
+                + me.urlEncodeData(data));
+        }
+
     }
 
 }

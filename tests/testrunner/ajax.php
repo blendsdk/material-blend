@@ -9,10 +9,13 @@ $request = Request::createFromGlobals();
 
 $command = $request->get('cmd');
 
-if ($command === 'get-echo-test') {
+if ($command === 'get-hello-test' && $request->getMethod() === 'GET') {
     $response = new Response('Hello ' . $request->get('name'), 200);
     $response->send();
+} else if ($command == 'post-echo-test' && $request->getMethod() === 'POST') {
+    $response = new Response(http_build_query($request->request->all()), 200);
+    $response->send();
 } else {
-    $response = new Response('Invalid command', 500);
+    $response = new Response('Invalid command' . print_r($request, true), 500);
     $response->send();
 }
