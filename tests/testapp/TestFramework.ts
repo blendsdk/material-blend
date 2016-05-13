@@ -113,6 +113,15 @@ namespace Blend.testing {
             }, amount);
         }
 
+        public assertNotExists(actual: any, assertDescription?: string) {
+            var me = this;
+            if (actual === null || actual === undefined) {
+                me.pass(assertDescription);
+            } else {
+                me.fail(`Failed to assert that ${actual} is not null/undefined`, actual, 'not null/undefined', assertDescription);
+            }
+        }
+
         public assertExists(actual: any, assertDescription?: string) {
             var me = this;
             if (actual !== null && actual !== undefined) {

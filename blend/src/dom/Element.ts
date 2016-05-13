@@ -308,10 +308,10 @@ namespace Blend.dom {
                             cfg = null;
                         } else if (cfg === 'style') {
                             cfg = null;
-                            wrapEl(el).setStyle(<StyleInterface>val);
+                            Blend.getElement(el).setStyle(<StyleInterface>val);
                         } else if (cfg == 'selectable') {
                             if (val === false) {
-                                wrapEl(el).selectable(false);
+                                Blend.getElement(el).selectable(false);
                             }
                             cfg = null;
                         }
@@ -326,17 +326,46 @@ namespace Blend.dom {
                 }
                 return wEl;
             } else {
-                return createEl({});
+                return Blend.createElement({});
             }
         }
     }
 }
 
-/**
- * Shorthand function to wrap a HTMLElement into a Blend.dom.Element
- */
-var wrapEl = function(el: HTMLElement) {
-    return new Blend.dom.Element(el);
-}
+namespace Blend {
 
-var createEl = Blend.dom.Element.create;
+    /**
+     * Wrapper for Blend.dom.Element.create
+     */
+    export var createElement = Blend.dom.Element.create;
+
+    /**
+     * Wrapper for document.querySelector
+     */
+    export function selectElement(query: string): Blend.dom.Element {
+        var els = Blend.selectElements(query);
+        return els[0] || null;
+    }
+
+    /**
+     * Wrapper for document.querySelectorAll
+     */
+    export function selectElements(query: string): Array<Blend.dom.Element> {
+        var els: Array<Blend.dom.Element> = [];
+        Blend.forEach(document.querySelectorAll(query), function(el: HTMLElement) {
+            els.push(new Blend.dom.Element(el));
+        });
+        return els;
+    }
+
+    /**
+     * Wrapper for document.getElementById
+      */
+    export function getElement(el: string | HTMLElement): Blend.dom.Element {
+        if (Blend.isString(el)) {
+            return new Blend.dom.Element(document.getElementById(<string>el));
+        } else {
+            return new Blend.dom.Element(<HTMLElement>el);
+        }
+    }
+}

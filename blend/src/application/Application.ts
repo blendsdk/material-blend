@@ -109,7 +109,7 @@ namespace Blend.application {
 
         protected asyncRun() {
             var me = this,
-                body: Blend.dom.Element = wrapEl(document.body);
+                body: Blend.dom.Element = Blend.getElement(document.body);
             if (!me.isStarted) {
                 body.clearElement();
                 body.addCssClass(me.config.theme, false);

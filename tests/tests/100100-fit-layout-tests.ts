@@ -6,7 +6,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
 
     Blend.Runtime.ready(function() {
 
-        var body = wrapEl(document.body);
+        var body = Blend.getElement(document.body);
         body.setHtml('<div id="host"></div>')
             .addCssClass('default', false);
 
@@ -33,7 +33,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
             ]
         });
 
-        var host = wrapEl(document.getElementById('host'));
+        var host = Blend.getElement(document.getElementById('host'));
         host.setStyle({
             position: 'absolute',
             top: 100,
@@ -54,7 +54,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
 
     Blend.Runtime.ready(function() {
 
-        var body = wrapEl(document.body);
+        var body = Blend.getElement(document.body);
         body.setHtml('<div id="host"></div>')
             .addCssClass('default', false);
 
@@ -82,7 +82,7 @@ TestApp.defineTest('Fit Layout', function(t: Blend.testing.TestRunner) {
             ]
         });
 
-        var host = wrapEl(document.getElementById('host'));
+        var host = Blend.getElement(document.getElementById('host'));
         host.setStyle({
             position: 'absolute',
             top: 100,

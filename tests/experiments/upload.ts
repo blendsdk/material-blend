@@ -2,8 +2,8 @@
 
 function startUpload() {
 
-    var myFiles = wrapEl(document.getElementById('myFiles'));
-    var progressLabel = wrapEl(document.getElementById('progressLabel'));
+    var myFiles = Blend.getElement(document.getElementById('myFiles'));
+    var progressLabel = Blend.getElement(document.getElementById('progressLabel'));
     console.log(myFiles);
     var ax = new Blend.ajax.AjaxPostRequest(<AjaxRequestInterface>{
         url: '/upload.php?cmd=upload',
