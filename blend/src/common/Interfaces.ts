@@ -192,7 +192,8 @@ interface AjaxRequestInterface {
     url: string,
     headers?: DictionaryInterface,
     onStart?: Function,
-    onProgress?: Function
+    onProgress?: Function,
+    onPrepareUpload?: Function,
     onComplete?: Function,
     onSuccess?: Function,
     onFailed?: Function,

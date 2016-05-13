@@ -14,6 +14,7 @@ namespace Blend.ajax {
         protected onFailed: Function;
         protected onSuccess: Function;
         protected onStart: Function;
+        protected onPrepareUpload: Function;
         protected scope: any;
         protected callID: number;
 
@@ -36,6 +37,7 @@ namespace Blend.ajax {
             me.onFailed = cfg.onFailed || null;
             me.onSuccess = cfg.onSuccess || null;
             me.onStart = cfg.onStart || null;
+            me.onPrepareUpload = cfg.onPrepareUpload || null;
             me.scope = cfg.scope | <any>me;
             me.xhrConfig = {
                 withCredentials: cfg.withCredentials === true ? true : false
@@ -97,6 +99,10 @@ namespace Blend.ajax {
         protected transferCanceled(request: XMLHttpRequest, evt: Event) {
             var me = this;
             me.transferFailed(request, evt);
+        }
+
+        protected notifyPrepareUpload(file: File, status: number) {
+            this.callHandler('onPrepareUpload', arguments);
         }
 
         private callHandler(name: string, args: IArguments) {
