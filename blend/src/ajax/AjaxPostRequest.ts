@@ -3,6 +3,9 @@
 
 namespace Blend.ajax {
 
+    /**
+     * AjaxPostRequest implements a POST request with File uploading capabilities
+     */
     export class AjaxPostRequest extends Blend.ajax.AjaxRequest {
 
         protected boundary: string;

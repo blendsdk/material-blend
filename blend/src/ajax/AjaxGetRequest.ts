@@ -3,6 +3,9 @@
 
 namespace Blend.ajax {
 
+    /**
+     * AjaxGetRequest implements a GET request
+     */
     export class AjaxGetRequest extends Blend.ajax.AjaxRequest {
 
         protected doSendRequest(data: DictionaryInterface = {}) {

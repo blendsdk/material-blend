@@ -3,6 +3,9 @@
 
 namespace Blend.ajax {
 
+    /**
+     * Base class for an Ajax Request
+     */
     export abstract class AjaxRequest extends Blend.Component {
 
         protected xhr: XMLHttpRequest;
@@ -101,10 +104,16 @@ namespace Blend.ajax {
             me.transferFailed(request, evt);
         }
 
+        /**
+         * File prepare event notification
+         */
         protected notifyPrepareUpload(file: File, status: number) {
             this.callHandler('onPrepareUpload', arguments);
         }
 
+        /**
+         * Calls a registerend handler by name
+         */
         private callHandler(name: string, args: IArguments) {
             var me = this;
             if ((<any>me)[name]) {
@@ -114,12 +123,18 @@ namespace Blend.ajax {
             }
         }
 
+        /**
+         * URI encode a string value
+         */
         protected encodeURIComponent(value: string) {
             return encodeURIComponent(value).replace(/[!'()*]/g, function(c) {
                 return '%' + c.charCodeAt(0).toString(16);
             });
         }
 
+        /**
+         * URL encode a Dictionary
+         */
         protected urlEncodeData(data: DictionaryInterface): string {
             var me = this, payload: Array<string> = [];
             Blend.forEach(data, function(value: any, key: string) {
@@ -128,6 +143,9 @@ namespace Blend.ajax {
             return payload.join('&').trim();
         }
 
+        /**
+         * Creates or updates the current URL by adding a call ID ti bypass browser caching
+         */
         protected createURI(data: DictionaryInterface = {}) {
             var me = this;
             data = data || {};
