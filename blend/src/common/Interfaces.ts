@@ -186,3 +186,17 @@ interface GridItemInterface {
     row: number,
     col: number
 }
+
+
+interface AjaxRequestInterface {
+    url: string,
+    headers?: DictionaryInterface,
+    onStart?: Function,
+    onProgress?: Function,
+    onPrepareUpload?: Function,
+    onComplete?: Function,
+    onSuccess?: Function,
+    onFailed?: Function,
+    scope?: any,
+    withCredentials?: boolean
+}

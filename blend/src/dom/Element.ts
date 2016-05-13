@@ -26,16 +26,28 @@ namespace Blend.dom {
         }
 
         /**
+         * Get the list of files for from this Element
+          */
+        public getFiles(): FileList {
+            var me = this, fel: HTMLInputElement = <HTMLInputElement>me.el;
+            if (fel.files) {
+                return fel.files;
+            } else {
+                return new FileList(); // return an empty one
+            }
+        }
+
+        /**
          * Adds an EventListener to an EventTarget
          */
-        addEventListener(eventName: string, eventHandler: EventListener): void {
+        public addEventListener(eventName: string, eventHandler: EventListener): void {
             Blend.Runtime.addEventListener(this.el, eventName, eventHandler);
         }
 
         /**
          * Removes an EventListener from an EventTarget
          */
-        removeEventListener(eventName: string, eventHandler: EventListener): void {
+        public removeEventListener(eventName: string, eventHandler: EventListener): void {
             Blend.Runtime.removeEventListener(this.el, eventName, eventHandler);
         }
 
@@ -115,7 +127,7 @@ namespace Blend.dom {
         /**
          * Removes one of more CSS classes from this element
          */
-        public removeCssClass(css: string | string[]) : Blend.dom.Element {
+        public removeCssClass(css: string | string[]): Blend.dom.Element {
             var me = this, t: Array<string> = [];;
             me.classList.remove(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
@@ -126,7 +138,7 @@ namespace Blend.dom {
          * Removes one or more CSS classes from this element by checking if the
          * CSS names start with the given request
          */
-        public removeCssClassLike(css: string | string[]) : Blend.dom.Element {
+        public removeCssClassLike(css: string | string[]): Blend.dom.Element {
             var me = this, t: Array<string> = [];;
             me.classList.removeLike(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);

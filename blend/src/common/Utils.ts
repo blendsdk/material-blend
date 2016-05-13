@@ -4,11 +4,29 @@ interface Array<T> {
 
 interface String {
     ucfirst(): string;
+    repeat(counts: number): string;
     startsWith(searchString: string, position?: number): boolean
 }
 
 interface Function {
     async: any;
+}
+
+interface XMLHttpRequest {
+    sendAsBinary(data:any):void
+}
+
+if (!XMLHttpRequest.prototype.sendAsBinary) {
+    /**
+     * From MDN
+     */
+  XMLHttpRequest.prototype.sendAsBinary = function(sData) {
+    var nBytes = sData.length, ui8Data = new Uint8Array(nBytes);
+    for (var nIdx = 0; nIdx < nBytes; nIdx++) {
+      ui8Data[nIdx] = sData.charCodeAt(nIdx) & 0xff;
+    }
+    this.send(ui8Data);
+  };
 }
 
 if (!Function.prototype.async) {
@@ -18,6 +36,12 @@ if (!Function.prototype.async) {
             me.apply(me, args);
         }, 1);
     };
+}
+
+if (!String.prototype.repeat) {
+    String.prototype.repeat = function(counts: number) {
+        return new Array(counts + 1).join(this);
+    }
 }
 
 if (!String.prototype.startsWith) {
