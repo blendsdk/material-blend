@@ -10,7 +10,7 @@ Blend.Runtime.ready(function() {
     });
 
     p.then(function(msg: string) {
-        var bodyEl = wrapEl(document.body);
+        var bodyEl = Blend.getElement(document.body);
         bodyEl.setHtml(msg);
     }, null);
 
