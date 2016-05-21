@@ -1,8 +1,0 @@
-@import "variables";
-@import "../etc/bootstrap";
-
-@include common();
-
-@include blend-theme(
-$name:'default'
-);
