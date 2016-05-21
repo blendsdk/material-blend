@@ -65,12 +65,12 @@ function getTestFiles() {
 
         </style>
     </head>
+    <script src="blend/support.js"></script>
     <script src="blend/blend.js" type="text/javascript"></script>
     <script>Blend.DEBUG = true;</script>
     <script src="js/testapp/ConsoleLogger.js" type="text/javascript"></script>
     <script src="js/testapp/TestFramework.js" type="text/javascript"></script>
     <script>var TestApp = new Blend.testing.TestRunner(new Blend.testing.ConsoleLogger());</script>
-    <script src="js/tests/box-commons.js" type="text/javascript"></script>
     <?php echo getTestFiles(); ?>
     <script>TestApp.run();</script>
     <body>

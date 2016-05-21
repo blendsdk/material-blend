@@ -235,16 +235,16 @@ namespace Blend.dom {
             return this;
         }
 
-        public setPadding(value: number | UIPaddingInterface): Blend.dom.Element {
-            var me = this, padding: UIPaddingInterface = {};
+        public setPadding(value: number | PaddingInterface): Blend.dom.Element {
+            var me = this, padding: PaddingInterface = {};
             if (Blend.isNumeric(value)) {
                 me.setStyle({ padding: <number>value });
             } else {
                 me.setStyle({
-                    'padding-top': (<UIPaddingInterface>value).top || null,
-                    'padding-right': (<UIPaddingInterface>value).right || null,
-                    'padding-bottom': (<UIPaddingInterface>value).bottom || null,
-                    "padding-left": (<UIPaddingInterface>value).left || null
+                    'padding-top': (<PaddingInterface>value).top || null,
+                    'padding-right': (<PaddingInterface>value).right || null,
+                    'padding-bottom': (<PaddingInterface>value).bottom || null,
+                    "padding-left": (<PaddingInterface>value).left || null
                 });
             }
             return this;

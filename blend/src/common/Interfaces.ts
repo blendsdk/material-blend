@@ -105,89 +105,14 @@ interface ElementBoundsInterface {
     visible?: boolean
 }
 
-/**
- * Interface for describing padding
- */
-interface UIPaddingInterface {
-    top?: number | string
-    right?: number | string
-    bottom?: number | string
-    left?: number | string
-}
 
 interface MediaQueryConfig extends DictionaryInterface {
     [name: string]: string | Array<string>
 }
 
 /**
- * Interface for implementing a UI View
+ * Interface for defining an Ajax (Post/Get) query
  */
-interface UIViewInterface extends MvcViewInterface {
-    parent?: Blend.ui.View
-    useParentController?: boolean
-    css?: string | Array<string>
-    style?: StyleInterface
-    visible?: boolean
-    top?: number
-    left?: number
-    width?: number | string
-    height?: number | string,
-    responsive?: boolean,
-    responseTo?: MediaQueryConfig,
-    grid?: GridItemInterface
-}
-
-/**
- * UI Types definition
- */
-type UIType = string | ComponentClass | UIViewInterface | UIContainerViewInterface | Blend.ui.View;
-
-/**
- * Interface for describing a UI Container
- */
-interface UIContainerViewInterface extends UIViewInterface {
-    items?: UIType | Array<UIType>,
-    contentPadding?: number | UIPaddingInterface
-}
-
-/**
- * Interface for describing an Application
- */
-interface ApplicationInterface extends UIViewInterface {
-    mainView?: UIType
-    theme?: string;
-}
-
-/**
- * Interface for describing a Fit container
- */
-interface FitContainerInterface extends UIContainerViewInterface {
-
-}
-
-/**
- * Interface for describing a Stack container
- */
-interface StackContainerInterface extends UIContainerViewInterface {
-    activeView?: number | string | Blend.ui.View;
-}
-
-/**
- * Interface for describing a Grid container
- */
-interface GridContainerInterface extends UIContainerViewInterface {
-
-}
-
-/**
- * Interface for configuring a View insde a Grid container
- */
-interface GridItemInterface {
-    row: number,
-    col: number
-}
-
-
 interface AjaxRequestInterface {
     url: string,
     headers?: DictionaryInterface,
@@ -199,4 +124,14 @@ interface AjaxRequestInterface {
     onFailed?: Function,
     scope?: any,
     withCredentials?: boolean
+}
+
+/**
+ * Interface for defining padding of an Element
+ */
+interface PaddingInterface {
+    top?: number
+    right?: number
+    bottom?: number
+    left?: number
 }
