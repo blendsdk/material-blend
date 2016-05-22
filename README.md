@@ -11,7 +11,7 @@ applications. It is under heavy development and it is not ready to be used yet.
 If you would like to follow the development progress, please "watch" this
 repository and look at the [development branch](https://github.com/blendsdk/material-blend/tree/devel).
 
-You can also look for [#materialblend](https://twitter.com/search?q=materialblend&src=typd)
+You can also look for [#MaterialBlend](https://twitter.com/search?q=materialblend&src=typd)
 on Twiter time to time for the latest implementation news.
 
 Thank you.
