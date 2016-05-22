@@ -1,0 +1,41 @@
+// Reference: https://www.google.com/design/spec/style/typography.html
+
+.display4 {
+    @include typography($m-display-4-font-size, 300, -0.012em, $m-display-4-font-size);
+}
+
+.display3 {
+    @include typography($m-display-3-font-size, 400, -0.005em, $m-display-3-font-size);
+}
+
+.display2 {
+    @include typography($m-display-2-font-size, 400, -0.005em, rem(6.4));
+}
+
+.display1 {
+    @include typography($m-display-1-font-size, 400, -0.005em, rem(4));
+}
+
+.headline {
+    @include typography($m-headline-font-size, 400, -0.005em, rem(3.2));
+}
+
+.title {
+    @include typography($m-title-font-size, 500, -0.005em);
+}
+
+.subhead {
+    @include typography($m-subhead-font-size, 400, -0.010em,rem(2.4));
+}
+
+.body1 {
+    @include typography($m-body-font-size, 400, -0.010em,rem(2));
+}
+
+.body2 {
+    @include typography($m-body-font-size, 500, -0.010em,rem(2.4));
+}
+
+.caption {
+    @include typography($m-caption-font-size, 400, -0.020em);
+}
