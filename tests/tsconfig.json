@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "./testrunner/js",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "declaration": false,
+        "module": "commonjs",
+        "sourceMap": true,
+        "sourceRoot": "/sources"
+    },
+    "exclude": [
+        "node_modules",
+        "testrunner",
+        "blend",
+        "blend-sources"
+    ]
+}

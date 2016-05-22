@@ -1,0 +1,25 @@
+{
+  "name": "blendjs",
+  "version": "1.0.0",
+  "description": "UI Framework with TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blendsdk/blendjs.git"
+  },
+  "keywords": [
+    "UI",
+    "TypeScript",
+    "CSS",
+    "HTML5"
+  ],
+  "author": "Gevik Babakhani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blendsdk/blendjs/issues"
+  },
+  "homepage": "https://github.com/blendsdk/blendjs#readme"
+}
