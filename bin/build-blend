@@ -22,9 +22,8 @@ if [ ! -f $ES6_PROMISE_TYPING ]; then
 fi
 
 cd $DIRNAME/../blend
-# com;ile the themes
+# compile the themes
 compass compile
-cp -fR $DIRNAME/../blend/themes/etc/fonts $BUILD_DIR/css/
 
 #compile blend
 tsc
