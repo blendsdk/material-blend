@@ -135,3 +135,21 @@ interface PaddingInterface {
     bottom?: number
     left?: number
 }
+
+/**
+ * Interface for implementing a Material
+ */
+interface MaterialInterface extends MvcViewInterface {
+    parent?: Blend.material.Material
+    useParentController?: boolean
+    css?: string | Array<string>
+    style?: StyleInterface
+    visible?: boolean
+    top?: number
+    left?: number
+    width?: number | string
+    height?: number | string,
+    responsive?: boolean,
+    responseTo?: MediaQueryConfig,
+    elevation?: number
+}
