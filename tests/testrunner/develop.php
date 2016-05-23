@@ -7,7 +7,9 @@
         <link id="theme" href="css/default/default.css" rel="stylesheet" type="text/css">
         <script src="blend/support.js"></script>
         <script src="blend/blend.js"></script>
-        <script src="js/experiments/develop.js"></script>
+        <style>
+
+        </style>
     </head>
     <body class="material default">
     </body>

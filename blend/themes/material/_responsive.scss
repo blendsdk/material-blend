@@ -1,0 +1,17 @@
+
+
+@mixin responsive() {
+
+    @media only screen and #{$bp-large-screen} {
+        @include flex-grid($bp-large-columns,$bp-large-gutter);
+    }
+
+    @media only screen and #{$bp-medium-screen} {
+        @include flex-grid($bp-medium-columns,$bp-medium-gutter);
+    }
+
+    @media only screen and #{$bp-small-screen} {
+        @include flex-grid($bp-small-columns,$bp-small-gutter);
+    }
+
+}

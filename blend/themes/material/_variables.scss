@@ -12,3 +12,19 @@ $m-subhead-font-size: rem(1.600) !default;
 
 $m-body-font-size: rem(1.400) !default;
 $m-caption-font-size:   rem(1.300) !default;
+
+// Breakpoints
+
+$bp-small-screen: '(max-width: 480px)';
+$bp-small-columns: 4;
+$bp-small-gutter: 16px;
+
+$bp-medium-screen: '(max-width: 720px)';
+$bp-medium-columns: 8;
+$bp-medium-gutter: 16px;
+
+$bp-large-screen: '(min-width: 840px)';
+$bp-large-columns: 12;
+$bp-large-gutter: 24px;
+
+
