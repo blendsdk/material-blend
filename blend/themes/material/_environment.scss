@@ -18,6 +18,6 @@ html, body {
 
     font-family: $m-font-family;
 
-    @include typography($m-body-font-size, 400, -0.010em,rem(2));
+    @include typography-style($m-body-font-size, 400, -0.010em,rem(2));
 
 }

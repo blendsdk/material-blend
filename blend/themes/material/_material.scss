@@ -6,8 +6,6 @@
 @import "variables";
 @import "roboto";
 @import "environment";
-
-.material {
-    @import "typography";
-}
+@import "typography";
+@import "theme";
 

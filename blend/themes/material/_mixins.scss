@@ -1,7 +1,7 @@
 /**
  * Mixin for creating typogrphy display rules
  */
-@mixin typography($font-size,$font-weight,$letter-spacing,$line-height:null) {
+@mixin typography-style($font-size,$font-weight,$letter-spacing,$line-height:null) {
     font-size: $font-size;
     font-weight: $font-weight;
     letter-spacing: $letter-spacing;

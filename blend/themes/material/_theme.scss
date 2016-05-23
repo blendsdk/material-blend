@@ -1,0 +1,13 @@
+@mixin theme(
+$theme-name,
+$background-color: $global-background-color
+) {
+
+    body {
+        background-color: $background-color;
+    }
+
+    .#{$theme-name} {
+        @include typography();
+    }
+}
