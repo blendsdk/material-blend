@@ -32,31 +32,17 @@ namespace Blend.material {
                 top: null,
                 left: null,
                 width: null,
-                height: null,
-                elevation: 0
+                height: null
             };
             me.addCssClass(config.css || []);
             me.setStyle(config.style || {});
             me.setVisible(Blend.isBoolean(config.visible) ? config.visible : me.visible);
-            me.elevateTo(config.elevation || 0);
             me.setBounds({
                 top: config.top || null,
                 left: config.left || null,
                 width: config.width || null,
                 height: config.height || null
             });
-        }
-
-        public elevateTo(elevation: number) {
-            var me = this;
-            if (me.isRendered) {
-                me.element.removeCssClassLike('elevate');
-                if (elevation !== 0) {
-                    me.element.addCssClass(['elevate-' + elevation]);
-                }
-            } else {
-                me.config.elevation = elevation;
-            }
         }
 
         public getProperty<T>(name: string, defaultValue: any = null): T {
@@ -235,7 +221,6 @@ namespace Blend.material {
                 // should be set only when not visible
                 me.setVisible(false);
             }
-            me.elevateTo(me.config.elevation);
         }
 
         /**

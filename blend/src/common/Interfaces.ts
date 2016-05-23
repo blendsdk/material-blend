@@ -150,6 +150,5 @@ interface MaterialInterface extends MvcViewInterface {
     width?: number | string
     height?: number | string,
     responsive?: boolean,
-    responseTo?: MediaQueryConfig,
-    elevation?: number
+    responseTo?: MediaQueryConfig
 }
