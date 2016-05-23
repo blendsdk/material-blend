@@ -9,5 +9,6 @@ $background-color: $global-background-color
 
     .#{$theme-name} {
         @include typography();
+        @include elevate();
     }
 }
