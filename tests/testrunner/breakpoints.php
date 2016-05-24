@@ -53,6 +53,9 @@
         createGrid([10, 1, 1]);
         createGrid([11, 1]);
         createGrid([12]);
+        createGrid([4, 4, 4]);
+        createGrid([3, 3, 3, 3]);
+        createGrid([6, 2, 4]);
 
         Blend.selectElement('.grid5').addCssClass('grid-no-spacing');
     </script>

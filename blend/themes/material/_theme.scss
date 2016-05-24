@@ -7,6 +7,11 @@ $background-color: $global-background-color
         background-color: $background-color;
     }
 
+    html, body {
+        font-family: $m-font-family;
+        @include typography-style($m-body-font-size, 400, -0.010em,rem(2));
+    }
+
     .#{$theme-name} {
         @include typography();
         @include elevate();

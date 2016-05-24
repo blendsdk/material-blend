@@ -1,3 +1,13 @@
+/**
+ * Mixin for creating typogrphy display rules
+ */
+@mixin typography-style($font-size,$font-weight,$letter-spacing,$line-height:null) {
+    font-size: $font-size;
+    font-weight: $font-weight;
+    letter-spacing: $letter-spacing;
+    line-height: $line-height;
+}
+
 @mixin typography() {
     // Reference: https://www.google.com/design/spec/style/typography-style.html
 
