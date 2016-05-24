@@ -38,6 +38,7 @@ namespace Blend {
         private kickStarted: boolean = false;
         private mediaQueryRegistery: IMediaQueryRegistery;
         private mediaQueryMatchers: IMediaQueryMatcher;
+        private previousMediaQuery: string; // used to prevent multiple events of same alias
 
         public Binder: Blend.binding.BindingProvider;
         public IE: boolean;
@@ -55,10 +56,11 @@ namespace Blend {
         public triggerMediaQueryCheck() {
             var me = this;
             Blend.forEach(me.mediaQueryMatchers, function(mql: MediaQueryList, mediaQuery: string) {
-                if (mql.matches) {
+                if (mql.matches && me.previousMediaQuery !== mediaQuery) {
                     me.mediaQueryRegistery[mediaQuery].forEach(function(fn: Function) {
                         fn.apply(me, [mql]);
                     });
+                    me.previousMediaQuery = mediaQuery;
                     return false;
                 }
             });

@@ -1,18 +1,13 @@
 /// <reference path="../blend/blend.d.ts" />
 
-Blend.Runtime.ready(function() {
-
-
-    var r = new Blend.material.Rectangle(<RectangleInterface>{
-        width: 100,
-        height: 100,
-        color: '#fff',
-        elevation: 4,
-
-    });
-    Blend.getElement(document.body).append(r.getElement());
-    (<any>window).rect1 = r;
+var app1 = new Blend.web.Application({
+    controller: function(sender: Blend.material.Material, eventName: string,alias:string) {
+        console.log(arguments);
+    },
+    mainView: <MaterialInterface>{
+        ctype: 'mb.rect',
+        responsive: true
+    }
 
 });
-
-Blend.Runtime.kickStart();
+app1.run();

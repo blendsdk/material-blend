@@ -137,6 +137,11 @@ interface PaddingInterface {
 }
 
 /**
+ * Material Types definition
+ */
+type MaterialType = string | ComponentClass | MaterialInterface | ContainerMaterialInterface | Blend.material.Material;
+
+/**
  * Interface for implementing a Material
  */
 interface MaterialInterface extends MvcViewInterface {
@@ -151,4 +156,16 @@ interface MaterialInterface extends MvcViewInterface {
     height?: number | string,
     responsive?: boolean,
     responseTo?: MediaQueryConfig
+}
+
+interface ContainerMaterialInterface {
+
+}
+
+/**
+ * Interface for describing an Application
+ */
+interface ApplicationInterface extends MaterialInterface {
+    mainView?: MaterialType
+    theme?: string;
 }

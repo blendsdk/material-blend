@@ -38,7 +38,7 @@ namespace Blend {
      */
     COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = '(min-width : 840px)';
     COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = '(min-width: 480px) and (max-width: 839px)';
-    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = '(min-width : 479px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = '(max-width : 479px)';
 
     /**
      * Returns enum value, either the value as number or its string representation

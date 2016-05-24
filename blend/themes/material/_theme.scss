@@ -10,6 +10,8 @@ $background-color: $global-background-color
     html, body {
         font-family: $m-font-family;
         @include typo-style($m-body-font-size, 400, -0.010em,rem(2));
+        width: 100%;
+        height: 100%;
     }
 
     .#{$theme-name} {
@@ -43,8 +45,9 @@ $background-color: $global-background-color
             ,$layout-large-gutter
             ,$layout-large-margin
             ,$layout-max-columns)
-
         }
+
+        @include blend-application-application();
 
     }
 }
