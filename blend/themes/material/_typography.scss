@@ -1,53 +1,58 @@
 /**
  * Mixin for creating typogrphy display rules
  */
-@mixin typography-style($font-size,$font-weight,$letter-spacing,$line-height:null) {
+@mixin typo-style($font-size, $font-weight, $letter-spacing, $line-height:false, $contrast:false) {
     font-size: $font-size;
     font-weight: $font-weight;
     letter-spacing: $letter-spacing;
-    line-height: $line-height;
+    @if $line-height {
+        line-height: $line-height;
+    }
+    @if $contrast {
+        opacity: 0.54
+    }
 }
 
 @mixin typography() {
-    // Reference: https://www.google.com/design/spec/style/typography-style.html
+    // Reference: https://www.google.com/design/spec/style/typo-style.html
 
     .display4 {
-        @include typography-style($m-display-4-font-size, 300, -0.012em, $m-display-4-font-size);
-    }
-
-    .display3 {
-        @include typography-style($m-display-3-font-size, 400, -0.005em, $m-display-3-font-size);
-    }
-
-    .display2 {
-        @include typography-style($m-display-2-font-size, 400, -0.005em, rem(6.4));
-    }
-
-    .display1 {
-        @include typography-style($m-display-1-font-size, 400, -0.005em, rem(4));
-    }
-
-    .headline {
-        @include typography-style($m-headline-font-size, 400, -0.005em, rem(3.2));
-    }
-
-    .title {
-        @include typography-style($m-title-font-size, 500, -0.005em);
-    }
-
-    .subhead {
-        @include typography-style($m-subhead-font-size, 400, -0.010em,rem(2.4));
-    }
-
-    .body1 {
-        @include typography-style($m-body-font-size, 400, -0.010em,rem(2));
+        @include typo-style($m-display-4-font-size, 300, -0.012em, $m-display-4-font-size);
     }
 
     .body2 {
-        @include typography-style($m-body-font-size, 500, -0.010em,rem(2.4));
+        @include typo-style($m-body-font-size, 500, -0.010em,rem(2.4));
     }
 
-    .caption {
-        @include typography-style($m-caption-font-size, 400, -0.020em);
+    h1 {
+        @include typo-style($m-display-3-font-size, 400, -0.005em, $m-display-3-font-size, 0.54);
+    }
+
+    h2 {
+        @include typo-style($m-display-2-font-size, 400, -0.005em, rem(6.4), 0.54);
+    }
+
+    h3 {
+        @include typo-style($m-display-1-font-size, 400, -0.005em, rem(4), 0.54);
+    }
+
+    h4 {
+        @include typo-style($m-headline-font-size, 400, -0.005em, rem(3.2));
+    }
+
+    h5 {
+        @include typo-style($m-title-font-size, 500, -0.005em);
+    }
+
+    h6 {
+        @include typo-style($m-subhead-font-size, 400, -0.010em,rem(2.4));
+    }
+
+    p {
+        @include typo-style($m-body-font-size, 400, -0.010em,rem(2));
+    }
+
+    address, ol, ul {
+        @include typo-style($m-caption-font-size, 400, -0.020em);
     }
 }
