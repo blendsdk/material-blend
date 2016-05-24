@@ -15,22 +15,22 @@ $m-caption-font-size:   rem(1.300) !default;
 
 //
 
-$layout-desktop-columns: 12 !default;
-$layout-desktop-gutter: 16px !default;
-$layout-desktop-margin: 16px !default;
-$layout-desktop-width: 840px !default;
+$layout-large-columns: 12 !default;
+$layout-large-gutter: 16px !default;
+$layout-large-margin: 16px !default;
+$layout-large-width: 840px !default;
 
-$layout-tablet-columns: 8 !default;
-$layout-tablet-gutter: $layout-desktop-gutter !default;
-$layout-tablet-margin: $layout-desktop-margin !default;
-$layout-tablet-width: 480px !default;
+$layout-medium-columns: 8 !default;
+$layout-medium-gutter: $layout-large-gutter !default;
+$layout-medium-margin: $layout-large-margin !default;
+$layout-medium-width: 480px !default;
 
-$layout-phone-columns: 4 !default;
-$layout-phone-gutter: $layout-desktop-gutter !default;
-$layout-phone-margin: $layout-desktop-margin !default;
+$layout-small-columns: 4 !default;
+$layout-small-gutter: $layout-large-gutter !default;
+$layout-small-margin: $layout-large-margin !default;
 
-$layout-cell-default-columns: $layout-phone-columns !default;
-$layout-max-columns: $layout-desktop-columns !default;
+$layout-cell-default-columns: $layout-small-columns !default;
+$layout-max-columns: $layout-large-columns !default;
 
 
 
