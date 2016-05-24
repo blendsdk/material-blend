@@ -21,3 +21,7 @@ html, body {
     @include typography-style($m-body-font-size, 400, -0.010em,rem(2));
 
 }
+
+*, *:before, *:after {
+    @include box-sizing(border-box);
+}
