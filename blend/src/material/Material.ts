@@ -32,7 +32,9 @@ namespace Blend.material {
                 top: null,
                 left: null,
                 width: null,
-                height: null
+                height: null,
+                responsive: config.responsive || false,
+                responseTo: config.responseTo || null
             };
             me.addCssClass(config.css || []);
             me.setStyle(config.style || {});
@@ -43,6 +45,29 @@ namespace Blend.material {
                 width: config.width || null,
                 height: config.height || null
             });
+            me.initializeResponsiveEvents();
+        }
+
+        /**
+         * Initialized a responsive listener for this Material by adding a listener to the
+         * Runtime.addMediaQueryListener
+         */
+        protected initializeResponsiveEvents() {
+            var me = this, config: MediaQueryConfig;
+
+            config = me.config.responsive === true ? Blend.COMMON_MEDIA_QUERIES
+                : me.config.responseTo || null;
+
+            if (config !== null) {
+                Blend.forEach(config, function(queries: Array<string>, alias: string) {
+                    queries = Blend.wrapInArray<string>(queries);
+                    queries.forEach(function(mediaQuery: string) {
+                        Blend.Runtime.addMediaQueryListener(mediaQuery, function(mql: MediaQueryList) {
+                            me.fireEvent('responsiveChanged', alias, mql);
+                        });
+                    });
+                });
+            }
         }
 
         public getProperty<T>(name: string, defaultValue: any = null): T {
@@ -65,6 +90,24 @@ namespace Blend.material {
         protected notifyMaterialInitialized() {
             var me = this
             me.fireEvent('materialInitialized', me);
+        }
+
+        /**
+         * DO NOT USE THIS FUNCTION!
+         * Internal function that is called by the parent/host to initiate
+         * the initialization process
+          */
+        public doInitialize() {
+            var me = this;
+            me.initialize();
+            me.notifyMaterialInitialized();
+        }
+
+        /**
+         * This function can be overriden to do custom initialization on this Material
+         */
+        public initialize() {
+
         }
 
         /**

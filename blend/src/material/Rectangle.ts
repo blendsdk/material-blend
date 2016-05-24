@@ -46,5 +46,5 @@ namespace Blend.material {
 
     }
 
-    registerClassWithAlias('mt.rect', Blend.material.Rectangle);
+    registerClassWithAlias('mb.rect', Blend.material.Rectangle);
 }
