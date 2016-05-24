@@ -13,18 +13,25 @@ $m-subhead-font-size: rem(1.600) !default;
 $m-body-font-size: rem(1.400) !default;
 $m-caption-font-size:   rem(1.300) !default;
 
-// Breakpoints
+//
 
-$bp-small-screen: '(max-width: 480px)';
-$bp-small-columns: 4;
-$bp-small-gutter: 16px;
+$layout-desktop-columns: 12 !default;
+$layout-desktop-gutter: 16px !default;
+$layout-desktop-margin: 16px !default;
+$layout-desktop-width: 840px !default;
 
-$bp-medium-screen: '(max-width: 720px)';
-$bp-medium-columns: 8;
-$bp-medium-gutter: 16px;
+$layout-tablet-columns: 8 !default;
+$layout-tablet-gutter: $layout-desktop-gutter !default;
+$layout-tablet-margin: $layout-desktop-margin !default;
+$layout-tablet-width: 480px !default;
 
-$bp-large-screen: '(min-width: 840px)';
-$bp-large-columns: 12;
-$bp-large-gutter: 24px;
+$layout-phone-columns: 4 !default;
+$layout-phone-gutter: $layout-desktop-gutter !default;
+$layout-phone-margin: $layout-desktop-margin !default;
+
+$layout-cell-default-columns: $layout-phone-columns !default;
+$layout-max-columns: $layout-desktop-columns !default;
+
+
 
 

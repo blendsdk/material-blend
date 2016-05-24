@@ -10,6 +10,35 @@ $background-color: $global-background-color
     .#{$theme-name} {
         @include typography();
         @include elevate();
-        @include responsive();
+
+        @include init-grid($layout-max-columns);
+
+        // Phone
+        @media (max-width: $layout-tablet-width - 1) {
+            @include create-grid('sm'
+            ,$layout-phone-columns
+            ,$layout-phone-gutter
+            ,$layout-phone-margin
+            ,$layout-max-columns)
+        }
+
+        // Tablet
+        @media (min-width: $layout-tablet-width) and (max-width: $layout-desktop-width - 1) {
+            @include create-grid('md'
+            ,$layout-tablet-columns
+            ,$layout-tablet-gutter
+            ,$layout-tablet-margin
+            ,$layout-max-columns)
+        }
+
+        @media (min-width: $layout-desktop-width) {
+            @include create-grid('lg'
+            ,$layout-desktop-columns
+            ,$layout-desktop-gutter
+            ,$layout-desktop-margin
+            ,$layout-max-columns)
+
+        }
+
     }
 }
