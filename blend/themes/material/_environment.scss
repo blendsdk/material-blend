@@ -16,8 +16,8 @@ html, body {
     -webkit-font-smoothing: antialiased; // [4]
     -moz-osx-font-smoothing: grayscale; // [4]
 
-    font-family: $m-font-family;
+}
 
-    @include typography-style($m-body-font-size, 400, -0.010em,rem(2));
-
+*, *:before, *:after {
+    @include box-sizing(border-box);
 }

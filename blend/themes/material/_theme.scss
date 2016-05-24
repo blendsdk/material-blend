@@ -7,8 +7,43 @@ $background-color: $global-background-color
         background-color: $background-color;
     }
 
+    html, body {
+        font-family: $m-font-family;
+        @include typo-style($m-body-font-size, 400, -0.010em,rem(2));
+    }
+
     .#{$theme-name} {
         @include typography();
         @include elevate();
+
+        @include init-grid($layout-max-columns);
+
+        // Phone
+        @media (max-width: $layout-medium-width - 1) {
+            @include create-grid('sm'
+            ,$layout-small-columns
+            ,$layout-small-gutter
+            ,$layout-small-margin
+            ,$layout-max-columns)
+        }
+
+        // Tablet
+        @media (min-width: $layout-medium-width) and (max-width: $layout-large-width - 1) {
+            @include create-grid('md'
+            ,$layout-medium-columns
+            ,$layout-medium-gutter
+            ,$layout-medium-margin
+            ,$layout-max-columns)
+        }
+
+        @media (min-width: $layout-large-width) {
+            @include create-grid('lg'
+            ,$layout-large-columns
+            ,$layout-large-gutter
+            ,$layout-large-margin
+            ,$layout-max-columns)
+
+        }
+
     }
 }
