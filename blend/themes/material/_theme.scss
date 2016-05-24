@@ -18,7 +18,7 @@ $background-color: $global-background-color
 
         @include init-grid($layout-max-columns);
 
-        // Phone
+        // Small
         @media (max-width: $layout-medium-width - 1) {
             @include create-grid('sm'
             ,$layout-small-columns
@@ -27,7 +27,7 @@ $background-color: $global-background-color
             ,$layout-max-columns)
         }
 
-        // Tablet
+        // Medium
         @media (min-width: $layout-medium-width) and (max-width: $layout-large-width - 1) {
             @include create-grid('md'
             ,$layout-medium-columns
@@ -36,6 +36,7 @@ $background-color: $global-background-color
             ,$layout-max-columns)
         }
 
+        // Large
         @media (min-width: $layout-large-width) {
             @include create-grid('lg'
             ,$layout-large-columns
