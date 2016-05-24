@@ -36,9 +36,9 @@ namespace Blend {
      * trigger the responsiveChange event and other matching mediea queries will be
      * ignored!
      */
-    COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = 'only screen and (min-width : 1200px)';
-    COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = 'only screen and (min-width : 768px)';
-    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = 'only screen and (min-width : 320px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = '(min-width : 840px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = '(min-width: 480px) and (max-width: 839px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = '(min-width : 479px)';
 
     /**
      * Returns enum value, either the value as number or its string representation
