@@ -129,6 +129,16 @@ namespace Blend.application {
             return this.mainView.getElement();
         }
 
+        protected finalizeRender() {
+            var me = this;
+            super.finalizeRender();
+            /**
+             * We cleanup the main view bounds to force it to fit into the application
+             */
+            me.mainView.setBounds({ top: null, left: null, width: null, height: null });
+            me.mainView.setStyle({ display: null });
+        }
+
         protected render(): Blend.dom.Element {
             var me = this;
             return Blend.dom.Element.create({

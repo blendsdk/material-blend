@@ -1,0 +1,21 @@
+@mixin blend-application-application() {
+    .mb-application {
+
+        position: relative;
+        display: block;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+
+        & > .mb-mainview {
+            position: relative;
+            display: block;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            margin:0;
+        }
+    }
+}
