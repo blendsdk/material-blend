@@ -16,6 +16,7 @@ namespace Blend.material {
         protected config: MaterialInterface;
         protected useParentControllers: boolean;
         protected isInitialized: boolean;
+        protected canLayout: boolean;
 
         public constructor(config: MaterialInterface = {}) {
             super(config);
@@ -46,6 +47,7 @@ namespace Blend.material {
                 height: config.height || null
             });
             me.initializeResponsiveEvents();
+            me.canLayout = true;
         }
 
         /**
@@ -54,6 +56,32 @@ namespace Blend.material {
          * an example of how to use this function
          */
         protected updateLayout() {
+        }
+
+        /**
+         * Initiates a sub-layout process.
+         */
+        protected performLayout() {
+            var me = this;
+            if (me.canLayout === true) {
+                me.suspendLayout();
+                me.updateLayout();
+                me.resumeLayout();
+            }
+        }
+
+        /**
+         * Suspends the sub-layout from staring
+         */
+        protected suspendLayout() {
+            this.canLayout = false;
+        }
+
+        /**
+         * Resumes the sub-layout
+         */
+        protected resumeLayout() {
+            this.canLayout = true;
         }
 
         /**
@@ -116,10 +144,10 @@ namespace Blend.material {
          * Internal function that is called by the parent/host to initiate
          * the initialization process
           */
-        public doInitialize() : Blend.material.Material {
+        public doInitialize(): Blend.material.Material {
             var me = this;
             me.initialize();
-            me.updateLayout();
+            me.performLayout();
             me.notifyMaterialInitialized();
             return me;
         }
