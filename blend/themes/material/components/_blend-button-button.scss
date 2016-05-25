@@ -48,6 +48,7 @@
         & > .mb-btn-inner {
             height: 100%;
             display: inline-block;
+            position: relative;
             @include clearfix();
 
             & > .mb-btn-text {
@@ -61,6 +62,7 @@
             }
 
         }
+
     }
 
 }
@@ -81,26 +83,63 @@ $button-font-size
     min-width: $button-min-width;
     font-size: $button-font-size;
     font-weight: 500;
+    @content
+}
+
+@mixin blend-button-shadow-raised-1() {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+@mixin blend-button-shadow-raised-2() {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+@mixin blend-button-icon-only() {
+    margin: rem(0.4);
+    padding: $default-button-icon-only-padding;
+    min-width: 0;
+    line-height: 0;
 }
 
 @mixin blend-button-flat() {
-    .mb-btn-both , .mb-btn-text-only {
+    .mb-btn-flat-both , .mb-btn-flat-text-only {
         @include blend-button-type(
         $button-border-radius: $default-button-border-radius,
             $button-padding: $default-button-padding,
             $button-margin: $default-button-margin,
             $button-line-height: $default-button-height,
             $button-min-width: $default-button-min-width,
-            $button-font-size: $m-body-font-size );
+            $button-font-size: $m-body-font-size);
     }
 
-    .mb-btn-icon-only {
-        margin: rem(0.4);
-        padding: $default-button-icon-only-padding;
-        min-width: 0;
-        line-height: 0;
+    .mb-btn-flat-icon-only {
+        @include blend-button-icon-only();
+    }
+}
+
+@mixin blend-button-raised() {
+    .mb-btn-raised-both , .mb-btn-raised-text-only {
+        @include blend-button-type(
+        $button-border-radius: $default-button-border-radius,
+            $button-padding: $default-button-padding,
+            $button-margin: $default-button-margin,
+            $button-line-height: $default-button-height,
+            $button-min-width: $default-button-min-width,
+            $button-font-size: $m-body-font-size) {
+            @include blend-button-shadow-raised-1();
+        }
     }
 
+    .mb-btn-raised-icon-only {
+        @include blend-button-icon-only();
+        @include blend-button-shadow-raised-1();
+    }
+
+    .mb-btn-raised-both , .mb-btn-raised-text-only, .mb-btn-raised-icon-only {
+        &:active {
+            @include blend-button-shadow-raised-2
+        }
+    }
 }
 
 

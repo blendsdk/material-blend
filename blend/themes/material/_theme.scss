@@ -54,13 +54,23 @@ $background-color: $global-background-color
 
         // flat button
         @include blend-button-flat();
+        // raised button
+        @include blend-button-raised();
 
+
+        // flat default button
         @include blend-button-theme('flat-default',
         $button-hover-background-color: $default-flat-button-hover-background-color,
             $button-text-color: $default-flat-button-text-color,
             $button-icon-color: $default-flat-button-icon-color
             );
 
+        // raised default button
+        @include blend-button-theme('raised-default',
+        $button-hover-background-color: false,
+            $button-text-color: $default-flat-button-text-color,
+            $button-icon-color: $default-flat-button-icon-color
+            );
 
     }
 }
