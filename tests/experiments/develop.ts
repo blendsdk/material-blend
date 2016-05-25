@@ -7,8 +7,9 @@ Blend.Runtime.ready(function() {
 
     var bodyEl = Blend.getElement(document.body);
     var fa_icon = 'face';
-    var buttonTypes: Array<string> = ['flat', 'raised'];
+    var buttonTypes: Array<string> = ['fab', 'fab-mini', 'flat', 'raised'];
     var iconAligns: Array<string> = ['left', 'right'];
+    var buttons: Array<Blend.material.Material> = [];
 
     buttonTypes.forEach(function(buttonType: string) {
 
@@ -22,16 +23,17 @@ Blend.Runtime.ready(function() {
             children: []
         });
 
-        wrapper.append(new Blend.button.Button({
+        buttons.push(new Blend.button.Button({
             text: buttonType.ucfirst(),
             buttonType: buttonType,
-        }).getElement());
+        }));
+        wrapper.append(buttons[buttons.length - 1].getElement());
 
-        wrapper.append(new Blend.button.Button({
+        buttons.push(new Blend.button.Button({
             icon: fa_icon,
-
-        }).getElement());
-
+            buttonType: buttonType
+        }));
+        wrapper.append(buttons[buttons.length - 1].getElement());
 
         iconAligns.forEach(function(iconAlign: string) {
 
@@ -41,13 +43,17 @@ Blend.Runtime.ready(function() {
                 buttonType: buttonType,
                 icon: fa_icon,
             });
-            (<any>window)
+            buttons.push(button);
+
             wrapper.append(button.getElement());
 
         });
 
         bodyEl.append(wrapper);
+    });
 
+    buttons.forEach(function(m: Blend.material.Material) {
+        m.doInitialize();
     });
 
 }).kickStart();

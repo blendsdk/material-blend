@@ -27,41 +27,59 @@ namespace Blend.button {
         protected wrapperElement: Blend.dom.Element = null;
         protected textElement: Blend.dom.Element = null;
         protected iconElement: Blend.dom.Element = null;
+        protected buttonTypes: Array<string>;
 
         public constructor(config: ButtonInterface = {}) {
             super(config);
-            var me = this,
-                iconAlign = config.iconAlign || 'left',
-                buttonType = config.buttonType || 'flat';
-
+            var me = this;
+            me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini'];
             me.config = {
                 text: config.text || '',
                 icon: config.icon || null,
                 iconFamily: config.iconFamily || 'material-icons',
-                iconAlign: iconAlign.inArray(['left', 'right']) ? iconAlign : 'left',
-                buttonType: buttonType.inArray(['flat', 'raised']) ? buttonType : 'flat',
+                iconAlign: me.getCheckIconAlign(config.iconAlign),
+                buttonType: me.getCheckButtonType(config.buttonType),
                 theme: config.theme || 'default'
             }
         }
 
-        public setText(text: string) : Blend.button.Button {
+        private getCheckIconAlign(iconAlign: string): string {
+            iconAlign = iconAlign || 'left';
+            return iconAlign.inArray(['left', 'right']) ? iconAlign : 'left';
+        }
+
+        private getCheckButtonType(buttonType: string): string {
+            var me = this;
+            buttonType = (buttonType || 'flat');
+            return buttonType.inArray(me.buttonTypes) ? buttonType : 'flat';
+        }
+
+        public setButtonType(buttonType: string) {
+            var me = this;
+            me.config.buttonType = me.getCheckButtonType(buttonType);
+            me.element.clearCssClass().addCssClass(['mb-btn']);
+            me.performLayout();
+        }
+
+        public setText(text: string): Blend.button.Button {
             var me = this;
             me.config.text = text;
             me.textElement.setHtml(text);
-            me.updateLayout();
+            me.performLayout();
             return this;
         }
 
-        public setIcon(icon: string) : Blend.button.Button {
+        public setIcon(icon: string): Blend.button.Button {
             var me = this;
             me.config.icon = icon;
             me.iconElement.setHtml(icon);
-            me.updateLayout();
+            me.performLayout();
             return this;
         }
 
         protected updateLayout() {
             var me = this,
+                themeCls: string = `btn-theme-${me.config.buttonType}-${me.config.theme}`,
                 bothCls: string = `mb-btn-${me.config.buttonType}-both`,
                 textOnlyCls: string = `mb-btn-${me.config.buttonType}-text-only`,
                 iconOnlyCls: string = `mb-btn-${me.config.buttonType}-icon-only`,
@@ -70,8 +88,16 @@ namespace Blend.button {
                 hasIcon: boolean = me.config.icon !== null,
                 hasText: boolean = (me.config.text || '').trim() !== '';
 
-            me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls]);
+            me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls, themeCls]);
             me.wrapperElement.removeCssClass([textIconCls, iconTextCls]);
+
+            if (me.isFab()) {
+                hasText = false;
+                if (!hasIcon) {
+                    hasIcon = true;
+                    me.setIcon('mood');
+                }
+            }
 
             if (hasText && hasIcon) {
                 me.element.addCssClass([bothCls]);
@@ -85,13 +111,22 @@ namespace Blend.button {
             } else if (hasIcon) {
                 me.element.addCssClass([iconOnlyCls]);
             }
+
+            me.element.addCssClass([themeCls]);
+        }
+
+        /**
+         * Check if this button is a Floating Action Button
+          */
+        protected isFab(): boolean {
+            return this.config.buttonType.indexOf('fab') !== -1;
         }
 
         protected render(): Blend.dom.Element {
             var me = this;
 
             var buttonEl = new Blend.dom.ElementConfigBuilder('button')
-                .addCSS(['mb-btn', `btn-theme-${me.config.buttonType}-${me.config.theme}`]);
+                .addCSS(['mb-btn']);
 
             var innerEl = new Blend.dom.ElementConfigBuilder('span')
                 .setOID('wrapperElement')

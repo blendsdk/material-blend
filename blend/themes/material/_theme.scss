@@ -56,6 +56,8 @@ $background-color: $global-background-color
         @include blend-button-flat();
         // raised button
         @include blend-button-raised();
+        // FAB button
+        @include blend-button-fab();
 
 
         // flat default button

@@ -17,7 +17,9 @@
         text-decoration: none;
 
         transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
-            background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+            background-color $swift-ease-out-duration $swift-ease-out-timing-function,
+            width $swift-ease-out-duration $swift-ease-out-timing-function,
+            height $swift-ease-out-duration $swift-ease-out-timing-function;
 
         &::-moz-focus-inner {
             border: 0;
@@ -75,9 +77,13 @@ $button-font-size
     border-radius: $button-border-radius;
     padding: $button-padding;
     margin: $button-margin;
-    line-height: $button-line-height;
-    min-height: $button-line-height;
-    min-width: $button-min-width;
+    @if ($button-line-height) {
+        line-height: $button-line-height;
+        min-height: $button-line-height;
+    }
+    @if ($button-min-width) {
+        min-width: $button-min-width;
+    }
     font-size: $button-font-size;
     font-weight: 500;
     @content
@@ -96,6 +102,11 @@ $button-font-size
     padding: $default-button-icon-only-padding;
     min-width: 0;
     line-height: 0;
+    & > .mb-btn-inner {
+        & > .mb-btn-text {
+            display: none;
+        }
+    }
 }
 
 @mixin blend-button-flat() {
@@ -138,6 +149,69 @@ $button-font-size
         }
     }
 }
+
+@mixin blend-button-fab() {
+    .mb-btn-fab-icon-only , .mb-btn-fab-mini-icon-only {
+
+        & > .mb-btn-inner {
+            & > .mb-btn-text {
+                display: none;
+            }
+        }
+
+        & > .mb-btn-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+        }
+
+        &:active {
+            @include blend-button-shadow-raised-2
+        }
+
+        @include blend-button-type(
+        $button-border-radius: $default-button-fab-border-radius,
+            $button-padding: $default-button-padding,
+            $button-margin: $default-button-margin,
+            $button-line-height: false,
+            $button-min-width: false,
+            $button-font-size: $m-body-font-size) {
+            @include blend-button-shadow-raised-1();
+        }
+    }
+
+    .mb-btn-fab-icon-only {
+
+        min-width: $default-button-fab-size;
+        width: $default-button-fab-size;
+        height: $default-button-fab-size;
+        line-height: $default-button-fab-size;
+
+        & > .mb-btn-inner {
+            & > .mb-btn-icon {
+                font-size: $default-button-fab-icon-size;
+            }
+        }
+    }
+
+    .mb-btn-fab-mini-icon-only {
+
+        min-width: $default-button-fab-mini-size;
+        width: $default-button-fab-mini-size;
+        height: $default-button-fab-mini-size;
+        line-height: $default-button-fab-mini-size;
+
+        & > .mb-btn-inner {
+            & > .mb-btn-icon {
+                font-size: $default-button-fab-mini-icon-size;
+            }
+        }
+    }
+
+}
+
 
 
 @mixin blend-button-theme(
