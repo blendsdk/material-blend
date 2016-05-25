@@ -22,15 +22,14 @@ Blend.Runtime.ready(function() {
     ];
     var buttons: Array<Blend.material.Material> = [];
 
-    var createWrapper = function(): Blend.dom.Element {
+    var createWrapper = function(height:number = 100): Blend.dom.Element {
         return Blend.createElement({
             cls: ['t-wrapper'],
             style: {
                 border: '1px solid gray',
                 position: 'relative',
-                height: 200,
+                height: height,
                 margin: 5,
-                padding: 5,
             },
             children: []
         });
@@ -70,7 +69,7 @@ Blend.Runtime.ready(function() {
     });
 
     ['fab', 'fab-mini'].forEach(function(fabType: string) {
-        var wrapper = createWrapper();
+        var wrapper = createWrapper(300);
         fabPositions.forEach(function(fabPos: string) {
             var button = new Blend.button.Button(<ButtonInterface>{
                 buttonType: fabType,
