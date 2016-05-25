@@ -1,5 +1,7 @@
 @import "compass";
 @import "compass/reset";
+@import "compass/css3/user-interface";
+
 @import "colors";
 @import "functions";
 @import "typography";
@@ -10,6 +12,7 @@
 @import "typography";
 @import "elevation";
 @import "grid";
+@import "transition";
 @import "components";
 @import "theme";
 

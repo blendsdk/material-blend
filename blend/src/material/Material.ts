@@ -49,6 +49,17 @@ namespace Blend.material {
         }
 
         /**
+         * This function is used internally on render time to assign element IDs to
+         * properties
+         */
+        protected assignElementByOID(el: Blend.dom.Element, oid: string) {
+            var me: any = this;
+            if (me[oid] === null) {
+                me[oid] = el;
+            }
+        }
+
+        /**
          * Initialized a responsive listener for this Material by adding a listener to the
          * Runtime.addMediaQueryListener
          */
@@ -263,6 +274,11 @@ namespace Blend.material {
             if (!me.visible) {
                 // should be set only when not visible
                 me.setVisible(false);
+            }
+            if (Blend.DEBUG === true) {
+                var id = 'm' + Blend.newID();
+                me.element.getEl().setAttribute('id', id);
+                (<any>window)[id] = me;
             }
         }
 

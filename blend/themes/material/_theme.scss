@@ -49,5 +49,18 @@ $background-color: $global-background-color
 
         @include blend-application-application();
 
+        // common structure for all button;
+        @include blend-button-struct();
+
+        // flat button
+        @include blend-button-flat();
+
+        @include blend-button-theme('flat-default',
+        $button-hover-background-color: $default-flat-button-hover-background-color,
+            $button-text-color: $default-flat-button-text-color,
+            $button-icon-color: $default-flat-button-icon-color
+            );
+
+
     }
 }

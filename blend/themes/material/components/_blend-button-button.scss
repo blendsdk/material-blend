@@ -1,0 +1,133 @@
+@mixin blend-button-struct() {
+
+    .mb-btn {
+        position: relative;
+        outline: none;
+        display: inline-block;
+        border: 0;
+        background: transparent;
+        white-space: nowrap;
+        overflow: hidden;
+        text-decoration: none;
+        cursor: pointer;
+
+        font-style: inherit;
+        font-variant: inherit;
+        font-family: inherit;
+        text-decoration: none;
+
+        transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
+            background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+        &::-moz-focus-inner {
+            border: 0;
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+
+        @include user-select(none);
+
+        & > .mb-btn-inner-icontext {
+            & > .mb-btn-icon {
+                margin-right: rem(0.4);
+            }
+        }
+
+        & > .mb-btn-inner-texticon {
+            & > .mb-btn-icon {
+                margin-left: rem(0.4);
+            }
+        }
+
+        & > .mb-btn-inner {
+            height: 100%;
+            display: inline-block;
+            @include clearfix();
+
+            & > .mb-btn-text {
+                text-transform: uppercase;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            & > .mb-btn-icon {
+                vertical-align: middle;
+            }
+
+        }
+    }
+
+}
+
+@mixin blend-button-type(
+$button-border-radius,
+$button-padding,
+$button-margin,
+$button-line-height,
+$button-min-width,
+$button-font-size
+) {
+    border-radius: $button-border-radius;
+    padding: $button-padding;
+    margin: $button-margin;
+    line-height: $button-line-height;
+    min-height: $button-line-height;
+    min-width: $button-min-width;
+    font-size: $button-font-size;
+    font-weight: 500;
+}
+
+@mixin blend-button-flat() {
+    .mb-btn-both , .mb-btn-text-only {
+        @include blend-button-type(
+        $button-border-radius: $default-button-border-radius,
+            $button-padding: $default-button-padding,
+            $button-margin: $default-button-margin,
+            $button-line-height: $default-button-height,
+            $button-min-width: $default-button-min-width,
+            $button-font-size: $m-body-font-size );
+    }
+
+    .mb-btn-icon-only {
+        margin: rem(0.4);
+        padding: $default-button-icon-only-padding;
+        min-width: 0;
+        line-height: 0;
+    }
+
+}
+
+
+@mixin blend-button-theme(
+$name,
+$button-hover-background-color,
+$button-text-color,
+$button-icon-color
+) {
+    .btn-theme-#{$name} {
+        @if($button-hover-background-color) {
+            &:hover {
+                background-color: $button-hover-background-color;
+            }
+        }
+
+        & > .mb-btn-inner {
+
+            & > .mb-btn-text {
+                color: $button-text-color
+            }
+
+            & > .mb-btn-icon {
+                color: $button-icon-color
+            }
+        }
+
+        @content
+    }
+}

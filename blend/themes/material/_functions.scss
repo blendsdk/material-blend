@@ -5,3 +5,11 @@
     $font-size: 10px;
     @return $multiplier * $font-size;
 }
+
+@mixin clearfix() {
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}

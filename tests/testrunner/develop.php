@@ -8,6 +8,11 @@
         <script src="blend/support.js"></script>
         <script src="blend/blend.js"></script>
         <script src="js/experiments/develop.js"></script>
+       <style>
+           .t-wrapper button {
+               vertical-align:middle;
+           }
+       </style>
     </head>
     <body class="material default">
     </body>
