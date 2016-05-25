@@ -49,6 +49,14 @@ namespace Blend.material {
         }
 
         /**
+         * Internal function used for initiating a sub-layout process. This function can be
+         * overridden when implementing a custom component. See the Button component as
+         * an example of how to use this function
+         */
+        protected updateLayout() {
+        }
+
+        /**
          * This function is used internally on render time to assign element IDs to
          * properties
          */
@@ -108,10 +116,12 @@ namespace Blend.material {
          * Internal function that is called by the parent/host to initiate
          * the initialization process
           */
-        public doInitialize() {
+        public doInitialize() : Blend.material.Material {
             var me = this;
             me.initialize();
+            me.updateLayout();
             me.notifyMaterialInitialized();
+            return me;
         }
 
         /**
