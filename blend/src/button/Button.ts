@@ -14,6 +14,7 @@ interface ButtonInterface extends ButtonBaseInterface {
     text?: string;
     iconAlign?: string;
     buttonType?: string;
+    fabPosition?: string;
 }
 
 namespace Blend.button {
@@ -28,19 +29,40 @@ namespace Blend.button {
         protected textElement: Blend.dom.Element = null;
         protected iconElement: Blend.dom.Element = null;
         protected buttonTypes: Array<string>;
+        protected fabPositions: Array<string>;
 
         public constructor(config: ButtonInterface = {}) {
             super(config);
             var me = this;
             me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini'];
+            me.fabPositions = [
+                'top-right',
+                'top-center',
+                'top-left',
+                'center-right',
+                'center-center',
+                'center-left',
+                'bottom-right',
+                'bottom-center',
+                'bottom-left',
+                'relative'
+            ];
             me.config = {
                 text: config.text || '',
                 icon: config.icon || null,
                 iconFamily: config.iconFamily || 'material-icons',
                 iconAlign: me.getCheckIconAlign(config.iconAlign),
                 buttonType: me.getCheckButtonType(config.buttonType),
+                fabPosition: me.getCheckFabPosition(config.fabPosition),
                 theme: config.theme || 'default'
             }
+        }
+
+        private getCheckFabPosition(fabPosition: string): string {
+            var me = this;
+            fabPosition = fabPosition || 'relative';
+            fabPosition = fabPosition.inArray(me.fabPositions) ? fabPosition : 'relative';
+            return fabPosition === 'relative' ? null : fabPosition;
         }
 
         private getCheckIconAlign(iconAlign: string): string {
@@ -77,6 +99,18 @@ namespace Blend.button {
             return this;
         }
 
+        public setFabPosition(fabPosition: string): Blend.button.Button {
+            var me = this,
+                posCss = `mb-${me.config.buttonType}-pos`;
+            if (me.isFab()) {
+                me.config.fabPosition = me.getCheckFabPosition(fabPosition);
+                me.element.removeCssClassLike([posCss]);
+                me.element.addCssClass([`${posCss}-` + me.config.fabPosition]);
+                me.performLayout();
+            }
+            return this;
+        }
+
         protected updateLayout() {
             var me = this,
                 themeCls: string = `btn-theme-${me.config.buttonType}-${me.config.theme}`,
@@ -96,6 +130,9 @@ namespace Blend.button {
                 if (!hasIcon) {
                     hasIcon = true;
                     me.setIcon('mood');
+                }
+                if (me.config.fabPosition) {
+                    me.setFabPosition(me.config.fabPosition)
                 }
             }
 

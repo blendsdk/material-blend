@@ -46,6 +46,9 @@ $default-button-fab-icon-size: rem(3.600) !default;
 // FAB Mini
 $default-button-fab-mini-size: rem(4.0) !default;
 $default-button-fab-mini-icon-size: rem(2.400) !default;
+// FAB Position edge
+$default-fab-position-edge: rem(2.400);
+$default-fab-position-small: rem(1.600);
 
 
 $default-flat-button-hover-background-color: set-alpha($color-grey-c500,0.2);
