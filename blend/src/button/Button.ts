@@ -62,13 +62,13 @@ namespace Blend.button {
 
         protected updateLayout() {
             var me = this,
-                bothCls: string = 'mb-btn-both',
-                textOnlyCls: string = 'mb-btn-text-only',
-                iconOnlyCls: string = 'mb-btn-icon-only',
+                bothCls: string = `mb-btn-${me.config.buttonType}-both`,
+                textOnlyCls: string = `mb-btn-${me.config.buttonType}-text-only`,
+                iconOnlyCls: string = `mb-btn-${me.config.buttonType}-icon-only`,
                 textIconCls: string = 'mb-btn-inner-texticon',
                 iconTextCls: string = 'mb-btn-inner-icontext',
                 hasIcon: boolean = me.config.icon !== null,
-                hasText: boolean = me.config.text !== '';
+                hasText: boolean = (me.config.text || '').trim() !== '';
 
             me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls]);
             me.wrapperElement.removeCssClass([textIconCls, iconTextCls]);
@@ -85,13 +85,6 @@ namespace Blend.button {
             } else if (hasIcon) {
                 me.element.addCssClass([iconOnlyCls]);
             }
-
-        }
-
-        protected finalizeRender() {
-            var me = this;
-            super.finalizeRender();
-            me.updateLayout();
         }
 
         protected render(): Blend.dom.Element {
