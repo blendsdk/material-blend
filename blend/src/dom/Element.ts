@@ -26,6 +26,25 @@ namespace Blend.dom {
         }
 
         /**
+         * Sets an attribute to this element
+         */
+        public setAttribute(name: string, value?: any): Blend.dom.Element {
+            var me = this;
+            me.el.setAttribute.apply(me.el, arguments);
+            return me;
+        }
+
+
+        /**
+         * Removed an attribute from this element
+         */
+        public removeAttribute(name: string): Blend.dom.Element {
+            var me = this;
+            me.el.removeAttribute(name);
+            return me;
+        }
+
+        /**
          * Get the list of files for from this Element
           */
         public getFiles(): FileList {
