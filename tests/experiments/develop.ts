@@ -7,7 +7,7 @@ Blend.Runtime.ready(function() {
 
     var bodyEl = Blend.getElement(document.body);
     var fa_icon = 'face';
-    var buttonTypes: Array<string> = ['fab', 'fab-mini', 'flat', 'raised'];
+    var buttonTypes: Array<string> = ['fab', 'fab-mini', 'flat', 'raised','round-flat','round-raised'];
     var iconAligns: Array<string> = ['left', 'right'];
     var fabPositions: Array<string> = [
         'top-right',

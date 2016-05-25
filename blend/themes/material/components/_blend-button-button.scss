@@ -184,6 +184,12 @@ $button-font-size
         @include blend-button-icon-only();
         border-radius: $default-button-border-radius;
     }
+
+    .mb-btn-round-flat-icon-only {
+        @include blend-button-icon-only();
+        border-radius: 50%;
+        border: 1px solid transparent;
+    }
 }
 
 @mixin blend-button-raised() {
@@ -205,7 +211,18 @@ $button-font-size
         border-radius: $default-button-border-radius;
     }
 
-    .mb-btn-raised-both , .mb-btn-raised-text-only, .mb-btn-raised-icon-only {
+    .mb-btn-round-raised-icon-only {
+        @include blend-button-icon-only();
+        @include blend-button-shadow-raised-1();
+        border-radius: 50%;
+        border: 1px solid transparent;
+    }
+
+
+    .mb-btn-raised-both,
+    .mb-btn-raised-text-only,
+    .mb-btn-raised-icon-only,
+    .mb-btn-round-raised-icon-only {
         &:not([disabled]) {
             &:active {
                 @include blend-button-shadow-raised-2
@@ -296,31 +313,32 @@ $button-font-size
 
 
 @mixin blend-button-theme(
-$name,
+$names,
 $button-hover-background-color,
 $button-text-color,
 $button-icon-color
 ) {
-    .btn-theme-#{$name} {
-        @if($button-hover-background-color) {
-            &:not([disabled]) {
-                &:hover {
-                    background-color: $button-hover-background-color;
+    @each $name in $names {
+        .btn-theme-#{$name} {
+            @if($button-hover-background-color) {
+                &:not([disabled]) {
+                    &:hover {
+                        background-color: $button-hover-background-color;
+                    }
                 }
             }
-        }
 
-        & > .mb-btn-inner {
+            & > .mb-btn-inner {
 
-            & > .mb-btn-text {
-                color: $button-text-color
+                & > .mb-btn-text {
+                    color: $button-text-color
+                }
+
+                & > .mb-btn-icon {
+                    color: $button-icon-color
+                }
             }
-
-            & > .mb-btn-icon {
-                color: $button-icon-color
-            }
+            @content
         }
-
-        @content
     }
 }

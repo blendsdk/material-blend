@@ -37,7 +37,7 @@ namespace Blend.button {
         public constructor(config: ButtonInterface = {}) {
             super(config);
             var me = this;
-            me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini','round'];
+            me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini', 'round-flat', 'round-raised'];
             me.fabPositions = [
                 'top-right',
                 'top-center',
@@ -166,7 +166,6 @@ namespace Blend.button {
         protected updateLayout() {
             var me = this,
                 themeCls: string = `btn-theme-${me.config.buttonType}-${me.config.theme}`,
-                roudIconCls:string =
                 bothCls: string = `mb-btn-${me.config.buttonType}-both`,
                 textOnlyCls: string = `mb-btn-${me.config.buttonType}-text-only`,
                 iconOnlyCls: string = `mb-btn-${me.config.buttonType}-icon-only`,
@@ -178,13 +177,13 @@ namespace Blend.button {
             me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls, themeCls]);
             me.wrapperElement.removeCssClass([textIconCls, iconTextCls]);
 
-            if (me.isFab()) {
+            if (me.isFab() || me.isRound()) {
                 hasText = false;
                 if (!hasIcon) {
                     hasIcon = true;
                     me.setIcon('mood');
                 }
-                if (me.config.fabPosition) {
+                if (me.config.fabPosition && me.isFab()) {
                     me.setFabPosition(me.config.fabPosition)
                 }
             } else {
@@ -222,6 +221,13 @@ namespace Blend.button {
          */
         protected isFab(): boolean {
             return this.config.buttonType.indexOf('fab') !== -1;
+        }
+
+        /**
+         * Check if this button is either a round-flat or round-raised
+         */
+        protected isRound(): boolean {
+            return this.config.buttonType.indexOf('round') !== -1;
         }
 
         protected render(): Blend.dom.Element {
