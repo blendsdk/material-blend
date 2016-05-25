@@ -39,6 +39,7 @@ $default-button-padding: 0 rem(0.600) !default;
 $default-button-icon-only-padding: rem(0.600) !default;
 $default-button-margin: rem(0.600) rem(0.800) !default;
 $default-button-border-radius: 3px !default;
+
 // FAB
 $default-button-fab-border-radius: 50% !default;
 $default-button-fab-size: rem(5.600) !default;
@@ -50,7 +51,9 @@ $default-button-fab-mini-icon-size: rem(2.400) !default;
 $default-fab-position-edge: rem(2.400);
 $default-fab-position-small: rem(1.600);
 
-
-$default-flat-button-hover-background-color: set-alpha($color-grey-c500,0.2);
+// Theme
+$default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);
+$default-button-disbaled-text-color: rgba($color-blackandwhite-cblack,0.26);
+$default-flat-button-hover-background-color: rgba($color-grey-c500,0.2);
 $default-flat-button-text-color: $color-grey-c900;
 $default-flat-button-icon-color: $color-grey-c900;

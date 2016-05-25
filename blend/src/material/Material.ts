@@ -146,6 +146,7 @@ namespace Blend.material {
           */
         public doInitialize(): Blend.material.Material {
             var me = this;
+            me.initEvents();
             me.initialize();
             me.performLayout();
             me.notifyMaterialInitialized();
@@ -156,6 +157,13 @@ namespace Blend.material {
          * This function can be overriden to do custom initialization on this Material
          */
         public initialize() {
+
+        }
+
+        /**
+         * Override this method for creating event listeners for this Material
+         */
+        protected initEvents() {
 
         }
 

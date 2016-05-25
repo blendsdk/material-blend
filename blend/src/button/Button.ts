@@ -6,8 +6,10 @@ var buttonIndex = 1;
 
 interface ButtonBaseInterface extends MaterialInterface {
     icon?: string;
+    iconSize?: string;
     iconFamily?: string;
     theme?: string;
+    enabled?: boolean;
 }
 
 interface ButtonInterface extends ButtonBaseInterface {
@@ -30,11 +32,12 @@ namespace Blend.button {
         protected iconElement: Blend.dom.Element = null;
         protected buttonTypes: Array<string>;
         protected fabPositions: Array<string>;
+        protected iconSizes: DictionaryInterface;
 
         public constructor(config: ButtonInterface = {}) {
             super(config);
             var me = this;
-            me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini'];
+            me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini','round'];
             me.fabPositions = [
                 'top-right',
                 'top-center',
@@ -47,6 +50,14 @@ namespace Blend.button {
                 'bottom-left',
                 'relative'
             ];
+
+            me.iconSizes = {
+                'small': 18,
+                'medium': 24,
+                'large': 36,
+                'xlarge': 48
+            };
+
             me.config = {
                 text: config.text || '',
                 icon: config.icon || null,
@@ -54,8 +65,36 @@ namespace Blend.button {
                 iconAlign: me.getCheckIconAlign(config.iconAlign),
                 buttonType: me.getCheckButtonType(config.buttonType),
                 fabPosition: me.getCheckFabPosition(config.fabPosition),
-                theme: config.theme || 'default'
+                theme: config.theme || 'default',
+                enabled: config.enabled === true ? true : false,
+                iconSize: config.iconSize || null
             }
+
+            me.addController(function(sender: Blend.material.Material, eventName: string) {
+                console.log(eventName, new Date());
+            })
+        }
+
+        public setEnabled(value: boolean): Blend.button.Button {
+            var me = this;
+            me.config.enabled = value;
+            if (value === true) {
+                me.element.removeAttribute('disabled');
+            } else {
+                me.element.setAttribute('disabled', true);
+            }
+            return this;
+        }
+
+        public isEnabled(): boolean {
+            return this.config.enabled;
+        }
+
+        private getCheclIconSize(iconSize: string): string {
+            var me = this;
+            iconSize = iconSize || 'default';
+            iconSize = iconSize.inArray(Object.keys(me.iconSizes)) ? iconSize : 'default';
+            return iconSize === 'default' ? null : iconSize;
         }
 
         private getCheckFabPosition(fabPosition: string): string {
@@ -91,6 +130,19 @@ namespace Blend.button {
             return this;
         }
 
+        public setIconSize(iconSize: string): Blend.button.Button {
+            var me = this,
+                sizeCss = 'mb-btn-icon-size';
+            me.config.iconSize = me.getCheclIconSize(iconSize);
+            me.element.removeCssClassLike([sizeCss]);
+            if (iconSize !== null) {
+                me.element.addCssClass([`${sizeCss}-` + me.config.iconSize]);
+                me.performLayout();
+            }
+            return this;
+
+        }
+
         public setIcon(icon: string): Blend.button.Button {
             var me = this;
             me.config.icon = icon;
@@ -114,6 +166,7 @@ namespace Blend.button {
         protected updateLayout() {
             var me = this,
                 themeCls: string = `btn-theme-${me.config.buttonType}-${me.config.theme}`,
+                roudIconCls:string =
                 bothCls: string = `mb-btn-${me.config.buttonType}-both`,
                 textOnlyCls: string = `mb-btn-${me.config.buttonType}-text-only`,
                 iconOnlyCls: string = `mb-btn-${me.config.buttonType}-icon-only`,
@@ -134,6 +187,8 @@ namespace Blend.button {
                 if (me.config.fabPosition) {
                     me.setFabPosition(me.config.fabPosition)
                 }
+            } else {
+                me.setIconSize(me.config.iconSize);
             }
 
             if (hasText && hasIcon) {
@@ -152,9 +207,19 @@ namespace Blend.button {
             me.element.addCssClass([themeCls]);
         }
 
+        protected notifyClick(evt: Event) {
+            var me = this;
+            me.fireEvent('click', evt);
+        }
+
+        protected initEvents() {
+            var me = this;
+            me.element.addEventListener('click', me.notifyClick.bind(me));
+        }
+
         /**
          * Check if this button is a Floating Action Button
-          */
+         */
         protected isFab(): boolean {
             return this.config.buttonType.indexOf('fab') !== -1;
         }
