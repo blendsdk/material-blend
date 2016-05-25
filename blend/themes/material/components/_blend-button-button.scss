@@ -17,13 +17,7 @@
         text-decoration: none;
 
         transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
-            background-color $swift-ease-out-duration $swift-ease-out-timing-function,
-            width $swift-ease-out-duration $swift-ease-out-timing-function,
-            height $swift-ease-out-duration $swift-ease-out-timing-function,
-            top $swift-ease-out-duration $swift-ease-out-timing-function,
-            right $swift-ease-out-duration $swift-ease-out-timing-function,
-            bottom $swift-ease-out-duration $swift-ease-out-timing-function,
-            left $swift-ease-out-duration $swift-ease-out-timing-function;
+            background-color $swift-ease-out-duration $swift-ease-out-timing-function;
 
         &::-moz-focus-inner {
             border: 0;
@@ -187,6 +181,9 @@ $button-font-size
 @mixin blend-button-fab() {
 
     .mb-btn-fab-icon-only , .mb-btn-fab-mini-icon-only {
+
+        transition: $swift-ease-in;
+        transition-property: background-color, box-shadow, transform;
 
         & > .mb-btn-inner {
             & > .mb-btn-text {
