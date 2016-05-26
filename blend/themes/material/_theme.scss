@@ -61,14 +61,14 @@ $background-color: $global-background-color
 
 
         // flat default button
-        @include blend-button-theme(('flat-default','round-flat-default'),
+        @include blend-button-theme($all-flat-buttons,
         $button-hover-background-color: $default-flat-button-hover-background-color,
             $button-text-color: $default-flat-button-text-color,
             $button-icon-color: $default-flat-button-icon-color
             );
 
         // raised default button
-        @include blend-button-theme(('raised-default','round-raised-default'),
+        @include blend-button-theme($all-raised-buttons,
         $button-hover-background-color: false,
             $button-text-color: $default-flat-button-text-color,
             $button-icon-color: $default-flat-button-icon-color

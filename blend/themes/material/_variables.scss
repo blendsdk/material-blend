@@ -31,6 +31,8 @@ $layout-small-margin: $layout-large-margin !default;
 $layout-cell-default-columns: $layout-small-columns !default;
 $layout-max-columns: $layout-large-columns !default;
 
+$all-flat-buttons: ('flat-default','round-flat-default');
+$all-raised-buttons: ('raised-default','round-raised-default');
 
 // Button
 $default-button-min-width: rem(8.800) !default;
