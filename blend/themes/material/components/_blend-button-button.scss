@@ -1,10 +1,19 @@
-@mixin blend-button-shadow-raised-1() {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+@mixin blend-button-raised-shadow() {
+    @include elevate($elevate-2dp);
 }
 
-@mixin blend-button-shadow-raised-2() {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+@mixin blend-button-raised-press-shadow() {
+    @include elevate($elevate-5dp);
 }
+
+@mixin blend-button-fab-shadow() {
+    @include elevate($elevate-5dp);
+}
+
+@mixin blend-button-fab-press-shadow() {
+    @include elevate($elevate-12dp);
+}
+
 
 @mixin blend-no-shadow() {
     box-shadow: none;
@@ -201,19 +210,19 @@ $button-font-size
             $button-line-height: $default-button-height,
             $button-min-width: $default-button-min-width,
             $button-font-size: $m-body-font-size) {
-            @include blend-button-shadow-raised-1();
+            @include blend-button-raised-shadow();
         }
     }
 
     .mb-btn-raised-icon-only {
         @include blend-button-icon-only();
-        @include blend-button-shadow-raised-1();
+        @include blend-button-raised-shadow();
         border-radius: $default-button-border-radius;
     }
 
     .mb-btn-round-raised-icon-only {
         @include blend-button-icon-only();
-        @include blend-button-shadow-raised-1();
+        @include blend-button-raised-shadow();
         border-radius: 50%;
         border: 1px solid transparent;
     }
@@ -224,8 +233,8 @@ $button-font-size
     .mb-btn-raised-icon-only,
     .mb-btn-round-raised-icon-only {
         &:not([disabled]) {
-            &:active {
-                @include blend-button-shadow-raised-2
+            &:hover {
+                @include blend-button-raised-press-shadow
             }
         }
 
@@ -257,8 +266,8 @@ $button-font-size
         }
 
         &:not([disabled]) {
-            &:active {
-                @include blend-button-shadow-raised-2
+            &:hover {
+                @include blend-button-fab-press-shadow();
             }
         }
 
@@ -269,7 +278,7 @@ $button-font-size
             $button-line-height: false,
             $button-min-width: false,
             $button-font-size: $m-body-font-size) {
-            @include blend-button-shadow-raised-1();
+            @include blend-button-fab-shadow();
         }
     }
 

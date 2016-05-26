@@ -16,7 +16,6 @@ $background-color: $global-background-color
 
     .#{$theme-name} {
         @include typography();
-        @include elevate();
 
         @include init-grid($layout-max-columns);
 
