@@ -115,11 +115,19 @@ namespace Blend.button {
             return buttonType.inArray(me.buttonTypes) ? buttonType : 'flat';
         }
 
-        public setButtonType(buttonType: string) {
+        public setTheme(theme: string): Blend.button.Button {
+            var me = this;
+            me.config.theme = theme || 'default';
+            me.performLayout();
+            return me;
+        }
+
+        public setButtonType(buttonType: string): Blend.button.Button {
             var me = this;
             me.config.buttonType = me.getCheckButtonType(buttonType);
             me.element.clearCssClass().addCssClass(['mb-btn']);
             me.performLayout();
+            return me;
         }
 
         public setText(text: string): Blend.button.Button {

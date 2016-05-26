@@ -313,13 +313,18 @@ $button-font-size
 
 
 @mixin blend-button-theme(
-$names,
-$button-hover-background-color,
+$name,
+$button-types,
 $button-text-color,
-$button-icon-color
+$button-icon-color,
+$button-background-color,
+$button-hover-background-color
 ) {
-    @each $name in $names {
-        .btn-theme-#{$name} {
+    @each $btype in $button-types {
+        .btn-theme-#{$btype}-#{$name} {
+
+            background-color: $button-background-color;
+
             @if($button-hover-background-color) {
                 &:not([disabled]) {
                     &:hover {

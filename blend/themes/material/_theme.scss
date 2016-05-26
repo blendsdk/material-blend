@@ -59,20 +59,54 @@ $background-color: $global-background-color
         // FAB button
         @include blend-button-fab();
 
-
         // flat default button
-        @include blend-button-theme($all-flat-buttons,
-        $button-hover-background-color: $default-flat-button-hover-background-color,
+        @include blend-button-theme(
+        $name: 'default',
+            $button-types: $flat-buttons,
             $button-text-color: $default-flat-button-text-color,
-            $button-icon-color: $default-flat-button-icon-color
+            $button-icon-color: $default-flat-button-icon-color,
+            $button-background-color: transparent,
+            $button-hover-background-color: $default-flat-button-hover-background-color
             );
 
         // raised default button
-        @include blend-button-theme($all-raised-buttons,
-        $button-hover-background-color: false,
+        @include blend-button-theme(
+        $name: 'default',
+            $button-types: $raised-buttons,
             $button-text-color: $default-flat-button-text-color,
-            $button-icon-color: $default-flat-button-icon-color
+            $button-icon-color: $default-flat-button-icon-color,
+            $button-background-color: transparent,
+            $button-hover-background-color: false
             );
+
+        // flat default button
+        @include blend-button-theme(
+        $name: 'primary',
+            $button-types: $flat-buttons,
+            $button-text-color: $color-indigo-c500,
+            $button-icon-color: $color-indigo-c500,
+            $button-background-color: transparent,
+            $button-hover-background-color: $default-flat-button-hover-background-color
+            );
+
+        @include blend-button-theme(
+        $name: 'primary',
+            $button-types: $all-raised-buttons,
+            $button-text-color: $color-blackandwhite-cwhite,
+            $button-icon-color: $color-blackandwhite-cwhite,
+            $button-background-color: $color-indigo-c500,
+            $button-hover-background-color: false
+            );
+
+        @include blend-button-theme(
+        $name: 'danger',
+            $button-types: $all-raised-buttons,
+            $button-text-color: $color-blackandwhite-cwhite,
+            $button-icon-color: $color-blackandwhite-cwhite,
+            $button-background-color: $color-pink-c400,
+            $button-hover-background-color: false
+            );
+
 
     }
 }
