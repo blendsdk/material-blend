@@ -9,7 +9,7 @@ interface ButtonBaseInterface extends MaterialInterface {
     iconSize?: string;
     iconFamily?: string;
     theme?: string;
-    enabled?: boolean;
+    disabled?: boolean;
 }
 
 interface ButtonInterface extends ButtonBaseInterface {
@@ -66,7 +66,7 @@ namespace Blend.button {
                 buttonType: me.getCheckButtonType(config.buttonType),
                 fabPosition: me.getCheckFabPosition(config.fabPosition),
                 theme: config.theme || 'default',
-                enabled: config.enabled === true ? true : false,
+                disabled: config.disabled === true ? true : false,
                 iconSize: config.iconSize || null
             }
 
@@ -75,19 +75,19 @@ namespace Blend.button {
             })
         }
 
-        public setEnabled(value: boolean): Blend.button.Button {
+        public setState(value: boolean): Blend.button.Button {
             var me = this;
-            me.config.enabled = value;
+            me.config.disabled = !value;
             if (value === true) {
                 me.element.removeAttribute('disabled');
             } else {
                 me.element.setAttribute('disabled', true);
             }
-            return this;
+            return me;
         }
 
         public isEnabled(): boolean {
-            return this.config.enabled;
+            return !this.config.disabled;
         }
 
         private getCheclIconSize(iconSize: string): string {
@@ -194,6 +194,9 @@ namespace Blend.button {
                 if (me.config.fabPosition && me.isFab()) {
                     me.setFabPosition(me.config.fabPosition)
                 }
+                if (me.isRound()) {
+                    me.setIconSize(me.config.iconSize);
+                }
             } else {
                 me.setIconSize(me.config.iconSize);
             }
@@ -212,6 +215,7 @@ namespace Blend.button {
             }
 
             me.element.addCssClass([themeCls]);
+            me.setState(!me.config.disabled);
         }
 
         protected notifyClick(evt: Event) {
