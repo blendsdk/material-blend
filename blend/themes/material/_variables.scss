@@ -36,14 +36,13 @@ $raised-buttons: ('raised','round-raised');
 $fab-buttons: ('fab', 'fab-mini');
 $all-raised-buttons: join($fab-buttons,$raised-buttons);
 
-// Button
+// Button structure
 $default-button-min-width: rem(8.800) !default;
 $default-button-height: rem(3.60);
-$default-button-padding: 0 rem(0.600) !default;
+$default-button-padding: 0 rem(1.600) !default;
 $default-button-icon-only-padding: rem(0.600) !default;
 $default-button-margin: rem(0.600) rem(0.800) !default;
-$default-button-border-radius: 3px !default;
-
+$default-button-border-radius: rem(0.2) !default;
 // FAB
 $default-button-fab-border-radius: 50% !default;
 $default-button-fab-size: rem(5.600) !default;
@@ -55,9 +54,29 @@ $default-button-fab-mini-icon-size: rem(2.400) !default;
 $default-fab-position-edge: rem(2.400);
 $default-fab-position-small: rem(1.600);
 
-// Theme
+// Button styles based on default theme
+
+// When a button is disabled
 $default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);
 $default-button-disbaled-text-color: rgba($color-blackandwhite-cblack,0.26);
+
+
+// Flat button
+$default-flat-button-text-color: rgba($color-grey-c900,0.90);
+$default-flat-button-icon-color: rgba($color-grey-c900,0.90);
 $default-flat-button-hover-background-color: rgba($color-grey-c500,0.2);
-$default-flat-button-text-color: $color-grey-c900;
-$default-flat-button-icon-color: $color-grey-c900;
+$default-flat-button-focus-background-color: rgba($color-grey-c500,0.4);
+
+// Raised
+$default-raised-button-text-color: $default-flat-button-text-color;
+$default-raised-button-icon-color: $default-flat-button-icon-color;
+$default-raised-button-background-color: rgba($color-grey-c500,0.15);
+$default-raised-button-hover-background-color: rgba($color-grey-c500,0.3);
+$default-raised-button-focus-background-color: $default-flat-button-focus-background-color;
+
+// Fab
+$default-fab-button-text-color: $default-flat-button-text-color;
+$default-fab-button-icon-color: $default-flat-button-icon-color;
+$default-fab-button-background-color: rgba($color-grey-c500,0.15);
+$default-fab-button-hover-background-color: rgba($color-grey-c500,0.3);
+$default-fab-button-focus-background-color: $default-flat-button-focus-background-color;

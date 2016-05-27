@@ -3,15 +3,15 @@
 }
 
 @mixin blend-button-raised-press-shadow() {
-    @include elevate($elevate-5dp);
+    @include elevate($elevate-5dp); // specs say it should be 7dp
 }
 
 @mixin blend-button-fab-shadow() {
-    @include elevate($elevate-5dp);
+    @include elevate($elevate-6dp); // specs say it should be 6dp
 }
 
 @mixin blend-button-fab-press-shadow() {
-    @include elevate($elevate-12dp);
+    @include elevate($elevate-13dp); // specs say it should be 12dp
 }
 
 
@@ -117,13 +117,13 @@
 
         & > .mb-btn-inner-icontext {
             & > .mb-btn-icon {
-                margin-right: rem(0.4);
+                margin-right: rem(1.6);
             }
         }
 
         & > .mb-btn-inner-texticon {
             & > .mb-btn-icon {
-                margin-left: rem(0.4);
+                margin-left: rem(1.6);
             }
         }
 
@@ -233,7 +233,7 @@ $button-font-size
     .mb-btn-raised-icon-only,
     .mb-btn-round-raised-icon-only {
         &:not([disabled]) {
-            &:hover {
+            &:active {
                 @include blend-button-raised-press-shadow
             }
         }
@@ -266,7 +266,7 @@ $button-font-size
         }
 
         &:not([disabled]) {
-            &:hover {
+            &:active {
                 @include blend-button-fab-press-shadow();
             }
         }
@@ -327,7 +327,8 @@ $button-types,
 $button-text-color,
 $button-icon-color,
 $button-background-color,
-$button-hover-background-color
+$button-hover-background-color,
+$button-focus-background-color
 ) {
     @each $btype in $button-types {
         .btn-theme-#{$btype}-#{$name} {
@@ -338,6 +339,14 @@ $button-hover-background-color
                 &:not([disabled]) {
                     &:hover {
                         background-color: $button-hover-background-color;
+                    }
+                }
+            }
+
+            @if($button-focus-background-color) {
+                &:not([disabled]) {
+                    &:active {
+                        background-color: $button-focus-background-color;
                     }
                 }
             }
