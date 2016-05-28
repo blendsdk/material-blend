@@ -43,6 +43,16 @@ namespace Blend {
 
 
     /**
+     * Bind wraps a function into a new functions so it can run in a given scope
+     * whn the new function is called.
+     */
+    export function bind(scope: any, fn: Function) {
+        return function() {
+            fn.apply(scope, arguments);
+        }
+    }
+
+    /**
      * Generates a new sequential ID used internally for debugging
      */
     export function newID(): number {
