@@ -1,4 +1,5 @@
 /// <reference path="../common/Interfaces.ts" />
+/// <reference path="../Component.ts" />
 /// <reference path="ClassList.ts" />
 /// <reference path="StyleList.ts" />
 /// <reference path="../Blend.ts" />
@@ -9,7 +10,7 @@ namespace Blend.dom {
      * Wraps an HTMLElement into a utility class for easier  manipulation
      * and hadling
      */
-    export class Element {
+    export class Element extends Component {
 
         private el: HTMLElement;
         private pixelRe = /px$/;
@@ -20,6 +21,7 @@ namespace Blend.dom {
         public styleList: Blend.dom.StyleList;
 
         constructor(el: HTMLElement) {
+            super();
             this.el = el;
             this.classList = new Blend.dom.ClassList(this.el);
             this.styleList = new Blend.dom.StyleList(this.el);
@@ -228,8 +230,9 @@ namespace Blend.dom {
         /**
          * Appends a child Element to this Element
          */
-        public append(child: Blend.dom.Element) {
+        public append(child: Blend.dom.Element): Blend.dom.Element {
             this.el.appendChild((child.getEl()));
+            return child;
         }
 
         /**
@@ -368,17 +371,17 @@ namespace Blend {
     /**
      * Wrapper for document.querySelector
      */
-    export function selectElement(query: string): Blend.dom.Element {
-        var els = Blend.selectElements(query);
+    export function selectElement(query: string, from: Blend.dom.Element = null): Blend.dom.Element {
+        var els = Blend.selectElements(query, from);
         return els[0] || null;
     }
 
     /**
      * Wrapper for document.querySelectorAll
      */
-    export function selectElements(query: string): Array<Blend.dom.Element> {
+    export function selectElements(query: string, from: Blend.dom.Element = null): Array<Blend.dom.Element> {
         var els: Array<Blend.dom.Element> = [];
-        Blend.forEach(document.querySelectorAll(query), function(el: HTMLElement) {
+        Blend.forEach(((from ? from.getEl() : null) || document).querySelectorAll(query), function(el: HTMLElement) {
             els.push(new Blend.dom.Element(el));
         });
         return els;
