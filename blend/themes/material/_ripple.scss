@@ -1,0 +1,37 @@
+.mb-ripple-container {
+
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.55s $swift-ease-out-timing-function;
+    pointer-events: none;
+    @include user-select(none);
+}
+
+.mb-ripple {
+    position: absolute;
+    transform: translate(-50%, -50%) scale(0);
+    transform-origin: 50% 50%;
+    opacity: 0;
+    border-radius: 50%;
+    &.mb-ripple-placed {
+        $sizeDuration: 0.45s * 2;
+        transition: margin $sizeDuration $swift-ease-out-timing-function,
+            border $sizeDuration $swift-ease-out-timing-function,
+            width $sizeDuration $swift-ease-out-timing-function,
+            height $sizeDuration $swift-ease-out-timing-function,
+            opacity $sizeDuration $swift-ease-out-timing-function,
+            transform $sizeDuration $swift-ease-out-timing-function;
+    }
+    &.mb-ripple-scaled {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    &.mb-ripple-active, &.mb-ripple-full, &.mb-ripple-visible {
+        opacity: 0.30;
+    }
+}
+
+
