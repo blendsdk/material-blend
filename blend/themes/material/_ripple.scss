@@ -7,6 +7,7 @@
     width: 100%;
     height: 100%;
     transition: all 0.55s $swift-ease-out-timing-function;
+    transform: translateZ(0);
     pointer-events: none;
     @include user-select(none);
 }
@@ -29,7 +30,7 @@
     &.mb-ripple-scaled {
         transform: translate(-50%, -50%) scale(1);
     }
-    &.mb-ripple-active, &.mb-ripple-full, &.mb-ripple-visible {
+    &.mb-ripple-active {
         opacity: 0.30;
     }
 }

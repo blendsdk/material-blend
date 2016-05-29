@@ -24,11 +24,13 @@ namespace Blend.material.effect {
         private skipMouseEvent: boolean;
         private center: boolean;
         private rippleDuration: number;
+        private removeQueue: Array<Blend.dom.Element>;
         protected color: string;
 
         public constructor(config: RippleInterface = {}) {
             super(config);
             var me = this;
+            me.removeQueue = [];
             me.isHandling = false;
             me.rippleDuration = 400;
             me.skipMouseEvent = false;
@@ -46,10 +48,17 @@ namespace Blend.material.effect {
                 me.element.addEventListener('mousedown', Blend.bind(me, me.handleDownEvent));
                 me.element.addEventListener('mouseup', Blend.bind(me, me.handleHandleUpEvent));
                 me.element.setProperty('hasRipple', true);
-                me.container = me.element.append(Blend.createElement({
-                    cls: 'mb-ripple-container'
-                }));
+                me.createRippleContainer();
             }
+        }
+
+        protected createRippleContainer() {
+            var me = this,
+                copyStyles = me.element.getStyle(['border-radius', 'border-color', 'border-width', 'border-style']);
+            me.container = me.element.append(Blend.createElement({
+                cls: 'mb-ripple-container',
+                style: copyStyles
+            }));
         }
 
         protected handleDownEvent(evt: Event) {
@@ -76,9 +85,15 @@ namespace Blend.material.effect {
 
         protected handleHandleUpEvent() {
             var me = this;
-            setTimeout(function() {
-                me.currentRipple.removeCssClass(['mb-ripple-active']);
-            }, me.rippleDuration * 0.40);
+            while (me.removeQueue.length !== 0) {
+                var ripple = me.removeQueue.splice(0, 1)[0];
+                setTimeout(function() {
+                    ripple.removeCssClass(['mb-ripple-active']);
+                    setTimeout(function() {
+                        ripple.getEl().parentNode.removeChild(ripple.getEl());
+                    }, 2000);
+                }, me.rippleDuration * 0.40);
+            }
         }
 
         protected initiateRipple(left: number, top: number) {
@@ -89,6 +104,7 @@ namespace Blend.material.effect {
                 x = Math.max(Math.abs(width - left), left) * 2,
                 y = Math.max(Math.abs(height - top), top) * 2,
                 size = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            me.color = me.initRippleColor('.mb-btn-icon');
             ripple.setStyle({
                 left: left,
                 top: top,
@@ -96,11 +112,8 @@ namespace Blend.material.effect {
                 height: size,
                 'background-color': me.color,
             });
-            ripple.addCssClass(['mb-ripple-placed']);
-            me.currentRipple = ripple;
-            setTimeout(function() {
-                ripple.addCssClass(['mb-ripple-scaled', 'mb-ripple-active']);
-            }, 1);
+            ripple.addCssClass(['mb-ripple-placed', 'mb-ripple-active', 'mb-ripple-scaled']);
+            me.removeQueue.push(ripple);
         }
 
         /**
@@ -127,7 +140,7 @@ namespace Blend.material.effect {
          */
         protected initRippleColor(color: string): string {
             var me = this,
-                opacity: number = 0.4,
+                opacity: number = 0.95,
                 prop = 'color',
                 defaultColor = 'rgb(0,0,0)';
             var colorElement = Blend.selectElement(color, me.element);
@@ -137,7 +150,7 @@ namespace Blend.material.effect {
                 color = me.hexToRgb(color || defaultColor);
             }
             var t = color.replace(/\brgba\b|\brgb\b|\s|\(|\)/g, '').split(',');
-            if (t.length === 3) {
+            if (t.length >= 3) {
                 return `rgba(${t[0]},${t[1]},${t[2]},${opacity})`;
             } else {
                 return `rgba(0,0,0,${opacity})`;

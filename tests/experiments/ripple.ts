@@ -32,7 +32,7 @@ Blend.Runtime.ready(function() {
         btn.doInitialize();
         var rippleEffect = new Blend.material.effect.Ripple({
             element: btn.getElement(),
-            color:'.mb-btn-text'
+            color: '.mb-btn-text'
         })
     }
 
@@ -40,7 +40,7 @@ Blend.Runtime.ready(function() {
         var el = Blend.createElement({
             style: {
                 width: 200,
-                height:100,
+                height: 100,
                 position: 'relative',
                 display: 'inline-block',
                 border: '1px solid #EFEFEF'
@@ -57,10 +57,34 @@ Blend.Runtime.ready(function() {
 
     createRippleTest(surface);
 
-     var btn = createButton(surface, {
-         text: 'Click Me',
-         buttonType: 'flat',
-         icon: 'build'
-     });
+    var btn = createButton(surface, {
+        text: 'Flat Button',
+        buttonType: 'flat',
+        icon: 'build'
+    });
+
+    var btn = createButton(surface, {
+        text: 'Raised Button',
+        buttonType: 'raised',
+        theme: 'primary'
+    });
+
+    var btn = createButton(surface, {
+        buttonType: 'round-flat',
+        icon: 'done',
+    });
+
+    var btn = createButton(surface, {
+        buttonType: 'round-raised',
+        icon: 'mood',
+    });
+
+    var btn = createButton(surface, {
+        buttonType: 'fab',
+        icon: 'replay',
+        fabPosition: 'center-right',
+        theme: 'pink'
+    });
+
 
 }).kickStart();

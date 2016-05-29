@@ -80,6 +80,17 @@ $background-color: $global-background-color
             );
 
         @include blend-button-theme(
+        $name: 'primary',
+            $button-types: $raised-buttons,
+            $button-text-color: #fff,
+            $button-icon-color: #fff,
+            $button-background-color: $color-blue-c700,
+            $button-hover-background-color: $color-blue-c800,
+            $button-focus-background-color: false
+            );
+
+
+        @include blend-button-theme(
         $name: 'default',
             $button-types: $fab-buttons,
             $button-text-color: $default-fab-button-text-color,
@@ -89,6 +100,15 @@ $background-color: $global-background-color
             $button-focus-background-color: $default-fab-button-focus-background-color
             );
 
+        @include blend-button-theme(
+        $name: 'pink',
+            $button-types: $fab-buttons,
+            $button-text-color: #fff,
+            $button-icon-color: #fff,
+            $button-background-color: $color-pink-a200,
+            $button-hover-background-color: false,
+            $button-focus-background-color: false
+            );
 
 
         /*        // raised default button
