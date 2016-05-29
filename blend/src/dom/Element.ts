@@ -382,7 +382,9 @@ namespace Blend {
     export function selectElements(query: string, from: Blend.dom.Element = null): Array<Blend.dom.Element> {
         var els: Array<Blend.dom.Element> = [];
         Blend.forEach(((from ? from.getEl() : null) || document).querySelectorAll(query), function(el: HTMLElement) {
-            els.push(new Blend.dom.Element(el));
+            if (Blend.isInstanceOf(el, HTMLElement)) {
+                els.push(new Blend.dom.Element(el));
+            }
         });
         return els;
     }
