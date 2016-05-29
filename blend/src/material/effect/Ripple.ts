@@ -92,13 +92,19 @@ namespace Blend.material.effect {
                     setTimeout(function() {
                         ripple.getEl().parentNode.removeChild(ripple.getEl());
                     }, 2000);
-                }, me.rippleDuration * 0.40);
+                }, me.rippleDuration * 0.4);
             }
         }
 
         protected initiateRipple(left: number, top: number) {
             var me = this,
-                ripple = me.container.append(Blend.createElement({ cls: ['mb-ripple'] })),
+                ripple = me.container.append(Blend.createElement({
+                    cls: ['mb-ripple'],
+                    style: {
+                        top: top,
+                        left:left
+                    }
+                })),
                 width = me.element.getEl().clientWidth,
                 height = me.element.getEl().clientHeight,
                 x = Math.max(Math.abs(width - left), left) * 2,
@@ -106,13 +112,15 @@ namespace Blend.material.effect {
                 size = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
             me.color = me.initRippleColor('.mb-btn-icon');
             ripple.setStyle({
-                left: left,
-                top: top,
                 width: size,
                 height: size,
                 'background-color': me.color,
             });
-            ripple.addCssClass(['mb-ripple-placed', 'mb-ripple-active', 'mb-ripple-scaled']);
+            ripple.addCssClass(['mb-ripple-placed']);
+            setTimeout(function() {
+                ripple.addCssClass(['mb-ripple-scaled']);
+                ripple.addCssClass(['mb-ripple-active']);
+            }, 5);
             me.removeQueue.push(ripple);
         }
 

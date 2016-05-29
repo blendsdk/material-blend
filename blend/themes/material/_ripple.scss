@@ -14,9 +14,10 @@
 
 .mb-ripple {
     position: absolute;
-    transform: translate(-50%, -50%) scale(0);
-    transform-origin: 50% 50%;
+    transform: translate(-50%, -50%);
     opacity: 0;
+    width:1px;
+    height:1px;
     border-radius: 50%;
     &.mb-ripple-placed {
         $sizeDuration: 0.45s * 2;
@@ -28,7 +29,7 @@
             transform $sizeDuration $swift-ease-out-timing-function;
     }
     &.mb-ripple-scaled {
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%, -50%);
     }
     &.mb-ripple-active {
         opacity: 0.30;
