@@ -113,19 +113,18 @@ Builder.prototype.copyrightFiles = function() {
     console.log('-- Looking for files');
     var me = this,
         header = me.copyrightHeader.join("\n");
-        files = me.readFiles(me.blendPath, function(fname) {
-            var ext = path.extname(fname);
-            return ext === '.ts' || ext === '.scss';
-        });
+    files = me.readFiles(me.blendPath, function(fname) {
+        var ext = path.extname(fname);
+        return ext === '.ts' || ext === '.scss';
+    });
     console.log('-- ' + files.length + ' files found.');
     files.forEach(function(fname) {
         var contents = fs.readFileSync(fname).toString();
         if (contents.indexOf('Copyright 2016 TrueSoftware B.V') === -1) {
             contents = header + "\n\n" + contents;
-            console.log(contents);
-            exit;
+            fs.writeFileSync(fname, contents);
+            console.log('-- Updated ' + fname);
         }
-        exit;
     });
 }
 
