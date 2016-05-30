@@ -127,14 +127,15 @@ Builder.prototype.buildFramework = function(callback) {
     });
 }
 
-Builder.prototype.copyrightFiles = function() {
+Builder.prototype.copyrightFiles = function(folder, extensions) {
     console.log('-- Looking for files');
     var me = this,
+        count = 0,
         header = me.copyrightHeader.join("\n");
-    files = me.readFiles(me.blendPath, function(fname) {
+    extensions = extensions || ['.ts', 'scss'];
+    files = me.readFiles(folder, function(fname) {
         var ext = path.extname(fname);
-        return (ext === '.ts'
-            || ext === '.scss')
+        return extensions.indexOf(ext) !== -1
             && fname.indexOf(path.sep + 'typings' + path.sep) === -1;
     });
     files.forEach(function(fname) {
@@ -145,6 +146,7 @@ Builder.prototype.copyrightFiles = function() {
             console.log('-- Updated ' + fname);
         }
     });
+    console.log('-- ' + count + ' files updated!');
     console.log('-- Done\n');
 }
 
@@ -187,7 +189,7 @@ Builder.prototype.run = function() {
             console.log('-- Done.')
         })
     } else if (command === 'copyright') {
-        me.copyrightFiles();
+        me.copyrightFiles(me.blendPath);
     }
 
 }
