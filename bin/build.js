@@ -127,6 +127,7 @@ Builder.prototype.copyrightFiles = function() {
             console.log('-- Updated ' + fname);
         }
     });
+    console.log('-- Done\n');
 }
 
 Builder.prototype.readFiles = function(dir, filter) {
