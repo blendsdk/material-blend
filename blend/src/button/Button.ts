@@ -3,24 +3,6 @@
 /// <reference path="../dom/Element.ts" />
 /// <reference path="../dom/ElementConfigBuilder.ts" />
 
-var buttonIndex = 1;
-
-interface ButtonBaseInterface extends MaterialInterface {
-    icon?: string;
-    iconSize?: string;
-    iconFamily?: string;
-    theme?: string;
-    disabled?: boolean;
-    ripple?: boolean;
-}
-
-interface ButtonInterface extends ButtonBaseInterface {
-    text?: string;
-    iconAlign?: string;
-    buttonType?: string;
-    fabPosition?: string;
-}
-
 namespace Blend.button {
 
     /**

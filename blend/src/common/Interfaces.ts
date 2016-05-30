@@ -1,12 +1,12 @@
 /**
- * Interface to describ a dictioany
+ * Interface for configuring a dictioany
  */
 interface DictionaryInterface {
     [name: string]: any
 }
 
 /**
- * Interface to describe a StyleInterface
+ * Interface for configuring Styles
  */
 interface StyleInterface {
     [name: string]: string | number
@@ -20,7 +20,7 @@ interface CreateElementEventListenersInterface {
 }
 
 /**
- * Interface for the Dom.createElement utility
+ * Interface for configuring the Dom.createElement utility
  */
 interface CreateElementInterface {
     tag?: string
@@ -36,7 +36,7 @@ interface CreateElementInterface {
 }
 
 /**
- *  Interface for describing a Component
+ *  Interface for configuring a Component
  */
 interface BindableInterface {
     hasFunction(fname: string): boolean;
@@ -44,7 +44,7 @@ interface BindableInterface {
 }
 
 /**
- * Interface for describing a Blend.Component class
+ * Interface for configuring a Blend.Component class
  */
 interface ComponentClass {
     new (config?: any): Blend.Component
@@ -58,7 +58,7 @@ interface ClassRegistryInterface {
 }
 
 /**
- * Interface for describing a Component for configuration
+ * Interface for configuring a Component using JSON config notation
  * with a config type ctype
  */
 interface ComponentConfig {
@@ -67,7 +67,7 @@ interface ComponentConfig {
 }
 
 /**
- * Interface for describing a function thet can be used as a controller
+ * Interface for configuring a function that can be used as a controller
  */
 interface FunctionAsController {
     (client: Blend.mvc.Client, eventName: string, ...args: any[]): void
@@ -79,7 +79,7 @@ type ComponentTypes = ComponentClass | ComponentConfig | string;
 type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsController | string;
 
 /**
- * Interface for describing a MVC Client (Used by View and Context)
+ * Interface for configuring a MVC Client (Used by Material and Context)
  */
 interface MvcClientInterface {
     controller?: ControllerType | Array<ControllerType>
@@ -87,7 +87,7 @@ interface MvcClientInterface {
 }
 
 /**
- * Interface for describing a MVC View
+ * Interface for configuring a MVC View
  */
 interface MvcViewInterface extends MvcClientInterface {
     reference?: string
@@ -95,7 +95,7 @@ interface MvcViewInterface extends MvcClientInterface {
 }
 
 /**
- * Interface for defining View bounds and visibility
+ * Interface for configuring a Material's bounds and visibility
  */
 interface ElementBoundsInterface {
     top?: number
@@ -111,7 +111,7 @@ interface MediaQueryConfig extends DictionaryInterface {
 }
 
 /**
- * Interface for defining an Ajax (Post/Get) query
+ * Interface for configuring an Ajax (Post/Get) query
  */
 interface AjaxRequestInterface {
     url: string,
@@ -127,7 +127,7 @@ interface AjaxRequestInterface {
 }
 
 /**
- * Interface for defining padding of an Element
+ * Interface for configuring the padding of an Element
  */
 interface PaddingInterface {
     top?: number
@@ -142,7 +142,7 @@ interface PaddingInterface {
 type MaterialType = string | ComponentClass | MaterialInterface | ContainerMaterialInterface | Blend.material.Material;
 
 /**
- * Interface for implementing a Material
+ * Interface for configuring a Material
  */
 interface MaterialInterface extends MvcViewInterface {
     parent?: Blend.material.Material
@@ -158,14 +158,33 @@ interface MaterialInterface extends MvcViewInterface {
     responseTo?: MediaQueryConfig
 }
 
-interface ContainerMaterialInterface {
-
+/**
+ * Interface for configuring a Container
+ */
+interface ContainerMaterialInterface extends MaterialInterface {
+    items?:Array<MaterialType>
 }
 
 /**
- * Interface for describing an Application
+ * Interface for configuring an Application
  */
 interface ApplicationInterface extends MaterialInterface {
     mainView?: MaterialType
     theme?: string;
+}
+
+/**
+ * Interface for configuring a Button
+ */
+interface ButtonInterface extends MaterialInterface {
+    icon?: string;
+    iconSize?: string;
+    iconFamily?: string;
+    theme?: string;
+    disabled?: boolean;
+    ripple?: boolean;
+    text?: string;
+    iconAlign?: string;
+    buttonType?: string;
+    fabPosition?: string;
 }
