@@ -197,7 +197,6 @@ $button-font-size
     .mb-btn-round-flat-icon-only {
         @include blend-button-icon-only();
         border-radius: 50%;
-        border: 1px solid transparent;
     }
 }
 
@@ -224,7 +223,6 @@ $button-font-size
         @include blend-button-icon-only();
         @include blend-button-raised-shadow();
         border-radius: 50%;
-        border: 1px solid transparent;
     }
 
 
