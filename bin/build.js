@@ -115,7 +115,9 @@ Builder.prototype.copyrightFiles = function() {
         header = me.copyrightHeader.join("\n");
     files = me.readFiles(me.blendPath, function(fname) {
         var ext = path.extname(fname);
-        return ext === '.ts' || ext === '.scss';
+        return ext === '.ts'
+            || ext === '.scss'
+            && fname.indexOf(path.sep + 'typings' + path.sep) === -1;
     });
     console.log('-- ' + files.length + ' files found.');
     files.forEach(function(fname) {
