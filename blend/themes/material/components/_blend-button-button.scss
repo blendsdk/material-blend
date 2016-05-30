@@ -7,11 +7,11 @@
 }
 
 @mixin blend-button-fab-shadow() {
-    @include elevate($elevate-6dp); // specs say it should be 6dp
+    @include elevate($elevate-5dp); // specs say it should be 6dp
 }
 
 @mixin blend-button-fab-press-shadow() {
-    @include elevate($elevate-13dp); // specs say it should be 12dp
+    @include elevate($elevate-12dp); // specs say it should be 12dp
 }
 
 
@@ -224,7 +224,6 @@ $button-font-size
         @include blend-button-raised-shadow();
         border-radius: 50%;
     }
-
 
     .mb-btn-raised-both,
     .mb-btn-raised-text-only,
