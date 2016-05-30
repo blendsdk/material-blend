@@ -1,4 +1,4 @@
-/// <reference path="../common/Interfaces.ts" />
+/// <reference path="../typings.ts" />
 /// <reference path="../Component.ts" />
 
 namespace Blend.mvc {

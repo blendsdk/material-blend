@@ -1,4 +1,4 @@
-/// <reference path="../common/Interfaces.ts" />
+/// <reference path="../typings.ts" />
 /// <reference path="../Component.ts" />
 /// <reference path="View.ts" />
 /// <reference path="Client.ts" />

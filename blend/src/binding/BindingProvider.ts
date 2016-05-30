@@ -1,4 +1,4 @@
-/// <reference path="../common/Interfaces.ts" />
+/// <reference path="../typings.ts" />
 
 namespace Blend.binding {
 
