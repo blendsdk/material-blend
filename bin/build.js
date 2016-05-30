@@ -152,6 +152,7 @@ Builder.prototype.readFiles = function(dir, filter) {
 }
 
 Builder.prototype.run = function() {
+    console.log("MaterialBlend Framework Builder v1.0\n");
     var me = this,
         argv = require('yargs')
             .command('build', 'Builds MaterialBlend and Tests')
