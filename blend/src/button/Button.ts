@@ -1,4 +1,5 @@
 /// <reference path="../material/Material.ts" />
+/// <reference path="../material/effect/Ripple.ts" />
 /// <reference path="../dom/Element.ts" />
 /// <reference path="../dom/ElementConfigBuilder.ts" />
 
@@ -10,6 +11,7 @@ interface ButtonBaseInterface extends MaterialInterface {
     iconFamily?: string;
     theme?: string;
     disabled?: boolean;
+    ripple?: boolean;
 }
 
 interface ButtonInterface extends ButtonBaseInterface {
@@ -33,6 +35,7 @@ namespace Blend.button {
         protected buttonTypes: Array<string>;
         protected fabPositions: Array<string>;
         protected iconSizes: DictionaryInterface;
+        protected rippleEffect: Blend.material.effect.Ripple;
 
         public constructor(config: ButtonInterface = {}) {
             super(config);
@@ -67,12 +70,9 @@ namespace Blend.button {
                 fabPosition: me.getCheckFabPosition(config.fabPosition),
                 theme: config.theme || 'default',
                 disabled: config.disabled === true ? true : false,
-                iconSize: config.iconSize || null
+                iconSize: config.iconSize || null,
+                ripple: config.ripple === false ? false : true
             }
-
-            me.addController(function(sender: Blend.material.Material, eventName: string) {
-                console.log(eventName, new Date());
-            })
         }
 
         public setState(value: boolean): Blend.button.Button {
@@ -180,7 +180,8 @@ namespace Blend.button {
                 textIconCls: string = 'mb-btn-inner-texticon',
                 iconTextCls: string = 'mb-btn-inner-icontext',
                 hasIcon: boolean = me.config.icon !== null,
-                hasText: boolean = (me.config.text || '').trim() !== '';
+                hasText: boolean = (me.config.text || '').trim() !== '',
+                roundOrFabButton: boolean = me.config.buttonType.indexOf('round') !== -1 || me.config.buttonType.indexOf('fab') !== -1
 
             me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls, themeCls]);
             me.wrapperElement.removeCssClass([textIconCls, iconTextCls]);
@@ -216,6 +217,15 @@ namespace Blend.button {
 
             me.element.addCssClass([themeCls]);
             me.setState(!me.config.disabled);
+
+            if (me.config.ripple === true) {
+                me.rippleEffect = null; // remove the old one!
+                me.rippleEffect = new Blend.material.effect.Ripple(<RippleInterface>{
+                    element: me.element,
+                    center: roundOrFabButton ? true : false,
+                    color: roundOrFabButton ? me.iconElement : me.textElement
+                });
+            }
         }
 
         protected notifyClick(evt: Event) {
