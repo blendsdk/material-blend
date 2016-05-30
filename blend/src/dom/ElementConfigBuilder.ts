@@ -1,4 +1,4 @@
-/// <reference path="../typings.ts" />
+/// <reference path="../Typings.ts" />
 
 namespace Blend.dom {
 

@@ -1,4 +1,4 @@
-/// <reference path="../typings.ts" />
+/// <reference path="../Typings.ts" />
 /// <reference path="../Component.ts" />
 /// <reference path="ClassList.ts" />
 /// <reference path="StyleList.ts" />

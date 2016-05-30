@@ -2,7 +2,7 @@
  * This class is an adaptaion and ported from "Material Design Lite"
  */
 
-/// <reference path="../../typings.ts" />
+/// <reference path="../../Typings.ts" />
 /// <reference path="../../Blend.ts" />
 /// <reference path="../../Component.ts" />
 /// <reference path="../../dom/Element.ts" />
