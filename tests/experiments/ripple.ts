@@ -30,11 +30,6 @@ Blend.Runtime.ready(function() {
         var btn = new Blend.button.Button(config);
         surface.append(btn.getElement())
         btn.doInitialize();
-        var rippleEffect = new Blend.material.effect.Ripple({
-            element: btn.getElement(),
-            color: '.mb-btn-text',
-            center: config.buttonType && config.buttonType.indexOf('round') !== -1 ? true : false
-        })
     }
 
     var createRippleTest = function(surface: Blend.dom.Element) {
