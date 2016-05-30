@@ -20,7 +20,6 @@ namespace Blend.material.effect {
         private element: Blend.dom.Element;
         private container: Blend.dom.Element;
         private currentRipple: Blend.dom.Element;
-        private isHandling: boolean;
         private skipMouseEvent: boolean;
         private center: boolean;
         private rippleDuration: number;
@@ -31,7 +30,6 @@ namespace Blend.material.effect {
             super(config);
             var me = this;
             me.removeQueue = [];
-            me.isHandling = false;
             me.rippleDuration = 400;
             me.skipMouseEvent = false;
             me.center = config.center === true ? true : false;
@@ -46,7 +44,7 @@ namespace Blend.material.effect {
             var me = this;
             if (me.element.getProperty('hasRipple', false) === false) {
                 me.element.addEventListener('mousedown', Blend.bind(me, me.handleDownEvent));
-                me.element.addEventListener('mouseup', Blend.bind(me, me.handleHandleUpEvent));
+                me.element.addEventListener('mouseup mouseleave', Blend.bind(me, me.handleHandleUpEvent));
                 me.element.setProperty('hasRipple', true);
                 me.createRippleContainer();
             }
@@ -63,24 +61,21 @@ namespace Blend.material.effect {
 
         protected handleDownEvent(evt: Event) {
             var me = this, top: number, left: number, mouseEvent: MouseEvent
-            if (!me.isHandling) {
-                //me.isHandling = true;
-                if (me.center === true) {
-                    left = me.container.getEl().clientWidth / 2;
-                    top = me.container.getEl().clientHeight / 2;
+            if (me.center === true) {
+                left = me.container.getEl().clientWidth / 2;
+                top = me.container.getEl().clientHeight / 2;
+            } else {
+                mouseEvent = <MouseEvent>evt;
+                if (mouseEvent.srcElement != me.container.getEl()) {
+                    var crect = me.container.getEl().getBoundingClientRect();
+                    left = mouseEvent.clientX - crect.left;
+                    top = mouseEvent.clientY - crect.top;
                 } else {
-                    mouseEvent = <MouseEvent>evt;
-                    if (mouseEvent.srcElement != me.container.getEl()) {
-                        var crect = me.container.getEl().getBoundingClientRect();
-                        left = mouseEvent.clientX - crect.left;
-                        top = mouseEvent.clientY - crect.top;
-                    } else {
-                        left = (<MouseEvent>evt).offsetX;
-                        top = (<MouseEvent>evt).offsetY;
-                    }
+                    left = (<MouseEvent>evt).offsetX;
+                    top = (<MouseEvent>evt).offsetY;
                 }
-                me.initiateRipple(left, top)
             }
+            me.initiateRipple(left, top)
         }
 
         protected handleHandleUpEvent() {
@@ -102,7 +97,7 @@ namespace Blend.material.effect {
                     cls: ['mb-ripple'],
                     style: {
                         top: top,
-                        left:left
+                        left: left
                     }
                 })),
                 width = me.element.getEl().clientWidth,
