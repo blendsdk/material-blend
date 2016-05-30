@@ -30,13 +30,13 @@ namespace Blend.material.effect {
             super(config);
             var me = this;
             me.removeQueue = [];
-            me.rippleDuration = 400;
+            me.rippleDuration = 350;
             me.skipMouseEvent = false;
             me.center = config.center === true ? true : false;
             me.element = config.element || null;
             if (me.element !== null) {
                 me.bindEvents();
-                me.color = me.initRippleColor(config.color || null)
+                me.setRippleColor(config.color || null)
             }
         }
 
@@ -105,7 +105,6 @@ namespace Blend.material.effect {
                 x = Math.max(Math.abs(width - left), left) * 2,
                 y = Math.max(Math.abs(height - top), top) * 2,
                 size = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-            me.color = me.initRippleColor('.mb-btn-icon');
             ripple.setStyle({
                 width: size,
                 height: size,
@@ -136,28 +135,33 @@ namespace Blend.material.effect {
             return value;
         }
 
-        /**
-         * Initializes the ripple color by pasring it to either the provided RGBA format or the
-         * default black color if the color code cannot be parsed. If the name of the color is
-         * a CSS selector then it looks for the color of the element found by the selector.
-         */
-        protected initRippleColor(color: string): string {
+        protected setRippleColor(color: string | Blend.dom.Element) {
             var me = this,
                 opacity: number = 0.95,
                 prop = 'color',
+                clr: string,
                 defaultColor = 'rgb(0,0,0)';
-            var colorElement = Blend.selectElement(color, me.element);
-            if (colorElement) {
-                color = <string>colorElement.getStyle(prop)[prop];
+
+            if (Blend.isInstanceOf(color, Blend.dom.Element)) {
+                clr = <string>(<Blend.dom.Element>color).getStyle(prop)[prop];
             } else {
-                color = me.hexToRgb(color || defaultColor);
+                clr = <string>color;
+                if (clr && clr.length !== 0 && clr[0].inArray(['.', '#'])) {
+                    var el = Blend.selectElement(clr, me.element);
+                    if (el) {
+                        clr = <string>el.getStyle(prop)[prop];
+                    }
+                }
+                clr = me.hexToRgb(clr || defaultColor);
             }
-            var t = color.replace(/\brgba\b|\brgb\b|\s|\(|\)/g, '').split(',');
+
+            var t = clr.replace(/\brgba\b|\brgb\b|\s|\(|\)/g, '').split(',');
             if (t.length >= 3) {
-                return `rgba(${t[0]},${t[1]},${t[2]},${opacity})`;
+                clr = `rgba(${t[0]},${t[1]},${t[2]},${opacity})`;
             } else {
-                return `rgba(0,0,0,${opacity})`;
+                clr = `rgba(0,0,0,${opacity})`;
             }
+            me.color = clr;
         }
     }
 

@@ -32,7 +32,8 @@ Blend.Runtime.ready(function() {
         btn.doInitialize();
         var rippleEffect = new Blend.material.effect.Ripple({
             element: btn.getElement(),
-            color: '.mb-btn-text'
+            color: '.mb-btn-text',
+            center: config.buttonType && config.buttonType.indexOf('round') !== -1 ? true : false
         })
     }
 
@@ -77,6 +78,7 @@ Blend.Runtime.ready(function() {
     var btn = createButton(surface, {
         buttonType: 'round-raised',
         icon: 'mood',
+        iconSize: 'xlarge'
     });
 
     var btn = createButton(surface, {
