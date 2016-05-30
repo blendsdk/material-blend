@@ -10,7 +10,7 @@
 interface RippleInterface extends DictionaryInterface {
     element?: Blend.dom.Element,
     center?: boolean,
-    color?: string
+    color?: string | Blend.dom.Element
 }
 
 namespace Blend.material.effect {
