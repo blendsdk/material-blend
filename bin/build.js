@@ -1,7 +1,7 @@
 const fs = require('fs');
 const del = require('del');
+const path = require('path');
 const childProcess = require('child_process');
-
 
 function Builder() {
     var me = this;
@@ -10,6 +10,23 @@ function Builder() {
     me.blendPath = me.rootFolder + '/blend';
     me.blendSourcePath = me.blendPath + '/src';
     me.testPath = me.rootFolder + '/tests'
+    me.copyrightHeader = [
+        '/**',
+        ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
+        ' *',
+        ' * Licensed under the Apache License, Version 2.0 (the "License");',
+        ' * you may not use this file except in compliance with the License.',
+        ' * You may obtain a copy of the License at',
+        ' *',
+        ' *      http://www.apache.org/licenses/LICENSE-2.0',
+        ' *',
+        ' * Unless required by applicable law or agreed to in writing, software',
+        ' * distributed under the License is distributed on an "AS IS" BASIS,',
+        ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
+        ' * See the License for the specific language governing permissions and',
+        ' * limitations under the License.',
+        ' */'
+    ]
 }
 
 Builder.prototype.checkSanity = function(callback) {
@@ -28,7 +45,9 @@ Builder.prototype.cleanBuild = function(callback) {
     try {
         console.log('-- Cleaning the build (' + me.buildPath + ')');
         if (fs.existsSync(me.buildPath)) {
-            del.sync(me.buildPath);
+            del.sync(me.buildPath, {
+                force: true
+            });
         }
         fs.mkdir(me.buildPath);
         callback.apply(me, [null]);
@@ -61,7 +80,7 @@ Builder.prototype.buildBlend = function(callback) {
     });
 }
 
-Builder.prototype.run = function() {
+Builder.prototype.buildFramework = function(callback) {
     var me = this;
     me.checkSanity(function(error) {
         if (!error) {
@@ -71,9 +90,9 @@ Builder.prototype.run = function() {
                         if (!error) {
                             me.buildBlend(function(error) {
                                 if (!error) {
-                                    console.log('-- Done :)')
+                                    callback.apply(me, [null])
                                 } else {
-                                    console.error(error);
+                                    callback.apply(me, [error])
                                 }
                             });
                         } else {
@@ -88,6 +107,69 @@ Builder.prototype.run = function() {
             console.error(error);
         }
     });
+}
+
+Builder.prototype.copyrightFiles = function() {
+    console.log('-- Looking for files');
+    var me = this,
+        header = me.copyrightHeader.join("\n");
+        files = me.readFiles(me.blendPath, function(fname) {
+            var ext = path.extname(fname);
+            return ext === '.ts' || ext === '.scss';
+        });
+    console.log('-- ' + files.length + ' files found.');
+    files.forEach(function(fname) {
+        var contents = fs.readFileSync(fname).toString();
+        if (contents.indexOf('Copyright 2016 TrueSoftware B.V') === -1) {
+            contents = header + "\n\n" + contents;
+            console.log(contents);
+            exit;
+        }
+        exit;
+    });
+}
+
+Builder.prototype.readFiles = function(dir, filter) {
+    var me = this,
+        results = [];
+    filter = filter || function(fname) {
+        return true;
+    }
+    var list = fs.readdirSync(dir)
+    list.forEach(function(file) {
+        file = dir + '/' + file
+        var stat = fs.statSync(file)
+        if (stat && stat.isDirectory()) {
+            results = results.concat(me.readFiles(file, filter))
+        } else {
+            if (filter(file) === true) {
+                results.push(file)
+            }
+        }
+    })
+    return results;
+}
+
+Builder.prototype.run = function() {
+    var me = this,
+        argv = require('yargs')
+            .command('build', 'Builds MaterialBlend and Tests')
+            .command('copyright', 'Adds copyright headers to files')
+            .demand(1)
+            .help('h')
+            .alias('h', 'help')
+            .epilog('Copyright 2016 TrueSoftware B.V.')
+            .argv;
+
+    var command = argv._[0];
+    if (command === 'build') {
+        me.buildFramework(function() {
+            console.log('-- Done.')
+        })
+    } else if (command === 'copyright') {
+        me.copyrightFiles();
+    }
+
 }
 
 var builder = new Builder();
