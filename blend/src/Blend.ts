@@ -27,6 +27,7 @@ namespace Blend {
      * Put the framework in DEBUG mode
      */
     export var DEBUG: boolean = false;
+    var ID = 1000;
 
     export var COMMON_MEDIA_QUERIES: DictionaryInterface = {}
 
@@ -39,6 +40,24 @@ namespace Blend {
     COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = '(min-width : 840px)';
     COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = '(min-width: 480px) and (max-width: 839px)';
     COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = '(max-width : 479px)';
+
+
+    /**
+     * Bind wraps a function into a new functions so it can run in a given scope
+     * whn the new function is called.
+     */
+    export function bind(scope: any, fn: Function) {
+        return function() {
+            fn.apply(scope, arguments);
+        }
+    }
+
+    /**
+     * Generates a new sequential ID used internally for debugging
+     */
+    export function newID(): number {
+        return ID++;
+    }
 
     /**
      * Returns enum value, either the value as number or its string representation

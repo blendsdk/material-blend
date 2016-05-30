@@ -1,0 +1,364 @@
+@mixin blend-button-raised-shadow() {
+    @include elevate($elevate-2dp);
+}
+
+@mixin blend-button-raised-press-shadow() {
+    @include elevate($elevate-5dp); // specs say it should be 7dp
+}
+
+@mixin blend-button-fab-shadow() {
+    @include elevate($elevate-5dp); // specs say it should be 6dp
+}
+
+@mixin blend-button-fab-press-shadow() {
+    @include elevate($elevate-12dp); // specs say it should be 12dp
+}
+
+
+@mixin blend-no-shadow() {
+    box-shadow: none;
+}
+
+@mixin blend-icon-size($name,$size) {
+    .mb-btn-icon-size-#{$name} {
+        & > .mb-btn-inner {
+            & > .mb-btn-icon {
+                font-size: $size;
+            }
+        }
+    }
+}
+
+@mixin blend-button-icon-only() {
+    margin: rem(0.4);
+    padding: $default-button-icon-only-padding;
+    min-width: 0;
+    line-height: 0;
+    & > .mb-btn-inner {
+        & > .mb-btn-text {
+            display: none;
+        }
+    }
+
+    &[disabled] {
+        background-color: transparent !important;
+    }
+}
+
+// Position a FAB button.
+@mixin fab-position($fabtype , $position, $top: auto, $right: auto, $bottom: auto, $left: auto, $translate: false) {
+    .mb-#{$fabtype}-pos-#{$position} {
+        top: $top;
+        right: $right;
+        bottom: $bottom;
+        left: $left;
+        position: absolute;
+        @if ($translate) {
+            transform: $translate;
+        }
+    }
+}
+
+@mixin fab-positions($fabtype, $fab-size, $edge) {
+    $edge-min: -1 * $edge;
+    @include fab-position($fabtype,'top-left',0, auto, auto, 0, translate($edge, $edge));
+    @include fab-position($fabtype,'top-center',0, 50%, auto, 50%, translate(-50%, $edge));
+    @include fab-position($fabtype,'top-right',0, 0, auto, auto, translate($edge-min, $edge));
+
+    @include fab-position($fabtype,'center-left',50%, auto, auto, 0, translate($edge, -50%));
+    @include fab-position($fabtype,'center-center',50%, 50%, auto, 50%, translate(-50%, -50%));
+    @include fab-position($fabtype,'center-right',50%, 0, auto, auto, translate($edge-min, -50%));
+
+    @include fab-position($fabtype,'bottom-left',auto, auto, 0, 0, translate($edge, $edge-min));
+    @include fab-position($fabtype,'bottom-center',auto, 50%, 0, 50%, translate(-50%, $edge-min));
+    @include fab-position($fabtype,'bottom-right',auto, 0, 0, auto, translate($edge-min, $edge-min));
+
+}
+
+@mixin blend-button-struct() {
+
+    @include blend-icon-size('small',rem(1.800));
+    @include blend-icon-size('medium',rem(2.400));
+    @include blend-icon-size('large',rem(3.600));
+    @include blend-icon-size('xlarge',rem(4.800));
+
+    .mb-btn {
+        position: relative;
+        outline: none;
+        display: inline-block;
+        border: 0;
+        background: transparent;
+        white-space: nowrap;
+        overflow: hidden;
+        text-decoration: none;
+        cursor: pointer;
+
+        font-style: inherit;
+        font-variant: inherit;
+        font-family: inherit;
+        text-decoration: none;
+
+        transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
+            background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+        &::-moz-focus-inner {
+            border: 0;
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+
+        @include user-select(none);
+
+        & > .mb-btn-inner-icontext {
+            & > .mb-btn-icon {
+                margin-right: rem(1.6);
+            }
+        }
+
+        & > .mb-btn-inner-texticon {
+            & > .mb-btn-icon {
+                margin-left: rem(1.6);
+            }
+        }
+
+        & > .mb-btn-inner {
+            height: 100%;
+            display: inline-block;
+            position: relative;
+            @include clearfix();
+
+            & > .mb-btn-text {
+                text-transform: uppercase;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            & > .mb-btn-icon {
+                vertical-align: middle;
+            }
+        }
+
+        &[disabled] {
+            background-color: $default-button-disbaled-background-color;
+            & > .mb-btn-inner {
+                & > .mb-btn-text, & > .mb-btn-icon {
+                    color: $default-button-disbaled-text-color;
+                }
+            }
+        }
+    }
+}
+
+@mixin blend-button-type(
+$button-border-radius,
+$button-padding,
+$button-margin,
+$button-line-height,
+$button-min-width,
+$button-font-size
+) {
+    border-radius: $button-border-radius;
+    padding: $button-padding;
+    margin: $button-margin;
+    @if ($button-line-height) {
+        line-height: $button-line-height;
+        min-height: $button-line-height;
+    }
+    @if ($button-min-width) {
+        min-width: $button-min-width;
+    }
+    font-size: $button-font-size;
+    font-weight: 500;
+    @content
+}
+
+@mixin blend-button-flat() {
+    .mb-btn-flat-both , .mb-btn-flat-text-only {
+        @include blend-button-type(
+        $button-border-radius: $default-button-border-radius,
+            $button-padding: $default-button-padding,
+            $button-margin: $default-button-margin,
+            $button-line-height: $default-button-height,
+            $button-min-width: $default-button-min-width,
+            $button-font-size: $m-body-font-size);
+    }
+
+    .mb-btn-flat-icon-only {
+        @include blend-button-icon-only();
+        border-radius: $default-button-border-radius;
+    }
+
+    .mb-btn-round-flat-icon-only {
+        @include blend-button-icon-only();
+        border-radius: 50%;
+    }
+}
+
+@mixin blend-button-raised() {
+    .mb-btn-raised-both , .mb-btn-raised-text-only {
+        @include blend-button-type(
+        $button-border-radius: $default-button-border-radius,
+            $button-padding: $default-button-padding,
+            $button-margin: $default-button-margin,
+            $button-line-height: $default-button-height,
+            $button-min-width: $default-button-min-width,
+            $button-font-size: $m-body-font-size) {
+            @include blend-button-raised-shadow();
+        }
+    }
+
+    .mb-btn-raised-icon-only {
+        @include blend-button-icon-only();
+        @include blend-button-raised-shadow();
+        border-radius: $default-button-border-radius;
+    }
+
+    .mb-btn-round-raised-icon-only {
+        @include blend-button-icon-only();
+        @include blend-button-raised-shadow();
+        border-radius: 50%;
+    }
+
+    .mb-btn-raised-both,
+    .mb-btn-raised-text-only,
+    .mb-btn-raised-icon-only,
+    .mb-btn-round-raised-icon-only {
+        &:not([disabled]) {
+            &:active {
+                @include blend-button-raised-press-shadow
+            }
+        }
+
+        &[disabled] {
+            @include blend-no-shadow();
+        }
+    }
+}
+
+@mixin blend-button-fab() {
+
+    .mb-btn-fab-icon-only , .mb-btn-fab-mini-icon-only {
+
+        transition: $swift-ease-in;
+        transition-property: background-color, box-shadow;
+
+        & > .mb-btn-inner {
+            & > .mb-btn-text {
+                display: none;
+            }
+        }
+
+        & > .mb-btn-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+        }
+
+        &:not([disabled]) {
+            &:active {
+                @include blend-button-fab-press-shadow();
+            }
+        }
+
+        @include blend-button-type(
+        $button-border-radius: $default-button-fab-border-radius,
+            $button-padding: $default-button-padding,
+            $button-margin: 0,
+            $button-line-height: false,
+            $button-min-width: false,
+            $button-font-size: $m-body-font-size) {
+            @include blend-button-fab-shadow();
+        }
+    }
+
+    .mb-btn-fab-icon-only {
+
+        min-width: $default-button-fab-size;
+        width: $default-button-fab-size;
+        height: $default-button-fab-size;
+        line-height: $default-button-fab-size;
+
+        & > .mb-btn-inner {
+            & > .mb-btn-icon {
+                font-size: $default-button-fab-icon-size;
+            }
+        }
+    }
+
+    .mb-btn-fab-mini-icon-only {
+
+        min-width: $default-button-fab-mini-size;
+        width: $default-button-fab-mini-size;
+        height: $default-button-fab-mini-size;
+        line-height: $default-button-fab-mini-size;
+
+        & > .mb-btn-inner {
+            & > .mb-btn-icon {
+                font-size: $default-button-fab-mini-icon-size;
+            }
+        }
+    }
+
+    @include fab-positions('fab', $default-button-fab-size, $default-fab-position-edge);
+    @include fab-positions('fab-mini', $default-button-fab-mini-icon-size, $default-fab-position-edge);
+
+    @media (max-width: $layout-medium-width - 1) {
+        @include fab-positions('fab',$default-button-fab-size ,$default-fab-position-small);
+        @include fab-positions('fab-mini',$default-button-fab-mini-icon-size ,$default-fab-position-small);
+    }
+}
+
+
+
+@mixin blend-button-theme(
+$name,
+$button-types,
+$button-text-color,
+$button-icon-color,
+$button-background-color,
+$button-hover-background-color,
+$button-focus-background-color
+) {
+    @each $btype in $button-types {
+        .btn-theme-#{$btype}-#{$name} {
+
+            background-color: $button-background-color;
+
+            @if($button-hover-background-color) {
+                &:not([disabled]) {
+                    &:hover {
+                        background-color: $button-hover-background-color;
+                    }
+                }
+            }
+
+            @if($button-focus-background-color) {
+                &:not([disabled]) {
+                    &:active {
+                        background-color: $button-focus-background-color;
+                    }
+                }
+            }
+
+            & > .mb-btn-inner {
+
+                & > .mb-btn-text {
+                    color: $button-text-color
+                }
+
+                & > .mb-btn-icon {
+                    color: $button-icon-color
+                }
+            }
+            @content
+        }
+    }
+}
