@@ -246,7 +246,7 @@ $button-font-size
     .mb-btn-fab-icon-only , .mb-btn-fab-mini-icon-only {
 
         transition: $swift-ease-in;
-        transition-property: background-color, box-shadow, transform;
+        transition-property: background-color, box-shadow;
 
         & > .mb-btn-inner {
             & > .mb-btn-text {
