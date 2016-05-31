@@ -57,10 +57,10 @@ function Builder() {
 /**
  * Checks if compass exists and it is the correct version.
  */
-Builder.prototype.checkCURLSanity = function (callback) {
+Builder.prototype.checkCURLSanity = function(callback) {
     var me = this;
     console.log('-- Checking CURL');
-    childProcess.exec('curl -V', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+    childProcess.exec('curl -V', { cwd: me.rootFolder }, function(error, stdout, stderr) {
         if (!error) {
             callback.apply(me, [null]);
         } else {
@@ -69,15 +69,13 @@ Builder.prototype.checkCURLSanity = function (callback) {
     });
 }
 
-
-
 /**
  * Checks if compass exists and it is the correct version.
  */
-Builder.prototype.checkCompassSanity = function (callback) {
+Builder.prototype.checkCompassSanity = function(callback) {
     var me = this;
     console.log('-- Checking Compass');
-    childProcess.exec('compass -v', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+    childProcess.exec('compass -v', { cwd: me.rootFolder }, function(error, stdout, stderr) {
         if (!error) {
             parts = stdout.split("\n");
             if (parts.length < 1) {
@@ -101,10 +99,10 @@ Builder.prototype.checkCompassSanity = function (callback) {
 /**
  * Checks if TypeScript exists and it is the correct version.
  */
-Builder.prototype.checkTypeScriptSanity = function (callback) {
+Builder.prototype.checkTypeScriptSanity = function(callback) {
     var me = this;
     console.log('-- Checking TypeScript');
-    childProcess.exec('tsc -v', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+    childProcess.exec('tsc -v', { cwd: me.rootFolder }, function(error, stdout, stderr) {
         if (!error) {
             parts = stdout.trim().split(" ");
             if (parts.length != 2) {
@@ -124,7 +122,7 @@ Builder.prototype.checkTypeScriptSanity = function (callback) {
 /**
  * Cleanup the build folder. (Delete and Recreate and empty build folder!)
  */
-Builder.prototype.cleanBuild = function (callback) {
+Builder.prototype.cleanBuild = function(callback) {
     var me = this;
     try {
         console.log('-- Cleaning the build (' + me.buildPath + ')');
@@ -143,10 +141,10 @@ Builder.prototype.cleanBuild = function (callback) {
 /**
  * Build the themes and styles used external Compass
  */
-Builder.prototype.buildStyles = function (callback) {
+Builder.prototype.buildStyles = function(callback) {
     var me = this;
     console.log('-- Building Themes and Styles');
-    childProcess.exec('compass compile', { cwd: me.blendPath }, function (error, stdout, stderr) {
+    childProcess.exec('compass compile', { cwd: me.blendPath }, function(error, stdout, stderr) {
         if (!error) {
             callback.apply(me, [null]);
         } else {
@@ -158,10 +156,10 @@ Builder.prototype.buildStyles = function (callback) {
 /**
  * Build the TS sources, both framework and tests
  */
-Builder.prototype.buildBlend = function (callback) {
+Builder.prototype.buildBlend = function(callback) {
     var me = this;
     console.log('-- Building Blend');
-    childProcess.exec('tsc', { cwd: me.blendPath }, function (error, stdout, stderr) {
+    childProcess.exec('tsc', { cwd: me.blendPath }, function(error, stdout, stderr) {
         if (!error) {
             callback.apply(me, [null]);
         } else {
@@ -173,10 +171,10 @@ Builder.prototype.buildBlend = function (callback) {
 /**
  * Run a series of functions sequentially and when done call the whenDone callback
  */
-Builder.prototype.runSerial = function (callbacks, whenDone) {
+Builder.prototype.runSerial = function(callbacks, whenDone) {
     var me = this;
-    var makeCall = function (fn, cb) {
-        return function (error) {
+    var makeCall = function(fn, cb) {
+        return function(error) {
             if (!error) {
                 if (cb) {
                     fn.apply(me, [cb]);
@@ -197,11 +195,11 @@ Builder.prototype.runSerial = function (callbacks, whenDone) {
 }
 
 
-Builder.prototype.downloadFile = function (source, dest, callback) {
+Builder.prototype.downloadFile = function(source, dest, callback) {
     var me = this,
         command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
     console.log('-- Downloading: ' + source)
-    childProcess.exec(command, { cwd: me.rootFolder }, function (error, stdout, stderr) {
+    childProcess.exec(command, { cwd: me.rootFolder }, function(error, stdout, stderr) {
         if (!error) {
             if (fs.existsSync(dest)) {
                 callback.apply(me, [true]);
@@ -214,7 +212,7 @@ Builder.prototype.downloadFile = function (source, dest, callback) {
     });
 }
 
-Builder.prototype.getESPromiseLibrary = function (callback) {
+Builder.prototype.getESPromiseLibrary = function(callback) {
     var me = this,
         files = [
             {
@@ -232,15 +230,15 @@ Builder.prototype.getESPromiseLibrary = function (callback) {
 /**
  * Downloads files. This functionis function is used to download 3rdpart files
  */
-Builder.prototype.downloadFiles = function (files, callback) {
+Builder.prototype.downloadFiles = function(files, callback) {
     var me = this,
         count = 0,
         errors = [],
         queue = [];
-    files.forEach(function (file) {
+    files.forEach(function(file) {
         if (!fs.existsSync(file.local)) {
-            queue.push(function (callback) {
-                me.downloadFile(file.remote, file.local, function (status, error) {
+            queue.push(function(callback) {
+                me.downloadFile(file.remote, file.local, function(status, error) {
                     if (status) {
                         count++;
                     } else {
@@ -252,7 +250,7 @@ Builder.prototype.downloadFiles = function (files, callback) {
         }
     });
 
-    me.runSerial(queue, function () {
+    me.runSerial(queue, function() {
         if (count == files.count) {
             callback.apply(me, [null])
         } else {
@@ -264,10 +262,10 @@ Builder.prototype.downloadFiles = function (files, callback) {
 /**
  * Builds the framework and prepares files for distribution
  */
-Builder.prototype.buildFramework = function () {
+Builder.prototype.buildFramework = function() {
     var me = this;
 
-    var done = function (errors) {
+    var done = function(errors) {
         console.log('-- Done');
     }
 
@@ -286,18 +284,18 @@ Builder.prototype.buildFramework = function () {
 /**
  * Places copyright headers in source files
  */
-Builder.prototype.copyrightFiles = function (folder, extensions) {
+Builder.prototype.copyrightFiles = function(folder, extensions) {
     console.log('-- Looking for files');
     var me = this,
         count = 0,
         header = me.copyrightHeader.join("\n");
     extensions = extensions || ['.ts', 'scss'];
-    files = me.readFiles(folder, function (fname) {
+    files = me.readFiles(folder, function(fname) {
         var ext = path.extname(fname);
         return extensions.indexOf(ext) !== -1
             && fname.indexOf(path.sep + 'typings' + path.sep) === -1;
     });
-    files.forEach(function (fname) {
+    files.forEach(function(fname) {
         var contents = fs.readFileSync(fname).toString();
         if (contents.indexOf('Copyright 2016 TrueSoftware B.V') === -1) {
             contents = header + "\n\n" + contents;
@@ -313,14 +311,14 @@ Builder.prototype.copyrightFiles = function (folder, extensions) {
  * Recursively reads files from a given folder and applies a filter to
  * be able to exclude some files
  */
-Builder.prototype.readFiles = function (dir, filter) {
+Builder.prototype.readFiles = function(dir, filter) {
     var me = this,
         results = [];
-    filter = filter || function (fname) {
+    filter = filter || function(fname) {
         return true;
     }
     var list = fs.readdirSync(dir)
-    list.forEach(function (file) {
+    list.forEach(function(file) {
         file = dir + '/' + file
         var stat = fs.statSync(file)
         if (stat && stat.isDirectory()) {
@@ -337,27 +335,31 @@ Builder.prototype.readFiles = function (dir, filter) {
 /**
  * Make sure paths are consistent with the OS
  */
-Builder.prototype.fixPath = function (path) {
+Builder.prototype.fixPath = function(path) {
     return path.replace('/', path.sep);
 }
 
 /**
  * Build entry point
  */
-Builder.prototype.run = function () {
+Builder.prototype.run = function() {
+
+
     console.log("MaterialBlend Framework Builder v1.0\n");
     var me = this,
+        buildFrameworkCommand = 'buildfx',
+        copyrightHeaderCommand = 'copyright',
         argv = require('yargs')
-            .command('build', 'Builds MaterialBlend and Tests')
-            .command('copyright', 'Adds copyright headers to files')
+            .command(buildFrameworkCommand, false)
+            .command(copyrightHeaderCommand, false)
             .demand(1)
             .epilog('Copyright 2016 TrueSoftware B.V.')
             .argv;
 
     var command = argv._[0];
-    if (command === 'build') {
+    if (command === buildFrameworkCommand) {
         me.buildFramework();
-    } else if (command === 'copyright') {
+    } else if (command === copyrightHeaderCommand) {
         me.copyrightFiles(me.blendPath);
     }
 
