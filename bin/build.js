@@ -21,6 +21,8 @@ const path = require('path');
 const childProcess = require('child_process');
 const uglify = require("uglify-js");
 const vercompare = require('version-comparison');
+const wget = require('wget-improved');
+
 
 /**
  * Builder class constructor
@@ -33,6 +35,7 @@ function Builder() {
     me.buildPath = me.rootFolder + '/build';
     me.blendPath = me.rootFolder + '/blend';
     me.blendSourcePath = me.blendPath + '/src';
+    me.blendExteralPath = me.blendPath + '/3rdparty';
     me.testPath = me.rootFolder + '/tests'
     me.copyrightHeader = [
         '/**',
@@ -58,7 +61,7 @@ function Builder() {
  */
 Builder.prototype.checkCompassSanity = function (callback) {
     var me = this;
-    console.log('-- Checking the build environment');
+    console.log('-- Checking Compass');
     childProcess.exec('compass -v', { cwd: me.rootFolder }, function (error, stdout, stderr) {
         if (!error) {
             parts = stdout.split("\n");
@@ -85,7 +88,7 @@ Builder.prototype.checkCompassSanity = function (callback) {
  */
 Builder.prototype.checkTypeScriptSanity = function (callback) {
     var me = this;
-    console.log('-- Checking the build environment');
+    console.log('-- Checking TypeScript');
     childProcess.exec('tsc -v', { cwd: me.rootFolder }, function (error, stdout, stderr) {
         if (!error) {
             parts = stdout.trim().split(" ");
@@ -176,6 +179,62 @@ Builder.prototype.runSerial = function (callbacks, whenDone) {
         lastCall = makeCall(callbacks[index], lastCall);
     }
     lastCall.apply(me, []);
+}
+
+
+Builder.prototype.downloadFile = function (source, dest, callback) {
+    var options = {
+        proxy: process.env.HTTP_PROXY
+    };
+
+    var download = wget.download(siurce, output, options);
+    download.on('error', function (err) {
+        callback.apply(me, [false, err]);
+    });
+    download.on('start', function (fileSize) {
+        console.log('Downloading: ' + source);
+    });
+    download.on('end', function (output) {
+        console.log('-- Downloading complete.');
+        fs.writeFileSync(dest, output);
+        callback.apply(me, [true]);
+    });
+}
+
+Builder.prototype.getESPromiseLibrary = function (callback) {
+    var me = this,
+        count = 0,
+        error = [],
+        queue = [],
+        files = [
+            {
+                local: me.blendExteralPath + '/es6-promise/es6-promise.js',
+                remote: 'https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/es6-promise.js'
+            },
+            {
+                local: me.blendExteralPath + '/es6-promise/es6-promise.d.ts',
+                remote: 'https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts'
+            }
+        ];
+    files.forEach(function (file) {
+        queue.push(function (callback) {
+            me.downloadFile(file.remote, file.local, function (status, error) {
+                if (status) {
+                    count++;
+                } else {
+                    error.push(error);
+                }
+            })
+        });
+    });
+
+    me.runSerial(queue, function () {
+        if (count == file.count) {
+            callback.apply(me, [null])
+        } else {
+            callback.apply(me, [error.join("\n")]);
+        }
+    })
 }
 
 /**
