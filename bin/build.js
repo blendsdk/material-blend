@@ -20,6 +20,7 @@ const fs = require('fs');
 const del = require('del');
 const path = require('path');
 const childProcess = require('child_process');
+const uglify = require("uglify-js");
 
 function Builder() {
     var me = this;
@@ -49,6 +50,7 @@ function Builder() {
 
 Builder.prototype.checkSanity = function(callback) {
     var me = this;
+    console.log('-- Checking the build environment');
     childProcess.exec('compass -v', { cwd: me.rootFolder }, function(error, stdout, stderr) {
         if (!error) {
             callback.apply(me, [null]);
@@ -98,33 +100,47 @@ Builder.prototype.buildBlend = function(callback) {
     });
 }
 
-Builder.prototype.buildFramework = function(callback) {
+
+/**
+ * Run a series of functions sequentially and when done call the whenDone callback
+ */
+Builder.prototype.runSerial = function(callbacks, whenDone) {
     var me = this;
-    me.checkSanity(function(error) {
-        if (!error) {
-            me.cleanBuild(function(error) {
-                if (!error) {
-                    me.buildStyles(function(error) {
-                        if (!error) {
-                            me.buildBlend(function(error) {
-                                if (!error) {
-                                    callback.apply(me, [null])
-                                } else {
-                                    callback.apply(me, [error])
-                                }
-                            });
-                        } else {
-                            console.error(error);
-                        }
-                    });
+    var makeCall = function(fn, cb) {
+        return function(error) {
+            if (!error) {
+                if (cb) {
+                    fn.apply(me, [cb]);
                 } else {
-                    console.error(error);
+                    fn.apply(me);
                 }
-            });
-        } else {
-            console.error(error);
+            } else {
+                console.log(error);
+            }
         }
-    });
+    }
+    var index = callbacks.length;
+    var lastCall = whenDone;
+    while ((index--) !== 0) {
+        lastCall = makeCall(callbacks[index], lastCall);
+    }
+    lastCall.apply(me, []);
+}
+
+Builder.prototype.buildFramework = function() {
+    var me = this;
+
+    var done = function() {
+        console.log('-- Done');
+    }
+
+    me.runSerial([
+        me.checkSanity
+        , me.cleanBuild
+        , me.buildStyles
+        , me.buildBlend
+    ], done);
+
 }
 
 Builder.prototype.copyrightFiles = function(folder, extensions) {
@@ -171,6 +187,10 @@ Builder.prototype.readFiles = function(dir, filter) {
     return results;
 }
 
+Builder.prototype.fixPath = function(path) {
+    return path.replace('/', path.sep);
+}
+
 Builder.prototype.run = function() {
     console.log("MaterialBlend Framework Builder v1.0\n");
     var me = this,
@@ -178,16 +198,12 @@ Builder.prototype.run = function() {
             .command('build', 'Builds MaterialBlend and Tests')
             .command('copyright', 'Adds copyright headers to files')
             .demand(1)
-            .help('h')
-            .alias('h', 'help')
             .epilog('Copyright 2016 TrueSoftware B.V.')
             .argv;
 
     var command = argv._[0];
     if (command === 'build') {
-        me.buildFramework(function() {
-            console.log('-- Done.')
-        })
+        me.buildFramework();
     } else if (command === 'copyright') {
         me.copyrightFiles(me.blendPath);
     }
