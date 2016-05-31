@@ -16,6 +16,7 @@
  */
 
 const fs = require('fs');
+const fse = require('fs-extra');
 const del = require('del');
 const path = require('path');
 const childProcess = require('child_process');
@@ -34,24 +35,167 @@ function Builder() {
     me.blendPath = me.rootFolder + '/blend';
     me.blendSourcePath = me.blendPath + '/src';
     me.blendExteralPath = me.blendPath + '/3rdparty';
-    me.testPath = me.rootFolder + '/tests',
-        me.copyrightHeader = [
-            '/**',
-            ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
-            ' *',
-            ' * Licensed under the Apache License, Version 2.0 (the "License");',
-            ' * you may not use this file except in compliance with the License.',
-            ' * You may obtain a copy of the License at',
-            ' *',
-            ' *      http://www.apache.org/licenses/LICENSE-2.0',
-            ' *',
-            ' * Unless required by applicable law or agreed to in writing, software',
-            ' * distributed under the License is distributed on an "AS IS" BASIS,',
-            ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
-            ' * See the License for the specific language governing permissions and',
-            ' * limitations under the License.',
-            ' */'
-        ]
+    me.testPath = me.rootFolder + '/tests';
+    me.supportFiles = {
+        es6: {
+            defFiles: [
+                me.blendExteralPath + '/es6-promise/es6-promise.d.ts'
+            ],
+            jsFiles: [
+                me.blendExteralPath + '/es6-promise/es6-promise.js'
+            ]
+        }
+    }
+    me.copyrightHeader = [
+        '/**',
+        ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
+        ' *',
+        ' * Licensed under the Apache License, Version 2.0 (the "License");',
+        ' * you may not use this file except in compliance with the License.',
+        ' * You may obtain a copy of the License at',
+        ' *',
+        ' *      http://www.apache.org/licenses/LICENSE-2.0',
+        ' *',
+        ' * Unless required by applicable law or agreed to in writing, software',
+        ' * distributed under the License is distributed on an "AS IS" BASIS,',
+        ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
+        ' * See the License for the specific language governing permissions and',
+        ' * limitations under the License.',
+        ' */'
+    ]
+}
+
+/**
+ * Make sure paths are consistent with the OS
+ */
+Builder.prototype.fixPath = function(path) {
+    path.replace('/', path.sep);
+    return path;
+}
+
+/**
+ * Copy file from source to dest
+ */
+Builder.prototype.copyFile = function(source, dest) {
+    var me = this;
+    s = me.fixPath(source);
+    d = me.fixPath(dest);
+    console.log('--- Copying ' + s + ' to ' + d);
+    fse.copySync(s, d);
+}
+
+/**
+ * Recursively reads files from a given folder and applies a filter to
+ * be able to exclude some files
+ */
+Builder.prototype.readFiles = function(dir, filter) {
+    var me = this,
+        results = [];
+    filter = filter || function(fname) {
+        return true;
+    }
+    var list = fs.readdirSync(dir)
+    list.forEach(function(file) {
+        file = dir + '/' + file
+        var stat = fs.statSync(file)
+        if (stat && stat.isDirectory()) {
+            results = results.concat(me.readFiles(file, filter))
+        } else {
+            if (filter(file) === true) {
+                results.push(file)
+            }
+        }
+    })
+    return results;
+}
+
+/**
+ * Downloads files. This functionis function is used to download 3rdpart files
+ */
+Builder.prototype.downloadFiles = function(files, callback) {
+    var me = this,
+        count = 0,
+        errors = [],
+        queue = [];
+    files.forEach(function(file) {
+        if (!fs.existsSync(file.local)) {
+            queue.push(function(callback) {
+                me.downloadFile(file.remote, file.local, function(status, error) {
+                    if (status) {
+                        count++;
+                    } else {
+                        errors.push(error);
+                    }
+                    callback.apply(me, [null]);
+                })
+            });
+        }
+    });
+
+    me.runSerial(queue, function() {
+        if (count == files.count) {
+            callback.apply(me, [null])
+        } else {
+            callback.apply(me, [errors.join("\n")]);
+        }
+    })
+}
+
+Builder.prototype.downloadFile = function(source, dest, callback) {
+    var me = this,
+        command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
+    console.log('-- Downloading: ' + source)
+    childProcess.exec(command, { cwd: me.rootFolder }, function(error, stdout, stderr) {
+        if (!error) {
+            if (me.fileExists(dest)) {
+                callback.apply(me, [true]);
+            } else {
+                callback.apply(me, [false, dest + " was not created after running curl!\nThe command was " + command]);
+            }
+        } else {
+            callback.apply(me, [false, 'Unable to download ' + source + ", due:" + error]);
+        }
+    });
+}
+
+/**
+ * Run a series of functions sequentially and when done call the whenDone callback
+ */
+Builder.prototype.runSerial = function(callbacks, whenDone) {
+    var me = this;
+    var makeCall = function(fn, cb) {
+        return function(error) {
+            if (!error) {
+                if (cb) {
+                    fn.apply(me, [cb]);
+                } else {
+                    fn.apply(me);
+                }
+            } else {
+                console.log(error);
+            }
+        }
+    }
+    var index = callbacks.length;
+    var lastCall = whenDone;
+    while ((index--) !== 0) {
+        lastCall = makeCall(callbacks[index], lastCall);
+    }
+    lastCall.apply(me, []);
+}
+
+/**
+ * Removes and recreates a folder
+ */
+Builder.prototype.reCreateFolder = function(folder) {
+    var me = this;
+    console.log('--- Recreating ' + folder);
+    if (me.dirExists(folder)) {
+        del.sync(folder, {
+            force: true
+        });
+    }
+    fs.mkdirSync(folder);
 }
 
 /**
@@ -157,13 +301,8 @@ Builder.prototype.checkTypeScriptSanity = function(callback) {
 Builder.prototype.cleanBuild = function(callback) {
     var me = this;
     try {
-        console.log('-- Cleaning the build (' + me.buildPath + ')');
-        if (me.dirExists(me.buildPath)) {
-            del.sync(me.buildPath, {
-                force: true
-            });
-        }
-        fs.mkdir(me.buildPath);
+        console.log('-- Preparing');
+        me.reCreateFolder(me.buildPath)
         callback.apply(me, [null]);
     } catch (e) {
         callback.apply(me, [e]);
@@ -200,50 +339,6 @@ Builder.prototype.buildBlend = function(callback) {
     });
 }
 
-/**
- * Run a series of functions sequentially and when done call the whenDone callback
- */
-Builder.prototype.runSerial = function(callbacks, whenDone) {
-    var me = this;
-    var makeCall = function(fn, cb) {
-        return function(error) {
-            if (!error) {
-                if (cb) {
-                    fn.apply(me, [cb]);
-                } else {
-                    fn.apply(me);
-                }
-            } else {
-                console.log(error);
-            }
-        }
-    }
-    var index = callbacks.length;
-    var lastCall = whenDone;
-    while ((index--) !== 0) {
-        lastCall = makeCall(callbacks[index], lastCall);
-    }
-    lastCall.apply(me, []);
-}
-
-
-Builder.prototype.downloadFile = function(source, dest, callback) {
-    var me = this,
-        command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
-    console.log('-- Downloading: ' + source)
-    childProcess.exec(command, { cwd: me.rootFolder }, function(error, stdout, stderr) {
-        if (!error) {
-            if (me.fileExists(dest)) {
-                callback.apply(me, [true]);
-            } else {
-                callback.apply(me, [false, dest + " was not created after running curl!\nThe command was " + command]);
-            }
-        } else {
-            callback.apply(me, [false, 'Unable to download ' + source + ", due:" + error]);
-        }
-    });
-}
-
 Builder.prototype.getESPromiseLibrary = function(callback) {
     var me = this,
         files = [
@@ -260,42 +355,23 @@ Builder.prototype.getESPromiseLibrary = function(callback) {
 }
 
 /**
- * Downloads files. This functionis function is used to download 3rdpart files
- */
-Builder.prototype.downloadFiles = function(files, callback) {
-    var me = this,
-        count = 0,
-        errors = [],
-        queue = [];
-    files.forEach(function(file) {
-        if (!fs.existsSync(file.local)) {
-            queue.push(function(callback) {
-                me.downloadFile(file.remote, file.local, function(status, error) {
-                    if (status) {
-                        count++;
-                    } else {
-                        errors.push(error);
-                    }
-                    callback.apply(me, [null]);
-                })
-            });
-        }
-    });
-
-    me.runSerial(queue, function() {
-        if (count == files.count) {
-            callback.apply(me, [null])
-        } else {
-            callback.apply(me, [errors.join("\n")]);
-        }
-    })
-}
-
-/**
  * Prepares the Tests application by deploying Blend
  */
-Builder.prototype.prepareTests = function() {
-    var me = this;
+Builder.prototype.prepareTests = function(callback) {
+    var me = this,
+        testAppBlendFolder = me.fixPath(me.testPath + '/blend'),
+        testRunnerBlend = me.fixPath(me.testPath + '/testrunner/blend');
+    console.log('-- Preparing the Test Application');
+    try {
+        me.reCreateFolder(testAppBlendFolder);
+        me.reCreateFolder(testRunnerBlend);
+        me.copyFile(me.buildPath + '/blend/blend.d.ts', testAppBlendFolder + '/blend.d.ts');
+        me.copyFile(me.buildPath + '/css', testRunnerBlend + '/css');
+        me.copyFile(me.buildPath + '/blend/blend.js', testRunnerBlend + '/blend.js');
+        callback.apply(me, [null]);
+    } catch (e) {
+        callback.apply(me, [e]);
+    }
 }
 
 /**
@@ -305,7 +381,11 @@ Builder.prototype.buildFramework = function() {
     var me = this;
 
     var done = function(errors) {
-        console.log('-- Done');
+        if (errors) {
+            console.log(errors)
+        } else {
+            console.log('-- Done');
+        }
     }
 
     me.runSerial([
@@ -316,6 +396,7 @@ Builder.prototype.buildFramework = function() {
         , me.buildStyles
         , me.buildBlend
         , me.getESPromiseLibrary
+        , me.prepareTests,
     ], done);
 
 }
@@ -347,43 +428,9 @@ Builder.prototype.copyrightFiles = function(folder, extensions) {
 }
 
 /**
- * Recursively reads files from a given folder and applies a filter to
- * be able to exclude some files
- */
-Builder.prototype.readFiles = function(dir, filter) {
-    var me = this,
-        results = [];
-    filter = filter || function(fname) {
-        return true;
-    }
-    var list = fs.readdirSync(dir)
-    list.forEach(function(file) {
-        file = dir + '/' + file
-        var stat = fs.statSync(file)
-        if (stat && stat.isDirectory()) {
-            results = results.concat(me.readFiles(file, filter))
-        } else {
-            if (filter(file) === true) {
-                results.push(file)
-            }
-        }
-    })
-    return results;
-}
-
-/**
- * Make sure paths are consistent with the OS
- */
-Builder.prototype.fixPath = function(path) {
-    return path.replace('/', path.sep);
-}
-
-/**
  * Build entry point
  */
 Builder.prototype.run = function() {
-
-
     console.log("MaterialBlend Framework Builder v1.0\n");
     var me = this,
         buildFrameworkCommand = 'buildfx',
