@@ -21,7 +21,6 @@ const path = require('path');
 const childProcess = require('child_process');
 const uglify = require("uglify-js");
 const vercompare = require('version-comparison');
-const URI = require('uri-js');
 
 /**
  * Builder class constructor
