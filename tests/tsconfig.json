@@ -6,8 +6,8 @@
         "preserveConstEnums": true,
         "declaration": false,
         "module": "commonjs",
-        "sourceMap": true,
-        "sourceRoot": "/sources"
+        "inlineSourceMap": true,
+        "inlineSources": true
     },
     "exclude": [
         "node_modules",
