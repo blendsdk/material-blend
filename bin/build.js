@@ -55,6 +55,38 @@ function Builder() {
 }
 
 /**
+ * Checks if a given fileExists
+ */
+Builder.prototype.fileExists = function(path) {
+    try {
+        var stat = fs.statSync(path);
+        if (stat) {
+            return stat.isFile();
+        } else {
+            return false;
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
+/**
+ * Checks if a goven directory exists
+ */
+Builder.prototype.dirExists = function(path) {
+    try {
+        var stat = fs.statSync(path);
+        if (stat) {
+            return stat.isDirectory();
+        } else {
+            return false;
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
+/**
  * Checks if compass exists and it is the correct version.
  */
 Builder.prototype.checkCURLSanity = function(callback) {
@@ -126,7 +158,7 @@ Builder.prototype.cleanBuild = function(callback) {
     var me = this;
     try {
         console.log('-- Cleaning the build (' + me.buildPath + ')');
-        if (fs.existsSync(me.buildPath)) {
+        if (me.dirExists(me.buildPath)) {
             del.sync(me.buildPath, {
                 force: true
             });
@@ -201,7 +233,7 @@ Builder.prototype.downloadFile = function(source, dest, callback) {
     console.log('-- Downloading: ' + source)
     childProcess.exec(command, { cwd: me.rootFolder }, function(error, stdout, stderr) {
         if (!error) {
-            if (fs.existsSync(dest)) {
+            if (me.fileExists(dest)) {
                 callback.apply(me, [true]);
             } else {
                 callback.apply(me, [false, dest + " was not created after running curl!\nThe command was " + command]);
@@ -257,6 +289,13 @@ Builder.prototype.downloadFiles = function(files, callback) {
             callback.apply(me, [errors.join("\n")]);
         }
     })
+}
+
+/**
+ * Prepares the Tests application by deploying Blend
+ */
+Builder.prototype.prepareTests = function() {
+    var me = this;
 }
 
 /**
