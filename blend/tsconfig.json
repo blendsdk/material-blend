@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
         "module": "amd",
-        "sourceMap": true,
-        "sourceRoot": "/sources/blend",
+        "inlineSourceMap": true,
+        "inlineSources": true,
         "noImplicitAny": true,
-        "declaration":true,
+        "declaration": true,
         "outFile": "../build/blend/blend.js"
     },
     "exclude": [
