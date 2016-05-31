@@ -21,8 +21,7 @@ const path = require('path');
 const childProcess = require('child_process');
 const uglify = require("uglify-js");
 const vercompare = require('version-comparison');
-const wget = require('wget-improved');
-
+const URI = require('uri-js');
 
 /**
  * Builder class constructor
@@ -36,25 +35,42 @@ function Builder() {
     me.blendPath = me.rootFolder + '/blend';
     me.blendSourcePath = me.blendPath + '/src';
     me.blendExteralPath = me.blendPath + '/3rdparty';
-    me.testPath = me.rootFolder + '/tests'
-    me.copyrightHeader = [
-        '/**',
-        ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
-        ' *',
-        ' * Licensed under the Apache License, Version 2.0 (the "License");',
-        ' * you may not use this file except in compliance with the License.',
-        ' * You may obtain a copy of the License at',
-        ' *',
-        ' *      http://www.apache.org/licenses/LICENSE-2.0',
-        ' *',
-        ' * Unless required by applicable law or agreed to in writing, software',
-        ' * distributed under the License is distributed on an "AS IS" BASIS,',
-        ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
-        ' * See the License for the specific language governing permissions and',
-        ' * limitations under the License.',
-        ' */'
-    ]
+    me.testPath = me.rootFolder + '/tests',
+        me.copyrightHeader = [
+            '/**',
+            ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
+            ' *',
+            ' * Licensed under the Apache License, Version 2.0 (the "License");',
+            ' * you may not use this file except in compliance with the License.',
+            ' * You may obtain a copy of the License at',
+            ' *',
+            ' *      http://www.apache.org/licenses/LICENSE-2.0',
+            ' *',
+            ' * Unless required by applicable law or agreed to in writing, software',
+            ' * distributed under the License is distributed on an "AS IS" BASIS,',
+            ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
+            ' * See the License for the specific language governing permissions and',
+            ' * limitations under the License.',
+            ' */'
+        ]
 }
+
+/**
+ * Checks if compass exists and it is the correct version.
+ */
+Builder.prototype.checkCURLSanity = function (callback) {
+    var me = this;
+    console.log('-- Checking CURL');
+    childProcess.exec('curl -V', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+        if (!error) {
+            callback.apply(me, [null]);
+        } else {
+            callback.apply(me, ['No CURL utility found!']);
+        }
+    });
+}
+
+
 
 /**
  * Checks if compass exists and it is the correct version.
@@ -183,33 +199,31 @@ Builder.prototype.runSerial = function (callbacks, whenDone) {
 
 
 Builder.prototype.downloadFile = function (source, dest, callback) {
-    var options = {
-        proxy: process.env.HTTP_PROXY
-    };
-
-    var download = wget.download(siurce, output, options);
-    download.on('error', function (err) {
-        callback.apply(me, [false, err]);
-    });
-    download.on('start', function (fileSize) {
-        console.log('Downloading: ' + source);
-    });
-    download.on('end', function (output) {
-        console.log('-- Downloading complete.');
-        fs.writeFileSync(dest, output);
-        callback.apply(me, [true]);
+    var me = this,
+        command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
+    console.log('-- Downloading: ' + source)
+    childProcess.exec(command, { cwd: me.rootFolder }, function (error, stdout, stderr) {
+        if (!error) {
+            if (fs.existsSync(dest)) {
+                callback.apply(me, [true]);
+            } else {
+                callback.apply(me, [false, dest + " was not created after running curl!\nThe command was " + command]);
+            }
+        } else {
+            callback.apply(me, [false, 'Unable to download ' + source + ", due:" + error]);
+        }
     });
 }
 
 Builder.prototype.getESPromiseLibrary = function (callback) {
     var me = this,
         count = 0,
-        error = [],
+        errors = [],
         queue = [],
         files = [
             {
                 local: me.blendExteralPath + '/es6-promise/es6-promise.js',
-                remote: 'https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/es6-promise.js'
+                remote: 'https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/lib/es6-promise.js'
             },
             {
                 local: me.blendExteralPath + '/es6-promise/es6-promise.d.ts',
@@ -217,22 +231,25 @@ Builder.prototype.getESPromiseLibrary = function (callback) {
             }
         ];
     files.forEach(function (file) {
-        queue.push(function (callback) {
-            me.downloadFile(file.remote, file.local, function (status, error) {
-                if (status) {
-                    count++;
-                } else {
-                    error.push(error);
-                }
-            })
-        });
+        if (!fs.existsSync(file.local)) {
+            queue.push(function (callback) {
+                me.downloadFile(file.remote, file.local, function (status, error) {
+                    if (status) {
+                        count++;
+                    } else {
+                        errors.push(error);
+                    }
+                    callback.apply(me, [null]);
+                })
+            });
+        }
     });
 
     me.runSerial(queue, function () {
-        if (count == file.count) {
+        if (count == files.count) {
             callback.apply(me, [null])
         } else {
-            callback.apply(me, [error.join("\n")]);
+            callback.apply(me, [errors.join("\n")]);
         }
     })
 }
@@ -243,14 +260,16 @@ Builder.prototype.getESPromiseLibrary = function (callback) {
 Builder.prototype.buildFramework = function () {
     var me = this;
 
-    var done = function () {
+    var done = function (errors) {
         console.log('-- Done');
     }
 
     me.runSerial([
-        me.checkTypeScriptSanity,
-        me.checkCompassSanity
+        me.checkTypeScriptSanity
+        , me.checkCompassSanity
+        , me.checkCURLSanity
         , me.cleanBuild
+        , me.getESPromiseLibrary
         , me.buildStyles
         , me.buildBlend
     ], done);
