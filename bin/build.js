@@ -217,9 +217,6 @@ Builder.prototype.downloadFile = function (source, dest, callback) {
 
 Builder.prototype.getESPromiseLibrary = function (callback) {
     var me = this,
-        count = 0,
-        errors = [],
-        queue = [],
         files = [
             {
                 local: me.blendExteralPath + '/es6-promise/es6-promise.js',
@@ -230,6 +227,17 @@ Builder.prototype.getESPromiseLibrary = function (callback) {
                 remote: 'https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts'
             }
         ];
+    me.downloadFiles(files, callback);
+}
+
+/**
+ * Downloads files. This functionis function is used to download 3rdpart files
+ */
+Builder.prototype.downloadFiles = function (files, callback) {
+    var me = this,
+        count = 0,
+        errors = [],
+        queue = [];
     files.forEach(function (file) {
         if (!fs.existsSync(file.local)) {
             queue.push(function (callback) {
@@ -269,9 +277,9 @@ Builder.prototype.buildFramework = function () {
         , me.checkCompassSanity
         , me.checkCURLSanity
         , me.cleanBuild
-        , me.getESPromiseLibrary
         , me.buildStyles
         , me.buildBlend
+        , me.getESPromiseLibrary
     ], done);
 
 }
