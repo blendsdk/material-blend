@@ -122,6 +122,14 @@ export class BlendBuilder extends Builder {
     }
 
     /**
+     * Creates a new distribution
+     */
+    private createDist() {
+        console.log('-- Creating new dist');
+        console.log('-- Done');
+    }
+
+    /**
      * Build entry point
      */
     public run() {
@@ -129,9 +137,11 @@ export class BlendBuilder extends Builder {
         var me = this,
             buildFrameworkCommand = 'buildfx',
             copyrightHeaderCommand = 'copyright',
+            makedistCommand = 'makedist',
             argv = require('yargs')
                 .command(buildFrameworkCommand, 'Build the Framework and the Tests')
                 .command(copyrightHeaderCommand, 'Add coptyright headers to files')
+                .command(makedistCommand,'Create a distribution')
                 .demand(1)
                 .epilog('Copyright 2016 TrueSoftware B.V.')
                 .argv;
@@ -141,7 +151,8 @@ export class BlendBuilder extends Builder {
             me.buildFramework();
         } else if (command === copyrightHeaderCommand) {
             me.copyrightFiles(me.blendPath);
+        } else if(command == makedistCommand) {
+            me.createDist();
         }
-
     }
 }
