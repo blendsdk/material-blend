@@ -1,4 +1,4 @@
-/// <reference path="./BuilderBase.ts" />
+/// <reference path="./Builder.ts" />
 /// <reference path="../typings/node.d.ts" />
 /// <reference path="../typings/packages.d.ts"/>
 
