@@ -1,3 +1,19 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /// <reference path="binding/BindingProvider.ts" />
 
 namespace Blend {
@@ -157,17 +173,37 @@ namespace Blend {
         }
 
         /**
-         * Adds an EventListener to an EventTarget
+         * Adds an EventListener to an EventTarget. You can add multiple events by
+         * providing event names seperated by spaces (eg. 'mouseup click')
          */
         public addEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
-            el.addEventListener(eventName, eventHandler, false);
+            if (eventName.indexOf(' ') !== -1) {
+                eventName.split(' ').forEach(function(eName) {
+                    eName = eName.trim();
+                    if (eName.length !== 0) {
+                        el.addEventListener(eName, eventHandler, false);
+                    }
+                });
+            } else {
+                el.addEventListener(eventName, eventHandler, false);
+            }
         }
 
         /**
-         * Removes an EventListener from an EventTarget
+         * Removes an EventListener from an EventTarget. You can remove multiple events by
+         * providing event names seperated by spaces (eg. 'mouseup click')
          */
         public removeEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
-            el.removeEventListener(eventName, eventHandler, false);
+            if (eventName.indexOf(' ') !== -1) {
+                eventName.split(' ').forEach(function(eName) {
+                    eName = eName.trim();
+                    if (eName.length !== 0) {
+                        el.removeEventListener(eName, eventHandler, false);
+                    }
+                });
+            } else {
+                el.removeEventListener(eventName, eventHandler, false);
+            }
         }
 
         private detectIE(): number {

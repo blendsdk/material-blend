@@ -1,3 +1,19 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 @mixin theme(
 $theme-name,
 $background-color: $global-background-color
@@ -16,7 +32,6 @@ $background-color: $global-background-color
 
     .#{$theme-name} {
         @include typography();
-        @include elevate();
 
         @include init-grid($layout-max-columns);
 
@@ -49,5 +64,130 @@ $background-color: $global-background-color
 
         @include blend-application-application();
 
+        // common structure for all button;
+        @include blend-button-struct();
+
+        // flat button
+        @include blend-button-flat();
+        // raised button
+        @include blend-button-raised();
+        // FAB button
+        @include blend-button-fab();
+
+        // flat default button
+        @include blend-button-theme(
+        $name: 'default',
+            $button-types: $flat-buttons,
+            $button-text-color: $default-flat-button-text-color,
+            $button-icon-color: $default-flat-button-icon-color,
+            $button-background-color: transparent,
+            $button-hover-background-color: $default-flat-button-hover-background-color,
+            $button-focus-background-color: $default-flat-button-focus-background-color
+            );
+
+        @include blend-button-theme(
+        $name: 'default',
+            $button-types: $raised-buttons,
+            $button-text-color: $default-raised-button-text-color,
+            $button-icon-color: $default-raised-button-icon-color,
+            $button-background-color: $default-raised-button-background-color,
+            $button-hover-background-color: $default-raised-button-hover-background-color,
+            $button-focus-background-color: $default-raised-button-focus-background-color
+            );
+
+        @include blend-button-theme(
+        $name: 'primary',
+            $button-types: $raised-buttons,
+            $button-text-color: #fff,
+            $button-icon-color: #fff,
+            $button-background-color: $color-blue-c700,
+            $button-hover-background-color: $color-blue-c800,
+            $button-focus-background-color: false
+            );
+
+
+        @include blend-button-theme(
+        $name: 'default',
+            $button-types: $fab-buttons,
+            $button-text-color: $default-fab-button-text-color,
+            $button-icon-color: $default-fab-button-icon-color,
+            $button-background-color: $default-fab-button-background-color,
+            $button-hover-background-color: $default-fab-button-hover-background-color,
+            $button-focus-background-color: $default-fab-button-focus-background-color
+            );
+
+        @include blend-button-theme(
+        $name: 'pink',
+            $button-types: $fab-buttons,
+            $button-text-color: #fff,
+            $button-icon-color: #fff,
+            $button-background-color: $color-pink-a200,
+            $button-hover-background-color: false,
+            $button-focus-background-color: false
+            );
+
+
+        /*        // raised default button
+
+                // flat default button
+                @include blend-button-theme(
+                $name: 'primary',
+                    $button-types: $flat-buttons,
+                    $button-text-color: $color-indigo-c500,
+                    $button-icon-color: $color-indigo-c500,
+                    $button-background-color: transparent,
+                    $button-hover-background-color: $default-flat-button-hover-background-color
+                    );
+
+                @include blend-button-theme(
+                $name: 'primary',
+                    $button-types: $all-raised-buttons,
+                    $button-text-color: $color-blackandwhite-cwhite,
+                    $button-icon-color: $color-blackandwhite-cwhite,
+                    $button-background-color: $color-indigo-c500,
+                    $button-hover-background-color: false
+                    );
+
+                @include blend-button-theme(
+                $name: 'danger',
+                    $button-types: $all-raised-buttons,
+                    $button-text-color: $color-blackandwhite-cwhite,
+                    $button-icon-color: $color-blackandwhite-cwhite,
+                    $button-background-color: $color-pink-c400,
+                    $button-hover-background-color: false
+                    );*/
+
+
+        .debug-surface {
+            @include elevate($elevate-1dp);
+            background-color: #fff;
+            border:1px solid transparent;
+            border-radius: 3px;
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            width: 75%;
+            padding:16px;
+
+            & > .body {
+                display: inline-block;
+                margin-left: auto;
+                margin-right: auto;
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            & > .title {
+                color: $color-grey-c900;
+                text-transform: uppercase;
+                width: 100%;
+                text-align: center;
+                font-weight: 500;
+            }
+        }
     }
 }

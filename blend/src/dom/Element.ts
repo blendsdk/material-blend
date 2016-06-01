@@ -1,4 +1,21 @@
-/// <reference path="../common/Interfaces.ts" />
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/// <reference path="../Typings.ts" />
+/// <reference path="../Component.ts" />
 /// <reference path="ClassList.ts" />
 /// <reference path="StyleList.ts" />
 /// <reference path="../Blend.ts" />
@@ -9,7 +26,7 @@ namespace Blend.dom {
      * Wraps an HTMLElement into a utility class for easier  manipulation
      * and hadling
      */
-    export class Element {
+    export class Element extends Component {
 
         private el: HTMLElement;
         private pixelRe = /px$/;
@@ -20,9 +37,29 @@ namespace Blend.dom {
         public styleList: Blend.dom.StyleList;
 
         constructor(el: HTMLElement) {
+            super();
             this.el = el;
             this.classList = new Blend.dom.ClassList(this.el);
             this.styleList = new Blend.dom.StyleList(this.el);
+        }
+
+        /**
+         * Sets an attribute to this element
+         */
+        public setAttribute(name: string, value?: any): Blend.dom.Element {
+            var me = this;
+            me.el.setAttribute.apply(me.el, arguments);
+            return me;
+        }
+
+
+        /**
+         * Removed an attribute from this element
+         */
+        public removeAttribute(name: string): Blend.dom.Element {
+            var me = this;
+            me.el.removeAttribute(name);
+            return me;
         }
 
         /**
@@ -209,8 +246,9 @@ namespace Blend.dom {
         /**
          * Appends a child Element to this Element
          */
-        public append(child: Blend.dom.Element) {
+        public append(child: Blend.dom.Element): Blend.dom.Element {
             this.el.appendChild((child.getEl()));
+            return child;
         }
 
         /**
@@ -349,18 +387,20 @@ namespace Blend {
     /**
      * Wrapper for document.querySelector
      */
-    export function selectElement(query: string): Blend.dom.Element {
-        var els = Blend.selectElements(query);
+    export function selectElement(query: string, from: Blend.dom.Element = null): Blend.dom.Element {
+        var els = Blend.selectElements(query, from);
         return els[0] || null;
     }
 
     /**
      * Wrapper for document.querySelectorAll
      */
-    export function selectElements(query: string): Array<Blend.dom.Element> {
+    export function selectElements(query: string, from: Blend.dom.Element = null): Array<Blend.dom.Element> {
         var els: Array<Blend.dom.Element> = [];
-        Blend.forEach(document.querySelectorAll(query), function(el: HTMLElement) {
-            els.push(new Blend.dom.Element(el));
+        Blend.forEach(((from ? from.getEl() : null) || document).querySelectorAll(query), function(el: HTMLElement) {
+            if (Blend.isInstanceOf(el, HTMLElement)) {
+                els.push(new Blend.dom.Element(el));
+            }
         });
         return els;
     }

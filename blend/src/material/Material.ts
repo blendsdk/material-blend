@@ -1,6 +1,21 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /// <reference path="../mvc/View.ts" />
 /// <reference path="../dom/Element.ts" />
-
 
 namespace Blend.material {
 
@@ -16,6 +31,7 @@ namespace Blend.material {
         protected config: MaterialInterface;
         protected useParentControllers: boolean;
         protected isInitialized: boolean;
+        protected canLayout: boolean;
 
         public constructor(config: MaterialInterface = {}) {
             super(config);
@@ -46,6 +62,52 @@ namespace Blend.material {
                 height: config.height || null
             });
             me.initializeResponsiveEvents();
+            me.canLayout = true;
+        }
+
+        /**
+         * Internal function used for initiating a sub-layout process. This function can be
+         * overridden when implementing a custom component. See the Button component as
+         * an example of how to use this function
+         */
+        protected updateLayout() {
+        }
+
+        /**
+         * Initiates a sub-layout process.
+         */
+        protected performLayout() {
+            var me = this;
+            if (me.canLayout === true) {
+                me.suspendLayout();
+                me.updateLayout();
+                me.resumeLayout();
+            }
+        }
+
+        /**
+         * Suspends the sub-layout from staring
+         */
+        protected suspendLayout() {
+            this.canLayout = false;
+        }
+
+        /**
+         * Resumes the sub-layout
+         */
+        protected resumeLayout() {
+            this.canLayout = true;
+        }
+
+        /**
+         * This function is used internally on render time to assign element IDs to
+         * properties
+         */
+        protected assignElementByOID(el: Blend.dom.Element, oid: string) {
+            var me: any = this;
+            if (me[oid] === null) {
+                me[oid] = el;
+            }
         }
 
         /**
@@ -97,16 +159,26 @@ namespace Blend.material {
          * Internal function that is called by the parent/host to initiate
          * the initialization process
           */
-        public doInitialize() {
+        public doInitialize(): Blend.material.Material {
             var me = this;
+            me.initEvents();
             me.initialize();
+            me.performLayout();
             me.notifyMaterialInitialized();
+            return me;
         }
 
         /**
          * This function can be overriden to do custom initialization on this Material
          */
         public initialize() {
+
+        }
+
+        /**
+         * Override this method for creating event listeners for this Material
+         */
+        protected initEvents() {
 
         }
 
@@ -263,6 +335,11 @@ namespace Blend.material {
             if (!me.visible) {
                 // should be set only when not visible
                 me.setVisible(false);
+            }
+            if (Blend.DEBUG === true) {
+                var id = 'm' + Blend.newID();
+                me.element.getEl().setAttribute('id', id);
+                (<any>window)[id] = me;
             }
         }
 

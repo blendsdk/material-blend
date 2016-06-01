@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+var Blend = require(__dirname + '/blend-builder.js');
+var builder = new Blend.BlendBuilder(__dirname + '/../');
+builder.run();

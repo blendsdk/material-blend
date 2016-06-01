@@ -1,9 +1,9 @@
-/*!
+;/*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/jakearchibald/es6-promise/master/LICENSE
- * @version   3.2.1
+ * @version   3.2.2+39aa2571
  */
 
 (function() {
@@ -829,7 +829,7 @@
         lib$es6$promise$$internal$$makePromise(this.promise);
       }
 
-      if (Array.isArray(input)) {
+      if (lib$es6$promise$utils$$isArray(input)) {
         this._input     = input;
         this.length     = input.length;
         this._remaining = input.length;
@@ -940,18 +940,16 @@
     }
     var lib$es6$promise$polyfill$$default = lib$es6$promise$polyfill$$polyfill;
 
-    var lib$es6$promise$umd$$ES6Promise = {
-      'Promise': lib$es6$promise$promise$$default,
-      'polyfill': lib$es6$promise$polyfill$$default
-    };
+    lib$es6$promise$promise$$default.Promise = lib$es6$promise$promise$$default;
+    lib$es6$promise$promise$$default.polyfill = lib$es6$promise$polyfill$$default;
 
     /* global define:true module:true window: true */
     if (typeof define === 'function' && define['amd']) {
-      define(function() { return lib$es6$promise$umd$$ES6Promise; });
+      define(function() { return lib$es6$promise$promise$$default; });
     } else if (typeof module !== 'undefined' && module['exports']) {
-      module['exports'] = lib$es6$promise$umd$$ES6Promise;
+      module['exports'] = lib$es6$promise$promise$$default;
     } else if (typeof this !== 'undefined') {
-      this['ES6Promise'] = lib$es6$promise$umd$$ES6Promise;
+      this['Promise'] = lib$es6$promise$promise$$default;
     }
 
     lib$es6$promise$polyfill$$default();
