@@ -80,11 +80,11 @@ abstract class Builder {
     protected readFiles(dir: string, filter: Function) {
         var me = this,
             results: Array<string> = [];
-        filter = filter || function (fname: string) {
+        filter = filter || function(fname: string) {
             return true;
         }
         var list = fs.readdirSync(dir)
-        list.forEach(function (file: string) {
+        list.forEach(function(file: string) {
             file = dir + '/' + file
             var stat = fs.statSync(file)
             if (stat && stat.isDirectory()) {
@@ -103,7 +103,7 @@ abstract class Builder {
         var me = this,
             command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
         console.log('-- Downloading: ' + source)
-        childProcess.exec(command, { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
+        childProcess.exec(command, { cwd: me.rootFolder }, function(error: string, stdout: any, stderr: any) {
             if (!error) {
                 if (me.fileExists(dest)) {
                     callback.apply(me, [true]);
@@ -121,8 +121,8 @@ abstract class Builder {
      */
     protected runSerial(callbacks: Array<Function>, whenDone: Function) {
         var me = this;
-        var makeCall = function (fn: Function, cb: Function) {
-            return function (error: string) {
+        var makeCall = function(fn: Function, cb: Function) {
+            return function(error: string) {
                 if (!error) {
                     if (cb) {
                         fn.apply(me, [cb]);
@@ -150,10 +150,10 @@ abstract class Builder {
             count = 0,
             errors: Array<string> = [],
             queue: Array<Function> = [];
-        files.forEach(function (file: DownloadInterface) {
+        files.forEach(function(file: DownloadInterface) {
             if (!fs.existsSync(file.local)) {
-                queue.push(function (callback: Function) {
-                    me.downloadFile(file.remote, file.local, function (status: boolean, error: string) {
+                queue.push(function(callback: Function) {
+                    me.downloadFile(file.remote, file.local, function(status: boolean, error: string) {
                         if (status) {
                             count++;
                         } else {
@@ -165,7 +165,7 @@ abstract class Builder {
             }
         });
 
-        me.runSerial(queue, function () {
+        me.runSerial(queue, function() {
             if (count == files.length) {
                 callback.apply(me, [null])
             } else {
@@ -210,7 +210,7 @@ abstract class Builder {
     protected checkCURLSanity(callback: Function) {
         var me = this;
         console.log('-- Checking CURL');
-        childProcess.exec('curl -V', { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
+        childProcess.exec('curl -V', { cwd: me.rootFolder }, function(error: string, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -225,7 +225,7 @@ abstract class Builder {
     protected checkCompassSanity(callback: Function) {
         var me = this;
         console.log('-- Checking Compass');
-        childProcess.exec('compass -v', { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
+        childProcess.exec('compass -v', { cwd: me.rootFolder }, function(error: string, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.split("\n");
                 if (parts.length < 1) {
@@ -249,10 +249,10 @@ abstract class Builder {
     /**
      * Checks if TypeScript exists and it is the correct version.
      */
-    protected checkTypeScriptSanity = function (callback: Function) {
+    protected checkTypeScriptSanity = function(callback: Function) {
         var me = this;
         console.log('-- Checking TypeScript');
-        childProcess.exec('tsc -v', { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
+        childProcess.exec('tsc -v', { cwd: me.rootFolder }, function(error: string, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.trim().split(" ");
                 if (parts.length != 2) {
@@ -286,18 +286,18 @@ abstract class Builder {
     /**
      * Places copyright headers in source files
      */
-    protected copyrightFiles = function (folder: string, extensions: Array<string> = null) {
+    protected copyrightFiles = function(folder: string, extensions: Array<string> = null) {
         console.log('-- Looking for files');
         var me = this,
             count = 0,
             header = me.copyrightHeader.join("\n");
         extensions = extensions || ['.ts', 'scss'];
-        var files: Array<String> = me.readFiles(folder, function (fname: string) {
+        var files: Array<String> = me.readFiles(folder, function(fname: string) {
             var ext = path.extname(fname);
             return extensions.indexOf(ext) !== -1
                 && fname.indexOf(path.sep + 'typings' + path.sep) === -1;
         });
-        files.forEach(function (fname: string) {
+        files.forEach(function(fname: string) {
             var contents = fs.readFileSync(fname).toString();
             if (contents.indexOf(me.copyrightKey) === -1) {
                 contents = header + "\n\n" + contents;
@@ -307,6 +307,21 @@ abstract class Builder {
         });
         console.log('-- ' + count + ' files updated!');
         console.log('-- Done\n');
+    }
+
+    /**
+     * Build the TS sources, both framework and tests
+     */
+    protected buildSources(folder: string, callback: Function) {
+        var me = this;
+        console.log('--- Building sources in: ' + folder);
+        childProcess.exec('tsc', { cwd: folder }, function(error: string, stdout: any, stderr: any) {
+            if (!error) {
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [stdout.toString()]);
+            }
+        });
     }
 
 }

@@ -41,7 +41,7 @@ export class BlendBuilder extends Builder {
     private buildStyles(callback: Function) {
         var me = this;
         console.log('-- Building Themes and Styles');
-        childProcess.exec('compass compile', { cwd: me.blendPath }, function (error: string, stdout: any, stderr: any) {
+        childProcess.exec('compass compile', { cwd: me.blendPath }, function(error: string, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -56,13 +56,7 @@ export class BlendBuilder extends Builder {
     private buildBlend(callback: Function) {
         var me = this;
         console.log('-- Building Blend');
-        childProcess.exec('tsc', { cwd: me.blendPath }, function (error: string, stdout: any, stderr: any) {
-            if (!error) {
-                callback.apply(me, [null]);
-            } else {
-                callback.apply(me, [stdout.toString()]);
-            }
-        });
+        me.buildSources(me.blendPath, callback);
     }
 
 
@@ -95,7 +89,7 @@ export class BlendBuilder extends Builder {
             me.copyFile(me.buildPath + '/blend/blend.d.ts', testAppBlendFolder + '/blend.d.ts');
             me.copyFile(me.buildPath + '/css', testRunnerBlend + '/css');
             me.copyFile(me.buildPath + '/blend/blend.js', testRunnerBlend + '/blend.js');
-            callback.apply(me, [null]);
+            me.buildSources(me.testPath, callback)
         } catch (e) {
             callback.apply(me, [e]);
         }
@@ -107,7 +101,7 @@ export class BlendBuilder extends Builder {
     private buildFramework() {
         var me = this;
 
-        var done = function (errors: string) {
+        var done = function(errors: string) {
             if (errors) {
                 console.log(errors)
             } else {
