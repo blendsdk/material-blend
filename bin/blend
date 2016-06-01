@@ -1,2 +1,4 @@
 #!/usr/bin/env node
-require (__dirname +'/build.js');
+require(__dirname + '/builder/BuilderCmd.js');
+var builder = new BuilderCmd(__dirname + '/../');
+builder.run();

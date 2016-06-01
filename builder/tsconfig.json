@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "inlineSourceMap": false,
+        "inlineSources": false,
+        "noImplicitAny": true,
+        "declaration": false,
+        "outFile": "../bin/builder/builder.js"
+    },
+    "exclude": [
+        "node_modules",
+        "tests",
+        "dist"
+    ]
+}

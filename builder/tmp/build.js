@@ -30,7 +30,7 @@ function Builder() {
     var me = this;
     me.minCompassVersion = '1.0.3';
     me.minTypeScriptVersion = '1.8.10';
-    me.rootFolder = fs.realpathSync(__dirname + '/..');
+    me.rootFolder = fs.realpathSync(__dirname + '/../../');
     me.buildPath = me.rootFolder + '/build';
     me.blendPath = me.rootFolder + '/blend';
     me.blendSourcePath = me.blendPath + '/src';
