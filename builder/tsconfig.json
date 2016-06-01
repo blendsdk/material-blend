@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
-        "module": "amd",
+        "module": "commonjs",
+        "target": "es5",
         "inlineSourceMap": false,
         "inlineSources": false,
         "noImplicitAny": true,
         "declaration": false,
-        "outFile": "../bin/builder/builder.js"
+        "outDir": "../bin/builder"
     },
     "exclude": [
         "node_modules",

@@ -1,17 +1,19 @@
+/// <reference path="./BuilderBase.ts" />
 /// <reference path="../typings/node.d.ts" />
 /// <reference path="../typings/packages.d.ts"/>
-/// <reference path="BuilderBase.ts" />
 
-import * as fs from 'fs';
-import * as fse from 'fs-extra';
-import * as del from 'del';
-import * as path from 'path';
-import * as childProcess from 'child_process';
-//import * as uglify from 'uglify-js';
-import { vercompare } from 'version-comparison';
-import { BuilderBase } from './BuilderBase';
 
-export class BlendCmd extends BuilderBase {
+var fs = require('fs');
+var fse = require('fs-extra');
+var del = require('del');
+var path = require('path');
+var childProcess = require('child_process');
+var uglify = require('uglify-js');
+var vercompare = require('version-comparison');
+
+import { Builder } from './Builder';
+
+export class BlendCmd extends Builder {
 
     public constructor(rootFolder: string) {
         super(rootFolder);
@@ -42,7 +44,7 @@ export class BlendCmd extends BuilderBase {
     private buildStyles(callback: Function) {
         var me = this;
         console.log('-- Building Themes and Styles');
-        childProcess.exec('compass compile', { cwd: me.blendPath }, function (error, stdout, stderr) {
+        childProcess.exec('compass compile', { cwd: me.blendPath }, function (error: string, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -57,7 +59,7 @@ export class BlendCmd extends BuilderBase {
     private buildBlend(callback: Function) {
         var me = this;
         console.log('-- Building Blend');
-        childProcess.exec('tsc', { cwd: me.blendPath }, function (error, stdout, stderr) {
+        childProcess.exec('tsc', { cwd: me.blendPath }, function (error: string, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {

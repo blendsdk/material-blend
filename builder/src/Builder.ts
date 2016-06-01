@@ -1,21 +1,21 @@
 /// <reference path="../typings/node.d.ts" />
 /// <reference path="../typings/packages.d.ts" />
 
-import * as fs from 'fs';
-import * as fse from 'fs-extra';
-import * as del from 'del';
-import * as path from 'path';
-import * as childProcess from 'child_process';
-//import * as uglify from 'uglify-js';
-import { vercompare } from 'version-comparison';
 
+var fs = require('fs');
+var fse = require('fs-extra');
+var del = require('del');
+var path = require('path');
+var childProcess = require('child_process');
+var uglify = require('uglify-js');
+var vercompare = require('version-comparison');
 
 interface DownloadInterface {
     remote: string;
     local: string;
 }
 
-export abstract class BuilderBase {
+export abstract class Builder {
 
     protected minCompassVersion: string;
     protected minTypeScriptVersion = '1.8.10';
@@ -84,7 +84,7 @@ export abstract class BuilderBase {
             return true;
         }
         var list = fs.readdirSync(dir)
-        list.forEach(function (file) {
+        list.forEach(function (file: string) {
             file = dir + '/' + file
             var stat = fs.statSync(file)
             if (stat && stat.isDirectory()) {
@@ -103,7 +103,7 @@ export abstract class BuilderBase {
         var me = this,
             command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
         console.log('-- Downloading: ' + source)
-        childProcess.exec(command, { cwd: me.rootFolder }, function (error, stdout, stderr) {
+        childProcess.exec(command, { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
             if (!error) {
                 if (me.fileExists(dest)) {
                     callback.apply(me, [true]);
@@ -210,7 +210,7 @@ export abstract class BuilderBase {
     protected checkCURLSanity(callback: Function) {
         var me = this;
         console.log('-- Checking CURL');
-        childProcess.exec('curl -V', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+        childProcess.exec('curl -V', { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -225,7 +225,7 @@ export abstract class BuilderBase {
     protected checkCompassSanity(callback: Function) {
         var me = this;
         console.log('-- Checking Compass');
-        childProcess.exec('compass -v', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+        childProcess.exec('compass -v', { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.split("\n");
                 if (parts.length < 1) {
@@ -252,7 +252,7 @@ export abstract class BuilderBase {
     protected checkTypeScriptSanity = function (callback: Function) {
         var me = this;
         console.log('-- Checking TypeScript');
-        childProcess.exec('tsc -v', { cwd: me.rootFolder }, function (error, stdout, stderr) {
+        childProcess.exec('tsc -v', { cwd: me.rootFolder }, function (error: string, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.trim().split(" ");
                 if (parts.length != 2) {
@@ -308,6 +308,5 @@ export abstract class BuilderBase {
         console.log('-- ' + count + ' files updated!');
         console.log('-- Done\n');
     }
-
 
 }

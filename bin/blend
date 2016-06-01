@@ -1,4 +1,5 @@
 #!/usr/bin/env node
-require(__dirname + '/builder/BuilderCmd.js');
-var builder = new BuilderCmd(__dirname + '/../');
+require(__dirname + '/builder/Builder.js');
+var Blend = require(__dirname + '/builder/BlendCmd.js');
+var builder = new Blend.BlendCmd(__dirname + '/../');
 builder.run();
