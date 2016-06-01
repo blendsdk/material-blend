@@ -1,6 +1,3 @@
-/// <reference path="../typings/node.d.ts" />
-/// <reference path="../typings/packages.d.ts" />
-"use strict";
 var fs = require('fs');
 var fse = require('fs-extra');
 var del = require('del');
@@ -11,9 +8,6 @@ var vercompare = require('version-comparison');
 var Builder = (function () {
     function Builder(rootFolder) {
         this.minTypeScriptVersion = '1.8.10';
-        /**
-         * Checks if TypeScript exists and it is the correct version.
-         */
         this.checkTypeScriptSanity = function (callback) {
             var me = this;
             console.log('-- Checking TypeScript');
@@ -35,9 +29,6 @@ var Builder = (function () {
                 }
             });
         };
-        /**
-         * Places copyright headers in source files
-         */
         this.copyrightFiles = function (folder, extensions) {
             if (extensions === void 0) { extensions = null; }
             console.log('-- Looking for files');
@@ -69,9 +60,6 @@ var Builder = (function () {
         me.blendExteralPath = me.blendPath + '/3rdparty';
         me.testPath = me.rootFolder + '/tests';
     }
-    /**
-     * Checks if a given fileExists
-     */
     Builder.prototype.fileExists = function (path) {
         try {
             var stat = fs.statSync(path);
@@ -89,18 +77,11 @@ var Builder = (function () {
     Builder.prototype.fixPath = function (value) {
         return value.replace('/', path.sep);
     };
-    /**
-     * Copy file from source to dest
-     */
     Builder.prototype.copyFile = function (source, dest) {
         var me = this, s = me.fixPath(source), d = me.fixPath(dest);
         console.log('--- Copying ' + s + ' to ' + d);
         fse.copySync(s, d);
     };
-    /**
-     * Recursively reads files from a given folder and applies a filter to
-     * be able to exclude some files
-     */
     Builder.prototype.readFiles = function (dir, filter) {
         var me = this, results = [];
         filter = filter || function (fname) {
@@ -138,9 +119,6 @@ var Builder = (function () {
             }
         });
     };
-    /**
-     * Run a series of functions sequentially and when done call the whenDone callback
-     */
     Builder.prototype.runSerial = function (callbacks, whenDone) {
         var me = this;
         var makeCall = function (fn, cb) {
@@ -165,9 +143,6 @@ var Builder = (function () {
         }
         lastCall.apply(me, []);
     };
-    /**
-     * Downloads files. This functionis function is used to download 3rdpart files
-     */
     Builder.prototype.downloadFiles = function (files, callback) {
         var me = this, count = 0, errors = [], queue = [];
         files.forEach(function (file) {
@@ -194,9 +169,6 @@ var Builder = (function () {
             }
         });
     };
-    /**
-     * Removes and recreates a folder
-     */
     Builder.prototype.reCreateFolder = function (folder) {
         var me = this;
         console.log('--- Recreating ' + folder);
@@ -207,9 +179,6 @@ var Builder = (function () {
         }
         fs.mkdirSync(folder);
     };
-    /**
-     * Checks if a goven directory exists
-     */
     Builder.prototype.dirExists = function (path) {
         try {
             var stat = fs.statSync(path);
@@ -224,9 +193,6 @@ var Builder = (function () {
             return false;
         }
     };
-    /**
-     * Checks if compass exists and it is the correct version.
-     */
     Builder.prototype.checkCURLSanity = function (callback) {
         var me = this;
         console.log('-- Checking CURL');
@@ -239,9 +205,6 @@ var Builder = (function () {
             }
         });
     };
-    /**
-     * Checks if compass exists and it is the correct version.
-     */
     Builder.prototype.checkCompassSanity = function (callback) {
         var me = this;
         console.log('-- Checking Compass');
@@ -267,9 +230,6 @@ var Builder = (function () {
             }
         });
     };
-    /**
-     * Cleanup the build folder. (Delete and Recreate and empty build folder!)
-     */
     Builder.prototype.cleanBuild = function (callback) {
         var me = this;
         try {
@@ -283,4 +243,132 @@ var Builder = (function () {
     };
     return Builder;
 }());
-exports.Builder = Builder;
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var fs = require('fs');
+var fse = require('fs-extra');
+var del = require('del');
+var path = require('path');
+var childProcess = require('child_process');
+var uglify = require('uglify-js');
+var vercompare = require('version-comparison');
+var BlendBuilder = (function (_super) {
+    __extends(BlendBuilder, _super);
+    function BlendBuilder(rootFolder) {
+        _super.call(this, rootFolder);
+        var me = this;
+        me.copyrightKey = 'Copyright 2016 TrueSoftware B.V';
+        me.copyrightHeader = [
+            '/**',
+            ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
+            ' *',
+            ' * Licensed under the Apache License, Version 2.0 (the "License");',
+            ' * you may not use this file except in compliance with the License.',
+            ' * You may obtain a copy of the License at',
+            ' *',
+            ' *      http://www.apache.org/licenses/LICENSE-2.0',
+            ' *',
+            ' * Unless required by applicable law or agreed to in writing, software',
+            ' * distributed under the License is distributed on an "AS IS" BASIS,',
+            ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
+            ' * See the License for the specific language governing permissions and',
+            ' * limitations under the License.',
+            ' */'
+        ];
+    }
+    BlendBuilder.prototype.buildStyles = function (callback) {
+        var me = this;
+        console.log('-- Building Themes and Styles');
+        childProcess.exec('compass compile', { cwd: me.blendPath }, function (error, stdout, stderr) {
+            if (!error) {
+                callback.apply(me, [null]);
+            }
+            else {
+                callback.apply(me, [stdout.toString()]);
+            }
+        });
+    };
+    BlendBuilder.prototype.buildBlend = function (callback) {
+        var me = this;
+        console.log('-- Building Blend');
+        childProcess.exec('tsc', { cwd: me.blendPath }, function (error, stdout, stderr) {
+            if (!error) {
+                callback.apply(me, [null]);
+            }
+            else {
+                callback.apply(me, [stdout.toString()]);
+            }
+        });
+    };
+    BlendBuilder.prototype.getESPromiseLibrary = function (callback) {
+        var me = this, files = [
+            {
+                local: me.blendExteralPath + '/es6-promise/es6-promise.js',
+                remote: 'https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/lib/es6-promise.js'
+            },
+            {
+                local: me.blendExteralPath + '/es6-promise/es6-promise.d.ts',
+                remote: 'https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts'
+            }
+        ];
+        me.downloadFiles(files, callback);
+    };
+    BlendBuilder.prototype.prepareTests = function (callback) {
+        var me = this, testAppBlendFolder = me.fixPath(me.testPath + '/blend'), testRunnerBlend = me.fixPath(me.testPath + '/testrunner/blend');
+        console.log('-- Preparing the Test Application');
+        try {
+            me.reCreateFolder(testAppBlendFolder);
+            me.reCreateFolder(testRunnerBlend);
+            me.copyFile(me.buildPath + '/blend/blend.d.ts', testAppBlendFolder + '/blend.d.ts');
+            me.copyFile(me.buildPath + '/css', testRunnerBlend + '/css');
+            me.copyFile(me.buildPath + '/blend/blend.js', testRunnerBlend + '/blend.js');
+            callback.apply(me, [null]);
+        }
+        catch (e) {
+            callback.apply(me, [e]);
+        }
+    };
+    BlendBuilder.prototype.buildFramework = function () {
+        var me = this;
+        var done = function (errors) {
+            if (errors) {
+                console.log(errors);
+            }
+            else {
+                console.log('-- Done');
+            }
+        };
+        me.runSerial([
+            me.checkTypeScriptSanity,
+            me.checkCompassSanity,
+            me.checkCURLSanity,
+            me.cleanBuild,
+            me.buildStyles,
+            me.buildBlend,
+            me.getESPromiseLibrary,
+            me.prepareTests,
+        ], done);
+    };
+    BlendBuilder.prototype.run = function () {
+        console.log("MaterialBlend Framework Builder v1.0\n");
+        var me = this, buildFrameworkCommand = 'buildfx', copyrightHeaderCommand = 'copyright', argv = require('yargs')
+            .command(buildFrameworkCommand, false)
+            .command(copyrightHeaderCommand, false)
+            .demand(1)
+            .epilog('Copyright 2016 TrueSoftware B.V.')
+            .argv;
+        var command = argv._[0];
+        if (command === buildFrameworkCommand) {
+            me.buildFramework();
+        }
+        else if (command === copyrightHeaderCommand) {
+            me.copyrightFiles(me.blendPath);
+        }
+    };
+    return BlendBuilder;
+}(Builder));
+exports.BlendBuilder = BlendBuilder;

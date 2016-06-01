@@ -15,7 +15,7 @@ interface DownloadInterface {
     local: string;
 }
 
-export abstract class Builder {
+abstract class Builder {
 
     protected minCompassVersion: string;
     protected minTypeScriptVersion = '1.8.10';

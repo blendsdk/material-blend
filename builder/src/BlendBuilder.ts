@@ -2,7 +2,6 @@
 /// <reference path="../typings/node.d.ts" />
 /// <reference path="../typings/packages.d.ts"/>
 
-
 var fs = require('fs');
 var fse = require('fs-extra');
 var del = require('del');
@@ -11,9 +10,7 @@ var childProcess = require('child_process');
 var uglify = require('uglify-js');
 var vercompare = require('version-comparison');
 
-import { Builder } from './Builder';
-
-export class BlendCmd extends Builder {
+export class BlendBuilder extends Builder {
 
     public constructor(rootFolder: string) {
         super(rootFolder);
