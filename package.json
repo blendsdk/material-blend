@@ -1,30 +1,23 @@
 {
-  "name": "material-blend",
-  "version": "1.0.0",
-  "description": "Material Blend is a HTML5 Web Application Framework developed with TypeScript\r and it is based on Google's Material Design specification.",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node bin/build.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/blendsdk/material-blend.git"
-  },
-  "author": "",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/blendsdk/material-blend/issues"
-  },
-  "homepage": "https://github.com/blendsdk/material-blend#readme",
-  "dependencies": {
-    "del": "^2.2.0",
-    "fs-extra": "^0.30.0",
-    "uglify-js": "^2.6.2",
-    "version-comparison": "^1.0.2",
-    "yargs": "^4.7.1"
-  }
+    "name": "material-blend-sdk",
+    "private": false,
+    "version": "0.0.1",
+    "codename": "rebirth",
+    "devDependencies": {
+        "del": "^2.2.0",
+        "fs-extra": "^0.30.0",
+        "uglify-js": "^2.6.2",
+        "version-comparison": "^1.0.2",
+        "yargs": "^4.7.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/blendsdk/material-blend.git"
+    },
+    "author": "Gevik Babakhani (TrueSoftware B.V.)",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/blendsdk/material-blend/issues"
+    },
+    "homepage": "https://github.com/blendsdk/material-blend#readme"
 }

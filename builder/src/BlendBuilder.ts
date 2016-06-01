@@ -136,8 +136,8 @@ export class BlendBuilder extends Builder {
             buildFrameworkCommand = 'buildfx',
             copyrightHeaderCommand = 'copyright',
             argv = require('yargs')
-                .command(buildFrameworkCommand, false)
-                .command(copyrightHeaderCommand, false)
+                .command(buildFrameworkCommand, 'Build the Framework and the Tests')
+                .command(copyrightHeaderCommand, 'Add coptyright headers to files')
                 .demand(1)
                 .epilog('Copyright 2016 TrueSoftware B.V.')
                 .argv;
