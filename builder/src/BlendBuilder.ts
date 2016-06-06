@@ -1,38 +1,49 @@
-/// <reference path="./Builder.ts" />
-/// <reference path="../typings/node.d.ts" />
-/// <reference path="../typings/packages.d.ts"/>
 
-var fs = require('fs');
-var fse = require('fs-extra');
-var del = require('del');
-var path = require('path');
-var childProcess = require('child_process');
-var uglify = require('uglify-js');
-var vercompare = require('version-comparison');
+import fs = require('fs');
+import fse = require('fs-extra');
+import path = require('path');
+import childProcess = require('child_process');
+import uglify = require('uglify-js');
+import colors = require('colors');
+import * as UtilityModule from "./Utility";
 
-export class BlendBuilder extends Builder {
+export class BlendBuilder extends UtilityModule.Utility {
+
+    protected rootFolder: string;
+    protected distPath: string;
+    protected blendPath: string;
+    protected buildPath: string;
+    protected blendSourcePath: string;
+    protected blendExternalPath: string;
+    protected testPath: string;
 
     public constructor(rootFolder: string) {
-        super(rootFolder);
+        super();
         var me = this;
-        me.copyrightKey = 'Copyright 2016 TrueSoftware B.V';
-        me.copyrightHeader = [
-            '/**',
-            ' * Copyright 2016 TrueSoftware B.V. All Rights Reserved.',
-            ' *',
-            ' * Licensed under the Apache License, Version 2.0 (the "License");',
-            ' * you may not use this file except in compliance with the License.',
-            ' * You may obtain a copy of the License at',
-            ' *',
-            ' *      http://www.apache.org/licenses/LICENSE-2.0',
-            ' *',
-            ' * Unless required by applicable law or agreed to in writing, software',
-            ' * distributed under the License is distributed on an "AS IS" BASIS,',
-            ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
-            ' * See the License for the specific language governing permissions and',
-            ' * limitations under the License.',
-            ' */'
-        ];
+        me.rootFolder = fs.realpathSync(rootFolder);
+        me.buildPath = me.rootFolder + '/build';
+        me.blendPath = me.rootFolder + '/blend';
+        me.blendSourcePath = me.blendPath + '/src';
+        me.blendExternalPath = me.blendPath + '/3rdparty';
+        me.testPath = me.rootFolder + '/tests';
+        me.distPath = me.rootFolder + '/dist';
+    }
+
+
+
+    /**
+     * Cleanup the build folder. (Delete and Recreate and empty build folder!)
+     */
+    protected cleanBuild(callback: Function) {
+        var me = this;
+        try {
+            me.printLog('Cleaning build folder, ');
+            me.reCreateFolder(me.buildPath)
+            me.printLogLn(colors.green("DONE."));
+            callback.apply(me, [null]);
+        } catch (e) {
+            callback.apply(me, [e]);
+        }
     }
 
     /**
@@ -40,9 +51,10 @@ export class BlendBuilder extends Builder {
      */
     private buildStyles(callback: Function) {
         var me = this;
-        console.log('-- Building Themes and Styles');
-        childProcess.exec('compass compile', { cwd: me.blendPath }, function(error: string, stdout: any, stderr: any) {
+        me.printLog('Building Themes and Styles, ');
+        childProcess.exec('compass compile', { cwd: me.blendPath }, function(error: Error, stdout: any, stderr: any) {
             if (!error) {
+                me.printLogLn(colors.green("DONE."));
                 callback.apply(me, [null]);
             } else {
                 callback.apply(me, [stdout.toString()]);
@@ -55,41 +67,50 @@ export class BlendBuilder extends Builder {
      */
     private buildBlend(callback: Function) {
         var me = this;
-        console.log('-- Building Blend');
-        me.buildSources(me.blendPath, callback);
+        me.printLog('Building Blend Framework, ');
+        me.buildSources(me.blendPath, function(errors: string) {
+            if (errors === null) {
+                me.printLogLn(colors.green("DONE."));
+            }
+            callback.apply(me, [errors]);
+        });
     }
 
-
-    private getESPromiseLibrary(callback: Function) {
-        var me = this,
-            files = [
-                {
-                    local: me.blendExteralPath + '/es6-promise/es6-promise.js',
-                    remote: 'https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/lib/es6-promise.js'
-                },
-                {
-                    local: me.blendExteralPath + '/es6-promise/es6-promise.d.ts',
-                    remote: 'https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts'
-                }
-            ];
-        me.downloadFiles(files, callback);
-    }
+    // private getESPromiseLibrary(callback: Function) {
+    //     var me = this,
+    //         files = [
+    //             {
+    //                 local: me.blendExteralPath + '/es6-promise/es6-promise.js',
+    //                 remote: 'https://raw.githubusercontent.com/stefanpenner/es6-promise/master/dist/lib/es6-promise.js'
+    //             },
+    //             {
+    //                 local: me.blendExteralPath + '/es6-promise/es6-promise.d.ts',
+    //                 remote: 'https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts'
+    //             }
+    //         ];
+    //     me.downloadFiles(files, callback);
+    // }
 
     /**
      * Prepares the Tests application by deploying Blend
      */
     private prepareTests(callback: Function) {
         var me = this,
-            testAppBlendFolder = me.fixPath(me.testPath + '/blend'),
-            testRunnerBlend = me.fixPath(me.testPath + '/testrunner/blend');
-        console.log('-- Preparing the Test Application');
+            testAppBlendFolder = me.makePath(me.testPath + '/blend'),
+            testRunnerBlend = me.makePath(me.testPath + '/testrunner/blend');
+        me.printLog('Building Tests, ');
         try {
             me.reCreateFolder(testAppBlendFolder);
             me.reCreateFolder(testRunnerBlend);
             me.copyFile(me.buildPath + '/blend/blend.d.ts', testAppBlendFolder + '/blend.d.ts');
             me.copyFile(me.buildPath + '/css', testRunnerBlend + '/css');
             me.copyFile(me.buildPath + '/blend/blend.js', testRunnerBlend + '/blend.js');
-            me.buildSources(me.testPath, callback)
+            me.buildSources(me.testPath, function(errors: string) {
+                if (errors === null) {
+                    me.printLogLn(colors.green("DONE."));
+                }
+                callback.apply(me, [errors]);
+            })
         } catch (e) {
             callback.apply(me, [e]);
         }
@@ -98,14 +119,14 @@ export class BlendBuilder extends Builder {
     /**
      * Builds the framework and prepares files for distribution
      */
-    private buildFramework() {
+    private buildFramework(callback: Function = null) {
         var me = this;
 
-        var done = function(errors: string) {
+        callback = callback || function(errors: string) {
             if (errors) {
-                console.log(errors)
+                me.printLogLn(colors.red('ERROR: ' + errors));
             } else {
-                console.log('-- Done');
+                me.printLogLn(colors.green('ALL DONE.'));
             }
         }
 
@@ -116,24 +137,37 @@ export class BlendBuilder extends Builder {
             , me.cleanBuild
             , me.buildStyles
             , me.buildBlend
-            , me.getESPromiseLibrary
+            //, me.getESPromiseLibrary
             , me.prepareTests,
-        ], done);
+        ], callback);
     }
 
     /**
      * Creates a new distribution
      */
     private createDist() {
-        console.log('-- Creating new dist');
-        console.log('-- Done');
+        var me = this;
+        me.printLogLn('Creating new dist');
+        me.reCreateFolder(me.distPath);
+        me.buildFramework(function() {
+            console.log('-- Done');
+        });
+    }
+
+    public xrun() {
+        var me = this;
+        me.checkTypeScriptSanity(function() {
+            console.log(arguments);
+            console.log(me.minTypeScriptVersion);
+        });
     }
 
     /**
-     * Build entry point
+     * Entry point
      */
     public run() {
-        console.log("MaterialBlend Framework Builder v1.0\n");
+        var me = this;
+        me.printLogLn("\nMaterialBlend Framework Builder v" + me.utilityPackage.version + "\n");
         var me = this,
             buildFrameworkCommand = 'buildfx',
             copyrightHeaderCommand = 'copyright',
@@ -141,7 +175,7 @@ export class BlendBuilder extends Builder {
             argv = require('yargs')
                 .command(buildFrameworkCommand, 'Build the Framework and the Tests')
                 .command(copyrightHeaderCommand, 'Add coptyright headers to files')
-                .command(makedistCommand,'Create a distribution')
+                .command(makedistCommand, 'Create a distribution')
                 .demand(1)
                 .epilog('Copyright 2016 TrueSoftware B.V.')
                 .argv;
@@ -150,9 +184,11 @@ export class BlendBuilder extends Builder {
         if (command === buildFrameworkCommand) {
             me.buildFramework();
         } else if (command === copyrightHeaderCommand) {
-            me.copyrightFiles(me.blendPath);
-        } else if(command == makedistCommand) {
+            //me.copyrightFiles(me.blendPath);
+        } else if (command == makedistCommand) {
             me.createDist();
         }
+
     }
+
 }
