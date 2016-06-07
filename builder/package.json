@@ -1,0 +1,24 @@
+{
+  "name": "builder",
+  "version": "0.0.1",
+  "description": "MaterialBlend Framework Builder",
+  "repository": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "colors": "^1.1.2",
+    "compare-version": "^0.1.2",
+    "del": "^2.2.0",
+    "fs-extra": "^0.30.0",
+    "mustache": "^2.2.1",
+    "uglify-js": "^2.6.2",
+    "version-comparison": "^1.0.2",
+    "yargs": "^4.7.1",
+    "uglifycss": "0.0.20"
+  },
+  "keywords": [],
+  "author": "gevik Babakhani (TrueSoftware B.V.)",
+  "license": "Apache-2.0"
+}

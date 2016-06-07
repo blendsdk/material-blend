@@ -30,5 +30,4 @@ namespace Blend.ajax {
             me.xhr.send(null);
         }
     }
-
 }
