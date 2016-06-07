@@ -1,0 +1,74 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Mixin for creating typogrphy display rules
+ */
+@mixin typo-style($font-size, $font-weight, $letter-spacing, $line-height:false, $contrast:false) {
+    font-size: $font-size;
+    font-weight: $font-weight;
+    letter-spacing: $letter-spacing;
+    @if $line-height {
+        line-height: $line-height;
+    }
+    @if $contrast {
+        opacity: 0.54
+    }
+}
+
+@mixin typography() {
+    // Reference: https://www.google.com/design/spec/style/typo-style.html
+
+    .display4 {
+        @include typo-style($m-display-4-font-size, 300, -0.012em, $m-display-4-font-size);
+    }
+
+    .body2 {
+        @include typo-style($m-body-font-size, 500, -0.010em,rem(2.4));
+    }
+
+    h1 {
+        @include typo-style($m-display-3-font-size, 400, -0.005em, $m-display-3-font-size, 0.54);
+    }
+
+    h2 {
+        @include typo-style($m-display-2-font-size, 400, -0.005em, rem(6.4), 0.54);
+    }
+
+    h3 {
+        @include typo-style($m-display-1-font-size, 400, -0.005em, rem(4), 0.54);
+    }
+
+    h4 {
+        @include typo-style($m-headline-font-size, 400, -0.005em, rem(3.2));
+    }
+
+    h5 {
+        @include typo-style($m-title-font-size, 500, -0.005em);
+    }
+
+    h6 {
+        @include typo-style($m-subhead-font-size, 400, -0.010em,rem(2.4));
+    }
+
+    p {
+        @include typo-style($m-body-font-size, 400, -0.010em,rem(2));
+    }
+
+    address, ol, ul {
+        @include typo-style($m-caption-font-size, 400, -0.020em);
+    }
+}

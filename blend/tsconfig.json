@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "noImplicitAny": true,
+        "declaration": true,
+        "outFile": "../build/blend/blend.js"
+    },
+    "exclude": [
+        "node_modules",
+        "tests",
+        "dist"
+    ]
+}

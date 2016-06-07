@@ -1,0 +1,5 @@
+build
+dist
+typings
+*.tsz
+.typingsrc

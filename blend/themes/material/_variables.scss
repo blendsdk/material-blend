@@ -1,0 +1,98 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Typography
+$m-font-family: Roboto, 'Helvetica Neue', sans-serif !default;
+
+$m-display-4-font-size: rem(11.20) !default;
+$m-display-3-font-size: rem(5.600) !default;
+$m-display-2-font-size: rem(4.500) !default;
+$m-display-1-font-size: rem(3.400) !default;
+
+$m-headline-font-size: rem(2.400) !default;
+$m-title-font-size: rem(2.000) !default;
+$m-subhead-font-size: rem(1.600) !default;
+
+$m-body-font-size: rem(1.400) !default;
+$m-caption-font-size:   rem(1.300) !default;
+
+// Breakpoint and Grid Layout
+$layout-large-columns: 12 !default;
+$layout-large-gutter: 16px !default;
+$layout-large-margin: 16px !default;
+$layout-large-width: 840px !default;
+
+$layout-medium-columns: 8 !default;
+$layout-medium-gutter: $layout-large-gutter !default;
+$layout-medium-margin: $layout-large-margin !default;
+$layout-medium-width: 480px !default;
+
+$layout-small-columns: 4 !default;
+$layout-small-gutter: $layout-large-gutter !default;
+$layout-small-margin: $layout-large-margin !default;
+
+$layout-cell-default-columns: $layout-small-columns !default;
+$layout-max-columns: $layout-large-columns !default;
+
+$flat-buttons: ('flat','round-flat');
+$raised-buttons: ('raised','round-raised');
+$fab-buttons: ('fab', 'fab-mini');
+$all-raised-buttons: join($fab-buttons,$raised-buttons);
+
+// Button structure
+$default-button-min-width: rem(8.800) !default;
+$default-button-height: rem(3.60);
+$default-button-padding: 0 rem(1.600) !default;
+$default-button-icon-only-padding: rem(0.600) !default;
+$default-button-margin: rem(0.600) rem(0.800) !default;
+$default-button-border-radius: rem(0.2) !default;
+// FAB
+$default-button-fab-border-radius: 50% !default;
+$default-button-fab-size: rem(5.600) !default;
+$default-button-fab-icon-size: rem(3.600) !default;
+// FAB Mini
+$default-button-fab-mini-size: rem(4.0) !default;
+$default-button-fab-mini-icon-size: rem(2.400) !default;
+// FAB Position edge
+$default-fab-position-edge: rem(2.400);
+$default-fab-position-small: rem(1.600);
+
+// Button styles based on default theme
+
+// When a button is disabled
+$default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);
+$default-button-disbaled-text-color: rgba($color-blackandwhite-cblack,0.26);
+
+
+// Flat button
+$default-flat-button-text-color: rgba($color-grey-c900,0.95);
+$default-flat-button-icon-color: rgba($color-grey-c900,0.95);
+$default-flat-button-hover-background-color: rgba($color-grey-c500,0.2);
+$default-flat-button-focus-background-color: rgba($color-grey-c500,0.4);
+
+// Raised
+$default-raised-button-text-color: $default-flat-button-text-color;
+$default-raised-button-icon-color: $default-flat-button-icon-color;
+$default-raised-button-background-color: rgba($color-grey-c500,0.15);
+$default-raised-button-hover-background-color: rgba($color-grey-c500,0.3);
+$default-raised-button-focus-background-color: $default-flat-button-focus-background-color;
+
+// Fab
+$default-fab-button-text-color: $default-flat-button-text-color;
+$default-fab-button-icon-color: $default-flat-button-icon-color;
+$default-fab-button-background-color: rgba($color-grey-c500,0.15);
+$default-fab-button-hover-background-color: rgba($color-grey-c500,0.3);
+$default-fab-button-focus-background-color: $default-flat-button-focus-background-color;

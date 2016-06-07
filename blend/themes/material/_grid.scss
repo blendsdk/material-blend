@@ -1,0 +1,134 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@mixin init-grid($max-columns) {
+
+    .grid {
+        display: flex;
+        flex-flow: row wrap;
+        margin: 0 auto 0 auto;
+        align-items: stretch;
+
+        &.grid-no-spacing {
+            padding: 0;
+
+            & > .cell {
+                margin: 0;
+            }
+        }
+    }
+
+    .cell {
+        box-sizing: border-box;
+    }
+
+    .cell-top {
+        align-self: flex-start;
+    }
+
+    .cell-middle {
+        align-self: center;
+    }
+
+    .cell-bottom {
+        align-self: flex-end;
+    }
+
+    .cell-stretch {
+        align-self: stretch;
+    }
+
+    // Define order override classes.
+    @for $i from 1 through $max-columns {
+        .mdl-cell-order-#{$i} {
+            order: $i;
+        }
+    }
+}
+
+// Mixins for width calculation.
+@mixin partial-size($size, $columns, $gutter:0) {
+
+    @if $gutter != 0  {
+        width: calc(#{(($size / $columns) * 100)+"%"} - #{$gutter});
+    } @else {
+        width: #{(($size / $columns) * 100)+"%"}
+    }
+}
+
+@mixin full-size($gutter) {
+    @include partial-size(1, 1, $gutter);
+}
+
+@mixin offset-size($size, $columns, $gutter:0) {
+
+    @if $gutter != 0  {
+        margin-left: calc(#{(($size / $columns) * 100)+"%"} + #{$gutter / 2});
+    } @else {
+        margin-left: #{(($size / $columns) * 100)+"%"};
+    }
+
+}
+
+@mixin create-columns($name,$columns,$gutter,$max-columns) {
+
+    & > .cell {
+        margin: $gutter / 2;
+        @include partial-size($columns, $columns,$gutter);
+    }
+
+    & >.cell-hide-#{$name} {
+        display: none !important;
+    }
+
+    // Define partial sizes for columnNumber < totalColumns.
+    @for $i from 1 through ($columns - 1) {
+        & > .cell-#{$i},
+        & > .cell-#{$i}-#{$name} {
+            @include partial-size($i, $columns, $gutter);
+        }
+    }
+
+    // Define 100% for everything else.
+    @for $i from $columns through $max-columns {
+        .cell-#{$i},
+        .cell-#{$i}-#{$name} {
+            @include full-size($gutter);
+        }
+    }
+
+    // Define valid offsets.
+    @for $i from 1 through ($columns - 1) {
+        .cell-#{$i}-offset,
+        .cell-#{$i}-offset-#{$name} {
+            @include offset-size($i, $columns, $gutter);
+        }
+    }
+
+}
+
+@mixin create-grid($name,$columns,$gutter,$margin,$max-columns) {
+
+    .grid {
+        padding: $margin - ($gutter / 2);
+        @include create-columns($name,$columns,$gutter,$max-columns);
+    }
+
+    .grid-no-spacing {
+        @include create-columns($name,$columns,0,$max-columns);
+    }
+
+}
