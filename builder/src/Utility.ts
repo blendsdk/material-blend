@@ -20,7 +20,8 @@ import fs = require('fs');
 import fse = require('fs-extra');
 import path = require('path');
 import childProcess = require('child_process');
-import uglify = require('uglify-js');
+import uglifyJS = require('uglify-js');
+import uglifyCSS = require('uglifycss');
 import colors = require('colors');
 import compareVersion = require('compare-version');
 
@@ -327,4 +328,29 @@ export abstract class Utility {
     protected print(message: string) {
         process.stdout.write(message);
     }
+
+    /**
+     * Minify a JS file
+     */
+    protected minifyJSFileTo(source: string, dest: string, options: any = {}) {
+        var me = this,
+            result = uglifyJS.minify(source, options);
+        fs.writeFileSync(dest, result.code);
+    }
+
+    protected minifyCSSFileTo(source: string, dest: string, options: any = {}) {
+        var me = this,
+            result = uglifyCSS.processFiles([source], options);
+        fs.writeFileSync(dest, result);
+
+    }
+
+    protected findCSSFiles(folder: string): Array<String> {
+        var me = this, extname: string;
+        return me.findFiles(folder, function (file: string) {
+            extname = path.extname(file);
+            return extname == '.css';
+        });
+    }
+
 }

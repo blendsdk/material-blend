@@ -15,9 +15,10 @@
     "mustache": "^2.2.1",
     "uglify-js": "^2.6.2",
     "version-comparison": "^1.0.2",
-    "yargs": "^4.7.1"
+    "yargs": "^4.7.1",
+    "uglifycss": "0.0.20"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "gevik Babakhani (TrueSoftware B.V.)",
+  "license": "Apache-2.0",
 }
