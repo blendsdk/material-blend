@@ -9,6 +9,7 @@ The roadmap contains implementation plans, and it is a work-in-progress document
 
 ### 0.2 <<< WE ARE HERE
 
+- Have TSList check the sources on compile time
 - Material Round button, both flat and raised
 - Material FAB button
 - Material Raised button
