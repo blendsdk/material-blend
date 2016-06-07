@@ -52,7 +52,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private buildStyles(callback: Function) {
         var me = this;
         me.printLog('Building Themes and Styles, ');
-        childProcess.exec('compass compile', { cwd: me.blendPath }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec('compass compile', { cwd: me.blendPath }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 me.printLogLn(colors.green("DONE."));
                 callback.apply(me, [null]);
@@ -68,7 +68,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private buildBlend(callback: Function) {
         var me = this;
         me.printLog('Building Blend Framework, ');
-        me.buildSources(me.blendPath, function(errors: string) {
+        me.buildSources(me.blendPath, function (errors: string) {
             if (errors === null) {
                 me.printLogLn(colors.green("DONE."));
             }
@@ -105,7 +105,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyFile(me.buildPath + '/blend/blend.d.ts', testAppBlendFolder + '/blend.d.ts');
             me.copyFile(me.buildPath + '/css', testRunnerBlend + '/css');
             me.copyFile(me.buildPath + '/blend/blend.js', testRunnerBlend + '/blend.js');
-            me.buildSources(me.testPath, function(errors: string) {
+            me.buildSources(me.testPath, function (errors: string) {
                 if (errors === null) {
                     me.printLogLn(colors.green("DONE."));
                 }
@@ -122,7 +122,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private buildFramework(callback: Function = null) {
         var me = this;
 
-        callback = callback || function(errors: string) {
+        callback = callback || function (errors: string) {
             if (errors) {
                 me.printLogLn(colors.red('ERROR: ' + errors));
             } else {
@@ -149,14 +149,14 @@ export class BlendBuilder extends UtilityModule.Utility {
         var me = this;
         me.printLogLn('Creating new dist');
         me.reCreateFolder(me.distPath);
-        me.buildFramework(function() {
+        me.buildFramework(function () {
             console.log('-- Done');
         });
     }
 
     public xrun() {
         var me = this;
-        me.checkTypeScriptSanity(function() {
+        me.checkTypeScriptSanity(function () {
             console.log(arguments);
             console.log(me.minTypeScriptVersion);
         });
@@ -167,7 +167,7 @@ export class BlendBuilder extends UtilityModule.Utility {
      */
     public run() {
         var me = this;
-        me.printLogLn("\nMaterialBlend Framework Builder v" + me.utilityPackage.version + "\n");
+        me.printLogLn(`\n${me.utilityPackage.description} v${me.utilityPackage.version}\n`);
         var me = this,
             buildFrameworkCommand = 'buildfx',
             copyrightHeaderCommand = 'copyright',

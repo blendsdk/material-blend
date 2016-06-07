@@ -1,7 +1,8 @@
 {
   "name": "builder",
   "version": "0.0.1",
-  "description": "",
+  "description": "MaterialBlend Framework Builder",
+  "repository": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
