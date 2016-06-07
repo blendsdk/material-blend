@@ -2,10 +2,13 @@
 
 ### What is Material Blend
 Material Blend is a HTML5 Web Application Framework developed with TypeScript
-and it is based on Google's Material Design specification.
+and it is based on Material Design specification.
 
 Material Blend is meant to be a framework for creating line-of-business web
 applications. It is under heavy development and it is not ready to be used yet.
+
+### Roadmap
+See the [Roadmap](https://github.com/blendsdk/material-blend/blob/master/ROADMAP.md) for detailed information.
 
 ### Follow us
 If you would like to follow the development progress, please "watch" this
