@@ -8,7 +8,7 @@ Material Blend is meant to be a framework for creating line-of-business web
 applications. It is under heavy development and it is not ready to be used yet.
 
 ### Roadmap
-See the [Roadmap](https://github.com/blendsdk/material-blend/blob/master/ROADMAP.md) for detailed information.
+See the [Roadmap](https://github.com/blendsdk/material-blend/blob/devel/ROADMAP.md) for detailed information.
 
 ### Follow us
 If you would like to follow the development progress, please "watch" this
