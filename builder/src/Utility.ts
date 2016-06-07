@@ -282,17 +282,22 @@ export abstract class Utility {
         });
     }
 
+    protected printDone() {
+        var me = this;
+        me.println(colors.green("DONE."));
+    }
+
     /**
      * Writes message to screen with newline
      */
-    protected printLogLn(message: string) {
+    protected println(message: string) {
         console.log(message);
     }
 
     /**
      * Writes a message to screen without newline
      */
-    protected printLog(message: string) {
+    protected print(message: string) {
         process.stdout.write(message);
     }
 }

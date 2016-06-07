@@ -29,17 +29,15 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.distPath = me.rootFolder + '/dist';
     }
 
-
-
     /**
      * Cleanup the build folder. (Delete and Recreate and empty build folder!)
      */
     protected cleanBuild(callback: Function) {
         var me = this;
         try {
-            me.printLog('Cleaning build folder, ');
+            me.print('Cleaning build folder, ');
             me.reCreateFolder(me.buildPath)
-            me.printLogLn(colors.green("DONE."));
+            me.printDone()
             callback.apply(me, [null]);
         } catch (e) {
             callback.apply(me, [e]);
@@ -51,10 +49,10 @@ export class BlendBuilder extends UtilityModule.Utility {
      */
     private buildStyles(callback: Function) {
         var me = this;
-        me.printLog('Building Themes and Styles, ');
+        me.print('Building Themes and Styles, ');
         childProcess.exec('compass compile', { cwd: me.blendPath }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
-                me.printLogLn(colors.green("DONE."));
+                me.printDone()
                 callback.apply(me, [null]);
             } else {
                 callback.apply(me, [stdout.toString()]);
@@ -67,10 +65,10 @@ export class BlendBuilder extends UtilityModule.Utility {
      */
     private buildBlend(callback: Function) {
         var me = this;
-        me.printLog('Building Blend Framework, ');
+        me.print('Building Blend Framework, ');
         me.buildSources(me.blendPath, function (errors: string) {
             if (errors === null) {
-                me.printLogLn(colors.green("DONE."));
+                me.printDone()
             }
             callback.apply(me, [errors]);
         });
@@ -98,7 +96,7 @@ export class BlendBuilder extends UtilityModule.Utility {
         var me = this,
             testAppBlendFolder = me.makePath(me.testPath + '/blend'),
             testRunnerBlend = me.makePath(me.testPath + '/testrunner/blend');
-        me.printLog('Building Tests, ');
+        me.print('Building Tests, ');
         try {
             me.reCreateFolder(testAppBlendFolder);
             me.reCreateFolder(testRunnerBlend);
@@ -107,7 +105,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyFile(me.buildPath + '/blend/blend.js', testRunnerBlend + '/blend.js');
             me.buildSources(me.testPath, function (errors: string) {
                 if (errors === null) {
-                    me.printLogLn(colors.green("DONE."));
+                    me.printDone()
                 }
                 callback.apply(me, [errors]);
             })
@@ -117,6 +115,33 @@ export class BlendBuilder extends UtilityModule.Utility {
     }
 
     /**
+     * Places copyright headers in source files
+     */
+    protected copyrightFiles = function (folder: string, extensions: Array<string> = null) {
+        me.print('Looking for files to copyright, ');
+        var me = this,
+            count = 0,
+            header = me.copyrightHeader.join("\n");
+        extensions = extensions || ['.ts', 'scss'];
+        var files: Array<String> = me.readFiles(folder, function (fname: string) {
+            var ext = path.extname(fname);
+            return extensions.indexOf(ext) !== -1
+                && fname.indexOf(path.sep + 'typings' + path.sep) === -1;
+        });
+        files.forEach(function (fname: string) {
+            var contents = fs.readFileSync(fname).toString();
+            if (contents.indexOf(me.copyrightKey) === -1) {
+                contents = header + "\n\n" + contents;
+                fs.writeFileSync(fname, contents);
+                me.print('.');
+            }
+        });
+        me.printDone();
+    }
+
+
+
+    /**
      * Builds the framework and prepares files for distribution
      */
     private buildFramework(callback: Function = null) {
@@ -124,9 +149,9 @@ export class BlendBuilder extends UtilityModule.Utility {
 
         callback = callback || function (errors: string) {
             if (errors) {
-                me.printLogLn(colors.red('ERROR: ' + errors));
+                me.println(colors.red('ERROR: ' + errors));
             } else {
-                me.printLogLn(colors.green('ALL DONE.'));
+                me.println(colors.green('ALL DONE.'));
             }
         }
 
@@ -147,7 +172,7 @@ export class BlendBuilder extends UtilityModule.Utility {
      */
     private createDist() {
         var me = this;
-        me.printLogLn('Creating new dist');
+        me.println('Creating new dist');
         me.reCreateFolder(me.distPath);
         me.buildFramework(function () {
             console.log('-- Done');
@@ -167,7 +192,7 @@ export class BlendBuilder extends UtilityModule.Utility {
      */
     public run() {
         var me = this;
-        me.printLogLn(`\n${me.utilityPackage.description} v${me.utilityPackage.version}\n`);
+        me.println(`\n${me.utilityPackage.description} v${me.utilityPackage.version}\n`);
         var me = this,
             buildFrameworkCommand = 'buildfx',
             copyrightHeaderCommand = 'copyright',
@@ -184,7 +209,7 @@ export class BlendBuilder extends UtilityModule.Utility {
         if (command === buildFrameworkCommand) {
             me.buildFramework();
         } else if (command === copyrightHeaderCommand) {
-            //me.copyrightFiles(me.blendPath);
+            me.copyrightFiles(me.blendPath);
         } else if (command == makedistCommand) {
             me.createDist();
         }
