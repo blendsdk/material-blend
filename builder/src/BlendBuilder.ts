@@ -158,8 +158,6 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.printDone();
     }
 
-
-
     /**
      * Builds the framework and prepares files for distribution
      */
@@ -181,29 +179,96 @@ export class BlendBuilder extends UtilityModule.Utility {
             , me.cleanBuild
             , me.buildStyles
             , me.buildBlend
-            //, me.getESPromiseLibrary
             , me.prepareTests,
         ], callback);
+    }
+
+    /**
+     * Remove all copyright headers and inters just one
+     */
+    private cleanAndAddCopyright(file: string) {
+        var me = this,
+            header = fs.readFileSync(me.makePath(__dirname + '/../copyright.txt')).toString(),
+            contents = fs.readFileSync(file).toString();
+        contents = contents.split(header).join("\n");
+        fs.writeFileSync(file, header + "\n" + contents);
+    }
+
+    /**
+     * Creates a new distribution (internal)
+     */
+    private createDistInternal(callback: Function) {
+        var me = this,
+            typingsFolder = me.makePath(me.distPath + '/typings'),
+            webFolder = me.makePath(me.distPath + '/web')
+        try {
+
+            me.println('Creating new dist');
+
+            me.reCreateFolder(me.distPath);
+            fs.mkdirSync(typingsFolder);
+            fs.mkdirSync(webFolder);
+
+            me.print('Processing typings, ');
+            var dtFile = me.makePath(typingsFolder + '/blend.d.ts');
+            me.copyFile(me.makePath(me.buildPath + '/blend/blend.d.ts'), dtFile);
+            me.cleanAndAddCopyright(dtFile);
+            me.printDone();
+
+            var webFolder = me.makePath(me.distPath + '/web');
+            var jsFolder = me.makePath((webFolder + '/js'));
+            var cssFoder = me.makePath(webFolder + '/css');
+
+            me.print('Creating a debug version, ');
+            var debugJSFile = me.makePath(jsFolder + '/blend-debug.js')
+            me.copyFile(me.makePath(me.buildPath + '/blend/blend.js'), debugJSFile);
+            fse.copySync(me.makePath(me.buildPath + '/css'), cssFoder);
+            me.findCSSFiles(cssFoder).forEach(function (file: string) {
+                var renamedName = file.replace('.css', '-debug.css');
+                fse.renameSync(file, renamedName);
+                me.cleanAndAddCopyright(renamedName)
+            });
+            me.printDone();
+
+            me.print('Creating a release version, ');
+            var releaseFile = me.makePath(jsFolder + '/blend.min.js');
+            me.minifyJSFileTo(debugJSFile, releaseFile, {
+                mangle: false,
+                compress: true
+            });
+            me.cleanAndAddCopyright(releaseFile);
+
+            me.findCSSFiles(cssFoder).forEach(function (file: string) {
+                var minCssFileName = file.replace('-debug.css', '.min.css');
+                me.minifyCSSFileTo(file, minCssFileName, {
+                    maxLineLen: 500
+                });
+                me.cleanAndAddCopyright(minCssFileName);
+            });
+            me.printDone();
+            callback.apply(me, [null]);
+        } catch (e) {
+            callback.apply(me, [e]);
+        }
+
     }
 
     /**
      * Creates a new distribution
      */
     private createDist() {
-        var me = this;
-        me.println('Creating new dist');
-        me.reCreateFolder(me.distPath);
-        me.buildFramework(function () {
-            console.log('-- Done');
-        });
-    }
-
-    public xrun() {
-        var me = this;
-        me.checkTypeScriptSanity(function () {
-            console.log(arguments);
-            console.log(me.minTypeScriptVersion);
-        });
+        var me = this,
+            callback = function (errors: string) {
+                if (errors) {
+                    me.println(colors.red('ERROR: ' + errors));
+                } else {
+                    me.printAllDone();
+                }
+            }
+        me.runSerial([
+            me.buildFramework,
+            me.createDistInternal
+        ], callback);
     }
 
     /**
