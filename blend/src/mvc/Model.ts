@@ -24,7 +24,7 @@ namespace Blend.mvc {
      */
     export class Model extends Blend.Component {
 
-        protected data: DictionaryInterface
+        protected data: DictionaryInterface;
 
         public constructor(config: DictionaryInterface = {}) {
             super(config);
@@ -40,7 +40,7 @@ namespace Blend.mvc {
             var me = this,
                 sname: string;
             Blend.forEach(data, function(value: string, name: any) {
-                sname = 'set' + name.ucfirst();
+                sname = "set" + name.ucfirst();
                 if (me.hasFunction(sname)) {
                     me.applyFunction(sname, [value]);
                 }
@@ -62,18 +62,18 @@ namespace Blend.mvc {
             var me = this,
                 sname: string, gname: string;
             Blend.forEach(me.data, function(value: any, name: string) {
-                gname = 'get' + name.ucfirst(),
-                    sname = 'set' + name.ucfirst();
+                gname = "get" + name.ucfirst(),
+                    sname = "set" + name.ucfirst();
                 if (!me.hasFunction(gname)) {
                     (<any>me)[gname] = function() {
                         return me.data[name];
-                    }
+                    };
                 }
                 if (!me.hasFunction(sname)) {
                     (<any>me)[sname] = function(data: any) {
                         me.data[name] = data;
                         return me;
-                    }
+                    };
                 }
 
             });

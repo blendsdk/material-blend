@@ -21,9 +21,9 @@
 namespace Blend {
 
     export class eMediaQuery {
-        static LARGE: string = 'L'
-        static MEDIUM: string = 'M'
-        static SMALL: string = 'S'
+        static LARGE: string = "L";
+        static MEDIUM: string = "M";
+        static SMALL: string = "S";
     }
 
     /**
@@ -45,7 +45,7 @@ namespace Blend {
     export var DEBUG: boolean = false;
     var ID = 1000;
 
-    export var COMMON_MEDIA_QUERIES: DictionaryInterface = {}
+    export var COMMON_MEDIA_QUERIES: DictionaryInterface = {};
 
     /**
      * IMPORTANT: For the media queries to work properly, we need to define them from
@@ -53,9 +53,9 @@ namespace Blend {
      * trigger the responsiveChange event and other matching mediea queries will be
      * ignored!
      */
-    COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = '(min-width : 840px)';
-    COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = '(min-width: 480px) and (max-width: 839px)';
-    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = '(max-width : 479px)';
+    COMMON_MEDIA_QUERIES[eMediaQuery.LARGE] = "(min-width : 840px)";
+    COMMON_MEDIA_QUERIES[eMediaQuery.MEDIUM] = "(min-width: 480px) and (max-width: 839px)";
+    COMMON_MEDIA_QUERIES[eMediaQuery.SMALL] = "(max-width : 479px)";
 
 
     /**
@@ -63,9 +63,9 @@ namespace Blend {
      * whn the new function is called.
      */
     export function bind(scope: any, fn: Function) {
-        return function() {
+        return function () {
             fn.apply(scope, arguments);
-        }
+        };
     }
 
     /**
@@ -90,14 +90,14 @@ namespace Blend {
      * Checks if the given value is a function
      */
     export function isFunction(value: any): boolean {
-        return (typeof value === 'function');
+        return (typeof value === "function");
     }
 
     /**
      * Checks if the given value is a string
      */
     export function isString(value: any): boolean {
-        return (typeof value === 'string');
+        return (typeof value === "string");
     }
 
     /**
@@ -111,7 +111,7 @@ namespace Blend {
       * Checks if the given value is an array
       */
     export function isArray(value: any) {
-        return Object.prototype.toString.apply(value) === '[object Array]';
+        return Object.prototype.toString.apply(value) === "[object Array]";
     }
 
     /**
@@ -150,9 +150,9 @@ namespace Blend {
     export function apply(target: any, source: any, overwrite: boolean = false, mergeArrays: boolean = false): any {
         var key: any,
             targetKeys = Object.keys(target || {}),
-            targetHasKey = function(key: string): boolean {
-                return targetKeys.indexOf(key) !== -1
-            }
+            targetHasKey = function (key: string): boolean {
+                return targetKeys.indexOf(key) !== -1;
+            };
         overwrite = overwrite || false;
         mergeArrays = mergeArrays || false;
 
@@ -194,12 +194,12 @@ namespace Blend {
             return false;
         }
 
-        var hc = '[object HTMLCollection]';
-        if (obj.toString() === hc && clazz === 'HTMLCollection') {
+        var hc = "[object HTMLCollection]";
+        if (obj.toString() === hc && clazz === "HTMLCollection") {
             return true;
         } else {
             if (Blend.isString(clazz)) {
-                var fn = new Function('', ' try { return ' + clazz + ' } catch(e) { return null };');
+                var fn = new Function("", " try { return " + clazz + " } catch(e) { return null };");
                 clazz = fn();
             }
             try {
@@ -219,8 +219,8 @@ namespace Blend {
      * }
      */
     export function forEach(obj: any, callback: Function, scope?: any) {
-        if (typeof HTMLCollection === 'undefined') {
-            var HTMLCollection = function() {
+        if (typeof HTMLCollection === "undefined") {
+            var HTMLCollection = function () {
                 //
             };
         }
@@ -235,11 +235,11 @@ namespace Blend {
                         break;
                     }
                 }
-            } else if (Blend.isInstanceOf(obj, 'HTMLCollection')) {
+            } else if (Blend.isInstanceOf(obj, "HTMLCollection")) {
                 var length: number = obj.length, key: any, el: HTMLElement;
                 for (key = 0; key !== length; key++) {
                     el = obj.item(key);
-                    if (key !== 'length') {
+                    if (key !== "length") {
                         if (callback.call(scope, el, parseInt(key), obj) === false) {
                             break;
                         }
@@ -261,7 +261,7 @@ namespace Blend {
      *  Create a new Blend.Component object
      */
     export function createComponent<T extends Blend.Component>(clazz: ComponentTypes, config: any = null): T {
-        if (typeof (clazz) === 'string') {
+        if (typeof (clazz) === "string") {
             if (Blend.registry[(<string>clazz)]) {
                 return Blend.createComponent<T>(Blend.registry[(<string>clazz)], config);
             } else {
@@ -269,7 +269,7 @@ namespace Blend {
             }
         } else if (Blend.isClass(clazz)) {
             return <T>new (<ComponentClass>clazz)(config || {});
-        } else if (clazz !== null && clazz !== undefined && typeof (clazz) === 'object' && (<ComponentConfig>clazz).ctype) {
+        } else if (clazz !== null && clazz !== undefined && typeof (clazz) === "object" && (<ComponentConfig>clazz).ctype) {
             var ctype = (<ComponentConfig>clazz).ctype;
             delete ((<ComponentConfig>clazz).ctype);
             return Blend.createComponent<T>(ctype, Blend.apply(clazz, config));
@@ -279,7 +279,7 @@ namespace Blend {
     }
 
     export function isClass(clazz: any) {
-        return typeof (clazz) === 'function' && !!Object.keys((<any>clazz).prototype).length === true;
+        return typeof (clazz) === "function" && !!Object.keys((<any>clazz).prototype).length === true;
     }
 
     /**

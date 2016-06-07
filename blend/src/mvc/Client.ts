@@ -45,7 +45,7 @@ namespace Blend.mvc {
                     if (controller.delegate) {
                         controller.delegate(eventName, scope, args);
                     } else {
-                        //function controller
+                        // function controller
                         (<any>controller).apply(scope, [scope, eventName].concat(args));
                     }
                 });

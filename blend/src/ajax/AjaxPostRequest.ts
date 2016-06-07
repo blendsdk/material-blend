@@ -31,9 +31,9 @@ namespace Blend.ajax {
         protected doSendRequest(data: DictionaryInterface = {}) {
             var me = this;
             me.readyToSend = true;
-            me.boundary = '!!@@##' + me.callID + '##@@!!';
+            me.boundary = "!!@@##" + me.callID + "##@@!!";
             me.dataItemHeader = `--${me.boundary}\r\nContent-Disposition: form-data;`;
-            me.xhr.open('POST', me.createURI(), true);
+            me.xhr.open("POST", me.createURI(), true);
             me.xhr.setRequestHeader("Content-Type", "multipart\/form-data; boundary=" + me.boundary);
             me.boundaryEncodeData(data, function(encodedData: string) {
                 me.xhr.setRequestHeader("Content-Length", encodedData.length.toString());
@@ -47,7 +47,7 @@ namespace Blend.ajax {
         protected boundaryEncodeData(data: DictionaryInterface, callback: Function) {
             var me = this,
                 pendingConverts: number = 0,
-                payload: Array<string> = []
+                payload: Array<string> = [];
             Blend.forEach(data, function(value: any, key: string) {
                 if (Blend.isInstanceOf(value, FileList)) {
                     pendingConverts += me.encodeFileList(<FileList>value, payload, function() {
@@ -61,7 +61,7 @@ namespace Blend.ajax {
                 if (pendingConverts === 0) {
                     clearInterval(waitId);
                     payload.push(`--${me.boundary}--\r\n`);
-                    callback.apply(me, [payload.join('')]);
+                    callback.apply(me, [payload.join("")]);
                 }
             }, 250);
         }
@@ -89,23 +89,23 @@ namespace Blend.ajax {
                 nextFile: number = 0,
                 reader: FileReader = new FileReader();
             reader.onload = function(evt: Event) {
-                filetype = currentFile.type === '' ? 'application/octet-stream' : currentFile.type;
+                filetype = currentFile.type === "" ? "application/octet-stream" : currentFile.type;
                 payload.push(`${me.dataItemHeader} name="${currentFile.name}"; filename="${currentFile.name}"\r\nContent-Type: ${filetype}\r\n\r\n${me.arrayBufferToString(reader.result)}\r\n`);
                 onFinish.apply(me, []);
                 me.notifyPrepareUpload(currentFile, 2);
                 nextFile += 1;
                 doWork();
-            }
+            };
             reader.onprogress = function(evt: Event) {
                 me.notifyPrepareUpload(currentFile, 1);
-            }
+            };
             var doWork = function() {
                 if (files[nextFile]) {
                     currentFile = files[nextFile];
                     me.notifyPrepareUpload(currentFile, 0);
                     reader.readAsArrayBuffer(currentFile);
                 }
-            }
+            };
             doWork();
             return files.length;
         }

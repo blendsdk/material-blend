@@ -21,14 +21,14 @@ namespace Blend.dom {
      */
     export class StyleList {
 
-        private styles: DictionaryInterface
+        private styles: DictionaryInterface;
         private el: HTMLElement;
         private pixelRe = /px$/;
-        private UNIT: string = 'px';
+        private UNIT: string = "px";
         private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
         private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
 
-        constructor(el:HTMLElement ) {
+        constructor(el: HTMLElement) {
             this.initList(el.style.cssText.trim());
         }
 
@@ -36,10 +36,10 @@ namespace Blend.dom {
             var me = this,
                 p: Array<string>;
             me.styles = {};
-            if (data !== '') {
-                data.split(';').forEach(function(d: string) {
-                    if (d !== '') {
-                        p = d.split(':');
+            if (data !== "") {
+                data.split(";").forEach(function(d: string) {
+                    if (d !== "") {
+                        p = d.split(":");
                         me.styles[p[0].trim()] = me.fromUnit(p[1].trim());
                     }
                 });
@@ -54,7 +54,7 @@ namespace Blend.dom {
             delete (this.styles[name]);
         }
 
-        public getComputed(el: HTMLElement,names:Array<string>) {
+        public getComputed(el: HTMLElement, names: Array<string>) {
             var me = this,
                 cs = window.getComputedStyle(el, null),
                 r: StyleInterface = {};
@@ -65,11 +65,11 @@ namespace Blend.dom {
         }
 
         public serializeTo(el: HTMLElement) {
-            var me = this,style='';
+            var me = this, style = "";
             Object.keys(me.styles).forEach(function(name: string) {
-                style += `${name}:${me.toUnit(name,me.styles[name])};`;
+                style += `${name}:${me.toUnit(name, me.styles[name])};`;
             });
-            if (style !== '') {
+            if (style !== "") {
                 el.style.cssText = style;
             }
         }
@@ -85,7 +85,6 @@ namespace Blend.dom {
             return value;
         }
 
-
         /**
          * Given the value it converts px value to a number, otherwise it returns the original
          * value.
@@ -93,7 +92,7 @@ namespace Blend.dom {
         private fromUnit(value: any): any {
             var me = this;
             if (value !== null && me.pixelRe.test(value)) {
-                value = parseFloat(value.replace(me.UNIT, ''));
+                value = parseFloat(value.replace(me.UNIT, ""));
             }
             return value;
         }

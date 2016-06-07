@@ -125,7 +125,7 @@ namespace Blend.material {
                     queries = Blend.wrapInArray<string>(queries);
                     queries.forEach(function(mediaQuery: string) {
                         Blend.Runtime.addMediaQueryListener(mediaQuery, function(mql: MediaQueryList) {
-                            me.fireEvent('responsiveChanged', alias, mql);
+                            me.fireEvent("responsiveChanged", alias, mql);
                         });
                     });
                 });
@@ -134,8 +134,8 @@ namespace Blend.material {
 
         public getProperty<T>(name: string, defaultValue: any = null): T {
             var me: any = this;
-            if (name.indexOf('config.', 0) === 0) {
-                name = name.replace('config.', '').trim();
+            if (name.indexOf("config.", 0) === 0) {
+                name = name.replace("config.", "").trim();
                 return (me.config[name] === undefined ? defaultValue : me.config[name]);
             } else {
                 return super.getProperty<T>(name, defaultValue);
@@ -150,8 +150,8 @@ namespace Blend.material {
          * Sends a materialInitialized notification
          */
         protected notifyMaterialInitialized() {
-            var me = this
-            me.fireEvent('materialInitialized', me);
+            var me = this;
+            me.fireEvent("materialInitialized", me);
         }
 
         /**
@@ -196,7 +196,7 @@ namespace Blend.material {
             } else {
                 state = false;
             }
-            if (state === false && me.currentEventName === 'materialInitialized') {
+            if (state === false && me.currentEventName === "materialInitialized") {
                 return true;
             } else {
                 return state;
@@ -239,7 +239,7 @@ namespace Blend.material {
         notifyBoundsChanged() {
             var me = this;
             if (me.isRendered) {
-                me.fireEvent('boundsChanged', me.getBounds());
+                me.fireEvent("boundsChanged", me.getBounds());
             }
         }
 
@@ -252,10 +252,10 @@ namespace Blend.material {
          * Sets the visibility state for this Material
          */
         setVisible(visible: boolean = true): Blend.material.Material {
-            var me = this
+            var me = this;
             me.visible = visible === true ? true : false;
             if (me.isRendered) {
-                me.element.setData('visible', me.visible);
+                me.element.setData("visible", me.visible);
             } else {
                 me.config.visible = me.visible;
             }
@@ -276,7 +276,7 @@ namespace Blend.material {
          */
         protected notifyVisibilityChanged() {
             var me = this;
-            me.fireEvent('visibilityChanged', me.visible);
+            me.fireEvent("visibilityChanged", me.visible);
         }
 
         /////////////////////////////////////////////////////////////////////////
@@ -305,7 +305,7 @@ namespace Blend.material {
                 me.element.addCssClass(css);
             } else {
                 Blend.wrapInArray(css).forEach(function(itm: string) {
-                    (<Array<string>>me.config.css).push(itm)
+                    (<Array<string>>me.config.css).push(itm);
                 });
             }
             me.notifyStyleOrCSSChanged();
@@ -316,7 +316,7 @@ namespace Blend.material {
          */
         protected notifyStyleOrCSSChanged() {
             var me = this;
-            me.fireEvent('styleChanged', me.visible);
+            me.fireEvent("styleChanged", me.visible);
         }
 
         /**
@@ -337,8 +337,8 @@ namespace Blend.material {
                 me.setVisible(false);
             }
             if (Blend.DEBUG === true) {
-                var id = 'm' + Blend.newID();
-                me.element.getEl().setAttribute('id', id);
+                var id = "m" + Blend.newID();
+                me.element.getEl().setAttribute("id", id);
                 (<any>window)[id] = me;
             }
         }

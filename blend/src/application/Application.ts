@@ -40,7 +40,7 @@ namespace Blend.application {
             me.isStarted = false;
             me.isResizing = false;
             me.config.mainView = config.mainView || null;
-            me.config.theme = config.theme || 'default';
+            me.config.theme = config.theme || "default";
             me.config.style = {}; // remove use provided styles
             me.setContext(new Blend.mvc.Context());
             me.createMainView();
@@ -51,7 +51,7 @@ namespace Blend.application {
          */
         protected notifyApplicationResized(evt: Event) {
             var me = this;
-            me.fireEvent('applicationResized', evt);
+            me.fireEvent("applicationResized", evt);
         }
 
         /**
@@ -73,7 +73,7 @@ namespace Blend.application {
             var me = this, tm = -1,
                 counts = 0,
                 curSize = -1;
-            Blend.Runtime.addEventListener(window, 'resize', function(evt: Event) {
+            Blend.Runtime.addEventListener(window, "resize", function(evt: Event) {
                 curSize = window.innerWidth + window.innerHeight;
                 clearInterval(tm);
                 tm = setInterval(function() {
@@ -96,7 +96,7 @@ namespace Blend.application {
          */
         protected notifyApplicationReady() {
             var me = this;
-            me.fireEvent('applicationReady');
+            me.fireEvent("applicationReady");
         }
 
         protected performInitialMediaQuery() {
@@ -129,15 +129,15 @@ namespace Blend.application {
                 });
                 if (Blend.isInstanceOf(me.mainView, Blend.material.Material)) {
                     me.setContext(me.context);
-                    me.mainView.addCssClass('mb-mainview');
-                    if (me.mainView.getProperty('useParentController', true) === true) {
+                    me.mainView.addCssClass("mb-mainview");
+                    if (me.mainView.getProperty("useParentController", true) === true) {
                         me.mainView.addController(me.controllers);
                     }
                 } else {
-                    throw new Error('The provide mainView is not a valid View instance!');
+                    throw new Error("The provide mainView is not a valid View instance!");
                 }
             } else {
-                throw new Error('Missing or invalid mainView!');
+                throw new Error("Missing or invalid mainView!");
             }
         }
 
@@ -158,7 +158,7 @@ namespace Blend.application {
         protected render(): Blend.dom.Element {
             var me = this;
             return Blend.dom.Element.create({
-                cls: ['mb-application'],
+                cls: ["mb-application"],
                 children: [me.renderMainView()]
             });
         }

@@ -18,37 +18,37 @@
  * Interface for configuring a dictioany
  */
 interface DictionaryInterface {
-    [name: string]: any
+    [name: string]: any;
 }
 
 /**
  * Interface for configuring Styles
  */
 interface StyleInterface {
-    [name: string]: string | number
+    [name: string]: string | number;
 }
 
 /**
  * Interface for assigning EventListeners to DOM Elements
  */
 interface CreateElementEventListenersInterface {
-    [name: string]: EventListener
+    [name: string]: EventListener;
 }
 
 /**
  * Interface for configuring the Dom.createElement utility
  */
 interface CreateElementInterface {
-    tag?: string
-    scope?: any
-    oid?: string
-    cls?: string | Array<string>
-    listeners?: CreateElementEventListenersInterface
-    text?: string
-    children?: Array<CreateElementInterface | HTMLElement | Blend.dom.Element>
-    data?: any
-    style?: StyleInterface,
-    selectable?: boolean
+    tag?: string;
+    scope?: any;
+    oid?: string;
+    cls?: string | Array<string>;
+    listeners?: CreateElementEventListenersInterface;
+    text?: string;
+    children?: Array<CreateElementInterface | HTMLElement | Blend.dom.Element>;
+    data?: any;
+    style?: StyleInterface;
+    selectable?: boolean;
 }
 
 /**
@@ -63,7 +63,7 @@ interface BindableInterface {
  * Interface for configuring a Blend.Component class
  */
 interface ComponentClass {
-    new (config?: any): Blend.Component
+    new (config?: any): Blend.Component;
 }
 
 /**
@@ -78,15 +78,15 @@ interface ClassRegistryInterface {
  * with a config type ctype
  */
 interface ComponentConfig {
-    ctype?: ComponentTypes,
-    [name: string]: any
+    ctype?: ComponentTypes;
+    [name: string]: any;
 }
 
 /**
  * Interface for configuring a function that can be used as a controller
  */
 interface FunctionAsController {
-    (client: Blend.mvc.Client, eventName: string, ...args: any[]): void
+    (client: Blend.mvc.Client, eventName: string, ...args: any[]): void;
 }
 /**
  * Custom type describing a ctype
@@ -98,58 +98,58 @@ type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsControll
  * Interface for configuring a MVC Client (Used by Material and Context)
  */
 interface MvcClientInterface {
-    controller?: ControllerType | Array<ControllerType>
-    context?: Blend.mvc.Context
+    controller?: ControllerType | Array<ControllerType>;
+    context?: Blend.mvc.Context;
 }
 
 /**
  * Interface for configuring a MVC View
  */
 interface MvcViewInterface extends MvcClientInterface {
-    reference?: string
-    [name: string]: any
+    reference?: string;
+    [name: string]: any;
 }
 
 /**
  * Interface for configuring a Material's bounds and visibility
  */
 interface ElementBoundsInterface {
-    top?: number
-    left?: number
-    width?: number | string
-    height?: number | string
-    visible?: boolean
+    top?: number;
+    left?: number;
+    width?: number | string;
+    height?: number | string;
+    visible?: boolean;
 }
 
 
 interface MediaQueryConfig extends DictionaryInterface {
-    [name: string]: string | Array<string>
+    [name: string]: string | Array<string>;
 }
 
 /**
  * Interface for configuring an Ajax (Post/Get) query
  */
 interface AjaxRequestInterface {
-    url: string,
-    headers?: DictionaryInterface,
-    onStart?: Function,
-    onProgress?: Function,
-    onPrepareUpload?: Function,
-    onComplete?: Function,
-    onSuccess?: Function,
-    onFailed?: Function,
-    scope?: any,
-    withCredentials?: boolean
+    url: string;
+    headers?: DictionaryInterface;
+    onStart?: Function;
+    onProgress?: Function;
+    onPrepareUpload?: Function;
+    onComplete?: Function;
+    onSuccess?: Function;
+    onFailed?: Function;
+    scope?: any;
+    withCredentials?: boolean;
 }
 
 /**
  * Interface for configuring the padding of an Element
  */
 interface PaddingInterface {
-    top?: number
-    right?: number
-    bottom?: number
-    left?: number
+    top?: number;
+    right?: number;
+    bottom?: number;
+    left?: number;
 }
 
 /**
@@ -161,31 +161,31 @@ type MaterialType = string | ComponentClass | MaterialInterface | ContainerMater
  * Interface for configuring a Material
  */
 interface MaterialInterface extends MvcViewInterface {
-    parent?: Blend.material.Material
-    useParentController?: boolean
-    css?: string | Array<string>
-    style?: StyleInterface
-    visible?: boolean
-    top?: number
-    left?: number
-    width?: number | string
-    height?: number | string,
-    responsive?: boolean,
-    responseTo?: MediaQueryConfig
+    parent?: Blend.material.Material;
+    useParentController?: boolean;
+    css?: string | Array<string>;
+    style?: StyleInterface;
+    visible?: boolean;
+    top?: number;
+    left?: number;
+    width?: number | string;
+    height?: number | string;
+    responsive?: boolean;
+    responseTo?: MediaQueryConfig;
 }
 
 /**
  * Interface for configuring a Container
  */
 interface ContainerMaterialInterface extends MaterialInterface {
-    items?:Array<MaterialType>
+    items?: Array<MaterialType>;
 }
 
 /**
  * Interface for configuring an Application
  */
 interface ApplicationInterface extends MaterialInterface {
-    mainView?: MaterialType
+    mainView?: MaterialType;
     theme?: string;
 }
 

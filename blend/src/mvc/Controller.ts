@@ -20,17 +20,17 @@
 /// <reference path="Client.ts" />
 
 interface ControllerEventHandler {
-    (view: Blend.mvc.View, ...args: any[]): void
+    (view: Blend.mvc.View, ...args: any[]): void;
 }
 
-module Blend.mvc {
+namespace Blend.mvc {
 
     /**
      * Base class for a Controller.
      */
     export class Controller extends Blend.Component {
 
-        private handlers: DictionaryInterface = {}
+        private handlers: DictionaryInterface = {};
 
         public constructor(config: any = {}) {
             super(config);
@@ -47,8 +47,8 @@ module Blend.mvc {
          */
         delegate(eventName: string, view: Client, args: any[]) {
             var me = this,
-                reference = (<any>view).getReference ? (<any>view).getReference() : '',
-                handlers = me.handlers[eventName] || me.handlers[reference + '.' + eventName] || null;
+                reference = (<any>view).getReference ? (<any>view).getReference() : "",
+                handlers = me.handlers[eventName] || me.handlers[reference + "." + eventName] || null;
             if (handlers && handlers.length !== 0) {
                 handlers.forEach(function(handler: ControllerEventHandler) {
                     setTimeout(function() {

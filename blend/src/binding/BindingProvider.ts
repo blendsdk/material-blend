@@ -29,7 +29,7 @@ namespace Blend.binding {
          */
         public bindProperty(source: BindableInterface, target: BindableInterface, srcProp: string, trgProp: string = null) {
             trgProp = trgProp || srcProp;
-            this.bind(source, target, 'set' + srcProp.ucfirst(), 'set' + trgProp.ucfirst(), 'get' + srcProp.ucfirst());
+            this.bind(source, target, "set" + srcProp.ucfirst(), "set" + trgProp.ucfirst(), "get" + srcProp.ucfirst());
         }
 
         public bind(
@@ -44,7 +44,7 @@ namespace Blend.binding {
                 target.applyFunction(targetMember
                     , [usingMember !== null ? source.applyFunction(usingMember, [sr]) : sr]);
                 return sr;
-            }
+            };
         }
     }
 

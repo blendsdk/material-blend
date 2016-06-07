@@ -26,7 +26,7 @@ namespace Blend.ajax {
 
         protected doSendRequest(data: DictionaryInterface = {}) {
             var me = this;
-            me.xhr.open('GET', me.createURI(data), true);
+            me.xhr.open("GET", me.createURI(data), true);
             me.xhr.send(null);
         }
     }
