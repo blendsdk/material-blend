@@ -322,6 +322,16 @@ export class BlendBuilder extends UtilityModule.Utility {
         });
     }
 
+    private updatBlendClient(callback: Function) {
+        var me = this,
+            destFolder = me.makePath(me.clientRepoFolder + "/resources/blend");
+        me.print(`Updateding  BlendClient, `);
+        me.reCreateFolder(destFolder);
+        fse.copySync(me.distPath, destFolder);
+        me.printDone();
+        callback.apply(me, [null]);
+    }
+
     /**
      * Creates a new distribution
      */
@@ -338,7 +348,8 @@ export class BlendBuilder extends UtilityModule.Utility {
             // me.buildFramework,
             // me.createDistInternal
             //me.cloneBlendClient,
-            //me.setupBlendClient
+            //me.setupBlendClient,
+            me.updatBlendClient
         ], callback);
     }
 
