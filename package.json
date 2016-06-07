@@ -1,7 +1,7 @@
 {
     "name": "material-blend-sdk",
     "private": false,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "codename": "rebirth",
     "repository": {
         "type": "git",

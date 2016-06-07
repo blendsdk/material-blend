@@ -7,7 +7,7 @@ The roadmap contains implementation plans, and it is a work-in-progress document
 - First beta release that will be usable by the public
 
 
-### 0.2
+### 0.2 <<< WE ARE HERE
 
 - Material Round button, both flat and raised
 - Material FAB button
@@ -15,7 +15,6 @@ The roadmap contains implementation plans, and it is a work-in-progress document
 - Material Flat button
 - The Ripple effect for click/touchable UI Components
 - SCSS Framework for implementin Material Design specifications
-
 
 ### 0.1
 
