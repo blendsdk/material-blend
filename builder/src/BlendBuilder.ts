@@ -21,6 +21,7 @@ import childProcess = require("child_process");
 import uglify = require("uglify-js");
 import colors = require("colors");
 import * as UtilityModule from "./Utility";
+import os = require("os");
 
 export class BlendBuilder extends UtilityModule.Utility {
 
@@ -31,6 +32,8 @@ export class BlendBuilder extends UtilityModule.Utility {
     protected blendSourcePath: string;
     protected blendExternalPath: string;
     protected testPath: string;
+    protected clientRepo: string;
+    protected clientRepoFolder: string;
 
     public constructor(rootFolder: string) {
         super();
@@ -42,6 +45,8 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.blendExternalPath = me.blendPath + "/3rdparty";
         me.testPath = me.rootFolder + "/tests";
         me.distPath = me.rootFolder + "/dist";
+        me.clientRepo = "git@github.com:blendsdk/material-blend-cli.git";
+        me.clientRepoFolder = me.makePath(os.tmpdir() + "/blend-client");
     }
 
     /**
@@ -281,12 +286,40 @@ export class BlendBuilder extends UtilityModule.Utility {
                 });
                 me.cleanAndAddCopyright(minCssFileName);
             });
+
             me.printDone();
             callback.apply(me, [null]);
         } catch (e) {
             callback.apply(me, [e]);
         }
 
+    }
+
+    private setupBlendClient(callback: Function) {
+        var me = this,
+            command = me.makePath(me.clientRepoFolder + "/setup.sh");
+        me.print("Setup BlendClient, ");
+        me.runShellCommandIn(command, me.clientRepoFolder, function(errors: string) {
+            if (!errors) {
+                me.printDone();
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors]);
+            }
+        });
+    }
+
+    private cloneBlendClient(callback: Function) {
+        var me = this;
+        me.print(`Cloning  BlendClient, `);
+        me.cloneRepositoryInto(me.clientRepo, me.clientRepoFolder, function(errors: string) {
+            if (!errors) {
+                me.printDone();
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors]);
+            }
+        });
     }
 
     /**
@@ -302,8 +335,10 @@ export class BlendBuilder extends UtilityModule.Utility {
                 }
             };
         me.runSerial([
-            me.buildFramework,
-            me.createDistInternal
+            // me.buildFramework,
+            // me.createDistInternal
+            //me.cloneBlendClient,
+            //me.setupBlendClient
         ], callback);
     }
 

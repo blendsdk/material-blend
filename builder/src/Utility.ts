@@ -424,4 +424,28 @@ export abstract class Utility {
         });
     }
 
+    protected runShellCommandIn(command: string, folder: string, callback: Function) {
+        var me = this;
+        childProcess.exec(command, { cwd: folder }, function(error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [stderr.toString()]);
+            }
+        });
+    }
+
+    protected cloneRepositoryInto(repo: string, folder: string, callback: Function) {
+        var me = this,
+            command = `git clone ${repo} .`;
+        me.reCreateFolder(folder);
+        childProcess.exec(command, { cwd: folder }, function(error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [stderr.toString()]);
+            }
+        });
+    }
+
 }
