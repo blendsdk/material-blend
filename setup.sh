@@ -2,7 +2,7 @@
 echo Updating the root package dependencies
 npm update
 cd builder
-if [ -n $HHTP_PROXY ]; then
+if [ -n $HTTP_PROXY ]; then
     echo Setting HTTP_PROXY values
     echo proxy=$HTTP_PROXY > .typingsrc
 fi
