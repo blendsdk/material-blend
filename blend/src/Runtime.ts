@@ -23,8 +23,8 @@ namespace Blend {
      * Callback interface for the ready function
      */
     interface IReadCallback {
-        fn: Function
-        sc?: any
+        fn: Function;
+        sc?: any;
     }
 
     /**
@@ -33,7 +33,7 @@ namespace Blend {
      * responding to a media query
       */
     interface IMediaQueryRegistery extends DictionaryInterface {
-        [name: string]: Array<Function>
+        [name: string]: Array<Function>;
     }
 
     /**
@@ -41,7 +41,7 @@ namespace Blend {
      * Media Query matcher registery
      */
     interface IMediaQueryMatcher extends DictionaryInterface {
-        [name: string]: MediaQueryList
+        [name: string]: MediaQueryList;
     }
 
     /**
@@ -107,7 +107,7 @@ namespace Blend {
             me.IE = ie !== 0;
             me.IEVersion = ie;
             if (ie !== 0 && ie < 11) {
-                document.write('<div id="noblend">Unable to run this application. Please upgrade your Internet Explorer to version 11 or above, otherwise use Google Chrome or Firefox!</div>');
+                document.write("<div id=\"noblend\">Unable to run this application. Please upgrade your Internet Explorer to version 11 or above, otherwise use Google Chrome or Firefox!</div>");
                 return false;
             } else {
                 return true;
@@ -164,8 +164,8 @@ namespace Blend {
                 if (document.readyState === "complete") {
                     doCallback.apply(me, []);
                 } else {
-                    me.addEventListener(document, 'DOMContentLoaded', doCallback);
-                    me.addEventListener(window, 'load', doCallback);
+                    me.addEventListener(document, "DOMContentLoaded", doCallback);
+                    me.addEventListener(window, "load", doCallback);
                 }
             } else {
                 doCallback.apply(me, []);
@@ -177,8 +177,8 @@ namespace Blend {
          * providing event names seperated by spaces (eg. 'mouseup click')
          */
         public addEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
-            if (eventName.indexOf(' ') !== -1) {
-                eventName.split(' ').forEach(function(eName) {
+            if (eventName.indexOf(" ") !== -1) {
+                eventName.split(" ").forEach(function(eName) {
                     eName = eName.trim();
                     if (eName.length !== 0) {
                         el.addEventListener(eName, eventHandler, false);
@@ -194,8 +194,8 @@ namespace Blend {
          * providing event names seperated by spaces (eg. 'mouseup click')
          */
         public removeEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
-            if (eventName.indexOf(' ') !== -1) {
-                eventName.split(' ').forEach(function(eName) {
+            if (eventName.indexOf(" ") !== -1) {
+                eventName.split(" ").forEach(function(eName) {
                     eName = eName.trim();
                     if (eName.length !== 0) {
                         el.removeEventListener(eName, eventHandler, false);
@@ -209,23 +209,23 @@ namespace Blend {
         private detectIE(): number {
             // copyright http://codepen.io/gapcode/pen/vEJNZN
             var ua = window.navigator.userAgent;
-            var msie = ua.indexOf('MSIE ');
+            var msie = ua.indexOf("MSIE ");
             if (msie > 0) {
                 // IE 10 or older => return version number
-                return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
             }
 
-            var trident = ua.indexOf('Trident/');
+            var trident = ua.indexOf("Trident/");
             if (trident > 0) {
                 // IE 11 => return version number
-                var rv = ua.indexOf('rv:');
-                return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+                var rv = ua.indexOf("rv:");
+                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
             }
 
-            var edge = ua.indexOf('Edge/');
+            var edge = ua.indexOf("Edge/");
             if (edge > 0) {
                 // Edge (IE 12+) => return version number
-                return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
             }
 
             return 0;

@@ -16,14 +16,14 @@
 
 /// <reference path="../typings/index.d.ts" />
 
-import fs = require('fs');
-import fse = require('fs-extra');
-import path = require('path');
-import childProcess = require('child_process');
-import uglifyJS = require('uglify-js');
-import uglifyCSS = require('uglifycss');
-import colors = require('colors');
-import compareVersion = require('compare-version');
+import fs = require("fs");
+import fse = require("fs-extra");
+import path = require("path");
+import childProcess = require("child_process");
+import uglifyJS = require("uglify-js");
+import uglifyCSS = require("uglifycss");
+import colors = require("colors");
+import compareVersion = require("compare-version");
 
 interface DownloadInterface {
     remote: string;
@@ -31,8 +31,8 @@ interface DownloadInterface {
 }
 
 interface NpmPackageInterface {
-    version: string
-    description: string
+    version: string;
+    description: string;
 }
 
 export abstract class Utility {
@@ -45,9 +45,9 @@ export abstract class Utility {
 
     public constructor() {
         var me = this;
-        me.minCompassVersion = '1.0.3';
-        me.minTypeScriptVersion = '1.8.10';
-        me.utilityPackage = me.readNpmPackage(__dirname + '/../package.json');
+        me.minCompassVersion = "1.0.3";
+        me.minTypeScriptVersion = "1.8.10";
+        me.utilityPackage = me.readNpmPackage(__dirname + "/../package.json");
 
     }
 
@@ -92,7 +92,7 @@ export abstract class Utility {
      * Converts the '/' to '\' if needed
      */
     protected makePath(value: string): string {
-        return value.replace('/', path.sep);
+        return value.replace("/", path.sep);
     }
 
     /**
@@ -115,19 +115,19 @@ export abstract class Utility {
             results: Array<string> = [];
         filter = filter || function (fname: string) {
             return true;
-        }
-        var list = fs.readdirSync(dir)
+        };
+        var list = fs.readdirSync(dir);
         list.forEach(function (file: string) {
-            file = dir + '/' + file
-            var stat = fs.statSync(file)
+            file = dir + "/" + file;
+            var stat = fs.statSync(file);
             if (stat && stat.isDirectory()) {
-                results = results.concat(me.findFiles(file, filter))
+                results = results.concat(me.findFiles(file, filter));
             } else {
                 if (filter(file) === true) {
-                    results.push(file)
+                    results.push(file);
                 }
             }
-        })
+        });
         return results;
     }
 
@@ -137,7 +137,7 @@ export abstract class Utility {
      */
     protected downloadFile(source: string, dest: string, callback: Function) {
         var me = this,
-            command = 'curl -o "' + dest + '" "' + source + '"' + (process.env.http_proxy || null ? ' --proxy "' + process.env.http_proxy + '"' : '');
+            command = `curl -o "${dest}" "${source}" ${(process.env.http_proxy || null ? " --proxy \"" + process.env.http_proxy + "\"" : "")}`;
         childProcess.exec(command, { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 if (me.fileExists(dest)) {
@@ -146,7 +146,7 @@ export abstract class Utility {
                     callback.apply(me, [false, dest + " was not created after running curl!\nThe command was " + command]);
                 }
             } else {
-                callback.apply(me, [false, 'Unable to download ' + source + ", due:" + error]);
+                callback.apply(me, [false, "Unable to download " + source + ", due:" + error]);
             }
         });
     }
@@ -167,8 +167,8 @@ export abstract class Utility {
                 } else {
                     console.log(error);
                 }
-            }
-        }
+            };
+        };
         var index: number = callbacks.length;
         var lastCall = whenDone;
         while ((index--) !== 0) {
@@ -196,18 +196,18 @@ export abstract class Utility {
                             errors.push(error);
                         }
                         callback.apply(me, [null]);
-                    })
+                    });
                 });
             }
         });
 
         me.runSerial(queue, function () {
             if (count == files.length) {
-                callback.apply(me, [null])
+                callback.apply(me, [null]);
             } else {
                 callback.apply(me, [errors.join("\n")]);
             }
-        })
+        });
     }
 
     /**
@@ -226,11 +226,11 @@ export abstract class Utility {
      */
     protected checkCURLSanity(callback: Function) {
         var me = this;
-        childProcess.exec('curl -V', { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
+        childProcess.exec("curl -V", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
-                callback.apply(me, ['No CURL utility found!']);
+                callback.apply(me, ["No CURL utility found!"]);
             }
         });
     }
@@ -240,24 +240,24 @@ export abstract class Utility {
      */
     protected checkCompassSanity(callback: Function) {
         var me = this;
-        childProcess.exec('compass -v', { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
+        childProcess.exec("compass -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.split("\n");
                 if (parts.length < 1) {
-                    callback.apply(me, ['Could not recognize Compass!']);
+                    callback.apply(me, ["Could not recognize Compass!"]);
                 }
-                parts = parts[0].split(' ');
+                parts = parts[0].split(" ");
                 if (parts.length !== 3) {
-                    callback.apply(me, ['Could not read Compass version!']);
+                    callback.apply(me, ["Could not read Compass version!"]);
                 }
                 var res = compareVersion(me.minCompassVersion, parts[1]);
                 if (res == 0 || res == -1) {
                     callback.apply(me, [null]);
                 } else {
-                    callback.apply('Invalid Compass version! Found ' + parts[1] + ', but we require as least ' + me.minCompassVersion)
+                    callback.apply("Invalid Compass version! Found " + parts[1] + ", but we require as least " + me.minCompassVersion);
                 }
             } else {
-                callback.apply(me, ['No Compass installation found!']);
+                callback.apply(me, ["No Compass installation found!"]);
             }
         });
     }
@@ -267,30 +267,30 @@ export abstract class Utility {
      */
     protected checkTypeScriptSanity = function (callback: Function) {
         var me = this;
-        childProcess.exec('tsc -v', { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
+        childProcess.exec("tsc -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.trim().split(" ");
-                if (parts.length != 2) {
-                    callback.apply(me, ['Could not recognize TypeScript!']);
+                if (parts.length !== 2) {
+                    callback.apply(me, ["Could not recognize TypeScript!"]);
                 }
                 var res = compareVersion(me.minTypeScriptVersion, parts[1]);
-                if (res == 0 || res == -1) {
+                if (res === 0 || res === -1) {
                     callback.apply(me, [null]);
                 } else {
-                    callback.apply(me, ['Invalid TypeScript version! Found ' + parts[1] + ', but we require as least ' + me.minTypeScriptVersion]);
+                    callback.apply(me, ["Invalid TypeScript version! Found " + parts[1] + ", but we require as least " + me.minTypeScriptVersion]);
                 }
             } else {
-                callback.apply(me, ['No TypeScript installation found!']);
+                callback.apply(me, ["No TypeScript installation found!"]);
             }
         });
-    }
+    };
 
     /**
      * Build the TS sources, both framework and tests
      */
     protected buildSources(folder: string, callback: Function) {
         var me = this;
-        childProcess.exec('tsc', { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
+        childProcess.exec("tsc", { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -312,7 +312,7 @@ export abstract class Utility {
      */
     protected printAllDone() {
         var me = this;
-        me.println(colors.green('ALL DONE.'));
+        me.println(colors.green("ALL DONE."));
     }
 
     /**
@@ -349,7 +349,7 @@ export abstract class Utility {
         var me = this, extname: string;
         return me.findFiles(folder, function (file: string) {
             extname = path.extname(file);
-            return extname == '.css';
+            return extname === ".css";
         });
     }
 
