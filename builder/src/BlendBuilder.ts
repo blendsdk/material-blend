@@ -118,19 +118,21 @@ export class BlendBuilder extends UtilityModule.Utility {
      * Places copyright headers in source files
      */
     protected copyrightFiles = function (folder: string, extensions: Array<string> = null) {
-        me.print('Looking for files to copyright, ');
         var me = this,
             count = 0,
-            header = me.copyrightHeader.join("\n");
+            header = fs.readFileSync(me.makePath(__dirname + '/../copyright.txt')),
+            copyrightKey = 'http://www.apache.org/licenses/LICENSE-2.0';
+        me.print('Looking for files to copyright, ');
         extensions = extensions || ['.ts', 'scss'];
-        var files: Array<String> = me.readFiles(folder, function (fname: string) {
+        var files: Array<String> = me.findFiles(folder, function (fname: string) {
             var ext = path.extname(fname);
             return extensions.indexOf(ext) !== -1
-                && fname.indexOf(path.sep + 'typings' + path.sep) === -1;
+                && fname.indexOf(path.sep + 'typings' + path.sep) === -1
+                && fname.indexOf(me.blendExternalPath) === -1;
         });
         files.forEach(function (fname: string) {
             var contents = fs.readFileSync(fname).toString();
-            if (contents.indexOf(me.copyrightKey) === -1) {
+            if (contents.indexOf(copyrightKey) === -1) {
                 contents = header + "\n\n" + contents;
                 fs.writeFileSync(fname, contents);
                 me.print('.');
