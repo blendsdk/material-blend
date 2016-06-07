@@ -39,6 +39,7 @@ export abstract class Utility {
 
     protected minCompassVersion: string;
     protected minTypeScriptVersion: string;
+    protected minTSLintVersion: string;
     protected utilityPackage: NpmPackageInterface;
 
     public abstract run(): void;
@@ -47,6 +48,7 @@ export abstract class Utility {
         var me = this;
         me.minCompassVersion = "1.0.3";
         me.minTypeScriptVersion = "1.8.10";
+        me.minTSLintVersion = "3.10.2";
         me.utilityPackage = me.readNpmPackage(__dirname + "/../package.json");
 
     }
@@ -110,7 +112,7 @@ export abstract class Utility {
      * Recursively reads files from a given folder and applies a filter to
      * be able to exclude some files.
      */
-    protected findFiles(dir: string, filter: Function) {
+    protected findFiles(dir: string, filter: Function): Array<string> {
         var me = this,
             results: Array<string> = [];
         filter = filter || function (fname: string) {
@@ -202,7 +204,7 @@ export abstract class Utility {
         });
 
         me.runSerial(queue, function () {
-            if (count == files.length) {
+            if (count === files.length) {
                 callback.apply(me, [null]);
             } else {
                 callback.apply(me, [errors.join("\n")]);
@@ -238,6 +240,26 @@ export abstract class Utility {
     /**
      * Checks if compass exists and it is the correct version.
      */
+    protected checkTSLintSanity(callback: Function) {
+        var me = this;
+        childProcess.exec("tslint -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                var vers = stdout.trim();
+                var res = compareVersion(me.minTSLintVersion, vers);
+                if (res === 0 || res === -1) {
+                    callback.apply(me, [null]);
+                } else {
+                    callback.apply(me, ["Invalid TSLint version! Found " + vers + ", but we require as least " + me.minTSLintVersion]);
+                }
+            } else {
+                callback.apply(me, ["No TSLint installation found!"]);
+            }
+        });
+    }
+
+    /**
+     * Checks if compass exists and it is the correct version.
+     */
     protected checkCompassSanity(callback: Function) {
         var me = this;
         childProcess.exec("compass -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
@@ -251,10 +273,10 @@ export abstract class Utility {
                     callback.apply(me, ["Could not read Compass version!"]);
                 }
                 var res = compareVersion(me.minCompassVersion, parts[1]);
-                if (res == 0 || res == -1) {
+                if (res === 0 || res === -1) {
                     callback.apply(me, [null]);
                 } else {
-                    callback.apply("Invalid Compass version! Found " + parts[1] + ", but we require as least " + me.minCompassVersion);
+                    callback.apply(me, ["Invalid Compass version! Found " + parts[1] + ", but we require as least " + me.minCompassVersion]);
                 }
             } else {
                 callback.apply(me, ["No Compass installation found!"]);
@@ -345,11 +367,64 @@ export abstract class Utility {
 
     }
 
-    protected findCSSFiles(folder: string): Array<String> {
+    protected findCSSFiles(folder: string): Array<string> {
         var me = this, extname: string;
         return me.findFiles(folder, function (file: string) {
             extname = path.extname(file);
             return extname === ".css";
+        });
+    }
+
+    protected findTSFiles(folder: string): Array<string> {
+        var me = this, extname: string;
+        return me.findFiles(folder, function (file: string) {
+            extname = path.extname(file);
+            return extname === ".ts";
+        });
+    }
+
+    protected lintFile(file: string, callback: Function) {
+        var me = this,
+            command = `tslint ${file}`;
+        childProcess.exec(command, { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
+            me.print(".");
+            if (!error) {
+                callback.apply(me, [true]);
+            } else {
+                callback.apply(me, [false, stdout]);
+            }
+        });
+    }
+
+    /**
+     * Run TSLint on a folder
+     */
+    protected lintFolder(folder: string, callback: Function) {
+        var me = this,
+            count = 0,
+            errors: Array<string> = [],
+            queue: Array<Function> = [],
+            files: Array<string> = me.findTSFiles(folder);
+
+        files.forEach(function (file: string) {
+            queue.push(function (cb: Function) {
+                me.lintFile(file, function (status: boolean, error: string) {
+                    if (status) {
+                        count++;
+                    } else {
+                        errors.push(error);
+                    }
+                    cb.apply(me, [null]);
+                });
+            });
+        });
+
+        me.runSerial(queue, function () {
+            if (count === files.length) {
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors.join("\n")]);
+            }
         });
     }
 
