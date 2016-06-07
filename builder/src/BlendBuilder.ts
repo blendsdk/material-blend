@@ -65,7 +65,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private buildStyles(callback: Function) {
         var me = this;
         me.print("Building Themes and Styles, ");
-        childProcess.exec("compass compile", { cwd: me.blendPath }, function (error: Error, stdout: any, stderr: any) {
+        childProcess.exec("compass compile", { cwd: me.blendPath }, function(error: Error, stdout: any, stderr: any) {
             if (!error) {
                 me.printDone();
                 callback.apply(me, [null]);
@@ -81,7 +81,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private buildBlend(callback: Function) {
         var me = this;
         me.print("Building Blend Framework, ");
-        me.buildSources(me.blendPath, function (errors: string) {
+        me.buildSources(me.blendPath, function(errors: string) {
             if (errors === null) {
                 me.printDone();
             }
@@ -103,7 +103,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyFile(me.buildPath + "/blend/blend.d.ts", testAppBlendFolder + "/blend.d.ts");
             me.copyFile(me.buildPath + "/css", testRunnerBlend + "/css");
             me.copyFile(me.buildPath + "/blend/blend.js", testRunnerBlend + "/blend.js");
-            me.buildSources(me.testPath, function (errors: string) {
+            me.buildSources(me.testPath, function(errors: string) {
                 if (errors === null) {
                     me.printDone();
                 }
@@ -124,14 +124,14 @@ export class BlendBuilder extends UtilityModule.Utility {
             copyrightKey = "http://www.apache.org/licenses/LICENSE-2.0";
         me.print("Looking for files to copyright, ");
         extensions = extensions || [".ts", "scss"];
-        folders.forEach(function (folder: string) {
-            var files: Array<String> = me.findFiles(folder, function (fname: string) {
+        folders.forEach(function(folder: string) {
+            var files: Array<String> = me.findFiles(folder, function(fname: string) {
                 var ext = path.extname(fname);
                 return extensions.indexOf(ext) !== -1
                     && fname.indexOf(path.sep + "typings" + path.sep) === -1
                     && fname.indexOf(me.blendExternalPath) === -1;
             });
-            files.forEach(function (fname: string) {
+            files.forEach(function(fname: string) {
                 var contents = fs.readFileSync(fname).toString();
                 if (contents.indexOf(copyrightKey) === -1) {
                     contents = header + "\n\n" + contents;
@@ -155,13 +155,13 @@ export class BlendBuilder extends UtilityModule.Utility {
             count: number = 0,
             queue: Array<Function> = [];
 
-        folders.forEach(function (item: Array<string>) {
-            queue.push(function (cb: Function) {
+        folders.forEach(function(item: Array<string>) {
+            queue.push(function(cb: Function) {
                 me.print("Linting " + item[0] + ", ");
-                me.lintFolder(item[1], function (error: string) {
+                me.lintFolder(item[1], function(error: string, numErrors: number) {
                     if (error) {
                         fs.writeFileSync(item[2], error);
-                        me.print(" WE HAVE ISSUES, ");
+                        me.print(` WE HAVE ${numErrors} ISSUE${numErrors === 1 ? "" : "S"}, `);
                     }
                     me.printDone();
                     count++;
@@ -170,7 +170,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             });
         });
 
-        me.runSerial(queue, function () {
+        me.runSerial(queue, function() {
             if (count === folders.length) {
                 callback.apply(me, [null]);
             }
@@ -184,7 +184,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private lintBlendBuilder(callback: Function) {
         var me = this;
         me.print("Linting Builder, ");
-        me.lintFolder(me.makePath(me.rootFolder + "/builder/src"), function (error: string) {
+        me.lintFolder(me.makePath(me.rootFolder + "/builder/src"), function(error: string) {
             fs.writeFileSync(me.makePath(me.buildPath + "/lint-builder-issues.txt"), error);
             me.print(" WE HAVE ISSUES, ");
             me.printDone();
@@ -198,7 +198,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     private buildFramework(callback: Function = null) {
         var me = this;
 
-        callback = callback || function (errors: string) {
+        callback = callback || function(errors: string) {
             if (errors) {
                 me.println(colors.red("ERROR: " + errors));
             } else {
@@ -259,7 +259,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             var debugJSFile = me.makePath(jsFolder + "/blend-debug.js");
             me.copyFile(me.makePath(me.buildPath + "/blend/blend.js"), debugJSFile);
             fse.copySync(me.makePath(me.buildPath + "/css"), cssFoder);
-            me.findCSSFiles(cssFoder).forEach(function (file: string) {
+            me.findCSSFiles(cssFoder).forEach(function(file: string) {
                 var renamedName = file.replace(".css", "-debug.css");
                 fse.renameSync(file, renamedName);
                 me.cleanAndAddCopyright(renamedName);
@@ -274,7 +274,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             });
             me.cleanAndAddCopyright(releaseFile);
 
-            me.findCSSFiles(cssFoder).forEach(function (file: string) {
+            me.findCSSFiles(cssFoder).forEach(function(file: string) {
                 var minCssFileName = file.replace("-debug.css", ".min.css");
                 me.minifyCSSFileTo(file, minCssFileName, {
                     maxLineLen: 500
@@ -294,7 +294,7 @@ export class BlendBuilder extends UtilityModule.Utility {
      */
     private createDist() {
         var me = this,
-            callback = function (errors: string) {
+            callback = function(errors: string) {
                 if (errors) {
                     me.println(colors.red("ERROR: " + errors));
                 } else {

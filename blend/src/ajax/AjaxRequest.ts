@@ -44,10 +44,10 @@ namespace Blend.ajax {
             var me = this, cfg: AjaxRequestInterface;
             if (Blend.isString(config)) {
                 cfg = {
-                    url: <string>config || null,
-                }
+                    url: <string>config || null
+                };
             } else {
-                cfg = <AjaxRequestInterface>config
+                cfg = <AjaxRequestInterface>config;
             }
             me.url = cfg.url || null;
             me.headers = cfg.headers || {};
@@ -60,7 +60,7 @@ namespace Blend.ajax {
             me.scope = cfg.scope | <any>me;
             me.xhrConfig = {
                 withCredentials: cfg.withCredentials === true ? true : false
-            }
+            };
             me.initialize();
         }
 
@@ -75,7 +75,7 @@ namespace Blend.ajax {
             Blend.forEach(handlers, function(handler: Function, eventName: string) {
                 me.xhr.addEventListener(eventName, function(evt: Event) {
                     handler.apply(me, [me.xhr, evt]);
-                })
+                });
             });
             Blend.forEach(me.headers, function(value: string, header: string) {
                 me.xhr.setRequestHeader(header, value);
@@ -88,7 +88,7 @@ namespace Blend.ajax {
         public sendRequest(data: DictionaryInterface = {}) {
             var me = this;
             me.callID = (new Date()).getTime();
-            if (me.callHandler('onStart', arguments) !== false) {
+            if (me.callHandler("onStart", arguments) !== false) {
                 me.doSendRequest(data);
             } else {
                 me.transferCanceled(me.xhr, null);
@@ -97,7 +97,7 @@ namespace Blend.ajax {
 
         protected updateProgress(request: XMLHttpRequest, evt: Event) {
             var me = this;
-            me.callHandler('onProgress', arguments);
+            me.callHandler("onProgress", arguments);
         }
 
         protected transferComplete(request: XMLHttpRequest, evt: Event) {
@@ -105,14 +105,14 @@ namespace Blend.ajax {
             if (request.status >= 300) {
                 me.transferFailed.apply(me, arguments);
             } else if (request.status < 300) {
-                me.callHandler('onSuccess', arguments);
+                me.callHandler("onSuccess", arguments);
             }
-            me.callHandler('onComplete', arguments);
+            me.callHandler("onComplete", arguments);
         }
 
         protected transferFailed(request: XMLHttpRequest, evt: Event) {
             var me = this;
-            me.callHandler('onFailed', arguments);
+            me.callHandler("onFailed", arguments);
         }
 
         protected transferCanceled(request: XMLHttpRequest, evt: Event) {
@@ -124,7 +124,7 @@ namespace Blend.ajax {
          * File prepare event notification
          */
         protected notifyPrepareUpload(file: File, status: number) {
-            this.callHandler('onPrepareUpload', arguments);
+            this.callHandler("onPrepareUpload", arguments);
         }
 
         /**
@@ -144,7 +144,7 @@ namespace Blend.ajax {
          */
         protected encodeURIComponent(value: string) {
             return encodeURIComponent(value).replace(/[!'()*]/g, function(c) {
-                return '%' + c.charCodeAt(0).toString(16);
+                return "%" + c.charCodeAt(0).toString(16);
             });
         }
 
@@ -156,7 +156,7 @@ namespace Blend.ajax {
             Blend.forEach(data, function(value: any, key: string) {
                 payload.push(`${key}=${me.encodeURIComponent(value)}`);
             });
-            return payload.join('&').trim();
+            return payload.join("&").trim();
         }
 
         /**
@@ -165,9 +165,9 @@ namespace Blend.ajax {
         protected createURI(data: DictionaryInterface = {}) {
             var me = this;
             data = data || {};
-            data['_c'] = me.callID;
+            data["_c"] = me.callID;
             return (me.url
-                + (me.url.indexOf('?') === -1 ? '?' : '&')
+                + (me.url.indexOf("?") === -1 ? "?" : "&")
                 + me.urlEncodeData(data));
         }
 

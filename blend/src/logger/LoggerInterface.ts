@@ -15,7 +15,7 @@
  */
 
 /**
- * @interface 
+ * @interface
  * Interface for implementing a logger component
  */
 interface LoggerInterface {
@@ -32,5 +32,5 @@ interface LoggerInterface {
 
     info(message: string, context?: any): any;
 
-    debug(message: string, context?: any): any
+    debug(message: string, context?: any): any;
 }

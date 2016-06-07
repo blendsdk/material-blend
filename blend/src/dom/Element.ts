@@ -30,7 +30,7 @@ namespace Blend.dom {
 
         private el: HTMLElement;
         private pixelRe = /px$/;
-        private UNIT: string = 'px';
+        private UNIT: string = "px";
         private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
         private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
         public classList: Blend.dom.ClassList;
@@ -93,13 +93,13 @@ namespace Blend.dom {
          * Retuns the computed bounds
          */
         public getBounds(): ElementBoundsInterface {
-            var bounds: ElementBoundsInterface = this.getStyle(['top', 'left', 'width', 'height', 'visible']),
+            var bounds: ElementBoundsInterface = this.getStyle(["top", "left", "width", "height", "visible"]),
                 borderSize: StyleInterface;
 
             if (Blend.Runtime.IE && Blend.Runtime.IEVersion < 12) {
-                borderSize = this.getStyle(['border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width']);
-                bounds.width += <any>borderSize['border-left-width'] + <any>borderSize['border-right-width'];
-                bounds.height += <any>borderSize['border-top-width'] + <any>borderSize['border-bottom-width'];
+                borderSize = this.getStyle(["border-top-width", "border-right-width", "border-bottom-width", "border-left-width"]);
+                bounds.width += <any>borderSize["border-left-width"] + <any>borderSize["border-right-width"];
+                bounds.height += <any>borderSize["border-top-width"] + <any>borderSize["border-bottom-width"];
                 return bounds;
             } else {
                 return bounds;
@@ -113,7 +113,7 @@ namespace Blend.dom {
             var me = this;
             if (styles) {
                 Blend.forEach(styles, function(v: any, k: string) {
-                    if (v === null || (<string>v) === 'auto') {
+                    if (v === null || (<string>v) === "auto") {
                         me.styleList.unset(k);
                     } else {
                         me.styleList.set(k, v);
@@ -165,7 +165,7 @@ namespace Blend.dom {
          * Removes one of more CSS classes from this element
          */
         public removeCssClass(css: string | string[]): Blend.dom.Element {
-            var me = this, t: Array<string> = [];;
+            var me = this, t: Array<string> = [];
             me.classList.remove(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
             return this;
@@ -176,7 +176,7 @@ namespace Blend.dom {
          * CSS names start with the given request
          */
         public removeCssClassLike(css: string | string[]): Blend.dom.Element {
-            var me = this, t: Array<string> = [];;
+            var me = this, t: Array<string> = [];
             me.classList.removeLike(<Array<string>>Blend.wrapInArray(css));
             me.classList.serializeTo(me.el);
             return this;
@@ -206,7 +206,7 @@ namespace Blend.dom {
          * Sets the data-* attribute for this element
          */
         public setData(name: string, value: any): Blend.dom.Element {
-            this.el.setAttribute('data-' + name, value);
+            this.el.setAttribute("data-" + name, value);
             return this;
         }
 
@@ -216,7 +216,7 @@ namespace Blend.dom {
          */
         public getData(name: string, defaultValue: any = null): any {
             var me = this,
-                attr: string = 'data-' + name;
+                attr: string = "data-" + name;
             return me.el.hasAttribute(attr) ? me.el.getAttribute(attr) : defaultValue;
         }
 
@@ -225,7 +225,7 @@ namespace Blend.dom {
          */
         public scrollState(state: Blend.eScrollState): Blend.dom.Element {
             var me = this;
-            me.setData('scroll', Blend.eScrollState[<number>state]);
+            me.setData("scroll", Blend.eScrollState[<number>state]);
             return this;
         }
 
@@ -233,7 +233,7 @@ namespace Blend.dom {
          * Enables/Disables the text select state of this element
          */
         public selectable(state: boolean) {
-            this.setData('selectable', state === true ? 'on' : 'off');
+            this.setData("selectable", state === true ? "on" : "off");
         }
 
         /**
@@ -279,9 +279,9 @@ namespace Blend.dom {
                 me.setStyle({ padding: <number>value });
             } else {
                 me.setStyle({
-                    'padding-top': (<PaddingInterface>value).top || null,
-                    'padding-right': (<PaddingInterface>value).right || null,
-                    'padding-bottom': (<PaddingInterface>value).bottom || null,
+                    "padding-top": (<PaddingInterface>value).top || null,
+                    "padding-right": (<PaddingInterface>value).right || null,
+                    "padding-bottom": (<PaddingInterface>value).bottom || null,
                     "padding-left": (<PaddingInterface>value).left || null
                 });
             }
@@ -301,28 +301,28 @@ namespace Blend.dom {
         public static create(conf: CreateElementInterface | Blend.dom.ElementConfigBuilder, elCallback?: Function, elCallbackScope?: any): Blend.dom.Element {
             var me = this, config: CreateElementInterface;
             if (Blend.isInstanceOf(conf, Blend.dom.ElementConfigBuilder)) {
-                config = (<Blend.dom.ElementConfigBuilder>conf).getConfig()
+                config = (<Blend.dom.ElementConfigBuilder>conf).getConfig();
             } else {
                 config = <CreateElementInterface>conf;
             }
             if (Blend.isObject(config)) {
-                var el: HTMLElement = document.createElement(config.tag || 'div');
+                var el: HTMLElement = document.createElement(config.tag || "div");
                 for (var cfg in config) {
                     var val: any = (<any>config)[cfg];
-                    if (cfg !== 'tag' && cfg !== 'scope' && cfg !== 'oid') {
-                        if (cfg === 'cls') {
-                            cfg = 'class';
+                    if (cfg !== "tag" && cfg !== "scope" && cfg !== "oid") {
+                        if (cfg === "cls") {
+                            cfg = "class";
                             if (Blend.isArray(val)) {
-                                val = <Array<string>>val.join(' ');
+                                val = <Array<string>>val.join(" ");
                             }
-                        } else if (cfg === 'innerHTML') {
+                        } else if (cfg === "innerHTML") {
                             cfg = null;
                             el.innerHTML = val;
-                        } else if (cfg === 'text') {
+                        } else if (cfg === "text") {
                             cfg = null;
                             var textNd = document.createTextNode(val);
                             el.appendChild(textNd);
-                        } else if (cfg === 'listeners' && Blend.isObject(val)) {
+                        } else if (cfg === "listeners" && Blend.isObject(val)) {
                             cfg = null;
                             for (var e in val) {
                                 var handler = val[e];
@@ -330,7 +330,7 @@ namespace Blend.dom {
                                     handler.apply(config.scope || window, arguments);
                                 });
                             }
-                        } else if (cfg === 'children') {
+                        } else if (cfg === "children") {
                             if (!Blend.isArray(val)) {
                                 val = [val];
                             }
@@ -346,15 +346,15 @@ namespace Blend.dom {
                                 }
                             });
                             cfg = null;
-                        } else if (cfg === 'data') {
+                        } else if (cfg === "data") {
                             Blend.forEach(val, function(v: any, k: string) {
-                                el.setAttribute('data-' + k, v);
+                                el.setAttribute("data-" + k, v);
                             });
                             cfg = null;
-                        } else if (cfg === 'style') {
+                        } else if (cfg === "style") {
                             cfg = null;
                             Blend.getElement(el).setStyle(<StyleInterface>val);
-                        } else if (cfg == 'selectable') {
+                        } else if (cfg === "selectable") {
                             if (val === false) {
                                 Blend.getElement(el).selectable(false);
                             }
@@ -365,7 +365,7 @@ namespace Blend.dom {
                         }
                     }
                 }
-                var wEl = new Blend.dom.Element(el)
+                var wEl = new Blend.dom.Element(el);
                 if (elCallback && config.oid) {
                     elCallback.apply(elCallbackScope || window, [wEl, config.oid]);
                 }

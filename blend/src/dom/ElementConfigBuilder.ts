@@ -27,13 +27,13 @@ namespace Blend.dom {
             if (Blend.isString(config)) {
                 cfg = {
                     tag: <string>config
-                }
+                };
             } else {
                 cfg = <CreateElementInterface>config;
             }
             me.config = Blend.apply(
                 {
-                    tag: 'div',
+                    tag: "div",
                     cls: [],
                     children: [],
                     listeners: {},
@@ -78,7 +78,7 @@ namespace Blend.dom {
         }
 
         public addCSS(css: Array<string>): Blend.dom.ElementConfigBuilder {
-            var me = this
+            var me = this;
             css.forEach(function(itm: string) {
                 (<Array<string>>me.config.cls).push(itm);
             });

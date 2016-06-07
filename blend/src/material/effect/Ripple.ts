@@ -24,9 +24,9 @@
 /// <reference path="../../dom/Element.ts" />
 
 interface RippleInterface extends DictionaryInterface {
-    element?: Blend.dom.Element,
-    center?: boolean,
-    color?: string | Blend.dom.Element
+    element?: Blend.dom.Element;
+    center?: boolean;
+    color?: string | Blend.dom.Element;
 }
 
 namespace Blend.material.effect {
@@ -52,37 +52,37 @@ namespace Blend.material.effect {
             me.element = config.element || null;
             if (me.element !== null) {
                 me.bindEvents();
-                me.setRippleColor(config.color || null)
+                me.setRippleColor(config.color || null);
             }
         }
 
         protected bindEvents() {
             var me = this;
-            if (me.element.getProperty('hasRipple', false) === false) {
-                me.element.addEventListener('mousedown', Blend.bind(me, me.handleDownEvent));
-                me.element.addEventListener('mouseup mouseleave', Blend.bind(me, me.handleHandleUpEvent));
-                me.element.setProperty('hasRipple', true);
+            if (me.element.getProperty("hasRipple", false) === false) {
+                me.element.addEventListener("mousedown", Blend.bind(me, me.handleDownEvent));
+                me.element.addEventListener("mouseup mouseleave", Blend.bind(me, me.handleHandleUpEvent));
+                me.element.setProperty("hasRipple", true);
                 me.createRippleContainer();
             }
         }
 
         protected createRippleContainer() {
             var me = this,
-                copyStyles = me.element.getStyle(['border-radius', 'border-color', 'border-width', 'border-style']);
+                copyStyles = me.element.getStyle(["border-radius", "border-color", "border-width", "border-style"]);
             me.container = me.element.append(Blend.createElement({
-                cls: 'mb-ripple-container',
+                cls: "mb-ripple-container",
                 style: copyStyles
             }));
         }
 
         protected handleDownEvent(evt: Event) {
-            var me = this, top: number, left: number, mouseEvent: MouseEvent
+            var me = this, top: number, left: number, mouseEvent: MouseEvent;
             if (me.center === true) {
                 left = me.container.getEl().clientWidth / 2;
                 top = me.container.getEl().clientHeight / 2;
             } else {
                 mouseEvent = <MouseEvent>evt;
-                if (mouseEvent.srcElement != me.container.getEl()) {
+                if (mouseEvent.srcElement !== me.container.getEl()) {
                     var crect = me.container.getEl().getBoundingClientRect();
                     left = mouseEvent.clientX - crect.left;
                     top = mouseEvent.clientY - crect.top;
@@ -91,7 +91,7 @@ namespace Blend.material.effect {
                     top = (<MouseEvent>evt).offsetY;
                 }
             }
-            me.initiateRipple(left, top)
+            me.initiateRipple(left, top);
         }
 
         protected handleHandleUpEvent() {
@@ -99,7 +99,7 @@ namespace Blend.material.effect {
             while (me.removeQueue.length !== 0) {
                 var ripple = me.removeQueue.splice(0, 1)[0];
                 setTimeout(function() {
-                    ripple.removeCssClass(['mb-ripple-active']);
+                    ripple.removeCssClass(["mb-ripple-active"]);
                     setTimeout(function() {
                         ripple.getEl().parentNode.removeChild(ripple.getEl());
                     }, 2000);
@@ -110,7 +110,7 @@ namespace Blend.material.effect {
         protected initiateRipple(left: number, top: number) {
             var me = this,
                 ripple = me.container.append(Blend.createElement({
-                    cls: ['mb-ripple'],
+                    cls: ["mb-ripple"],
                     style: {
                         top: top,
                         left: left
@@ -124,12 +124,12 @@ namespace Blend.material.effect {
             ripple.setStyle({
                 width: size,
                 height: size,
-                'background-color': me.color,
+                "background-color": me.color,
             });
-            ripple.addCssClass(['mb-ripple-placed']);
+            ripple.addCssClass(["mb-ripple-placed"]);
             setTimeout(function() {
-                ripple.addCssClass(['mb-ripple-scaled']);
-                ripple.addCssClass(['mb-ripple-active']);
+                ripple.addCssClass(["mb-ripple-scaled"]);
+                ripple.addCssClass(["mb-ripple-active"]);
             }, 5);
             me.removeQueue.push(ripple);
         }
@@ -138,10 +138,10 @@ namespace Blend.material.effect {
          * Converts a hex color to a RGB format
          */
         private hexToRgb(value: string): string {
-            if (Blend.isString(value) && value.length !== 0 && value[0] === '#') {
+            if (Blend.isString(value) && value.length !== 0 && value[0] === "#") {
                 if (value.length === 4) {
-                    var t = value.split('');
-                    value = '#' + t[1] + t[1] + t[2] + t[2] + t[3] + t[3]
+                    var t = value.split("");
+                    value = "#" + t[1] + t[1] + t[2] + t[2] + t[3] + t[3];
                 }
                 if (value.length === 7) {
                     var p = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
@@ -154,15 +154,15 @@ namespace Blend.material.effect {
         protected setRippleColor(color: string | Blend.dom.Element) {
             var me = this,
                 opacity: number = 0.95,
-                prop = 'color',
+                prop = "color",
                 clr: string,
-                defaultColor = 'rgb(0,0,0)';
+                defaultColor = "rgb(0,0,0)";
 
             if (Blend.isInstanceOf(color, Blend.dom.Element)) {
                 clr = <string>(<Blend.dom.Element>color).getStyle(prop)[prop];
             } else {
                 clr = <string>color;
-                if (clr && clr.length !== 0 && clr[0].inArray(['.', '#'])) {
+                if (clr && clr.length !== 0 && clr[0].inArray([".", "#"])) {
                     var el = Blend.selectElement(clr, me.element);
                     if (el) {
                         clr = <string>el.getStyle(prop)[prop];
@@ -171,7 +171,7 @@ namespace Blend.material.effect {
                 clr = me.hexToRgb(clr || defaultColor);
             }
 
-            var t = clr.replace(/\brgba\b|\brgb\b|\s|\(|\)/g, '').split(',');
+            var t = clr.replace(/\brgba\b|\brgb\b|\s|\(|\)/g, "").split(",");
             if (t.length >= 3) {
                 clr = `rgba(${t[0]},${t[1]},${t[2]},${opacity})`;
             } else {

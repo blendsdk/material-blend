@@ -25,14 +25,14 @@ namespace Blend.dom {
         public constructor(htmlElement: HTMLElement) {
             var me = this;
             me.list = [];
-            me.initList((htmlElement.getAttribute('class') || '').trim());
+            me.initList((htmlElement.getAttribute("class") || "").trim());
         }
 
         private initList(css: string) {
             var me = this;
-            (css === "" ? [] : css.split(' ')).forEach(function(c: string) {
+            (css === "" ? [] : css.split(" ")).forEach(function(c: string) {
                 c = c.trim();
-                if (c.length !== 0 && c !== '') {
+                if (c.length !== 0 && c !== "") {
                     me.list.push(c);
                 }
             });
@@ -42,14 +42,14 @@ namespace Blend.dom {
             var me = this,
                 css = me.toString();
             if (css !== null && css !== "" && css.length !== 0) {
-                htmlElement.setAttribute('class', css);
+                htmlElement.setAttribute("class", css);
             } else {
-                htmlElement.removeAttribute('class');
+                htmlElement.removeAttribute("class");
             }
         }
 
         public removeLike(list: Array<string>) {
-            var me = this, i = -1,n:Array<string> = [];
+            var me = this, i = -1, n: Array<string> = [];
             list.forEach(function(r: string) {
                 me.list.forEach(function(i: string) {
                     if (!i.startsWith(r)) {
@@ -76,7 +76,7 @@ namespace Blend.dom {
                 if (!me.has(i)) {
                     me.list.push(i);
                 }
-            })
+            });
         }
 
         public clear() {
@@ -88,7 +88,7 @@ namespace Blend.dom {
         }
 
         public toString(): string {
-            var r = this.list.join(' ').trim();
+            var r = this.list.join(" ").trim();
             return r === "" ? null : r;
         }
 

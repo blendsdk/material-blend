@@ -18,8 +18,8 @@
 /// <reference path="Material.ts" />
 
 interface RectangleInterface extends MaterialInterface {
-    color?: string
-    border?: boolean
+    color?: string;
+    border?: boolean;
 }
 
 namespace Blend.material {
@@ -35,10 +35,10 @@ namespace Blend.material {
             me.setBounds({
                 width: config.width || 100,
                 height: config.height || 100
-            })
+            });
             me.setStyle({
-                'background-color': config.color || 'transparent',
-                'border': config.border == true ? '1px solid #000' : null
+                "background-color": config.color || "transparent",
+                "border": config.border === true ? "1px solid #000" : null
             });
             me.layoutCount = 0;
         }
@@ -46,21 +46,19 @@ namespace Blend.material {
         protected layoutView() {
             var me = this;
             me.layoutCount++;
-            //me.log();
         }
 
         protected finalizeRender() {
             var me = this;
             super.finalizeRender();
-            me.addCssClass('m-rectangle');
+            me.addCssClass("m-rectangle");
         }
 
         private log() {
             var me = this;
             me.element.setHtml(`<pre>Layouts: ${me.layoutCount}</pre>`);
         }
-
     }
 
-    registerClassWithAlias('mb.rect', Blend.material.Rectangle);
+    registerClassWithAlias("mb.rect", Blend.material.Rectangle);
 }

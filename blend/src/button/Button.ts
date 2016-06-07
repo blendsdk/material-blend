@@ -38,48 +38,48 @@ namespace Blend.button {
         public constructor(config: ButtonInterface = {}) {
             super(config);
             var me = this;
-            me.buttonTypes = ['flat', 'raised', 'fab', 'fab-mini', 'round-flat', 'round-raised'];
+            me.buttonTypes = ["flat", "raised", "fab", "fab-mini", "round-flat", "round-raised"];
             me.fabPositions = [
-                'top-right',
-                'top-center',
-                'top-left',
-                'center-right',
-                'center-center',
-                'center-left',
-                'bottom-right',
-                'bottom-center',
-                'bottom-left',
-                'relative'
+                "top-right",
+                "top-center",
+                "top-left",
+                "center-right",
+                "center-center",
+                "center-left",
+                "bottom-right",
+                "bottom-center",
+                "bottom-left",
+                "relative"
             ];
 
             me.iconSizes = {
-                'small': 18,
-                'medium': 24,
-                'large': 36,
-                'xlarge': 48
+                "small": 18,
+                "medium": 24,
+                "large": 36,
+                "xlarge": 48
             };
 
             me.config = {
-                text: config.text || '',
+                text: config.text || "",
                 icon: config.icon || null,
-                iconFamily: config.iconFamily || 'material-icons',
+                iconFamily: config.iconFamily || "material-icons",
                 iconAlign: me.getCheckIconAlign(config.iconAlign),
                 buttonType: me.getCheckButtonType(config.buttonType),
                 fabPosition: me.getCheckFabPosition(config.fabPosition),
-                theme: config.theme || 'default',
+                theme: config.theme || "default",
                 disabled: config.disabled === true ? true : false,
                 iconSize: config.iconSize || null,
                 ripple: config.ripple === false ? false : true
-            }
+            };
         }
 
         public setState(value: boolean): Blend.button.Button {
             var me = this;
             me.config.disabled = !value;
             if (value === true) {
-                me.element.removeAttribute('disabled');
+                me.element.removeAttribute("disabled");
             } else {
-                me.element.setAttribute('disabled', true);
+                me.element.setAttribute("disabled", true);
             }
             return me;
         }
@@ -90,32 +90,32 @@ namespace Blend.button {
 
         private getCheclIconSize(iconSize: string): string {
             var me = this;
-            iconSize = iconSize || 'default';
-            iconSize = iconSize.inArray(Object.keys(me.iconSizes)) ? iconSize : 'default';
-            return iconSize === 'default' ? null : iconSize;
+            iconSize = iconSize || "default";
+            iconSize = iconSize.inArray(Object.keys(me.iconSizes)) ? iconSize : "default";
+            return iconSize === "default" ? null : iconSize;
         }
 
         private getCheckFabPosition(fabPosition: string): string {
             var me = this;
-            fabPosition = fabPosition || 'relative';
-            fabPosition = fabPosition.inArray(me.fabPositions) ? fabPosition : 'relative';
-            return fabPosition === 'relative' ? null : fabPosition;
+            fabPosition = fabPosition || "relative";
+            fabPosition = fabPosition.inArray(me.fabPositions) ? fabPosition : "relative";
+            return fabPosition === "relative" ? null : fabPosition;
         }
 
         private getCheckIconAlign(iconAlign: string): string {
-            iconAlign = iconAlign || 'left';
-            return iconAlign.inArray(['left', 'right']) ? iconAlign : 'left';
+            iconAlign = iconAlign || "left";
+            return iconAlign.inArray(["left", "right"]) ? iconAlign : "left";
         }
 
         private getCheckButtonType(buttonType: string): string {
             var me = this;
-            buttonType = (buttonType || 'flat');
-            return buttonType.inArray(me.buttonTypes) ? buttonType : 'flat';
+            buttonType = (buttonType || "flat");
+            return buttonType.inArray(me.buttonTypes) ? buttonType : "flat";
         }
 
         public setTheme(theme: string): Blend.button.Button {
             var me = this;
-            me.config.theme = theme || 'default';
+            me.config.theme = theme || "default";
             me.performLayout();
             return me;
         }
@@ -123,7 +123,7 @@ namespace Blend.button {
         public setButtonType(buttonType: string): Blend.button.Button {
             var me = this;
             me.config.buttonType = me.getCheckButtonType(buttonType);
-            me.element.clearCssClass().addCssClass(['mb-btn']);
+            me.element.clearCssClass().addCssClass(["mb-btn"]);
             me.performLayout();
             return me;
         }
@@ -138,7 +138,7 @@ namespace Blend.button {
 
         public setIconSize(iconSize: string): Blend.button.Button {
             var me = this,
-                sizeCss = 'mb-btn-icon-size';
+                sizeCss = "mb-btn-icon-size";
             me.config.iconSize = me.getCheclIconSize(iconSize);
             me.element.removeCssClassLike([sizeCss]);
             if (iconSize !== null) {
@@ -175,11 +175,11 @@ namespace Blend.button {
                 bothCls: string = `mb-btn-${me.config.buttonType}-both`,
                 textOnlyCls: string = `mb-btn-${me.config.buttonType}-text-only`,
                 iconOnlyCls: string = `mb-btn-${me.config.buttonType}-icon-only`,
-                textIconCls: string = 'mb-btn-inner-texticon',
-                iconTextCls: string = 'mb-btn-inner-icontext',
+                textIconCls: string = "mb-btn-inner-texticon",
+                iconTextCls: string = "mb-btn-inner-icontext",
                 hasIcon: boolean = me.config.icon !== null,
-                hasText: boolean = (me.config.text || '').trim() !== '',
-                roundOrFabButton: boolean = me.config.buttonType.indexOf('round') !== -1 || me.config.buttonType.indexOf('fab') !== -1
+                hasText: boolean = (me.config.text || "").trim() !== "",
+                roundOrFabButton: boolean = me.config.buttonType.indexOf("round") !== -1 || me.config.buttonType.indexOf("fab") !== -1;
 
             me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls, themeCls]);
             me.wrapperElement.removeCssClass([textIconCls, iconTextCls]);
@@ -188,10 +188,10 @@ namespace Blend.button {
                 hasText = false;
                 if (!hasIcon) {
                     hasIcon = true;
-                    me.setIcon('mood');
+                    me.setIcon("mood");
                 }
                 if (me.config.fabPosition && me.isFab()) {
-                    me.setFabPosition(me.config.fabPosition)
+                    me.setFabPosition(me.config.fabPosition);
                 }
                 if (me.isRound()) {
                     me.setIconSize(me.config.iconSize);
@@ -202,9 +202,9 @@ namespace Blend.button {
 
             if (hasText && hasIcon) {
                 me.element.addCssClass([bothCls]);
-                if (me.config.iconAlign === 'left') {
+                if (me.config.iconAlign === "left") {
                     me.wrapperElement.addCssClass(iconTextCls);
-                } else if (me.config.iconAlign === 'right') {
+                } else if (me.config.iconAlign === "right") {
                     me.wrapperElement.addCssClass(textIconCls);
                 }
             } else if (hasText) {
@@ -228,56 +228,56 @@ namespace Blend.button {
 
         protected notifyClick(evt: Event) {
             var me = this;
-            me.fireEvent('click', evt);
+            me.fireEvent("click", evt);
         }
 
         protected initEvents() {
             var me = this;
-            me.element.addEventListener('click', me.notifyClick.bind(me));
+            me.element.addEventListener("click", me.notifyClick.bind(me));
         }
 
         /**
          * Check if this button is a Floating Action Button
          */
         protected isFab(): boolean {
-            return this.config.buttonType.indexOf('fab') !== -1;
+            return this.config.buttonType.indexOf("fab") !== -1;
         }
 
         /**
          * Check if this button is either a round-flat or round-raised
          */
         protected isRound(): boolean {
-            return this.config.buttonType.indexOf('round') !== -1;
+            return this.config.buttonType.indexOf("round") !== -1;
         }
 
         protected render(): Blend.dom.Element {
             var me = this;
 
-            var buttonEl = new Blend.dom.ElementConfigBuilder('button')
-                .addCSS(['mb-btn']);
+            var buttonEl = new Blend.dom.ElementConfigBuilder("button")
+                .addCSS(["mb-btn"]);
 
-            var innerEl = new Blend.dom.ElementConfigBuilder('span')
-                .setOID('wrapperElement')
-                .addCSS(['mb-btn-inner']);
+            var innerEl = new Blend.dom.ElementConfigBuilder("span")
+                .setOID("wrapperElement")
+                .addCSS(["mb-btn-inner"]);
 
-            var txtEl = new Blend.dom.ElementConfigBuilder('span')
-                .setOID('textElement')
-                .addCSS(['mb-btn-text'])
+            var txtEl = new Blend.dom.ElementConfigBuilder("span")
+                .setOID("textElement")
+                .addCSS(["mb-btn-text"])
                 .setText(me.config.text);
 
-            var iconEl = new Blend.dom.ElementConfigBuilder('i')
-                .setOID('iconElement')
-                .addCSS(['mb-btn-icon', me.config.iconFamily])
+            var iconEl = new Blend.dom.ElementConfigBuilder("i")
+                .setOID("iconElement")
+                .addCSS(["mb-btn-icon", me.config.iconFamily]);
 
             if (me.config.icon !== null) {
                 iconEl.setText(me.config.icon);
             }
-            if (me.config.iconAlign === 'left') {
+            if (me.config.iconAlign === "left") {
                 innerEl.addChild(iconEl);
                 innerEl.addChild(txtEl);
             }
 
-            if (me.config.iconAlign === 'right') {
+            if (me.config.iconAlign === "right") {
                 innerEl.addChild(txtEl);
                 innerEl.addChild(iconEl);
             }
