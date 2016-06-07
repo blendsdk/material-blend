@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import fs = require('fs');
 import fse = require('fs-extra');
@@ -117,26 +132,28 @@ export class BlendBuilder extends UtilityModule.Utility {
     /**
      * Places copyright headers in source files
      */
-    protected copyrightFiles = function (folder: string, extensions: Array<string> = null) {
+    protected copyrightFiles = function (folders: Array<string>, extensions: Array<string> = null) {
         var me = this,
             count = 0,
             header = fs.readFileSync(me.makePath(__dirname + '/../copyright.txt')),
             copyrightKey = 'http://www.apache.org/licenses/LICENSE-2.0';
         me.print('Looking for files to copyright, ');
         extensions = extensions || ['.ts', 'scss'];
-        var files: Array<String> = me.findFiles(folder, function (fname: string) {
-            var ext = path.extname(fname);
-            return extensions.indexOf(ext) !== -1
-                && fname.indexOf(path.sep + 'typings' + path.sep) === -1
-                && fname.indexOf(me.blendExternalPath) === -1;
-        });
-        files.forEach(function (fname: string) {
-            var contents = fs.readFileSync(fname).toString();
-            if (contents.indexOf(copyrightKey) === -1) {
-                contents = header + "\n\n" + contents;
-                fs.writeFileSync(fname, contents);
-                me.print('.');
-            }
+        folders.forEach(function (folder: string) {
+            var files: Array<String> = me.findFiles(folder, function (fname: string) {
+                var ext = path.extname(fname);
+                return extensions.indexOf(ext) !== -1
+                    && fname.indexOf(path.sep + 'typings' + path.sep) === -1
+                    && fname.indexOf(me.blendExternalPath) === -1;
+            });
+            files.forEach(function (fname: string) {
+                var contents = fs.readFileSync(fname).toString();
+                if (contents.indexOf(copyrightKey) === -1) {
+                    contents = header + "\n\n" + contents;
+                    fs.writeFileSync(fname, contents);
+                    me.print('.');
+                }
+            });
         });
         me.printDone();
     }
@@ -153,7 +170,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             if (errors) {
                 me.println(colors.red('ERROR: ' + errors));
             } else {
-                me.println(colors.green('ALL DONE.'));
+                me.printAllDone();
             }
         }
 
@@ -211,7 +228,8 @@ export class BlendBuilder extends UtilityModule.Utility {
         if (command === buildFrameworkCommand) {
             me.buildFramework();
         } else if (command === copyrightHeaderCommand) {
-            me.copyrightFiles(me.blendPath);
+            me.copyrightFiles([me.blendPath, me.makePath(__dirname + '/../src')]);
+            me.printAllDone();
         } else if (command == makedistCommand) {
             me.createDist();
         }
