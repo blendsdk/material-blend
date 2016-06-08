@@ -7,6 +7,7 @@
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",
     "node": "registry:dt/node#6.0.0+20160602155235",
     "source-map": "registry:dt/source-map#0.0.0+20160317120654",
-    "uglify-js": "registry:dt/uglify-js#2.6.1+20160316155526"
+    "uglify-js": "registry:dt/uglify-js#2.6.1+20160316155526",
+    "uglifycss": "registry:dt/uglifycss#0.0.20+20160608082720"
   }
 }
