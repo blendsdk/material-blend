@@ -34,6 +34,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     protected testPath: string;
     protected clientRepo: string;
     protected clientRepoFolder: string;
+    protected distributeVersion: string;
 
     public constructor(rootFolder: string) {
         super();
@@ -335,7 +336,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     /**
      * Creates a new distribution
      */
-    private createDist() {
+    private createDist(version: string) {
         var me = this,
             callback = function(errors: string) {
                 if (errors) {
@@ -365,7 +366,13 @@ export class BlendBuilder extends UtilityModule.Utility {
             argv = require("yargs")
                 .command(buildFrameworkCommand, "Build the Framework and the Tests")
                 .command(copyrightHeaderCommand, "Add coptyright headers to files")
-                .command(makedistCommand, "Create a distribution")
+                .command(makedistCommand, "Create a distribution", function(yargs: any) {
+                    return yargs.option("v", {
+                        alias: "version",
+                        demand: ["v"],
+                        describe: "Version and tag to publish"
+                    });
+                })
                 .demand(1)
                 .epilog("Copyright 2016 TrueSoftware B.V.")
                 .argv;
@@ -377,7 +384,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyrightFiles([me.blendPath, me.makePath(__dirname + "/../src")]);
             me.printAllDone();
         } else if (command === makedistCommand) {
-            me.createDist();
+            me.createDist(argv.version);
         }
 
     }
