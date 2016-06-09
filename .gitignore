@@ -6,3 +6,4 @@ tests/testrunner/blend
 tests/testrunner/sources
 old
 *.log
+npm-debug*
