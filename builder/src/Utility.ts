@@ -49,13 +49,13 @@ export abstract class Utility {
         me.minCompassVersion = "1.0.3";
         me.minTypeScriptVersion = "1.8.10";
         me.minTSLintVersion = "3.10.2";
-        me.utilityPackage = me.readNpmPackage(__dirname + "/../package.json");
+        me.utilityPackage = me.readNpmPackage(__dirname + "/../");
 
     }
 
     protected readNpmPackage(path: string): NpmPackageInterface {
         var me = this;
-        return <NpmPackageInterface>JSON.parse(fs.readFileSync(me.makePath(path)).toString());
+        return <NpmPackageInterface>JSON.parse(fs.readFileSync(me.makePath(path + "/package.json")).toString());
     }
 
     /**
@@ -446,6 +446,24 @@ export abstract class Utility {
                 callback.apply(me, [stderr.toString()]);
             }
         });
+    }
+
+    protected gitAddAndCommit(repoFolder: string, message: string, callback: Function) {
+        var me = this,
+            command = `git add . ; git commit -a -m"${message}"`;
+        me.runShellCommandIn(command, repoFolder, callback);
+    }
+
+    protected npmBumpAndTag(semver: string, folder: string, message: string, callback: Function) {
+        var me = this,
+            command = `npm version ${semver} --message "${message}"`;
+        me.runShellCommandIn(command, folder, callback);
+    }
+
+    protected bumpPackageVersion(semver: string, folder: string, callback: Function) {
+        var me = this,
+            command = `npm version ${semver} --no-git-tag-version`;
+        me.runShellCommandIn(command, folder, callback);
     }
 
 }

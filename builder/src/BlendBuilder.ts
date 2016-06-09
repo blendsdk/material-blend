@@ -34,7 +34,8 @@ export class BlendBuilder extends UtilityModule.Utility {
     protected testPath: string;
     protected clientRepo: string;
     protected clientRepoFolder: string;
-    protected distributeVersion: string;
+    protected distributeVersionSemver: string;
+    protected frameworkVersion: string;
 
     public constructor(rootFolder: string) {
         super();
@@ -288,6 +289,8 @@ export class BlendBuilder extends UtilityModule.Utility {
                 me.cleanAndAddCopyright(minCssFileName);
             });
 
+            fs.writeFileSync(me.makePath(me.distPath + "/VERSION"), me.frameworkVersion);
+
             me.printDone();
             callback.apply(me, [null]);
         } catch (e) {
@@ -325,12 +328,60 @@ export class BlendBuilder extends UtilityModule.Utility {
 
     private updatBlendClient(callback: Function) {
         var me = this,
-            destFolder = me.makePath(me.clientRepoFolder + "/resources/blend");
-        me.print(`Updateding  BlendClient, `);
+            resoureFolder = me.makePath(me.clientRepoFolder + "/resources"),
+            destFolder = me.makePath(resoureFolder + "/blend");
+
+        me.print("Updateding  BlendClient, ");
+
+        if (!me.dirExists(me.makePath(resoureFolder))) {
+            fse.mkdirSync(resoureFolder);
+        }
+
         me.reCreateFolder(destFolder);
         fse.copySync(me.distPath, destFolder);
-        me.printDone();
-        callback.apply(me, [null]);
+
+        // Commit the changes made to the resources folder
+        var gitCommitUpdate = function(cb: Function) {
+            me.gitAddAndCommit(me.clientRepoFolder, "Updated blend distribution", function(errors: string) {
+                if (!errors) {
+                    cb.apply(me, [null]);
+                } else {
+                    cb.apply(me, [errors]);
+                }
+            });
+        };
+
+        // npm version the client
+        var bumpVersion = function(cb: Function) {
+            var message = "Upgrade to version %s";
+            me.npmBumpAndTag(me.distributeVersionSemver, me.clientRepoFolder, message, function(errors: string) {
+                if (!errors) {
+                    cb.apply(me, [null]);
+                } else {
+                    cb.apply(me, [errors]);
+                }
+            });
+        };
+
+        var pushAndPublish = function(cb: Function) {
+            me.runShellCommandIn("git push origin master --tags", me.clientRepoFolder, function() {
+                me.runShellCommandIn("npm publish", me.clientRepoFolder, cb);
+            });
+        };
+
+        me.runSerial([
+            gitCommitUpdate
+            , bumpVersion
+            , pushAndPublish
+        ], function(errors: string) {
+            if (!errors) {
+                me.printDone();
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors]);
+            }
+        });
+
     }
 
     /**
@@ -342,16 +393,57 @@ export class BlendBuilder extends UtilityModule.Utility {
                 if (errors) {
                     me.println(colors.red("ERROR: " + errors));
                 } else {
+                    me.println("Version: " + me.frameworkVersion);
                     me.printAllDone();
                 }
+            },
+            bumpFrameworkVersion = function(callback: Function) {
+
+                me.bumpPackageVersion(version, me.rootFolder, function() {
+                    var bumpVersion: string;
+                    bumpVersion = me.readNpmPackage(me.rootFolder).version;
+
+                    // updating the Version.ts file;
+                    var versionFileTs = me.makePath(me.blendSourcePath + "/Version.ts");
+                    var contents = fs.readFileSync(versionFileTs)
+                        .toString()
+                        .split("\n");
+
+                    for (var l = 0; l !== contents.length; l++) {
+                        var line = contents[l];
+                        if (line.indexOf("export var version") !== -1) {
+                            contents[l] = `    export var version = "v${bumpVersion}";`;
+                        }
+                    }
+                    me.frameworkVersion = bumpVersion;
+                    fs.writeFileSync(versionFileTs, contents.join("\n"));
+                });
+
+                callback.apply(me, [null]);
             };
-        me.runSerial([
-            // me.buildFramework,
-            // me.createDistInternal
-            //me.cloneBlendClient,
-            //me.setupBlendClient,
-            me.updatBlendClient
-        ], callback);
+
+
+        me.distributeVersionSemver = version;
+
+        //me.clientRepo = "git@github.com:blendsdk/dev-test.git";
+
+        if (version === "reset") {
+            me.distributeVersionSemver = "patch";
+            me.runSerial([
+                bumpFrameworkVersion
+                , me.buildFramework
+                , me.createDistInternal
+                , me.cloneBlendClient
+                , me.setupBlendClient
+                , me.updatBlendClient
+            ], callback);
+        } else {
+            me.runSerial([
+                bumpFrameworkVersion,
+                me.updatBlendClient
+            ], callback);
+
+        }
     }
 
     /**
