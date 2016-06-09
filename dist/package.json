@@ -1,0 +1,15 @@
+{
+  "name": "material-blend-sdk",
+  "version": "0.0.4",
+  "description": "MaterialBlend SDK: HTML5 Web Application Framework Based On TypeScript And Material Design",
+  "keywords": [
+    "material blend sdk",
+    "materialblend",
+    "blendsdk",
+    "typings",
+    "javascript",
+    "css"
+  ],
+  "author": "Gevik Babakhani (TrueSoftware B.V.)",
+  "license": "Apache-2.0"
+}

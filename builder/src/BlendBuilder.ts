@@ -46,7 +46,7 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.blendSourcePath = me.blendPath + "/src";
         me.blendExternalPath = me.blendPath + "/3rdparty";
         me.testPath = me.rootFolder + "/tests";
-        me.distPath = me.rootFolder + "/dist";
+        me.distPath = me.rootFolder + "/dist/blend";
         me.clientRepo = "git@github.com:blendsdk/material-blend-cli.git";
         me.clientRepoFolder = me.makePath(os.tmpdir() + "/blend-client");
     }
@@ -249,8 +249,8 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.println("Creating new dist");
 
             me.reCreateFolder(me.distPath);
-            fs.mkdirSync(typingsFolder);
-            fs.mkdirSync(webFolder);
+            me.reCreateFolder(typingsFolder);
+            me.reCreateFolder(webFolder);
 
             me.print("Processing typings, ");
             var dtFile = me.makePath(typingsFolder + "/blend.d.ts");
@@ -431,9 +431,6 @@ export class BlendBuilder extends UtilityModule.Utility {
             bumpFrameworkVersion
             , me.buildFramework
             , me.createDistInternal
-            , me.cloneBlendClient
-            , me.setupBlendClient
-            , me.updatBlendClient
         ], callback);
     }
 
