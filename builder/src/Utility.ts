@@ -115,11 +115,11 @@ export abstract class Utility {
     protected findFiles(dir: string, filter: Function): Array<string> {
         var me = this,
             results: Array<string> = [];
-        filter = filter || function(fname: string) {
+        filter = filter || function (fname: string) {
             return true;
         };
         var list = fs.readdirSync(dir);
-        list.forEach(function(file: string) {
+        list.forEach(function (file: string) {
             file = dir + "/" + file;
             var stat = fs.statSync(file);
             if (stat && stat.isDirectory()) {
@@ -140,7 +140,7 @@ export abstract class Utility {
     protected downloadFile(source: string, dest: string, callback: Function) {
         var me = this,
             command = `curl -o "${dest}" "${source}" ${(process.env.http_proxy || null ? " --proxy \"" + process.env.http_proxy + "\"" : "")}`;
-        childProcess.exec(command, { cwd: __dirname }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec(command, { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 if (me.fileExists(dest)) {
                     callback.apply(me, [true]);
@@ -158,8 +158,8 @@ export abstract class Utility {
      */
     protected runSerial(callbacks: Array<Function>, whenDone: Function) {
         var me = this;
-        var makeCall = function(fn: Function, cb: Function) {
-            return function(error: string) {
+        var makeCall = function (fn: Function, cb: Function) {
+            return function (error: string) {
                 if (!error) {
                     if (cb) {
                         fn.apply(me, [cb]);
@@ -188,10 +188,10 @@ export abstract class Utility {
             count = 0,
             errors: Array<string> = [],
             queue: Array<Function> = [];
-        files.forEach(function(file: DownloadInterface) {
+        files.forEach(function (file: DownloadInterface) {
             if (!fs.existsSync(file.local)) {
-                queue.push(function(callback: Function) {
-                    me.downloadFile(file.remote, file.local, function(status: boolean, error: string) {
+                queue.push(function (callback: Function) {
+                    me.downloadFile(file.remote, file.local, function (status: boolean, error: string) {
                         if (status) {
                             count++;
                         } else {
@@ -203,7 +203,7 @@ export abstract class Utility {
             }
         });
 
-        me.runSerial(queue, function() {
+        me.runSerial(queue, function () {
             if (count === files.length) {
                 callback.apply(me, [null]);
             } else {
@@ -228,7 +228,7 @@ export abstract class Utility {
      */
     protected checkCURLSanity(callback: Function) {
         var me = this;
-        childProcess.exec("curl -V", { cwd: __dirname }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec("curl -V", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -242,7 +242,7 @@ export abstract class Utility {
      */
     protected checkTSLintSanity(callback: Function) {
         var me = this;
-        childProcess.exec("tslint -v", { cwd: __dirname }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec("tslint -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 var vers = stdout.trim();
                 var res = compareVersion(me.minTSLintVersion, vers);
@@ -262,7 +262,7 @@ export abstract class Utility {
      */
     protected checkCompassSanity(callback: Function) {
         var me = this;
-        childProcess.exec("compass -v", { cwd: __dirname }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec("compass -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.split("\n");
                 if (parts.length < 1) {
@@ -287,9 +287,9 @@ export abstract class Utility {
     /**
      * Checks if TypeScript exists and it is the correct version.
      */
-    protected checkTypeScriptSanity = function(callback: Function) {
+    protected checkTypeScriptSanity = function (callback: Function) {
         var me = this;
-        childProcess.exec("tsc -v", { cwd: __dirname }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec("tsc -v", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 var parts: Array<string> = stdout.trim().split(" ");
                 if (parts.length !== 2) {
@@ -312,7 +312,7 @@ export abstract class Utility {
      */
     protected buildSources(folder: string, callback: Function) {
         var me = this;
-        childProcess.exec("tsc", { cwd: folder }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec("tsc", { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -369,7 +369,7 @@ export abstract class Utility {
 
     protected findCSSFiles(folder: string): Array<string> {
         var me = this, extname: string;
-        return me.findFiles(folder, function(file: string) {
+        return me.findFiles(folder, function (file: string) {
             extname = path.extname(file);
             return extname === ".css";
         });
@@ -377,7 +377,7 @@ export abstract class Utility {
 
     protected findTSFiles(folder: string): Array<string> {
         var me = this, extname: string;
-        return me.findFiles(folder, function(file: string) {
+        return me.findFiles(folder, function (file: string) {
             extname = path.extname(file);
             return extname === ".ts";
         });
@@ -386,7 +386,7 @@ export abstract class Utility {
     protected lintFile(file: string, callback: Function) {
         var me = this,
             command = `tslint ${file}`;
-        childProcess.exec(command, { cwd: __dirname }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec(command, { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
             me.print(".");
             if (!error) {
                 callback.apply(me, [true]);
@@ -406,8 +406,8 @@ export abstract class Utility {
             errors: Array<string> = [],
             files: Array<string> = me.findTSFiles(folder);
 
-        files.forEach(function(file: string) {
-            me.lintFile(file, function(status: boolean, error: string) {
+        files.forEach(function (file: string) {
+            me.lintFile(file, function (status: boolean, error: string) {
                 if (!status) {
                     errors.push(error);
                 }
@@ -426,7 +426,7 @@ export abstract class Utility {
 
     protected runShellCommandIn(command: string, folder: string, callback: Function) {
         var me = this;
-        childProcess.exec(command, { cwd: folder }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec(command, { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -439,7 +439,7 @@ export abstract class Utility {
         var me = this,
             command = `git clone ${repo} .`;
         me.reCreateFolder(folder);
-        childProcess.exec(command, { cwd: folder }, function(error: Error, stdout: any, stderr: any) {
+        childProcess.exec(command, { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -449,9 +449,10 @@ export abstract class Utility {
     }
 
     protected gitAddAndCommit(repoFolder: string, message: string, callback: Function) {
-        var me = this,
-            command = `git add . ; git commit -a -m"${message}"`;
-        me.runShellCommandIn(command, repoFolder, callback);
+        var me = this;
+        me.runShellCommandIn("git add .", repoFolder, function () {
+            me.runShellCommandIn(`git commit -a -m"${message}"`, repoFolder, callback)
+        });
     }
 
     protected npmBumpAndTag(semver: string, folder: string, message: string, callback: Function) {
