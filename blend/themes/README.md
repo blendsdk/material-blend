@@ -5,6 +5,12 @@ to create custom themes for a MaterialBlend application.
 
 This package is automatically installed by the `material-blend` (npm)
 
+## Install
+
+`npm install material-blend -g`
+
+## Manual Install
+
 Should you event need to install this package manually then you need to
 add `add_import_path` to your config.rb.
 
