@@ -21,6 +21,7 @@ import childProcess = require("child_process");
 import uglify = require("uglify-js");
 import colors = require("colors");
 import * as UtilityModule from "./Utility";
+import os = require("os");
 
 export class BlendBuilder extends UtilityModule.Utility {
 
@@ -31,6 +32,10 @@ export class BlendBuilder extends UtilityModule.Utility {
     protected blendSourcePath: string;
     protected blendExternalPath: string;
     protected testPath: string;
+    protected clientRepo: string;
+    protected clientRepoFolder: string;
+    protected distributeVersionSemver: string;
+    protected frameworkVersion: string;
 
     public constructor(rootFolder: string) {
         super();
@@ -42,6 +47,8 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.blendExternalPath = me.blendPath + "/3rdparty";
         me.testPath = me.rootFolder + "/tests";
         me.distPath = me.rootFolder + "/dist";
+        me.clientRepo = "git@github.com:blendsdk/material-blend-cli.git";
+        me.clientRepoFolder = me.makePath(os.tmpdir() + "/blend-client");
     }
 
     /**
@@ -281,6 +288,9 @@ export class BlendBuilder extends UtilityModule.Utility {
                 });
                 me.cleanAndAddCopyright(minCssFileName);
             });
+
+            fs.writeFileSync(me.makePath(me.distPath + "/VERSION"), me.frameworkVersion);
+
             me.printDone();
             callback.apply(me, [null]);
         } catch (e) {
@@ -289,22 +299,151 @@ export class BlendBuilder extends UtilityModule.Utility {
 
     }
 
+    private setupBlendClient(callback: Function) {
+        var me = this,
+            command = me.makePath(me.clientRepoFolder + "/setup.sh");
+        me.print("Setup BlendClient, ");
+        me.runShellCommandIn(command, me.clientRepoFolder, function(errors: string) {
+            if (!errors) {
+                me.printDone();
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors]);
+            }
+        });
+    }
+
+    private cloneBlendClient(callback: Function) {
+        var me = this;
+        me.print(`Cloning  BlendClient, `);
+        me.cloneRepositoryInto(me.clientRepo, me.clientRepoFolder, function(errors: string) {
+            if (!errors) {
+                me.printDone();
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors]);
+            }
+        });
+    }
+
+    private updatBlendClient(callback: Function) {
+        var me = this,
+            resoureFolder = me.makePath(me.clientRepoFolder + "/resources"),
+            destFolder = me.makePath(resoureFolder + "/blend");
+
+        me.print("Updateding  BlendClient, ");
+
+        if (!me.dirExists(me.makePath(resoureFolder))) {
+            fse.mkdirSync(resoureFolder);
+        }
+
+        me.reCreateFolder(destFolder);
+        fse.copySync(me.distPath, destFolder);
+
+        // Commit the changes made to the resources folder
+        var gitCommitUpdate = function(cb: Function) {
+            me.gitAddAndCommit(me.clientRepoFolder, "Updated blend distribution", function(errors: string) {
+                if (!errors) {
+                    cb.apply(me, [null]);
+                } else {
+                    cb.apply(me, [errors]);
+                }
+            });
+        };
+
+        // npm version the client
+        var bumpVersion = function(cb: Function) {
+            var message = "Upgrade to version %s";
+            me.npmBumpAndTag(me.distributeVersionSemver, me.clientRepoFolder, message, function(errors: string) {
+                if (!errors) {
+                    cb.apply(me, [null]);
+                } else {
+                    cb.apply(me, [errors]);
+                }
+            });
+        };
+
+        var pushAndPublish = function(cb: Function) {
+            me.runShellCommandIn("git push origin master --tags", me.clientRepoFolder, function() {
+                me.runShellCommandIn("npm publish", me.clientRepoFolder, cb);
+            });
+        };
+
+        me.runSerial([
+            gitCommitUpdate
+            , bumpVersion
+            , pushAndPublish
+        ], function(errors: string) {
+            if (!errors) {
+                me.printDone();
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [errors]);
+            }
+        });
+
+    }
+
     /**
      * Creates a new distribution
      */
-    private createDist() {
+    private createDist(version: string) {
         var me = this,
             callback = function(errors: string) {
                 if (errors) {
                     me.println(colors.red("ERROR: " + errors));
                 } else {
+                    me.println("Version: " + me.frameworkVersion);
                     me.printAllDone();
                 }
+            },
+            bumpFrameworkVersion = function(callback: Function) {
+
+                me.bumpPackageVersion(version, me.rootFolder, function() {
+                    var bumpVersion: string;
+                    bumpVersion = me.readNpmPackage(me.rootFolder).version;
+
+                    // updating the Version.ts file;
+                    var versionFileTs = me.makePath(me.blendSourcePath + "/Version.ts");
+                    var contents = fs.readFileSync(versionFileTs)
+                        .toString()
+                        .split("\n");
+
+                    for (var l = 0; l !== contents.length; l++) {
+                        var line = contents[l];
+                        if (line.indexOf("export var version") !== -1) {
+                            contents[l] = `    export var version = "v${bumpVersion}";`;
+                        }
+                    }
+                    me.frameworkVersion = bumpVersion;
+                    fs.writeFileSync(versionFileTs, contents.join("\n"));
+                });
+
+                callback.apply(me, [null]);
             };
-        me.runSerial([
-            me.buildFramework,
-            me.createDistInternal
-        ], callback);
+
+
+        me.distributeVersionSemver = version;
+
+        //me.clientRepo = "git@github.com:blendsdk/dev-test.git";
+
+        if (version === "reset") {
+            me.distributeVersionSemver = "patch";
+            me.runSerial([
+                bumpFrameworkVersion
+                , me.buildFramework
+                , me.createDistInternal
+                , me.cloneBlendClient
+                , me.setupBlendClient
+                , me.updatBlendClient
+            ], callback);
+        } else {
+            me.runSerial([
+                bumpFrameworkVersion,
+                me.updatBlendClient
+            ], callback);
+
+        }
     }
 
     /**
@@ -319,7 +458,13 @@ export class BlendBuilder extends UtilityModule.Utility {
             argv = require("yargs")
                 .command(buildFrameworkCommand, "Build the Framework and the Tests")
                 .command(copyrightHeaderCommand, "Add coptyright headers to files")
-                .command(makedistCommand, "Create a distribution")
+                .command(makedistCommand, "Create a distribution", function(yargs: any) {
+                    return yargs.option("v", {
+                        alias: "version",
+                        demand: ["v"],
+                        describe: "Version and tag to publish"
+                    });
+                })
                 .demand(1)
                 .epilog("Copyright 2016 TrueSoftware B.V.")
                 .argv;
@@ -331,7 +476,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyrightFiles([me.blendPath, me.makePath(__dirname + "/../src")]);
             me.printAllDone();
         } else if (command === makedistCommand) {
-            me.createDist();
+            me.createDist(argv.version);
         }
 
     }

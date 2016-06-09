@@ -1,16 +1,15 @@
 {
-    "name": "material-blend-sdk",
-    "private": false,
-    "version": "0.0.2",
-    "codename": "rebirth",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/blendsdk/material-blend.git"
-    },
-    "author": "Gevik Babakhani (TrueSoftware B.V.)",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/blendsdk/material-blend/issues"
-    },
-    "homepage": "https://github.com/blendsdk/material-blend#readme"
+  "name": "material-blend-sdk",
+  "private": false,
+  "version": "2.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blendsdk/material-blend.git"
+  },
+  "author": "Gevik Babakhani (TrueSoftware B.V.)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/blendsdk/material-blend/issues"
+  },
+  "homepage": "https://github.com/blendsdk/material-blend#readme"
 }

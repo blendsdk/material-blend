@@ -1,4 +1,4 @@
 cd builder
 ./make-builder.sh
 cd ..
-bin/blend $1
+bin/blend "$@"
