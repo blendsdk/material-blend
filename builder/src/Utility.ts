@@ -451,4 +451,16 @@ export abstract class Utility {
         me.runShellCommandIn(command, folder, callback);
     }
 
+    protected isGitRepoClean(repoFolder: string, callback: Function) {
+        var me = this;
+        childProcess.exec("git status --porcelain", { cwd: repoFolder }, function (error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                callback.apply(me, [false]);
+            } else {
+                callback.apply(me, [stderr.toString().trim().length === 0]);
+            }
+        });
+
+    }
+
 }

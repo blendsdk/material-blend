@@ -354,11 +354,15 @@ export class BlendBuilder extends UtilityModule.Utility {
 
         me.distributeVersionSemver = version;
 
-        me.runSerial([
-            bumpFrameworkVersion
-            , me.buildFramework
-            , me.createDistInternal
-        ], callback);
+        me.isGitRepoClean(me.rootFolder, function (status: boolean) {
+            console.log(status);
+        })
+
+        // me.runSerial([
+        //     bumpFrameworkVersion
+        //     , me.buildFramework
+        //     , me.createDistInternal
+        // ], callback);
     }
 
     /**
