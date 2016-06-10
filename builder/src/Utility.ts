@@ -448,7 +448,7 @@ export abstract class Utility {
         });
     }
 
-    protected gitAddAndCommit(repoFolder: string, message: string, callback: Function) {
+    protected gitAddCommitAndTag(repoFolder: string, message: string, callback: Function) {
         var me = this;
         me.runShellCommandIn("git add .", repoFolder, function () {
             me.runShellCommandIn(`git commit -a -m"${message}"`, repoFolder, callback)

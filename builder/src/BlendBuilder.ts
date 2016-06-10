@@ -313,95 +313,10 @@ export class BlendBuilder extends UtilityModule.Utility {
 
     }
 
-    // private setupBlendClient(callback: Function) {
-    //     var me = this,
-    //         command = me.makePath(me.clientRepoFolder + "/setup.sh");
-    //     me.print("Setup BlendClient, ");
-    //     me.runShellCommandIn(command, me.clientRepoFolder, function (errors: string) {
-    //         if (!errors) {
-    //             me.printDone();
-    //             callback.apply(me, [null]);
-    //         } else {
-    //             callback.apply(me, [errors]);
-    //         }
-    //     });
-    // }
-
-    // private cloneBlendClient(callback: Function) {
-    //     var me = this;
-    //     me.print(`Cloning  BlendClient, `);
-    //     me.cloneRepositoryInto(me.clientRepo, me.clientRepoFolder, function (errors: string) {
-    //         if (!errors) {
-    //             me.printDone();
-    //             callback.apply(me, [null]);
-    //         } else {
-    //             callback.apply(me, [errors]);
-    //         }
-    //     });
-    // }
-
-    // private updatBlendClient(callback: Function) {
-    //     var me = this,
-    //         resoureFolder = me.makePath(me.clientRepoFolder + "/resources"),
-    //         destFolder = me.makePath(resoureFolder + "/blend");
-
-    //     me.print("Updateding  BlendClient, ");
-
-    //     if (!me.dirExists(me.makePath(resoureFolder))) {
-    //         fse.mkdirSync(resoureFolder);
-    //     }
-
-    //     me.reCreateFolder(destFolder);
-    //     fse.copySync(me.distPath, destFolder);
-
-    //     // Commit the changes made to the resources folder
-    //     var gitCommitUpdate = function (cb: Function) {
-    //         me.gitAddAndCommit(me.clientRepoFolder, "Updated blend distribution", function (errors: string) {
-    //             if (!errors) {
-    //                 cb.apply(me, [null]);
-    //             } else {
-    //                 cb.apply(me, [errors]);
-    //             }
-    //         });
-    //     };
-
-    //     // npm version the client
-    //     var bumpVersion = function (cb: Function) {
-    //         var message = "Upgrade to version %s";
-    //         me.npmBumpAndTag(me.distributeVersionSemver, me.clientRepoFolder, message, function (errors: string) {
-    //             if (!errors) {
-    //                 cb.apply(me, [null]);
-    //             } else {
-    //                 cb.apply(me, [errors]);
-    //             }
-    //         });
-    //     };
-
-    //     var pushAndPublish = function (cb: Function) {
-    //         me.runShellCommandIn("git push origin master --tags", me.clientRepoFolder, function () {
-    //             me.runShellCommandIn("npm publish", me.clientRepoFolder, cb);
-    //         });
-    //     };
-
-    //     me.runSerial([
-    //         gitCommitUpdate
-    //         , bumpVersion
-    //         , pushAndPublish
-    //     ], function (errors: string) {
-    //         if (!errors) {
-    //             me.printDone();
-    //             callback.apply(me, [null]);
-    //         } else {
-    //             callback.apply(me, [errors]);
-    //         }
-    //     });
-
-    // }
-
     /**
      * Creates a new distribution
      */
-    private createDist(version: string) {
+    private createDist(version: string, tag: boolean) {
         var me = this,
             callback = function (errors: string) {
                 if (errors) {
@@ -458,12 +373,17 @@ export class BlendBuilder extends UtilityModule.Utility {
             argv = require("yargs")
                 .command(buildFrameworkCommand, "Build the Framework and the Tests")
                 .command(copyrightHeaderCommand, "Add coptyright headers to files")
-                .command(makedistCommand, "Create a distribution", function (yargs: any) {
-                    return yargs.option("v", {
-                        alias: "version",
-                        demand: ["v"],
+                .command(makedistCommand, "Create a distribution", {
+                    version: {
+                        alias: "v",
+                        demand: true,
                         describe: "Version and tag to publish"
-                    });
+                    },
+                    tag: {
+                        alias: "t",
+                        demand: true,
+                        describe: "Tag the project to the version number"
+                    }
                 })
                 .demand(1)
                 .epilog("Copyright 2016 TrueSoftware B.V.")
@@ -476,7 +396,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyrightFiles([me.blendPath, me.makePath(__dirname + "/../src")]);
             me.printAllDone();
         } else if (command === makedistCommand) {
-            me.createDist(argv.version);
+            me.createDist(argv.version, argv.tag === "true" ? true : false);
         }
 
     }
