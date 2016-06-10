@@ -435,32 +435,16 @@ export abstract class Utility {
         });
     }
 
-    protected cloneRepositoryInto(repo: string, folder: string, callback: Function) {
-        var me = this,
-            command = `git clone ${repo} .`;
-        me.reCreateFolder(folder);
-        childProcess.exec(command, { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
-            if (!error) {
-                callback.apply(me, [null]);
-            } else {
-                callback.apply(me, [stderr.toString()]);
-            }
-        });
-    }
-
-    protected gitAddCommitAndTag(repoFolder: string, message: string, callback: Function) {
+    protected gitAddCommitAndTag(repoFolder: string, message: string, version: string, callback: Function) {
         var me = this;
         me.runShellCommandIn("git add .", repoFolder, function () {
             me.runShellCommandIn(`git commit -a -m"${message}"`, repoFolder, callback)
         });
     }
 
-    protected npmBumpAndTag(semver: string, folder: string, message: string, callback: Function) {
-        var me = this,
-            command = `npm version ${semver} --message "${message}"`;
-        me.runShellCommandIn(command, folder, callback);
-    }
-
+    /**
+     * Bumps a packager version without git tag
+     */
     protected bumpPackageVersion(semver: string, folder: string, callback: Function) {
         var me = this,
             command = `npm version ${semver} --no-git-tag-version`;
