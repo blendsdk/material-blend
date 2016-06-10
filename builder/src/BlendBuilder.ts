@@ -46,7 +46,7 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.blendSourcePath = me.blendPath + "/src";
         me.blendExternalPath = me.blendPath + "/3rdparty";
         me.testPath = me.rootFolder + "/tests";
-        me.distPath = me.rootFolder + "/dist/blend";
+        me.distPath = me.rootFolder + "/dist";
         me.clientRepo = "git@github.com:blendsdk/material-blend-cli.git";
         me.clientRepoFolder = me.makePath(os.tmpdir() + "/blend-client");
     }
@@ -243,12 +243,11 @@ export class BlendBuilder extends UtilityModule.Utility {
     private createDistInternal(callback: Function) {
         var me = this,
             typingsFolder = me.makePath(me.distPath + "/typings"),
-            webFolder = me.makePath(me.distPath + "/web");
+            webFolder = me.makePath(me.distPath + "/blend");
         try {
 
             me.println("Creating new dist");
 
-            me.reCreateFolder(me.distPath);
             me.reCreateFolder(typingsFolder);
             me.reCreateFolder(webFolder);
 
@@ -258,7 +257,6 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.cleanAndAddCopyright(dtFile);
             me.printDone();
 
-            var webFolder = me.makePath(me.distPath + "/web");
             var jsFolder = me.makePath((webFolder + "/js"));
             var cssFoder = me.makePath(webFolder + "/css");
 
