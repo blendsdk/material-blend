@@ -455,7 +455,7 @@ export abstract class Utility {
         var me = this;
         childProcess.exec("git status --porcelain", { cwd: repoFolder }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
-                callback.apply(me, [stdout.toString().trim()]);
+                callback.apply(me, [stdout.toString().trim() === ""]);
             } else {
                 callback.apply(me, [false]);
             }
