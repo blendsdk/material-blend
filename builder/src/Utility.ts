@@ -30,7 +30,7 @@ interface DownloadInterface {
     local: string;
 }
 
-interface NpmPackageInterface {
+export interface NpmPackageInterface {
     version: string;
     description: string;
 }

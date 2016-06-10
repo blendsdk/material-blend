@@ -237,6 +237,21 @@ export class BlendBuilder extends UtilityModule.Utility {
         fs.writeFileSync(file, header + "\n" + contents);
     }
 
+    private syncSubPackagesVersions() {
+
+        var me = this,
+            themePackagePath = me.makePath(me.blendPath + "/themes"),
+            distPackagePath = me.makePath(me.rootFolder + "/dist"),
+            themePackage = me.readNpmPackage(themePackagePath),
+            distPackage = me.readNpmPackage(distPackagePath);
+
+        themePackage.version = me.frameworkVersion;
+        distPackage.version = me.frameworkVersion;
+
+        fs.writeFileSync(me.makePath(themePackagePath + "/package.json"), JSON.stringify(themePackage, null, 4));
+        fs.writeFileSync(me.makePath(distPackagePath + "/package.json"), JSON.stringify(distPackage, null, 4));
+    }
+
     /**
      * Creates a new distribution (internal)
      */
@@ -288,6 +303,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             });
 
             fs.writeFileSync(me.makePath(me.distPath + "/VERSION"), me.frameworkVersion);
+            me.syncSubPackagesVersions();
 
             me.printDone();
             callback.apply(me, [null]);
@@ -297,90 +313,90 @@ export class BlendBuilder extends UtilityModule.Utility {
 
     }
 
-    private setupBlendClient(callback: Function) {
-        var me = this,
-            command = me.makePath(me.clientRepoFolder + "/setup.sh");
-        me.print("Setup BlendClient, ");
-        me.runShellCommandIn(command, me.clientRepoFolder, function (errors: string) {
-            if (!errors) {
-                me.printDone();
-                callback.apply(me, [null]);
-            } else {
-                callback.apply(me, [errors]);
-            }
-        });
-    }
+    // private setupBlendClient(callback: Function) {
+    //     var me = this,
+    //         command = me.makePath(me.clientRepoFolder + "/setup.sh");
+    //     me.print("Setup BlendClient, ");
+    //     me.runShellCommandIn(command, me.clientRepoFolder, function (errors: string) {
+    //         if (!errors) {
+    //             me.printDone();
+    //             callback.apply(me, [null]);
+    //         } else {
+    //             callback.apply(me, [errors]);
+    //         }
+    //     });
+    // }
 
-    private cloneBlendClient(callback: Function) {
-        var me = this;
-        me.print(`Cloning  BlendClient, `);
-        me.cloneRepositoryInto(me.clientRepo, me.clientRepoFolder, function (errors: string) {
-            if (!errors) {
-                me.printDone();
-                callback.apply(me, [null]);
-            } else {
-                callback.apply(me, [errors]);
-            }
-        });
-    }
+    // private cloneBlendClient(callback: Function) {
+    //     var me = this;
+    //     me.print(`Cloning  BlendClient, `);
+    //     me.cloneRepositoryInto(me.clientRepo, me.clientRepoFolder, function (errors: string) {
+    //         if (!errors) {
+    //             me.printDone();
+    //             callback.apply(me, [null]);
+    //         } else {
+    //             callback.apply(me, [errors]);
+    //         }
+    //     });
+    // }
 
-    private updatBlendClient(callback: Function) {
-        var me = this,
-            resoureFolder = me.makePath(me.clientRepoFolder + "/resources"),
-            destFolder = me.makePath(resoureFolder + "/blend");
+    // private updatBlendClient(callback: Function) {
+    //     var me = this,
+    //         resoureFolder = me.makePath(me.clientRepoFolder + "/resources"),
+    //         destFolder = me.makePath(resoureFolder + "/blend");
 
-        me.print("Updateding  BlendClient, ");
+    //     me.print("Updateding  BlendClient, ");
 
-        if (!me.dirExists(me.makePath(resoureFolder))) {
-            fse.mkdirSync(resoureFolder);
-        }
+    //     if (!me.dirExists(me.makePath(resoureFolder))) {
+    //         fse.mkdirSync(resoureFolder);
+    //     }
 
-        me.reCreateFolder(destFolder);
-        fse.copySync(me.distPath, destFolder);
+    //     me.reCreateFolder(destFolder);
+    //     fse.copySync(me.distPath, destFolder);
 
-        // Commit the changes made to the resources folder
-        var gitCommitUpdate = function (cb: Function) {
-            me.gitAddAndCommit(me.clientRepoFolder, "Updated blend distribution", function (errors: string) {
-                if (!errors) {
-                    cb.apply(me, [null]);
-                } else {
-                    cb.apply(me, [errors]);
-                }
-            });
-        };
+    //     // Commit the changes made to the resources folder
+    //     var gitCommitUpdate = function (cb: Function) {
+    //         me.gitAddAndCommit(me.clientRepoFolder, "Updated blend distribution", function (errors: string) {
+    //             if (!errors) {
+    //                 cb.apply(me, [null]);
+    //             } else {
+    //                 cb.apply(me, [errors]);
+    //             }
+    //         });
+    //     };
 
-        // npm version the client
-        var bumpVersion = function (cb: Function) {
-            var message = "Upgrade to version %s";
-            me.npmBumpAndTag(me.distributeVersionSemver, me.clientRepoFolder, message, function (errors: string) {
-                if (!errors) {
-                    cb.apply(me, [null]);
-                } else {
-                    cb.apply(me, [errors]);
-                }
-            });
-        };
+    //     // npm version the client
+    //     var bumpVersion = function (cb: Function) {
+    //         var message = "Upgrade to version %s";
+    //         me.npmBumpAndTag(me.distributeVersionSemver, me.clientRepoFolder, message, function (errors: string) {
+    //             if (!errors) {
+    //                 cb.apply(me, [null]);
+    //             } else {
+    //                 cb.apply(me, [errors]);
+    //             }
+    //         });
+    //     };
 
-        var pushAndPublish = function (cb: Function) {
-            me.runShellCommandIn("git push origin master --tags", me.clientRepoFolder, function () {
-                me.runShellCommandIn("npm publish", me.clientRepoFolder, cb);
-            });
-        };
+    //     var pushAndPublish = function (cb: Function) {
+    //         me.runShellCommandIn("git push origin master --tags", me.clientRepoFolder, function () {
+    //             me.runShellCommandIn("npm publish", me.clientRepoFolder, cb);
+    //         });
+    //     };
 
-        me.runSerial([
-            gitCommitUpdate
-            , bumpVersion
-            , pushAndPublish
-        ], function (errors: string) {
-            if (!errors) {
-                me.printDone();
-                callback.apply(me, [null]);
-            } else {
-                callback.apply(me, [errors]);
-            }
-        });
+    //     me.runSerial([
+    //         gitCommitUpdate
+    //         , bumpVersion
+    //         , pushAndPublish
+    //     ], function (errors: string) {
+    //         if (!errors) {
+    //             me.printDone();
+    //             callback.apply(me, [null]);
+    //         } else {
+    //             callback.apply(me, [errors]);
+    //         }
+    //     });
 
-    }
+    // }
 
     /**
      * Creates a new distribution
@@ -422,8 +438,6 @@ export class BlendBuilder extends UtilityModule.Utility {
 
 
         me.distributeVersionSemver = version;
-
-        //me.clientRepo = "git@github.com:blendsdk/dev-test.git";
 
         me.runSerial([
             bumpFrameworkVersion

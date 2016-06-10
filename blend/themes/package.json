@@ -1,16 +1,16 @@
 {
-  "name": "material-blend-theme-sdk",
-  "version": "0.0.5",
-  "description": "Sass/Compass tools for creating a custom MaterialBlend themes",
-  "keywords": [
-    "material design",
-    "materialblend",
-    "blendsdk",
-    "sass",
-    "compass",
-    "scss",
-    "theme"
-  ],
-  "author": "Gevik Babakhani (TrueSoftware B.V.)",
-  "license": "Apache-2.0"
+    "name": "material-blend-theme-sdk",
+    "version": "4.0.4",
+    "description": "Sass/Compass tools for creating a custom MaterialBlend themes",
+    "keywords": [
+        "material design",
+        "materialblend",
+        "blendsdk",
+        "sass",
+        "compass",
+        "scss",
+        "theme"
+    ],
+    "author": "Gevik Babakhani (TrueSoftware B.V.)",
+    "license": "Apache-2.0"
 }
