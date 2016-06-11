@@ -355,8 +355,8 @@ export class BlendBuilder extends UtilityModule.Utility {
                 me.gitAddCommitAndTag(me.rootFolder, me.frameworkVersion, callback);
             },
             publishThemeSDK = function (callback: Function) {
-                me.println("Publishing ");
-                me.publishPackage(me.makePath(me.blendSourcePath + "/themes"), callback);
+                me.println("Publishing Themes SDK");
+                me.publishPackage(me.makePath(me.blendPath + "/themes"), callback);
             };
 
 
