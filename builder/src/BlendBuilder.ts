@@ -352,7 +352,10 @@ export class BlendBuilder extends UtilityModule.Utility {
             },
             tagRepository = function (callback: Function) {
                 me.gitAddCommitAndTag(me.rootFolder, me.frameworkVersion, callback);
-            };
+            },
+            publishThemeSDK = function (callback: Function) {
+                me.publishPackage(me.makePath(me.blendSourcePath + "/themes"), callback);
+            }
 
 
         me.distributeVersionSemver = version;
@@ -363,7 +366,8 @@ export class BlendBuilder extends UtilityModule.Utility {
                 bumpFrameworkVersion
                 , me.buildFramework
                 , me.createDistInternal
-                , tagRepository
+                , tagRepository,
+                publishThemeSDK
             ], callback);
             //            } else {
             //                callback.apply(me, ["Cannot containue while the git repository has uncommited changes!"]);

@@ -445,11 +445,20 @@ export abstract class Utility {
     }
 
     /**
-     * Bumps a packager version without git tag
+     * Bumps a package version without git tag
      */
     protected bumpPackageVersion(semver: string, folder: string, callback: Function) {
         var me = this,
             command = `npm version ${semver} --no-git-tag-version`;
+        me.runShellCommandIn(command, folder, callback);
+    }
+
+    /**
+     * Publishes a package
+     */
+    protected publishPackage(folder: string, callback: Function) {
+        var me = this,
+            command = `npm publish`;
         me.runShellCommandIn(command, folder, callback);
     }
 
