@@ -351,7 +351,7 @@ export class BlendBuilder extends UtilityModule.Utility {
                 callback.apply(me, [null]);
             },
             tagRepository = function (callback: Function) {
-                me.gitAddCommitAndTag(me.rootFolder, "", me.frameworkVersion, callback);
+                me.gitAddCommitAndTag(me.rootFolder, me.frameworkVersion, callback);
             };
 
 
