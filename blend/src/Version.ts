@@ -1,3 +1,3 @@
 namespace Blend {
-    export var version = "v2.0.5";
+    export var version = "v4.0.17";
 }

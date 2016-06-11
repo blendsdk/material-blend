@@ -30,7 +30,7 @@ interface DownloadInterface {
     local: string;
 }
 
-interface NpmPackageInterface {
+export interface NpmPackageInterface {
     version: string;
     description: string;
 }
@@ -435,11 +435,30 @@ export abstract class Utility {
         });
     }
 
-    protected cloneRepositoryInto(repo: string, folder: string, callback: Function) {
+    protected gitAddCommitAndTag(repoFolder: string, version: string, callback: Function) {
+        var me = this;
+        me.runShellCommandIn("git add .", repoFolder, function () {
+            me.runShellCommandIn(`git commit -a -m"Updated dist version to ${version}"`, repoFolder, function () {
+                me.runShellCommandIn(`git tag v${version}`, repoFolder, callback);
+            });
+        });
+    }
+
+    /**
+     * Bumps a package version without git tag
+     */
+    protected bumpPackageVersion(semver: string, folder: string, callback: Function) {
         var me = this,
-            command = `git clone ${repo} .`;
-        me.reCreateFolder(folder);
-        childProcess.exec(command, { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
+            command = `npm version ${semver} --no-git-tag-version`;
+        me.runShellCommandIn(command, folder, callback);
+    }
+
+    /**
+     * Publishes a package
+     */
+    protected publishPackage(folder: string, callback: Function) {
+        var me = this;
+        childProcess.exec("npm publish", { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
             if (!error) {
                 callback.apply(me, [null]);
             } else {
@@ -448,23 +467,21 @@ export abstract class Utility {
         });
     }
 
-    protected gitAddAndCommit(repoFolder: string, message: string, callback: Function) {
+    protected getGitCurrentBranchName(repoFolder: string) {
+        return childProcess.execSync("git rev-parse --abbrev-ref HEAD", {
+            cwd: repoFolder
+        }).toString();
+    }
+
+    protected isGitRepoClean(repoFolder: string, callback: Function) {
         var me = this;
-        me.runShellCommandIn("git add .", repoFolder, function () {
-            me.runShellCommandIn(`git commit -a -m"${message}"`, repoFolder, callback)
+        childProcess.exec("git status --porcelain", { cwd: repoFolder }, function (error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                callback.apply(me, [stdout.toString().trim() === ""]);
+            } else {
+                callback.apply(me, [false]);
+            }
         });
-    }
-
-    protected npmBumpAndTag(semver: string, folder: string, message: string, callback: Function) {
-        var me = this,
-            command = `npm version ${semver} --message "${message}"`;
-        me.runShellCommandIn(command, folder, callback);
-    }
-
-    protected bumpPackageVersion(semver: string, folder: string, callback: Function) {
-        var me = this,
-            command = `npm version ${semver} --no-git-tag-version`;
-        me.runShellCommandIn(command, folder, callback);
     }
 
 }
