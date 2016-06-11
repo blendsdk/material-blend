@@ -357,7 +357,12 @@ export class BlendBuilder extends UtilityModule.Utility {
             publishThemeSDK = function (callback: Function) {
                 me.println("Publishing Themes SDK");
                 me.publishPackage(me.makePath(me.blendPath + "/themes"), callback);
+            },
+            publishSDK = function (callback: Function) {
+                me.println("Publishing Typings and JS SDK");
+                me.publishPackage(me.makePath(me.distPath), callback);
             };
+
 
 
         me.distributeVersionSemver = version;
@@ -369,6 +374,7 @@ export class BlendBuilder extends UtilityModule.Utility {
                 , me.buildFramework
                 , me.createDistInternal
                 , tagRepository
+                , publishSDK
                 , publishThemeSDK
             ], callback);
             //            } else {
