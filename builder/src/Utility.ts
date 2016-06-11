@@ -438,7 +438,9 @@ export abstract class Utility {
     protected gitAddCommitAndTag(repoFolder: string, message: string, version: string, callback: Function) {
         var me = this;
         me.runShellCommandIn("git add .", repoFolder, function () {
-            me.runShellCommandIn(`git commit -a -m"${message}"`, repoFolder, callback)
+            me.runShellCommandIn(`git commit -a -m"Updated dist version to ${version}"`, repoFolder, function () {
+                me.runShellCommandIn(`git tag v${version} -m"${message}"`, repoFolder, callback);
+            });
         });
     }
 
@@ -460,7 +462,6 @@ export abstract class Utility {
                 callback.apply(me, [false]);
             }
         });
-
     }
 
 }

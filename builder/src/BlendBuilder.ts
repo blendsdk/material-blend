@@ -316,7 +316,7 @@ export class BlendBuilder extends UtilityModule.Utility {
     /**
      * Creates a new distribution
      */
-    private createDist(version: string, tag: boolean) {
+    private createDist(version: string) {
         var me = this,
             callback = function (errors: string) {
                 if (errors) {
@@ -349,20 +349,26 @@ export class BlendBuilder extends UtilityModule.Utility {
                 });
 
                 callback.apply(me, [null]);
+            },
+            tagRepository = function (callback: Function) {
+                me.gitAddCommitAndTag(me.rootFolder, "", me.frameworkVersion, callback);
             };
 
 
         me.distributeVersionSemver = version;
 
-        me.isGitRepoClean(me.rootFolder, function (status: boolean) {
-            console.log(arguments);
+        me.isGitRepoClean(me.rootFolder, function (isClean: boolean) {
+            //            if (isClean) {
+            me.runSerial([
+                bumpFrameworkVersion
+                , me.buildFramework
+                , me.createDistInternal
+                , tagRepository
+            ], callback);
+            //            } else {
+            //                callback.apply(me, ["Cannot containue while the git repository has uncommited changes!"]);
+            //            }
         });
-
-        // me.runSerial([
-        //     bumpFrameworkVersion
-        //     , me.buildFramework
-        //     , me.createDistInternal
-        // ], callback);
     }
 
     /**
@@ -382,11 +388,6 @@ export class BlendBuilder extends UtilityModule.Utility {
                         alias: "v",
                         demand: true,
                         describe: "Version and tag to publish"
-                    },
-                    tag: {
-                        alias: "t",
-                        demand: true,
-                        describe: "Tag the project to the version number"
                     }
                 })
                 .demand(1)
@@ -400,7 +401,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             me.copyrightFiles([me.blendPath, me.makePath(__dirname + "/../src")]);
             me.printAllDone();
         } else if (command === makedistCommand) {
-            me.createDist(argv.version, argv.tag === "true" ? true : false);
+            me.createDist(argv.version);
         }
 
     }
