@@ -364,7 +364,11 @@ export class BlendBuilder extends UtilityModule.Utility {
             },
             pushMaster = function (callback: Function) {
                 me.println("Pushing the master branch");
-                me.runShellCommandIn("git push origin master --follow-tags", me.rootFolder, callback);
+                me.runShellCommandIn("git push origin master --follow-tags", me.rootFolder, function () {
+                    me.runShellCommandIn("git push --tags", me.rootFolder, function () {
+                        callback.apply(me, [null]);
+                    });
+                });
             };
 
         me.distributeVersionSemver = version;
