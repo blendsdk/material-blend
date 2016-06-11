@@ -467,6 +467,12 @@ export abstract class Utility {
         });
     }
 
+    protected getGitCurrentBranchName(repoFolder: string) {
+        return childProcess.execSync("git rev-parse --abbrev-ref HEAD", {
+            cwd: repoFolder
+        }).toString();
+    }
+
     protected isGitRepoClean(repoFolder: string, callback: Function) {
         var me = this;
         childProcess.exec("git status --porcelain", { cwd: repoFolder }, function (error: Error, stdout: any, stderr: any) {

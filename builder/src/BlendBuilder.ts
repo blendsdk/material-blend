@@ -361,24 +361,33 @@ export class BlendBuilder extends UtilityModule.Utility {
             publishSDK = function (callback: Function) {
                 me.println("Publishing Typings and JS SDK");
                 me.publishPackage(me.makePath(me.distPath), callback);
+            },
+            pushMaster = function (callback: Function) {
+                me.println("Pushing the master branch");
+                me.runShellCommandIn("git push origin master --follow-tags", me.rootFolder, callback);
             };
 
         me.distributeVersionSemver = version;
 
-        me.isGitRepoClean(me.rootFolder, function (isClean: boolean) {
-            //            if (isClean) {
-            me.runSerial([
-                bumpFrameworkVersion
-                , me.buildFramework
-                , me.createDistInternal
-                , tagRepository
-                , publishSDK
-                , publishThemeSDK
-            ], callback);
-            //            } else {
-            //                callback.apply(me, ["Cannot containue while the git repository has uncommited changes!"]);
-            //            }
-        });
+        if (me.getGitCurrentBranchName(me.rootFolder) === "master") {
+            me.isGitRepoClean(me.rootFolder, function (isClean: boolean) {
+                if (isClean) {
+                    me.runSerial([
+                        bumpFrameworkVersion
+                        , me.buildFramework
+                        , me.createDistInternal
+                        , tagRepository
+                        , publishSDK
+                        , publishThemeSDK
+                        , pushMaster
+                    ], callback);
+                } else {
+                    callback.apply(me, ["Cannot continue while the git repository has uncommited changes!"]);
+                }
+            });
+        } else {
+            callback.apply(me, ["Cannot continue! We are not one the master branch!"]);
+        }
     }
 
     /**
