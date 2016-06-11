@@ -366,8 +366,8 @@ export class BlendBuilder extends UtilityModule.Utility {
                 bumpFrameworkVersion
                 , me.buildFramework
                 , me.createDistInternal
-                , tagRepository,
-                publishThemeSDK
+                , tagRepository
+                , publishThemeSDK
             ], callback);
             //            } else {
             //                callback.apply(me, ["Cannot containue while the git repository has uncommited changes!"]);
