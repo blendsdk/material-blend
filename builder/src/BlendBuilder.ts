@@ -363,8 +363,6 @@ export class BlendBuilder extends UtilityModule.Utility {
                 me.publishPackage(me.makePath(me.distPath), callback);
             };
 
-
-
         me.distributeVersionSemver = version;
 
         me.isGitRepoClean(me.rootFolder, function (isClean: boolean) {
