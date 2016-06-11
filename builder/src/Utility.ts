@@ -457,9 +457,15 @@ export abstract class Utility {
      * Publishes a package
      */
     protected publishPackage(folder: string, callback: Function) {
-        var me = this,
-            command = `npm publish`;
-        me.runShellCommandIn(command, folder, callback);
+        var me = this;
+        childProcess.exec("npm publish", { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
+            console.log(stdout);
+            if (!error) {
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [stderr.toString()]);
+            }
+        });
     }
 
     protected isGitRepoClean(repoFolder: string, callback: Function) {

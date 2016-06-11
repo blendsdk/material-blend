@@ -355,7 +355,7 @@ export class BlendBuilder extends UtilityModule.Utility {
             },
             publishThemeSDK = function (callback: Function) {
                 me.publishPackage(me.makePath(me.blendSourcePath + "/themes"), callback);
-            }
+            };
 
 
         me.distributeVersionSemver = version;
