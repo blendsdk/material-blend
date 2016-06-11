@@ -458,8 +458,9 @@ export abstract class Utility {
      */
     protected publishPackage(folder: string, callback: Function) {
         var me = this;
+        console.log(arguments);
         childProcess.exec("npm publish", { cwd: folder }, function (error: Error, stdout: any, stderr: any) {
-            console.log(stdout);
+            console.log(arguments);
             if (!error) {
                 callback.apply(me, [null]);
             } else {
