@@ -470,7 +470,7 @@ export abstract class Utility {
     protected getGitCurrentBranchName(repoFolder: string) {
         return childProcess.execSync("git rev-parse --abbrev-ref HEAD", {
             cwd: repoFolder
-        }).toString();
+        }).toString().trim();
     }
 
     protected isGitRepoClean(repoFolder: string, callback: Function) {
