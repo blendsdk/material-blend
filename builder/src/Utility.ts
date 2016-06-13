@@ -41,6 +41,8 @@ export abstract class Utility {
     protected minTypeScriptVersion: string;
     protected minTSLintVersion: string;
     protected utilityPackage: NpmPackageInterface;
+    protected isWin: boolean = /^win/.test(process.platform);
+    protected minTypingsVersion = '1.0.4';
 
     public abstract run(): void;
 
@@ -51,6 +53,10 @@ export abstract class Utility {
         me.minTSLintVersion = "3.10.2";
         me.utilityPackage = me.readNpmPackage(__dirname + "/../");
 
+    }
+
+    protected getUserHomeFolder() {
+        return process.env.HOME || process.env.USERPROFILE;
     }
 
     protected readNpmPackage(path: string): NpmPackageInterface {
@@ -221,6 +227,26 @@ export abstract class Utility {
             fse.removeSync(folder);
         }
         fs.mkdirSync(folder);
+    }
+
+    /**
+     * Checks if compass exists and it is the correct version.
+     */
+    protected checkTypingsSanity(callback: Function) {
+        var me = this;
+        childProcess.exec("typings --version", { cwd: __dirname }, function (error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                var vers = stdout.trim();
+                var res = compareVersion(me.minTypingsVersion, vers);
+                if (res === 0 || res === -1) {
+                    callback.apply(me, [null]);
+                } else {
+                    callback.apply(me, ["Invalid Typings version! Found " + vers + ", but we require as least " + me.minTypingsVersion]);
+                }
+            } else {
+                callback.apply(me, ["No Typings installation found! Try: npm install typings -g"]);
+            }
+        });
     }
 
     /**
