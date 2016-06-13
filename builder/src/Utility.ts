@@ -311,6 +311,20 @@ export abstract class Utility {
     }
 
     /**
+     * Compile TypeScript Sources
+     */
+    protected compileSources = function (tscConfigFolder: string, callback: Function) {
+        var me = this;
+        childProcess.exec("tsc", { cwd: tscConfigFolder }, function (error: Error, stdout: any, stderr: any) {
+            if (!error) {
+                callback.apply(me, [null]);
+            } else {
+                callback.apply(me, [stdout.toString()]);
+            }
+        });
+    };
+
+    /**
      * Checks if TypeScript exists and it is the correct version.
      */
     protected checkTypeScriptSanity = function (callback: Function) {
