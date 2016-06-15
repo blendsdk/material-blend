@@ -1,17 +1,18 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "inlineSourceMap": false,
+        "module": "amd",
+        "inlineSourceMap": true,
         "inlineSources": false,
         "noImplicitAny": true,
         "declaration": false,
         "removeComments": true,
-        "outDir": "dist"
+        "allowJs": true,
+        "outFile": "dist/builder.js"
     },
-    "exclude": [
-        "node_modules",
-        "tests",
-        "dist"
+    "files": [
+        "typings/index.d.ts",
+        "src/Init.js",
+        "src/Application.ts",
+        "src/Main.ts"
     ]
 }

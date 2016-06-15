@@ -51,20 +51,20 @@ export class BlendBuilder extends UtilityModule.Utility {
         me.clientRepoFolder = me.makePath(os.tmpdir() + "/blend-client");
     }
 
-    /**
-     * Cleanup the build folder. (Delete and Recreate and empty build folder!)
-     */
-    protected cleanBuild(callback: Function) {
-        var me = this;
-        try {
-            me.print("Cleaning build folder, ");
-            me.reCreateFolder(me.buildPath);
-            me.printDone();
-            callback.apply(me, [null]);
-        } catch (e) {
-            callback.apply(me, [e]);
-        }
-    }
+    // /**
+    //  * Cleanup the build folder. (Delete and Recreate and empty build folder!)
+    //  */
+    // protected cleanBuild(callback: Function) {
+    //     var me = this;
+    //     try {
+    //         me.print("Cleaning build folder, ");
+    //         me.reCreateFolder(me.buildPath);
+    //         me.printDone();
+    //         callback.apply(me, [null]);
+    //     } catch (e) {
+    //         callback.apply(me, [e]);
+    //     }
+    // }
 
     /**
      * Build the themes and styles used external Compass
