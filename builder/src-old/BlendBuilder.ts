@@ -66,21 +66,21 @@ export class BlendBuilder extends UtilityModule.Utility {
     //     }
     // }
 
-    /**
-     * Build the themes and styles used external Compass
-     */
-    private buildStyles(callback: Function) {
-        var me = this;
-        me.print("Building Themes and Styles, ");
-        childProcess.exec("compass compile", { cwd: me.blendPath }, function (error: Error, stdout: any, stderr: any) {
-            if (!error) {
-                me.printDone();
-                callback.apply(me, [null]);
-            } else {
-                callback.apply(me, [stdout.toString()]);
-            }
-        });
-    }
+    // /**
+    //  * Build the themes and styles used external Compass
+    //  */
+    // private buildStyles(callback: Function) {
+    //     var me = this;
+    //     me.print("Building Themes and Styles, ");
+    //     childProcess.exec("compass compile", { cwd: me.blendPath }, function (error: Error, stdout: any, stderr: any) {
+    //         if (!error) {
+    //             me.printDone();
+    //             callback.apply(me, [null]);
+    //         } else {
+    //             callback.apply(me, [stdout.toString()]);
+    //         }
+    //     });
+    // }
 
     /**
      * Build the TS sources, both framework and tests
@@ -96,30 +96,33 @@ export class BlendBuilder extends UtilityModule.Utility {
         });
     }
 
-    /**
-     * Prepares the Tests application by deploying Blend
-     */
-    private prepareTests(callback: Function) {
-        var me = this,
-            testAppBlendFolder = me.makePath(me.testPath + "/blend"),
-            testRunnerBlend = me.makePath(me.testPath + "/testrunner/blend");
-        me.print("Building Tests, ");
-        try {
-            me.reCreateFolder(testAppBlendFolder);
-            me.reCreateFolder(testRunnerBlend);
-            me.copyFile(me.buildPath + "/blend/blend.d.ts", testAppBlendFolder + "/blend.d.ts");
-            me.copyFile(me.buildPath + "/css", testRunnerBlend + "/css");
-            me.copyFile(me.buildPath + "/blend/blend.js", testRunnerBlend + "/blend.js");
-            me.buildSources(me.testPath, function (errors: string) {
-                if (errors === null) {
-                    me.printDone();
-                }
-                callback.apply(me, [errors]);
-            });
-        } catch (e) {
-            callback.apply(me, [e]);
-        }
-    }
+    // /**
+    //  * Prepares the Tests application by deploying Blend
+    //  */
+    // private prepareTests(callback: Function) {
+    //     var me = this,
+    //         testAppBlendFolder = me.makePath(me.testPath + "/blend"),
+    //         testRunnerBlend = me.makePath(me.testPath + "/testrunner/blend");
+    //     me.print("Building Tests, ");
+    //     try {
+    //         me.reCreateFolder(testAppBlendFolder);
+    //         me.reCreat    // /**
+    // //  * Build the themes and styles used external Compass…    //         }
+    // //     });
+    // // }eFolder(testRunnerBlend);
+    //         me.copyFile(me.buildPath + "/blend/blend.d.ts", testAppBlendFolder + "/blend.d.ts");
+    //         me.copyFile(me.buildPath + "/css", testRunnerBlend + "/css");
+    //         me.copyFile(me.buildPath + "/blend/blend.js", testRunnerBlend + "/blend.js");
+    //         me.buildSources(me.testPath, function (errors: string) {
+    //             if (errors === null) {
+    //                 me.printDone();
+    //             }
+    //             callback.apply(me, [errors]);
+    //         });
+    //     } catch (e) {
+    //         callback.apply(me, [e]);
+    //     }
+    // }
 
     /**
      * Places copyright headers in source files
