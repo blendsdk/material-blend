@@ -1,5 +1,5 @@
 {
-  "globalDependencies": {
+  "dependencies": {
     "blend-node-library": "file:node_modules/blend-node-library/dist/blend-node-library.d.ts"
   }
 }
