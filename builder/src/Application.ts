@@ -1,6 +1,21 @@
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import * as Blend from "blend-node-library";
 import yargs = require("yargs");
-import fs = require("fs");
 
 export class Application extends Blend.builder.Application {
 
@@ -25,12 +40,10 @@ export class Application extends Blend.builder.Application {
         var me = this;
         me.println(`\n${me.builderPackage.description} v${me.builderPackage.version}\n`);
         var buildFrameworkCommand = "buildfx",
-            copyrightHeaderCommand = "copyright",
             makedistCommand = "makedist";
 
         var argv = yargs
             .command(buildFrameworkCommand, "Build the Framework and the Tests")
-            .command(copyrightHeaderCommand, "Add coptyright headers to files")
             .command(makedistCommand, "Create a distribution")
             // .command(makedistCommand, "Create a distribution", function () {
             //     return {
@@ -47,14 +60,15 @@ export class Application extends Blend.builder.Application {
         var command = argv._[0];
         if (command === buildFrameworkCommand) {
             me.buildFrameworkCommand();
-        } else if (command === copyrightHeaderCommand) {
-            me.copyrightSourcesCommand();
         } else if (command === makedistCommand) {
-            //me.createDistribution((<any>argv).version);
+            // me.createDistribution((<any>argv).version);
             me.createDistributionCommand("patch");
         }
     }
 
+    /**
+     * Check if all build requirements are met
+     */
     protected checkBuildRequirements(): boolean {
         var me = this,
             exeResult = me.checkTypeScriptSanity();
@@ -132,11 +146,17 @@ export class Application extends Blend.builder.Application {
         }
     }
 
+    /**
+     * Compile the sass files
+     */
     protected compileStyles(): boolean {
         var me = this;
         return me.buildStyles(me.blendPath);
     }
 
+    /**
+     * Entry point for building the framework
+     */
     protected buildFrameworkCommand(): boolean {
         var me = this,
             result = false;
@@ -163,6 +183,9 @@ export class Application extends Blend.builder.Application {
         me.filesystem.writeFileText(file, header + "\n" + contents);
     }
 
+    /**
+     * Synchronize the SDL and Theme SDK package versions
+     */
     private syncSubPackagesVersions() {
 
         var me = this,
@@ -267,19 +290,6 @@ export class Application extends Blend.builder.Application {
             }
 
             me.printDone();
-
-
-
-            // if (currentBranchName === "master") {
-            // }
-
-
         }
-    }
-
-    protected copyrightSourcesCommand() {
-        var me = this;
-        me.println("Copyrighting the sources");
-
     }
 }
