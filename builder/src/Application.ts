@@ -178,81 +178,102 @@ export class Application extends Blend.builder.Application {
         me.filesystem.writeFileText(me.filesystem.makePath(distPackagePath + "/package.json"), JSON.stringify(distPackage, null, 4));
     }
 
-    protected createDistributionCommand(semver: string) {
+    protected createDistributionCommand(semver: string, isProduction: boolean = false) {
         var me = this,
             typingsFolder = me.filesystem.makePath(me.distPath + "/typings"),
             webFolder = me.filesystem.makePath(me.distPath + "/blend"),
             currentBranchName = me.getGitCurrentBranchName(me.projectFolder);
 
         me.println(`Creating a ${semver} distribution`);
-        if (currentBranchName === currentBranchName) {
-            //if (!me.isGitRepositoryClean(me.projectFolder)) {
-            if (me.buildFrameworkCommand()) {
-                // prepare the dist folder
-                me.filesystem.ensureFolder(typingsFolder, true);
-                me.filesystem.ensureFolder(webFolder, true);
+        if (me.buildFrameworkCommand()) {
+            // prepare the dist folder
+            me.filesystem.ensureFolder(typingsFolder, true);
+            me.filesystem.ensureFolder(webFolder, true);
 
-                me.print("Processing typings, ");
-                var dtFile = me.filesystem.makePath(typingsFolder + "/blend.d.ts");
-                me.filesystem.copy(me.filesystem.makePath(me.buildPath + "/blend/blend.d.ts"), dtFile);
-                me.cleanAndAddCopyright(dtFile);
-                me.printDone();
+            me.print("Processing typings, ");
+            var dtFile = me.filesystem.makePath(typingsFolder + "/blend.d.ts");
+            me.filesystem.copy(me.filesystem.makePath(me.buildPath + "/blend/blend.d.ts"), dtFile);
+            me.cleanAndAddCopyright(dtFile);
+            me.printDone();
 
-                var jsFolder = me.filesystem.makePath((webFolder + "/js"));
-                var cssFoder = me.filesystem.makePath(webFolder + "/css");
+            var jsFolder = me.filesystem.makePath((webFolder + "/js"));
+            var cssFoder = me.filesystem.makePath(webFolder + "/css");
 
-                me.print("Creating a debug version, ");
-                var debugJSFile = me.filesystem.makePath(jsFolder + "/blend-debug.js");
-                me.filesystem.copy(me.filesystem.makePath(me.buildPath + "/blend/blend.js"), debugJSFile);
-                me.filesystem.copy(me.filesystem.makePath(me.buildPath + "/css"), cssFoder);
-                me.findCSSFiles(cssFoder).forEach(function (file: string) {
-                    var renamedName = file.replace(".css", "-debug.css");
-                    me.filesystem.rename(file, renamedName);
-                    me.cleanAndAddCopyright(renamedName);
+            me.print("Creating a debug version, ");
+            var debugJSFile = me.filesystem.makePath(jsFolder + "/blend-debug.js");
+            me.filesystem.copy(me.filesystem.makePath(me.buildPath + "/blend/blend.js"), debugJSFile);
+            me.filesystem.copy(me.filesystem.makePath(me.buildPath + "/css"), cssFoder);
+            me.findCSSFiles(cssFoder).forEach(function (file: string) {
+                var renamedName = file.replace(".css", "-debug.css");
+                me.filesystem.rename(file, renamedName);
+                me.cleanAndAddCopyright(renamedName);
+            });
+            me.printDone();
+
+            me.print("Creating a release version, ");
+            var releaseFile = me.filesystem.makePath(jsFolder + "/blend.min.js");
+            me.minifyJSFileTo(debugJSFile, releaseFile, {
+                mangle: false,
+                compress: true
+            });
+            me.cleanAndAddCopyright(releaseFile);
+            me.findCSSFiles(cssFoder).forEach(function (file: string) {
+                var minCssFileName = file.replace("-debug.css", ".min.css");
+                me.minifyCSSFileTo(file, minCssFileName, {
+                    maxLineLen: 500
                 });
-                me.printDone();
+                me.cleanAndAddCopyright(minCssFileName);
+            });
+            me.printDone();
 
-                me.print("Creating a release version, ");
-                var releaseFile = me.filesystem.makePath(jsFolder + "/blend.min.js");
-                me.minifyJSFileTo(debugJSFile, releaseFile, {
-                    mangle: false,
-                    compress: true
-                });
-                me.cleanAndAddCopyright(releaseFile);
-                me.findCSSFiles(cssFoder).forEach(function (file: string) {
-                    var minCssFileName = file.replace("-debug.css", ".min.css");
-                    me.minifyCSSFileTo(file, minCssFileName, {
-                        maxLineLen: 500
-                    });
-                    me.cleanAndAddCopyright(minCssFileName);
-                });
-                me.printDone();
+            me.print("Updateing framework version to: ");
+            me.bumpPackageVersion(semver, me.projectFolder);
+            me.frameworkPackage = new Blend.npm.Package(me.projectFolder);
+            me.print(me.frameworkPackage.version + ", ");
+            me.filesystem.writeFileText(me.filesystem.makePath(me.distPath + "/VERSION"), me.frameworkPackage.version);
+            me.syncSubPackagesVersions();
+            me.printDone();
 
-                me.print("Updateing framework version to: ");
-                me.bumpPackageVersion(semver, me.projectFolder);
-                me.frameworkPackage = new Blend.npm.Package(me.projectFolder);
-                me.print(me.frameworkPackage.version + ", ");
-                me.filesystem.writeFileText(me.filesystem.makePath(me.distPath + "/VERSION"), me.frameworkPackage.version);
-                me.syncSubPackagesVersions();
-                me.printDone();
+            var registry = me.getNpmConfig("registry");
+            var isProductionRegistry = registry.indexOf("registry.npmjs.org") !== -1;
 
-                me.print("Publishing: ");
-                me.gitCommitAndTag("v" + me.frameworkPackage.version, `Updated for v${me.frameworkPackage.version} distribution.`);
+            var publishPackages = function () {
                 me.print("SDK, ");
                 me.childProcess.execute(me.childProcess.makeCommand("npm"), ["publish"], { cwd: me.distPath });
                 me.print("Theme SDK, ");
                 me.childProcess.execute(me.childProcess.makeCommand("npm"), ["publish"], { cwd: me.filesystem.makePath(me.blendPath + "/themes") });
+            };
+
+            me.print(`Publishing in ${isProduction ? "PRODUCTION" : "DEVELOPMENT"} (${currentBranchName} to ${registry}): `);
+            if (isProductionRegistry) {
+                if (isProduction) {
+                    publishPackages();
+                } else {
+                    me.print("SKIPPING NPM PUBLISH, ");
+                }
+            } else {
+                publishPackages();
+            }
+
+            if (isProduction) {
+                // the git stuff
+                me.gitCommitAndTag("v" + me.frameworkPackage.version, `Updated for v${me.frameworkPackage.version} distribution.`);
                 me.print(`${currentBranchName}, `);
                 me.childProcess.execute("git", ["push", "origin", currentBranchName], { cwd: me.projectFolder });
                 me.print("tags, ");
                 me.childProcess.execute("git", ["push", "--tags"], { cwd: me.projectFolder });
-                me.printDone();
+            } else {
+                me.print("SKIPPING GIT PUSH, ");
             }
-            // } else {
-            //     me.printError(`${currentBranchName} is not clean!`);
+
+            me.printDone();
+
+
+
+            // if (currentBranchName === "master") {
             // }
-        } else {
-            me.printError(`We need to be on the master branch but this is ${currentBranchName}!`);
+
+
         }
     }
 
