@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/builder/dist/Main.js",
+            "stopOnEntry": false,
+            "args": [
+                "makedist",
+                "-v",
+                "patch"
+            ],
+            "cwd": "${workspaceRoot}/builder/dist",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "externalConsole": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/builder/dist"
+        },
+        {
+            "name": "Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 5858,
+            "address": "localhost",
+            "restart": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/builder/dist",
+            "localRoot": "${workspaceRoot}/builder/dist",
+            "remoteRoot": null
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "name": "material-blend-theme-sdk",
-    "version": "0.0.2",
+    "version": "0.0.30",
     "description": "Sass/Compass tools for creating a custom MaterialBlend themes",
     "keywords": [
         "material design",
