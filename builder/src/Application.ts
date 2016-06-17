@@ -61,7 +61,7 @@ export class Application extends Blend.builder.Application {
         if (command === buildFrameworkCommand) {
             me.buildFrameworkCommand();
         } else if (command === makedistCommand) {
-            //me.createDistribution((<any>argv).version);
+            // me.createDistribution((<any>argv).version);
             me.createDistributionCommand("patch");
         }
     }
