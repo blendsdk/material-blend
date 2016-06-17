@@ -7,13 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "yargs": "^4.7.1"
-  },
   "keywords": [],
   "author": "gevik Babakhani (TrueSoftware B.V.)",
   "license": "Apache-2.0",
   "dependencies": {
-    "blend-node-library": "*"
+    "blend-node-library": "*",
+    "yargs": "^4.7.1"
   }
 }
