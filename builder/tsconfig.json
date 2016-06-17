@@ -1,17 +1,15 @@
 {
     "compilerOptions": {
-        "module": "amd",
+        "module": "commonjs",
         "inlineSourceMap": true,
         "inlineSources": false,
         "noImplicitAny": true,
         "declaration": false,
         "removeComments": true,
-        "allowJs": true,
-        "outFile": "dist/builder.js"
+        "outDir": "dist"
     },
     "files": [
         "typings/index.d.ts",
-        "src/Init.js",
         "src/Application.ts",
         "src/Main.ts"
     ]

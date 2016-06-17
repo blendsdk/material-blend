@@ -1,2 +1,3 @@
-var builder = new Builder.Application(__dirname + "/../../");
-builder.run();
+import { Application } from "./Application";
+var app = new Application(__dirname + "/../../");
+app.run();
