@@ -15,7 +15,14 @@
  */
 
 import * as Blend from "blend-node-library";
-import yargs = require("yargs");
+//import yargs = require("yargs");
+
+interface DistCommandOptions {
+    version: string;
+    env: string;
+    _: Array<any>;
+    [name: string]: any;
+}
 
 export class Application extends Blend.builder.Application {
 
@@ -42,27 +49,28 @@ export class Application extends Blend.builder.Application {
         var buildFrameworkCommand = "buildfx",
             makedistCommand = "makedist";
 
-        var argv = yargs
+        var argv = require("yargs")
             .command(buildFrameworkCommand, "Build the Framework and the Tests")
-            .command(makedistCommand, "Create a distribution")
-            // .command(makedistCommand, "Create a distribution", function () {
-            //     return {
-            //         version: {
-            //             alias: "v",
-            //             demand: true,
-            //             describe: "Version and tag to publish"
-            //         }
-            //     };
-            // }).demand(1)
+            .command(makedistCommand, "Create a distribution", {
+                version: {
+                    alias: "v",
+                    demand: true,
+                    describe: "Version and tag to publish"
+                },
+                environment: {
+                    alias: "e",
+                    demand: true,
+                    describe: "The environment to publish this build"
+                }
+            }).demand(1)
             .epilog("Copyright 2016 TrueSoftware B.V.")
             .argv;
 
-        var command = argv._[0];
+        var command = (<any>argv)._[0];
         if (command === buildFrameworkCommand) {
             me.buildFrameworkCommand();
         } else if (command === makedistCommand) {
-            // me.createDistribution((<any>argv).version);
-            me.createDistributionCommand("patch");
+            me.createDistributionCommand(argv.version, argv.env === "prod");
         }
     }
 
