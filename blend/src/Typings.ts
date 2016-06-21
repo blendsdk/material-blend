@@ -91,7 +91,7 @@ interface FunctionAsController {
 /**
  * Custom type describing a ctype
  */
-type ComponentTypes = ComponentClass | ComponentConfig | string;
+type ComponentTypes = ComponentClass | ComponentConfig | string | Blend.Component;
 type ControllerType = ComponentClass | Blend.mvc.Controller | FunctionAsController | string;
 
 /**
@@ -168,6 +168,7 @@ interface MaterialInterface extends MvcViewInterface {
     visible?: boolean;
     top?: number;
     left?: number;
+    flex?: number | string;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;

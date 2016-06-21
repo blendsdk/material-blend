@@ -78,7 +78,6 @@ $default-fab-position-small: rem(1.600);
 $default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);
 $default-button-disbaled-text-color: rgba($color-blackandwhite-cblack,0.26);
 
-
 // Flat button
 $default-flat-button-text-color: rgba($color-grey-c900,0.95);
 $default-flat-button-icon-color: rgba($color-grey-c900,0.95);
@@ -98,3 +97,7 @@ $default-fab-button-icon-color: $default-flat-button-icon-color;
 $default-fab-button-background-color: rgba($color-grey-c500,0.15);
 $default-fab-button-hover-background-color: rgba($color-grey-c500,0.3);
 $default-fab-button-focus-background-color: $default-flat-button-focus-background-color;
+
+
+// Application Toolbar
+$default-application-bar-size: 64px;

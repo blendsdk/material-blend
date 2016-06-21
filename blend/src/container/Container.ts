@@ -16,10 +16,43 @@
 
 /// <reference path="../material/Material.ts" />
 /// <reference path="../dom/Element.ts" />
+/// <reference path="../Typings.ts" />
+
 
 namespace Blend.container {
 
-    export class Container extends Blend.material.Material {
+    /**
+     * A Basic container that can host other Material UI components
+     */
+    export abstract class Container extends Blend.material.Material {
 
+        protected items: Array<Blend.material.Material>;
+        protected bodyElement: Blend.dom.Element;
+
+        public constructor(config: ContainerMaterialInterface = {}) {
+            super(config);
+            var me = this;
+            me.items = [];
+            me.add(config.items || []);
+        }
+
+        public add(item: MaterialType | Array<MaterialType>): Container {
+            var me = this,
+                docFrag: DocumentFragment = document.createDocumentFragment();
+            Blend.wrapInArray(item).forEach(function (itm: MaterialType) {
+                if (Blend.isInstanceOf(itm, Blend.material.Material)) {
+                    me.items.push(<Blend.material.Material>itm);
+                } else {
+                    me.items.push(<Blend.material.Material>Blend.createComponent(itm));
+                }
+                if (me.isRendered) {
+                    docFrag.appendChild(me.items[me.items.length - 1].getElement().getEl());
+                }
+            });
+            if (docFrag.childNodes.length !== 0) {
+                me.bodyElement.appendFragment(docFrag);
+            }
+            return me;
+        }
     }
 }

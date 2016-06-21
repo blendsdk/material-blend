@@ -6,11 +6,14 @@ The roadmap contains implementation plans, and it is a work-in-progress document
 
 - First beta release that will be usable by the public
 
+### 0.3 <<< WE ARE HERE
 
-### 0.2 <<< WE ARE HERE
+- Create a container component that can host other components
 
+### 0.2
+
+- Create a build and a distribute system
 - Automatically update the npm packages
-- Have TSList check the sources on compile time
 - Material Round button, both flat and raised
 - Material FAB button
 - Material Raised button

@@ -1,0 +1,5 @@
+.mb-tbar-application {
+    height: 56px;
+    @include elevate($elevate-4dp);
+    background-color: $color-pink-c800;
+}

@@ -251,6 +251,11 @@ namespace Blend.dom {
             return child;
         }
 
+        public appendFragment(docFrag: DocumentFragment): Blend.dom.Element {
+            this.el.appendChild(docFrag);
+            return this;
+        }
+
         /**
          * Removes this element from its parent
          */

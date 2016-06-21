@@ -49,6 +49,7 @@ namespace Blend.material {
                 left: null,
                 width: null,
                 height: null,
+                flex: config.flex || null,
                 responsive: config.responsive || false,
                 responseTo: config.responseTo || null
             };
@@ -121,10 +122,10 @@ namespace Blend.material {
                 : me.config.responseTo || null;
 
             if (config !== null) {
-                Blend.forEach(config, function(queries: Array<string>, alias: string) {
+                Blend.forEach(config, function (queries: Array<string>, alias: string) {
                     queries = Blend.wrapInArray<string>(queries);
-                    queries.forEach(function(mediaQuery: string) {
-                        Blend.Runtime.addMediaQueryListener(mediaQuery, function(mql: MediaQueryList) {
+                    queries.forEach(function (mediaQuery: string) {
+                        Blend.Runtime.addMediaQueryListener(mediaQuery, function (mql: MediaQueryList) {
                             me.fireEvent("responsiveChanged", alias, mql);
                         });
                     });
@@ -304,7 +305,7 @@ namespace Blend.material {
             if (me.isRendered) {
                 me.element.addCssClass(css);
             } else {
-                Blend.wrapInArray(css).forEach(function(itm: string) {
+                Blend.wrapInArray(css).forEach(function (itm: string) {
                     (<Array<string>>me.config.css).push(itm);
                 });
             }
@@ -365,7 +366,7 @@ namespace Blend.material {
         public destroy() {
             var me = this;
             me.element.remove();
-            Blend.forEach(me, function(value: any, key: string) {
+            Blend.forEach(me, function (value: any, key: string) {
                 (<any>me)[key] = null;
                 delete ((<any>me)[key]);
             });
