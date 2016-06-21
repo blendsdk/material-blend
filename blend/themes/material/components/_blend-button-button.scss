@@ -14,6 +14,32 @@
  * limitations under the License.
  */
 
+/**
+ * Structure variables
+ */
+$flat-buttons: ('flat','round-flat');
+$raised-buttons: ('raised','round-raised');
+$fab-buttons: ('fab', 'fab-mini');
+$all-raised-buttons: join($fab-buttons,$raised-buttons);
+
+// Button structure
+$struct-button-min-width: rem(8.800) !default;
+$struct-button-height: rem(3.60);
+$struct-button-padding: 0 rem(1.600) !default;
+$struct-button-icon-only-padding: rem(0.600) !default;
+$struct-button-margin: rem(0.600) rem(0.800) !default;
+$struct-button-border-radius: rem(0.2) !default;
+// FAB
+$struct-button-fab-border-radius: 50% !default;
+$struct-button-fab-size: rem(5.600) !default;
+$struct-button-fab-icon-size: rem(3.600) !default;
+// FAB Mini
+$struct-button-fab-mini-size: rem(4.0) !default;
+$struct-button-fab-mini-icon-size: rem(2.400) !default;
+// FAB Position edge
+$struct-fab-position-edge: rem(2.400);
+$struct-fab-position-small: rem(1.600);
+
 @mixin blend-button-raised-shadow() {
     @include elevate($elevate-2dp);
 }
@@ -29,7 +55,6 @@
 @mixin blend-button-fab-press-shadow() {
     @include elevate($elevate-12dp); // specs say it should be 12dp
 }
-
 
 @mixin blend-no-shadow() {
     box-shadow: none;
@@ -47,7 +72,7 @@
 
 @mixin blend-button-icon-only() {
     margin: rem(0.4);
-    padding: $default-button-icon-only-padding;
+    padding: $struct-button-icon-only-padding;
     min-width: 0;
     line-height: 0;
     & > .mb-btn-inner {
@@ -197,17 +222,17 @@ $button-font-size
 @mixin blend-button-flat() {
     .mb-btn-flat-both , .mb-btn-flat-text-only {
         @include blend-button-type(
-        $button-border-radius: $default-button-border-radius,
-            $button-padding: $default-button-padding,
-            $button-margin: $default-button-margin,
-            $button-line-height: $default-button-height,
-            $button-min-width: $default-button-min-width,
+        $button-border-radius: $struct-button-border-radius,
+            $button-padding: $struct-button-padding,
+            $button-margin: $struct-button-margin,
+            $button-line-height: $struct-button-height,
+            $button-min-width: $struct-button-min-width,
             $button-font-size: $m-body-font-size);
     }
 
     .mb-btn-flat-icon-only {
         @include blend-button-icon-only();
-        border-radius: $default-button-border-radius;
+        border-radius: $struct-button-border-radius;
     }
 
     .mb-btn-round-flat-icon-only {
@@ -219,11 +244,11 @@ $button-font-size
 @mixin blend-button-raised() {
     .mb-btn-raised-both , .mb-btn-raised-text-only {
         @include blend-button-type(
-        $button-border-radius: $default-button-border-radius,
-            $button-padding: $default-button-padding,
-            $button-margin: $default-button-margin,
-            $button-line-height: $default-button-height,
-            $button-min-width: $default-button-min-width,
+        $button-border-radius: $struct-button-border-radius,
+            $button-padding: $struct-button-padding,
+            $button-margin: $struct-button-margin,
+            $button-line-height: $struct-button-height,
+            $button-min-width: $struct-button-min-width,
             $button-font-size: $m-body-font-size) {
             @include blend-button-raised-shadow();
         }
@@ -232,7 +257,7 @@ $button-font-size
     .mb-btn-raised-icon-only {
         @include blend-button-icon-only();
         @include blend-button-raised-shadow();
-        border-radius: $default-button-border-radius;
+        border-radius: $struct-button-border-radius;
     }
 
     .mb-btn-round-raised-icon-only {
@@ -285,8 +310,8 @@ $button-font-size
         }
 
         @include blend-button-type(
-        $button-border-radius: $default-button-fab-border-radius,
-            $button-padding: $default-button-padding,
+        $button-border-radius: $struct-button-fab-border-radius,
+            $button-padding: $struct-button-padding,
             $button-margin: 0,
             $button-line-height: false,
             $button-min-width: false,
@@ -297,38 +322,38 @@ $button-font-size
 
     .mb-btn-fab-icon-only {
 
-        min-width: $default-button-fab-size;
-        width: $default-button-fab-size;
-        height: $default-button-fab-size;
-        line-height: $default-button-fab-size;
+        min-width: $struct-button-fab-size;
+        width: $struct-button-fab-size;
+        height: $struct-button-fab-size;
+        line-height: $struct-button-fab-size;
 
         & > .mb-btn-inner {
             & > .mb-btn-icon {
-                font-size: $default-button-fab-icon-size;
+                font-size: $struct-button-fab-icon-size;
             }
         }
     }
 
     .mb-btn-fab-mini-icon-only {
 
-        min-width: $default-button-fab-mini-size;
-        width: $default-button-fab-mini-size;
-        height: $default-button-fab-mini-size;
-        line-height: $default-button-fab-mini-size;
+        min-width: $struct-button-fab-mini-size;
+        width: $struct-button-fab-mini-size;
+        height: $struct-button-fab-mini-size;
+        line-height: $struct-button-fab-mini-size;
 
         & > .mb-btn-inner {
             & > .mb-btn-icon {
-                font-size: $default-button-fab-mini-icon-size;
+                font-size: $struct-button-fab-mini-icon-size;
             }
         }
     }
 
-    @include fab-positions('fab', $default-button-fab-size, $default-fab-position-edge);
-    @include fab-positions('fab-mini', $default-button-fab-mini-icon-size, $default-fab-position-edge);
+    @include fab-positions('fab', $struct-button-fab-size, $struct-fab-position-edge);
+    @include fab-positions('fab-mini', $struct-button-fab-mini-icon-size, $struct-fab-position-edge);
 
     @media (max-width: $layout-medium-width - 1) {
-        @include fab-positions('fab',$default-button-fab-size ,$default-fab-position-small);
-        @include fab-positions('fab-mini',$default-button-fab-mini-icon-size ,$default-fab-position-small);
+        @include fab-positions('fab',$struct-button-fab-size ,$struct-fab-position-small);
+        @include fab-positions('fab-mini',$struct-button-fab-mini-icon-size ,$struct-fab-position-small);
     }
 }
 

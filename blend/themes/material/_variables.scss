@@ -14,90 +14,40 @@
  * limitations under the License.
  */
 
-// Typography
-$m-font-family: Roboto, 'Helvetica Neue', sans-serif !default;
-
+/**
+ * Global background color the the entire theme.
+ * This is usually a very light grey
+ */
 $global-background-color: $color-grey-c200;
 
-$m-display-4-font-size: rem(11.20) !default;
-$m-display-3-font-size: rem(5.600) !default;
-$m-display-2-font-size: rem(4.500) !default;
-$m-display-1-font-size: rem(3.400) !default;
+// BUTTONS /////////////////////////////////////////////////////////////////////
 
-$m-headline-font-size: rem(2.400) !default;
-$m-title-font-size: rem(2.000) !default;
-$m-subhead-font-size: rem(1.600) !default;
-
-$m-body-font-size: rem(1.400) !default;
-$m-caption-font-size:   rem(1.300) !default;
-
-// Breakpoint and Grid Layout
-$layout-large-columns: 12 !default;
-$layout-large-gutter: 16px !default;
-$layout-large-margin: 16px !default;
-$layout-large-width: 840px !default;
-
-$layout-medium-columns: 8 !default;
-$layout-medium-gutter: $layout-large-gutter !default;
-$layout-medium-margin: $layout-large-margin !default;
-$layout-medium-width: 480px !default;
-
-$layout-small-columns: 4 !default;
-$layout-small-gutter: $layout-large-gutter !default;
-$layout-small-margin: $layout-large-margin !default;
-
-$layout-cell-default-columns: $layout-small-columns !default;
-$layout-max-columns: $layout-large-columns !default;
-
-$flat-buttons: ('flat','round-flat');
-$raised-buttons: ('raised','round-raised');
-$fab-buttons: ('fab', 'fab-mini');
-$all-raised-buttons: join($fab-buttons,$raised-buttons);
-
-// Button structure
-$default-button-min-width: rem(8.800) !default;
-$default-button-height: rem(3.60);
-$default-button-padding: 0 rem(1.600) !default;
-$default-button-icon-only-padding: rem(0.600) !default;
-$default-button-margin: rem(0.600) rem(0.800) !default;
-$default-button-border-radius: rem(0.2) !default;
-// FAB
-$default-button-fab-border-radius: 50% !default;
-$default-button-fab-size: rem(5.600) !default;
-$default-button-fab-icon-size: rem(3.600) !default;
-// FAB Mini
-$default-button-fab-mini-size: rem(4.0) !default;
-$default-button-fab-mini-icon-size: rem(2.400) !default;
-// FAB Position edge
-$default-fab-position-edge: rem(2.400);
-$default-fab-position-small: rem(1.600);
-
-// Button styles based on default theme
-
-// When a button is disabled
+$default-button-text-color: rgba($color-grey-c900,0.95);
+$default-button-icon-color: $default-button-text-color;
+$default-button-background-color: rgba($color-grey-c500,0.15);
 $default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);
 $default-button-disbaled-text-color: rgba($color-blackandwhite-cblack,0.26);
+$default-button-focus-background-color: rgba($color-grey-c500,0.4);
+$default-button-hover-background-color: rgba($color-grey-c500,0.2);
 
-// Flat button
-$default-flat-button-text-color: rgba($color-grey-c900,0.95);
-$default-flat-button-icon-color: rgba($color-grey-c900,0.95);
-$default-flat-button-hover-background-color: rgba($color-grey-c500,0.2);
-$default-flat-button-focus-background-color: rgba($color-grey-c500,0.4);
+/**
+ * Flat button
+ */
+$theme-flat-button-text-color: $default-button-text-color;
+$theme-flat-button-icon-color: $default-button-icon-color;
+$theme-flat-button-hover-background-color: $default-button-hover-background-color;
+$theme-flat-button-focus-background-color: $default-button-focus-background-color;
 
 // Raised
-$default-raised-button-text-color: $default-flat-button-text-color;
-$default-raised-button-icon-color: $default-flat-button-icon-color;
-$default-raised-button-background-color: rgba($color-grey-c500,0.15);
-$default-raised-button-hover-background-color: rgba($color-grey-c500,0.3);
-$default-raised-button-focus-background-color: $default-flat-button-focus-background-color;
+$theme-raised-button-text-color: $default-button-text-color;
+$theme-raised-button-icon-color: $default-button-icon-color;
+$theme-raised-button-background-color: $default-button-background-color;
+$theme-raised-button-hover-background-color: $default-button-hover-background-color;
+$theme-raised-button-focus-background-color: $default-button-focus-background-color;
 
 // Fab
-$default-fab-button-text-color: $default-flat-button-text-color;
-$default-fab-button-icon-color: $default-flat-button-icon-color;
-$default-fab-button-background-color: rgba($color-grey-c500,0.15);
-$default-fab-button-hover-background-color: rgba($color-grey-c500,0.3);
-$default-fab-button-focus-background-color: $default-flat-button-focus-background-color;
-
-
-// Application Toolbar
-$default-application-bar-size: 64px;
+$theme-fab-button-text-color: $default-button-text-color;
+$theme-fab-button-icon-color: $default-button-icon-color;
+$theme-fab-button-background-color: $default-button-background-color;
+$theme-fab-button-hover-background-color: $default-button-hover-background-color;
+$theme-fab-button-focus-background-color: $default-button-focus-background-color;

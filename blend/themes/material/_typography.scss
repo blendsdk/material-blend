@@ -15,6 +15,23 @@
  */
 
 /**
+ * Structure variables
+ */
+$m-font-family: Roboto, 'Helvetica Neue', sans-serif !default;
+
+$m-display-4-font-size: rem(11.20) !default;
+$m-display-3-font-size: rem(5.600) !default;
+$m-display-2-font-size: rem(4.500) !default;
+$m-display-1-font-size: rem(3.400) !default;
+
+$m-headline-font-size: rem(2.400) !default;
+$m-title-font-size: rem(2.000) !default;
+$m-subhead-font-size: rem(1.600) !default;
+
+$m-body-font-size: rem(1.400) !default;
+$m-caption-font-size:   rem(1.300) !default;
+
+/**
  * Mixin for creating typogrphy display rules
  */
 @mixin typo-style($font-size, $font-weight, $letter-spacing, $line-height:false, $contrast:false) {
