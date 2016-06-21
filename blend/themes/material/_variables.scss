@@ -15,14 +15,25 @@
  */
 
 /**
- * Global background color the the entire theme.
+ * Global background color for  the entire theme.
  * This is usually a very light grey
  */
 $global-background-color: $color-grey-c200;
 
+////////////////////////////////////////////////////////////////////////////////
+// BASE THEME COLORS
+$color-primary:                 $color-blue-c500;
+$color-primary-light:           $color-blue-c100;
+$color-primary-dark:            $color-blue-c700;
+$color-primary-text-component:  $color-blackandwhite-cwhite;
+$color-primary-text-content:    $color-grey-c900;
+$color-secondary-text-content:  $color-grey-c500;
+$color-accent:                  $color-pink-a200;
+$color-divider:                 $color-grey-c400;
+
 // BUTTONS /////////////////////////////////////////////////////////////////////
 
-$default-button-text-color: rgba($color-grey-c900,0.95);
+$default-button-text-color: rgba($color-primary-text-content,0.95);
 $default-button-icon-color: $default-button-text-color;
 $default-button-background-color: rgba($color-grey-c500,0.15);
 $default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);

@@ -59,7 +59,7 @@ namespace Blend.button {
                 "xlarge": 48
             };
 
-            me.config = {
+            me.config = Blend.apply(me.config, {
                 text: config.text || "",
                 icon: config.icon || null,
                 iconFamily: config.iconFamily || "material-icons",
@@ -70,7 +70,7 @@ namespace Blend.button {
                 disabled: config.disabled === true ? true : false,
                 iconSize: config.iconSize || null,
                 ripple: config.ripple === false ? false : true
-            };
+            }, true, true);
         }
 
         public setState(value: boolean): Blend.button.Button {
@@ -289,3 +289,5 @@ namespace Blend.button {
 
     }
 }
+
+Blend.registerClassWithAlias("mb.button", Blend.button.Button);

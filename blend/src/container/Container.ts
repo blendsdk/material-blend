@@ -36,6 +36,29 @@ namespace Blend.container {
             me.add(config.items || []);
         }
 
+        public doInitialize(): Blend.material.Material {
+            var me = this;
+            me.initEvents();
+            me.initialize();
+            me.performLayout();
+            me.notifyMaterialInitialized();
+            return me;
+        }
+
+        protected updateLayout() {
+            var me = this;
+            me.items.forEach(function (material: Blend.material.Material) {
+                material.performLayout();
+            });
+        }
+
+        protected doInitializeChildren() {
+            var me = this;
+            me.items.forEach(function (material: Blend.material.Material) {
+                material.doInitialize();
+            });
+        }
+
         public add(item: MaterialType | Array<MaterialType>): Container {
             var me = this,
                 docFrag: DocumentFragment = document.createDocumentFragment();
@@ -45,8 +68,13 @@ namespace Blend.container {
                 } else {
                     me.items.push(<Blend.material.Material>Blend.createComponent(itm));
                 }
+
+                var material = me.items[me.items.length - 1];
+                material.setProperty("parent", me);
+
                 if (me.isRendered) {
-                    docFrag.appendChild(me.items[me.items.length - 1].getElement().getEl());
+                    material.doInitialize();
+                    docFrag.appendChild(material.getElement().getEl());
                 }
             });
             if (docFrag.childNodes.length !== 0) {

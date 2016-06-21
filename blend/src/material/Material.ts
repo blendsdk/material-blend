@@ -77,7 +77,7 @@ namespace Blend.material {
         /**
          * Initiates a sub-layout process.
          */
-        protected performLayout() {
+        public performLayout() {
             var me = this;
             if (me.canLayout === true) {
                 me.suspendLayout();

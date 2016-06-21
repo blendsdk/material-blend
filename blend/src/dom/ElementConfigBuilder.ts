@@ -46,9 +46,9 @@ namespace Blend.dom {
                 true);
         }
 
-        public addChild(child: string | Blend.dom.ElementConfigBuilder | CreateElementInterface): Blend.dom.ElementConfigBuilder {
+        public addChild(child: string | Blend.dom.ElementConfigBuilder | CreateElementInterface | Blend.dom.Element): Blend.dom.ElementConfigBuilder {
             var me = this;
-            if (Blend.isInstanceOf(child, Blend.dom.ElementConfigBuilder)) {
+            if (Blend.isInstanceOf(child, Blend.dom.ElementConfigBuilder) || Blend.isInstanceOf(child, Blend.dom.Element)) {
                 me.config.children.push(child);
                 return <Blend.dom.ElementConfigBuilder>child;
             } else {
@@ -60,7 +60,7 @@ namespace Blend.dom {
 
         public setStyle(styles: StyleInterface): Blend.dom.ElementConfigBuilder {
             var me = this;
-            Blend.forEach(styles, function(v: any, k: string) {
+            Blend.forEach(styles, function (v: any, k: string) {
                 me.config.style[k] = v;
             });
             return this;
@@ -79,7 +79,7 @@ namespace Blend.dom {
 
         public addCSS(css: Array<string>): Blend.dom.ElementConfigBuilder {
             var me = this;
-            css.forEach(function(itm: string) {
+            css.forEach(function (itm: string) {
                 (<Array<string>>me.config.cls).push(itm);
             });
             return this;

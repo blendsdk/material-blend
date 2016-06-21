@@ -113,6 +113,9 @@ namespace Blend.application {
                 me.setupWindowListeners();
                 me.performInitialMediaQuery();
                 me.doInitialize();
+                me.mainView.doInitialize();
+                me.performLayout();
+                me.mainView.performLayout();
                 me.notifyApplicationReady();
                 me.isStarted = true;
             }
