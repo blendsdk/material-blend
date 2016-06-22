@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('Component Binding', function(t: Blend.testing.TestRunner) {
 
     var classnum = 0;

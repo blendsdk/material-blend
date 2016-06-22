@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest("Container", function (t: Blend.testing.TestRunner) {
 
     class TestConatier extends Blend.container.Container {

@@ -56,6 +56,6 @@ namespace Blend.material {
             me.element.setHtml(`<pre>Layouts: ${me.layoutCount}</pre>`);
         }
     }
-
-    registerClassWithAlias("mb.rect", Blend.material.Rectangle);
 }
+
+Blend.registerClassWithAlias("mb.rect", Blend.material.Rectangle);

@@ -8,23 +8,22 @@
         "outFile": "../build/blend/blend.js"
     },
     "files": [
-        "src/Version.ts",
-        "src/common/Utils.ts",
-        "src/Component.ts",
-        "src/mvc/Context.ts",
-        "src/mvc/Controller.ts",
-        "src/dom/ClassList.ts",
-        "src/dom/StyleList.ts",
+        "src/Blend.ts",
         "src/binding/BindingProvider.ts",
         "src/Runtime.ts",
+        "src/common/Utils.ts",
+        "src/Component.ts",
+        "src/dom/ClassList.ts",
+        "src/dom/StyleList.ts",
         "src/dom/Element.ts",
         "src/dom/ElementConfigBuilder.ts",
+        "src/mvc/Client.ts",
+        "src/mvc/Context.ts",
         "src/mvc/Model.ts",
         "src/mvc/View.ts",
+        "src/mvc/Controller.ts",
         "src/material/Material.ts",
         "src/Typings.ts",
-        "src/mvc/Client.ts",
-        "src/Blend.ts",
         "src/ajax/AjaxRequest.ts",
         "src/ajax/AjaxGetRequest.ts",
         "src/ajax/AjaxPostRequest.ts",
@@ -35,41 +34,7 @@
         "src/web/Application.ts",
         "src/material/Rectangle.ts",
         "src/material/effect/Ripple.ts",
-        "src/button/Button.ts"
+        "src/button/Button.ts",
+        "src/Version.ts"
     ]
 }
-
-// src
-// src/ajax
-//
-//
-//
-// src/application
-//
-// src/binding
-//
-//
-// src/button
-//
-// src/common
-//
-// src/container
-//
-//
-//
-// src/dom
-// src/list.txt
-// src/logger
-//
-// src/material
-// src/material/effect
-//
-//
-// src/mvc
-//
-//
-//
-// src/toolbar
-//
-// src/web
-//

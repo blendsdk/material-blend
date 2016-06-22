@@ -1,3 +1,6 @@
+rm -fR tests/testrunner/blend
+rm -fR tests/testrunner/js
+
 cd builder
 ./make-builder.sh
 cd ..

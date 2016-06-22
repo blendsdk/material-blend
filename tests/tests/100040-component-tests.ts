@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('Component Commons', function(t: Blend.testing.TestRunner) {
 
     class Greeter extends Blend.Component {

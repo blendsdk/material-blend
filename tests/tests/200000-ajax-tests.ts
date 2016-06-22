@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('AjaxRequest Sanity', function(t: Blend.testing.TestRunner) {
 
     class AjaxRequestTest extends Blend.ajax.AjaxGetRequest {

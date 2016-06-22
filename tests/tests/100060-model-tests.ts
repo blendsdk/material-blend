@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('Model Binding Tests', function(t: Blend.testing.TestRunner) {
 
     class Logger extends Blend.Component {

@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('MVC create controller', function(t: Blend.testing.TestRunner) {
 
     class Controller1 extends Blend.mvc.Controller {

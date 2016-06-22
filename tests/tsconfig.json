@@ -9,10 +9,25 @@
         "inlineSourceMap": true,
         "inlineSources": true
     },
-    "exclude": [
-        "node_modules",
-        "testrunner",
-        "blend",
-        "blend-sources"
+    "files": [
+        "blend/blend.d.ts",
+        "testapp/testFramework.ts",
+        "testapp/ConsoleLogger.ts",
+        "testapp/TestApp.ts",
+        "tests/100000-sanity-tests.ts",
+        "tests/100010-blend-tests.ts",
+        "tests/100020-runtime-tests.ts",
+         "tests/100030-element-tests.ts",
+         "tests/100040-component-tests.ts",
+         "tests/100050-binding-tests.ts",
+         "tests/100060-model-tests.ts",
+         "tests/100070-mvc-tests.ts",
+         "tests/100090-application-tests.ts",
+         "tests/200000-ajax-tests.ts",
+         "tests/300000-material-tests.ts",
+         "tests/300010-ripple-tests.ts",
+         "tests/300020-container-tests.ts",
+         "tests/300030-fit-container-tests.ts",
+         "tests/300040-stack-container-tests.ts"
     ]
 }

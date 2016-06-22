@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest("Stack Container", function (t: Blend.testing.TestRunner) {
 
     var bodyEl = Blend.getElement(document.body);

@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('Element', function(t: Blend.testing.TestRunner) {
 
     var el: HTMLElement;

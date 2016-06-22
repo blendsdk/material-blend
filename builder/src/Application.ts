@@ -101,6 +101,8 @@ export class Application extends Blend.builder.Application {
         try {
             me.print("Cleaning build folder, ");
             me.filesystem.ensureFolder(me.buildPath, true);
+            me.filesystem.ensureFolder(me.filesystem.makePath(me.testPath + "/testrunner/blend"));
+            me.filesystem.ensureFolder(me.filesystem.makePath(me.testPath + "/testrunner/js"));
             me.printDone();
             return true;
         } catch (e) {

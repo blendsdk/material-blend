@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('Ripple functions CSS', function(t: Blend.testing.TestRunner) {
 
     class RippleTest extends Blend.material.effect.Ripple {

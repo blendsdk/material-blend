@@ -1,5 +1,3 @@
-/// <reference path="../blend/blend.d.ts" />
-
 TestApp.defineTest('Material CSS', function(t: Blend.testing.TestRunner) {
 
     var mtr1: Blend.material.Material = Blend.createComponent<Blend.material.Material>(Blend.material.Material);
