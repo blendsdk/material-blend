@@ -19,3 +19,7 @@ fi
 
 echo Installing typings
 typings install
+
+cd ..
+cd tests/testrunner
+composer update
