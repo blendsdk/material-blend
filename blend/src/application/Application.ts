@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-/// <reference path="../Typings.ts" />
-/// <reference path="../Blend.ts" />
-/// <reference path="../dom/Element.ts" />
-/// <reference path="../mvc/Context.ts" />
-/// <reference path="../material/Material.ts" />
-
 namespace Blend.application {
 
     /**
      * Base class for implementing an Application component
      */
-    export abstract class Application extends Blend.material.Material {
+    export abstract class Application extends Blend.container.Stack {
 
         protected config: ApplicationInterface;
         protected isStarted: boolean;
         protected isResizing: boolean;
-        protected mainView: Blend.material.Material;
 
         public constructor(config: ApplicationInterface = {}) {
             super(Blend.apply(config, <MaterialInterface>{
@@ -39,11 +32,9 @@ namespace Blend.application {
             var me = this;
             me.isStarted = false;
             me.isResizing = false;
-            me.config.mainView = config.mainView || null;
             me.config.theme = config.theme || "default";
             me.config.style = {}; // remove use provided styles
             me.setContext(new Blend.mvc.Context());
-            me.createMainView();
         }
 
         /**
@@ -73,10 +64,10 @@ namespace Blend.application {
             var me = this, tm = -1,
                 counts = 0,
                 curSize = -1;
-            Blend.Runtime.addEventListener(window, "resize", function(evt: Event) {
+            Blend.Runtime.addEventListener(window, "resize", function (evt: Event) {
                 curSize = window.innerWidth + window.innerHeight;
                 clearInterval(tm);
-                tm = setInterval(function() {
+                tm = setInterval(function () {
                     if (counts >= 3) {
                         if (curSize === (window.innerWidth + innerHeight)) {
                             clearInterval(tm);
@@ -113,56 +104,17 @@ namespace Blend.application {
                 me.setupWindowListeners();
                 me.performInitialMediaQuery();
                 me.doInitialize();
-                me.mainView.doInitialize();
                 me.performLayout();
-                me.mainView.performLayout();
                 me.notifyApplicationReady();
                 me.isStarted = true;
             }
         }
 
-        /**
-         * Creates the main view of this application
-         * */
-        protected createMainView() {
-            var me = this;
-            if (me.config.mainView) {
-                me.mainView = Blend.createComponent<Blend.material.Material>(me.config.mainView, {
-                    parent: me
-                });
-                if (Blend.isInstanceOf(me.mainView, Blend.material.Material)) {
-                    me.setContext(me.context);
-                    me.mainView.addCssClass("mb-mainview");
-                    if (me.mainView.getProperty("useParentController", true) === true) {
-                        me.mainView.addController(me.controllers);
-                    }
-                } else {
-                    throw new Error("The provide mainView is not a valid View instance!");
-                }
-            } else {
-                throw new Error("Missing or invalid mainView!");
-            }
-        }
-
-        protected renderMainView(): Blend.dom.Element {
-            return this.mainView.getElement();
-        }
-
         protected finalizeRender() {
             var me = this;
-            super.finalizeRender();
-            /**
-             * We cleanup the main view bounds to force it to fit into the application
-             */
-            me.mainView.setBounds({ top: null, left: null, width: null, height: null });
-            me.mainView.setStyle({ display: null });
-        }
-
-        protected render(): Blend.dom.Element {
-            var me = this;
-            return Blend.dom.Element.create({
-                cls: ["mb-application"],
-                children: [me.renderMainView()]
+            super.finalizeRender({
+                setBounds: false,
+                setStyles: false
             });
         }
 
@@ -172,7 +124,7 @@ namespace Blend.application {
         run() {
             var me = this;
             if (!me.isStarted) {
-                Blend.Runtime.ready(function() {
+                Blend.Runtime.ready(function () {
                     me.asyncRun.apply(me, arguments);
                 }, me);
                 Blend.Runtime.kickStart();

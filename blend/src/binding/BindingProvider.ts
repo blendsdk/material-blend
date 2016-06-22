@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Typings.ts" />
-
 namespace Blend.binding {
 
     /**

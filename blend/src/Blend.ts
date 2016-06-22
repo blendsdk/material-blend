@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="common/Utils.ts" />
-/// <reference path="dom/Element.ts" />
-/// <reference path="./Runtime.ts" />
-
 namespace Blend {
 
     export class eMediaQuery {

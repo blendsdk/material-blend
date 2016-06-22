@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../mvc/View.ts" />
-/// <reference path="../dom/Element.ts" />
-
 namespace Blend.material {
 
     /**

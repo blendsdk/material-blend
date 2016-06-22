@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../application/Application.ts" />
-
 namespace Blend.web {
     /**
      * Base class for a web/desktop application

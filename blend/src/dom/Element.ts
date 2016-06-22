@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Typings.ts" />
-/// <reference path="../Component.ts" />
-/// <reference path="ClassList.ts" />
-/// <reference path="StyleList.ts" />
-/// <reference path="../Blend.ts" />
-
 namespace Blend.dom {
 
     /**

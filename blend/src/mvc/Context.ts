@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Typings.ts" />
-/// <reference path="../Blend.ts" />
-/// <reference path="Controller.ts" />
-/// <reference path="Client.ts" />
-
-
-
 namespace Blend.mvc {
 
     /**

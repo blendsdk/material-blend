@@ -1,9 +1,4 @@
 
-/// <reference path="../material/Material.ts" />
-/// <reference path="../dom/Element.ts" />
-/// <reference path="../Typings.ts" />
-/// <reference path="Container.ts" />
-
 namespace Blend.container {
 
     /**

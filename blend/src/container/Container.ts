@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../material/Material.ts" />
-/// <reference path="../dom/Element.ts" />
-/// <reference path="../Typings.ts" />
-
-
 namespace Blend.container {
 
     /**
@@ -86,6 +81,10 @@ namespace Blend.container {
 
                 if (me.checkComponent(material)) {
                     me.items.push(material);
+                    material.setContext(me.context);
+                    if (material.getProperty("useParentController", true) === true) {
+                        material.addController(me.controllers);
+                    }
                     material.setProperty("parent", me);
                     if (me.isRendered) {
                         material.addCssClass(me.childCssClass);
@@ -93,6 +92,7 @@ namespace Blend.container {
                         docFrag.appendChild(me.getChildElement(material).getEl());
                     }
                 }
+
             });
 
             if (docFrag.childNodes.length !== 0) {

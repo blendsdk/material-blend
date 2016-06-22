@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Blend.ts" />
-/// <reference path="AjaxRequest.ts" />
-
 namespace Blend.ajax {
 
     /**

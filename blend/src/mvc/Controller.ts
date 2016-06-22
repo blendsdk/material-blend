@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Typings.ts" />
-/// <reference path="../Component.ts" />
-/// <reference path="View.ts" />
-/// <reference path="Client.ts" />
-
 interface ControllerEventHandler {
     (view: Blend.mvc.View, ...args: any[]): void;
 }

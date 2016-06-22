@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../material/Material.ts" />
-/// <reference path="../material/effect/Ripple.ts" />
-/// <reference path="../dom/Element.ts" />
-/// <reference path="../dom/ElementConfigBuilder.ts" />
-
 namespace Blend.button {
 
     /**

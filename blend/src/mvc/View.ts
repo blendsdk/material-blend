@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Typings.ts" />
-/// <reference path="../Blend.ts" />
-/// <reference path="Client.ts" />
-
 namespace Blend.mvc {
 
     export class View extends Blend.mvc.Client {

@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../Blend.ts" />
-/// <reference path="Material.ts" />
-
 interface RectangleInterface extends MaterialInterface {
     color?: string;
     border?: boolean;
