@@ -59,7 +59,7 @@ if (!String.prototype.inArray) {
     String.prototype.inArray = function(list: Array<string> = []): boolean {
         var result: boolean = false;
         for (var i = 0; i !== list.length; i++) {
-            if (list[i] === this) {
+            if (list[i] === this.toString()) {
                 result = true;
                 break;
             }
