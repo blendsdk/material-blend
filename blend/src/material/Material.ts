@@ -75,13 +75,29 @@ namespace Blend.material {
         }
 
         /**
+         * Pre updateLayout hook
+         */
+        protected preUpdateLayout() {
+
+        }
+
+        /**
+         * Post updatelayout hook
+         */
+        protected postUpdateLayout() {
+
+        }
+
+        /**
          * Initiates a sub-layout process.
          */
         public performLayout() {
             var me = this;
             if (me.canLayout === true) {
                 me.suspendLayout();
+                me.preUpdateLayout();
                 me.updateLayout();
+                me.postUpdateLayout();
                 me.resumeLayout();
             }
         }
@@ -163,10 +179,25 @@ namespace Blend.material {
         public doInitialize(): Blend.material.Material {
             var me = this;
             me.initEvents();
+            me.preInitialize();
             me.initialize();
-            me.performLayout();
+            me.postInitialize();
             me.notifyMaterialInitialized();
             return me;
+        }
+
+        /**
+         * Pre initilization hook
+         */
+        protected preInitialize() {
+
+        }
+
+        /**
+         * Post initialization hook
+         */
+        protected postInitialize() {
+
         }
 
         /**
@@ -323,19 +354,30 @@ namespace Blend.material {
         /**
          *Helps configuring the this Material before the rendering cycle is complete
          */
-        protected finalizeRender() {
-            var me = this;
-            me.addCssClass(me.config.css);
-            me.setBounds({
-                top: me.config.top,
-                left: me.config.left,
-                width: me.config.width,
-                height: me.config.height
-            });
-            me.setStyle(me.config.style);
-            if (!me.visible) {
-                // should be set only when not visible
-                me.setVisible(false);
+        protected finalizeRender(config: FinalizeRenderConfig = {}) {
+            var me = this,
+                cfg: FinalizeRenderConfig = Blend.apply({
+                    setCss: true,
+                    setBounds: true,
+                    setStyles: true
+                }, config, true, true);
+            if (cfg.setCss === true) {
+                me.addCssClass(me.config.css);
+            }
+            if (cfg.setBounds === true) {
+                me.setBounds({
+                    top: me.config.top,
+                    left: me.config.left,
+                    width: me.config.width,
+                    height: me.config.height
+                });
+            }
+            if (cfg.setStyles === true) {
+                me.setStyle(me.config.style);
+                if (!me.visible) {
+                    // should be set only when not visible
+                    me.setVisible(false);
+                }
             }
             if (Blend.DEBUG === true) {
                 var id = "m" + Blend.newID();
@@ -347,13 +389,13 @@ namespace Blend.material {
         /**
         * Retrives the HTMLElement for this Material
         */
-        public getElement(): Blend.dom.Element {
+        public getElement(finalizeRenderConfig?: FinalizeRenderConfig): Blend.dom.Element {
             var me = this;
             if (!me.isRendered) {
                 me.disableEvents();
                 me.element = me.render();
                 me.isRendered = true;
-                me.finalizeRender();
+                me.finalizeRender(finalizeRenderConfig);
                 me.enableEvents();
             }
             return me.element;

@@ -36,27 +36,24 @@ namespace Blend.container {
             me.add(config.items || []);
         }
 
-        public doInitialize(): Blend.material.Material {
+        protected postInitialize() {
             var me = this;
-            me.initEvents();
-            me.initialize();
-            me.performLayout();
-            me.notifyMaterialInitialized();
-            return me;
+            // Initialize the child elements
+            me.items.forEach(function (material: Blend.material.Material) {
+                material.doInitialize();
+            });
         }
 
-        protected updateLayout() {
+        protected postUpdateLayout() {
             var me = this;
+            // Perform layout on children
             me.items.forEach(function (material: Blend.material.Material) {
                 material.performLayout();
             });
         }
 
-        protected doInitializeChildren() {
-            var me = this;
-            me.items.forEach(function (material: Blend.material.Material) {
-                material.doInitialize();
-            });
+        protected getChildElement(materail: Blend.material.Material): Blend.dom.Element {
+            return materail.getElement();
         }
 
         public add(item: MaterialType | Array<MaterialType>): Container {
@@ -69,16 +66,17 @@ namespace Blend.container {
                     me.items.push(<Blend.material.Material>Blend.createComponent(itm));
                 }
 
-                var material = me.items[me.items.length - 1];
+                var material: Blend.material.Material = me.items[me.items.length - 1];
                 material.setProperty("parent", me);
 
                 if (me.isRendered) {
                     material.doInitialize();
-                    docFrag.appendChild(material.getElement().getEl());
+                    docFrag.appendChild(me.getChildElement(material).getEl());
                 }
             });
             if (docFrag.childNodes.length !== 0) {
                 me.bodyElement.appendFragment(docFrag);
+                me.performLayout();
             }
             return me;
         }

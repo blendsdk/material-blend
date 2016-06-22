@@ -48,9 +48,9 @@ namespace Blend.material {
             me.layoutCount++;
         }
 
-        protected finalizeRender() {
+        protected finalizeRender(config: FinalizeRenderConfig) {
             var me = this;
-            super.finalizeRender();
+            super.finalizeRender(config);
             me.addCssClass("m-rectangle");
         }
 

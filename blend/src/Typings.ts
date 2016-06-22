@@ -143,6 +143,17 @@ interface AjaxRequestInterface {
 }
 
 /**
+ * Interface for configurting how a Materil finalizes the render process
+ * This configuration is mainly used by container components when rendering
+ * child UI components
+ */
+interface FinalizeRenderConfig {
+    setCss?: boolean;
+    setBounds?: boolean;
+    setStyles?: boolean;
+}
+
+/**
  * Interface for configuring the padding of an Element
  */
 interface PaddingInterface {
@@ -180,6 +191,10 @@ interface MaterialInterface extends MvcViewInterface {
  */
 interface ContainerMaterialInterface extends MaterialInterface {
     items?: Array<MaterialType>;
+}
+
+interface FitContainerInterface extends ContainerMaterialInterface {
+    padding?: number | string;
 }
 
 /**

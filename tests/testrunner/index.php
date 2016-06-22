@@ -24,7 +24,7 @@ function getTestFiles() {
         <title>BlendJS Test Runner</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link id="theme" href="css/default/default.css?v=<?php echo time();?>" rel="stylesheet" type="text/css">
+		<link id="theme" href="blend/css/default/default.css?v=<?php echo time();?>" rel="stylesheet" type="text/css">
         <style>
             tr.fail td {
                 background-color: #F78181 !important;
@@ -65,7 +65,6 @@ function getTestFiles() {
 
         </style>
     </head>
-    <script src="blend/support.js"></script>
     <script src="blend/blend.js" type="text/javascript"></script>
     <script>Blend.DEBUG = true;</script>
     <script src="js/testapp/ConsoleLogger.js" type="text/javascript"></script>
