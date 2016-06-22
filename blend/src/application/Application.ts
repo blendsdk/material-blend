@@ -19,11 +19,12 @@ namespace Blend.application {
     /**
      * Base class for implementing an Application component
      */
-    export abstract class Application extends Blend.container.Stack {
+    export abstract class Application extends Blend.material.Material {
 
         protected config: ApplicationInterface;
         protected isStarted: boolean;
         protected isResizing: boolean;
+        protected mainView: Blend.material.Material;
 
         public constructor(config: ApplicationInterface = {}) {
             super(Blend.apply(config, <MaterialInterface>{
@@ -34,8 +35,27 @@ namespace Blend.application {
             me.isResizing = false;
             me.config.theme = config.theme || "default";
             me.config.style = {}; // remove use provided styles
+            me.config.mainView = config.mainView || null;
+            me.config.fitMainView = config.fitMainView === false ? false : true;
             me.setContext(new Blend.mvc.Context());
             me.addCssClass("mb-application");
+        }
+
+        protected createMainView(config: MaterialType): Blend.material.Material {
+            var me = this;
+            if (config) {
+                var view = <Blend.material.Material>Blend.createComponent(config);
+                view.setContext(me.context);
+                if (view.getProperty("useParentController", true) === true) {
+                    view.addController(me.controllers);
+                }
+                if (me.config.fitMainView === true) {
+                    view.addCssClass("mb-mainview-fit");
+                }
+                return view;
+            } else {
+                return null;
+            }
         }
 
         /**
@@ -109,6 +129,30 @@ namespace Blend.application {
                 me.notifyApplicationReady();
                 me.isStarted = true;
             }
+        }
+
+        protected postInitialize() {
+            var me = this;
+            me.mainView.doInitialize();
+        }
+
+        protected postUpdateLayout() {
+            var me = this;
+            me.mainView.performLayout();
+        }
+
+        protected render(): Blend.dom.Element {
+            var me = this,
+                cb = new Blend.dom.ElementConfigBuilder({
+                    cls: "mb-application"
+                });
+            me.mainView = me.createMainView(me.config.mainView);
+            if (me.mainView) {
+                cb.addChild(me.mainView.getElement({
+                    setBounds: me.config.fitMainView === true ? false : true,
+                }));
+            }
+            return Blend.dom.Element.create(cb);
         }
 
         protected finalizeRender() {

@@ -233,6 +233,7 @@ interface StackContainerInterface extends FitContainerInterface {
  */
 interface ApplicationInterface extends MaterialInterface {
     mainView?: MaterialType;
+    fitMainView?: boolean;
     theme?: string;
 }
 
