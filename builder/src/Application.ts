@@ -62,11 +62,11 @@ export class Application extends Blend.builder.Application {
                     demand: true,
                     describe: "The environment to publish this build"
                 }
-            }).demand(1)
+            })
             .epilog("Copyright 2016 TrueSoftware B.V.")
             .argv;
 
-        var command = (<any>argv)._[0];
+        var command = (<any>argv)._[0] || buildFrameworkCommand;
         if (command === buildFrameworkCommand) {
             me.buildFrameworkCommand();
         } else if (command === makedistCommand) {
