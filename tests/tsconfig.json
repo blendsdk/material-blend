@@ -11,7 +11,7 @@
     },
     "files": [
         "blend/blend.d.ts",
-        "testapp/testFramework.ts",
+        "testapp/TestFramework.ts",
         "testapp/ConsoleLogger.ts",
         "testapp/TestApp.ts",
         "tests/100000-sanity-tests.ts",
