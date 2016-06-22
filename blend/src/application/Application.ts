@@ -35,6 +35,7 @@ namespace Blend.application {
             me.config.theme = config.theme || "default";
             me.config.style = {}; // remove use provided styles
             me.setContext(new Blend.mvc.Context());
+            me.addCssClass("mb-application");
         }
 
         /**
