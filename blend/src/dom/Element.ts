@@ -112,7 +112,7 @@ namespace Blend.dom {
         public setStyle(styles: StyleInterface): Blend.dom.Element {
             var me = this;
             if (styles) {
-                Blend.forEach(styles, function(v: any, k: string) {
+                Blend.forEach(styles, function (v: any, k: string) {
                     if (v === null || (<string>v) === "auto") {
                         me.styleList.unset(k);
                     } else {
@@ -217,7 +217,16 @@ namespace Blend.dom {
         public getData(name: string, defaultValue: any = null): any {
             var me = this,
                 attr: string = "data-" + name;
-            return me.el.hasAttribute(attr) ? me.el.getAttribute(attr) : defaultValue;
+            var value = me.el.hasAttribute(attr) ? me.el.getAttribute(attr) : defaultValue;
+            if (Blend.isNumeric(value)) {
+                return parseFloat(value);
+            } else if (value === "true") {
+                return true;
+            } else if (value === "false") {
+                return false;
+            } else {
+                return value;
+            }
         }
 
         /**
@@ -331,7 +340,7 @@ namespace Blend.dom {
                             cfg = null;
                             for (var e in val) {
                                 var handler = val[e];
-                                Blend.Runtime.addEventListener(el, e, function() {
+                                Blend.Runtime.addEventListener(el, e, function () {
                                     handler.apply(config.scope || window, arguments);
                                 });
                             }
@@ -339,7 +348,7 @@ namespace Blend.dom {
                             if (!Blend.isArray(val)) {
                                 val = [val];
                             }
-                            val.forEach(function(child: HTMLElement | CreateElementInterface | Blend.dom.Element | Blend.dom.ElementConfigBuilder) {
+                            val.forEach(function (child: HTMLElement | CreateElementInterface | Blend.dom.Element | Blend.dom.ElementConfigBuilder) {
                                 if (child instanceof HTMLElement) {
                                     el.appendChild(<HTMLElement>child);
                                 } else if (child instanceof Blend.dom.Element) {
@@ -352,7 +361,7 @@ namespace Blend.dom {
                             });
                             cfg = null;
                         } else if (cfg === "data") {
-                            Blend.forEach(val, function(v: any, k: string) {
+                            Blend.forEach(val, function (v: any, k: string) {
                                 el.setAttribute("data-" + k, v);
                             });
                             cfg = null;
@@ -402,7 +411,7 @@ namespace Blend {
      */
     export function selectElements(query: string, from: Blend.dom.Element = null): Array<Blend.dom.Element> {
         var els: Array<Blend.dom.Element> = [];
-        Blend.forEach(((from ? from.getEl() : null) || document).querySelectorAll(query), function(el: HTMLElement) {
+        Blend.forEach(((from ? from.getEl() : null) || document).querySelectorAll(query), function (el: HTMLElement) {
             if (Blend.isInstanceOf(el, HTMLElement)) {
                 els.push(new Blend.dom.Element(el));
             }

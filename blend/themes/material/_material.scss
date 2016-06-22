@@ -33,3 +33,7 @@
 @import "components";
 @import "theme";
 
+[data-visible="false"] {
+    display:none !important;
+}
+

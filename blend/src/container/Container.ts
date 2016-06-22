@@ -28,6 +28,9 @@ namespace Blend.container {
 
         protected items: Array<Blend.material.Material>;
         protected bodyElement: Blend.dom.Element;
+        protected cssClass: string;
+        protected bodyCssClass: string;
+        protected childCssClass: string;
 
         public constructor(config: ContainerMaterialInterface = {}) {
             super(config);
@@ -56,24 +59,42 @@ namespace Blend.container {
             return materail.getElement();
         }
 
+        protected checkComponent(material: Blend.material.Material): boolean {
+            return true;
+        }
+
+        protected renderBodyElement(): Blend.dom.Element | Blend.dom.ElementConfigBuilder {
+            var me = this;
+            return new Blend.dom.ElementConfigBuilder({
+                cls: [me.bodyCssClass],
+                oid: "bodyElement",
+            });
+        }
+
         public add(item: MaterialType | Array<MaterialType>): Container {
             var me = this,
+                material: Blend.material.Material,
                 docFrag: DocumentFragment = document.createDocumentFragment();
+
             Blend.wrapInArray(item).forEach(function (itm: MaterialType) {
+
                 if (Blend.isInstanceOf(itm, Blend.material.Material)) {
-                    me.items.push(<Blend.material.Material>itm);
+                    material = <Blend.material.Material>itm;
                 } else {
-                    me.items.push(<Blend.material.Material>Blend.createComponent(itm));
+                    material = <Blend.material.Material>Blend.createComponent(itm);
                 }
 
-                var material: Blend.material.Material = me.items[me.items.length - 1];
-                material.setProperty("parent", me);
-
-                if (me.isRendered) {
-                    material.doInitialize();
-                    docFrag.appendChild(me.getChildElement(material).getEl());
+                if (me.checkComponent(material)) {
+                    me.items.push(material);
+                    material.setProperty("parent", me);
+                    if (me.isRendered) {
+                        material.addCssClass(me.childCssClass);
+                        material.doInitialize();
+                        docFrag.appendChild(me.getChildElement(material).getEl());
+                    }
                 }
             });
+
             if (docFrag.childNodes.length !== 0) {
                 me.bodyElement.appendFragment(docFrag);
                 me.performLayout();

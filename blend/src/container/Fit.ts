@@ -22,6 +22,9 @@ namespace Blend.container {
             me.config = Blend.apply(me.config, {
                 padding: config.padding || 0
             }, true);
+            me.cssClass = "fit-cntr";
+            me.bodyCssClass = "fit-cntr-body";
+            me.childCssClass = "fit-cntr-item";
         }
 
         protected getChildElement(materail: Blend.material.Material): Blend.dom.Element {
@@ -31,38 +34,34 @@ namespace Blend.container {
             });
         }
 
+        protected checkComponent(material: Blend.material.Material): boolean {
+            // override to only add one UI component
+            return this.items.length === 0;
+        }
+
+        protected renderBodyElement(): Blend.dom.Element | Blend.dom.ElementConfigBuilder {
+            var me = this,
+                bodyCb = <Blend.dom.ElementConfigBuilder>super.renderBodyElement();
+
+            if (me.items.length !== 0) {
+                var itm = me.items[0];
+                itm.addCssClass(me.childCssClass);
+                bodyCb.addChild(me.getChildElement(itm));
+            }
+            return bodyCb;
+        }
+
         protected render(): Blend.dom.Element {
             var me = this,
                 cb = new Blend.dom.ElementConfigBuilder({
-                    cls: ["fit-cntr"]
+                    cls: [me.cssClass]
                 });
-
-            var bodyCb = cb.addChild({
-                cls: ["fit-cntr-body"],
-                oid: "bodyElement",
-            });
 
             if (me.config.padding !== 0) {
                 cb.setStyle({ "padding": me.config.padding });
             }
-
-            me.items.forEach(function (itm: Blend.material.Material) {
-                itm.addCssClass("fit-cntr-item");
-                bodyCb.addChild(me.getChildElement(itm));
-            });
-
+            cb.addChild(me.renderBodyElement());
             return Blend.createElement(cb, me.assignElementByOID);
-
-        }
-
-        public add(item: MaterialType | Array<MaterialType>): Container {
-            // make sure we only can include a single component
-            var me = this;
-            if (me.items.length === 0) {
-                return super.add(item);
-            } else {
-                throw new Error("A Fit container can contain only one child item!");
-            }
         }
 
         public setPadding(value: number | string): Blend.container.Fit {
@@ -76,5 +75,6 @@ namespace Blend.container {
             return this;
         }
     }
-
 }
+
+Blend.registerClassWithAlias("lay.fit", Blend.container.Fit);

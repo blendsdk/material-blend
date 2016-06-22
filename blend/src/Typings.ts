@@ -193,8 +193,18 @@ interface ContainerMaterialInterface extends MaterialInterface {
     items?: Array<MaterialType>;
 }
 
+/**
+ * Interface to configure a Fit container
+ */
 interface FitContainerInterface extends ContainerMaterialInterface {
     padding?: number | string;
+}
+
+/**
+ * Interface to configure a Stack container
+ */
+interface StackContainerInterface extends FitContainerInterface {
+    activeItem?: number | string | Blend.material.Material;
 }
 
 /**
