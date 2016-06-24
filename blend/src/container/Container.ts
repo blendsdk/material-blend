@@ -27,7 +27,7 @@ namespace Blend.container {
         protected bodyCssClass: string;
         protected childCssClass: string;
 
-        public constructor(config: ContainerMaterialInterface = {}) {
+        public constructor(config: ContainerInterface = {}) {
             super(config);
             var me = this;
             me.items = [];

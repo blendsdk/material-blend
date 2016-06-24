@@ -187,7 +187,7 @@ interface PaddingInterface {
 /**
  * Material Types definition
  */
-type MaterialType = string | ComponentClass | MaterialInterface | ContainerMaterialInterface | Blend.material.Material;
+type MaterialType = string | ComponentClass | MaterialInterface | ContainerInterface | Blend.material.Material;
 
 /**
  * Interface for configuring a Material
@@ -210,14 +210,14 @@ interface MaterialInterface extends MvcViewInterface {
 /**
  * Interface for configuring a Container
  */
-interface ContainerMaterialInterface extends MaterialInterface {
+interface ContainerInterface extends MaterialInterface {
     items?: Array<MaterialType>;
 }
 
 /**
  * Interface to configure a Fit container
  */
-interface FitContainerInterface extends ContainerMaterialInterface {
+interface FitContainerInterface extends ContainerInterface {
     padding?: number | string;
 }
 
