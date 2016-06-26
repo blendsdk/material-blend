@@ -26,12 +26,25 @@ namespace Blend.container {
         protected cssClass: string;
         protected bodyCssClass: string;
         protected childCssClass: string;
+        protected padding: string | number;
 
         public constructor(config: ContainerInterface = {}) {
             super(config);
             var me = this;
             me.items = [];
             me.add(config.items || []);
+            me.padding = config.padding || 0;
+        }
+
+        public setPadding(value: number | string): Blend.container.Container {
+            var me = this;
+            if (me.isRendered) {
+                me.element.setStyle({
+                    padding: value
+                });
+            }
+            me.padding = value;
+            return this;
         }
 
         protected postInitialize() {
@@ -63,7 +76,35 @@ namespace Blend.container {
             return new Blend.dom.ElementConfigBuilder({
                 cls: [me.bodyCssClass],
                 oid: "bodyElement",
+                children: me.renderChildren()
             });
+        }
+
+        protected renderChildren(): Array<Blend.dom.Element | Blend.dom.ElementConfigBuilder> {
+            var me = this,
+                list: Array<Blend.dom.Element> = [];
+            me.items.forEach(function (material: Blend.material.Material) {
+                material.addCssClass(me.childCssClass);
+                list.push(me.getChildElement(material));
+            });
+            return list;
+        }
+
+        protected render(): Blend.dom.Element {
+            var me = this,
+                cb = new Blend.dom.ElementConfigBuilder({
+                    cls: [me.cssClass]
+                });
+            cb.addChild(me.renderBodyElement());
+            return Blend.createElement(cb, me.assignElementByOID);
+        }
+
+        protected finalizeRender(config: FinalizeRenderConfig = {}) {
+            var me = this;
+            super.finalizeRender(config);
+            if (me.padding !== 0) {
+                me.element.setStyle({ "padding": me.padding });
+            }
         }
 
         public add(item: MaterialType | Array<MaterialType>): Container {
