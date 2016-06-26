@@ -1,0 +1,27 @@
+.box-cntr {
+
+    & > .box-cntr-body {
+        display: flex;
+        display: -webkit-flex;
+    }
+
+    & > .box-horizontal {
+        -webkit-flex-direction: row;
+        flex-direction:         row;
+    }
+
+    & > .box-vertical {
+        -webkit-flex-direction: column;
+        flex-direction:         column;
+    }
+
+    & > .box-horizontal-reverse {
+        -webkit-flex-direction: row;
+        flex-direction:         row;
+    }
+
+    & > .box-vertical-reverse {
+        -webkit-flex-direction: column;
+        flex-direction:         column;
+    }
+}

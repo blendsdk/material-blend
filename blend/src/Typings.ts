@@ -212,13 +212,13 @@ interface MaterialInterface extends MvcViewInterface {
  */
 interface ContainerInterface extends MaterialInterface {
     items?: Array<MaterialType>;
+    padding?: number | string;
 }
 
 /**
  * Interface to configure a Fit container
  */
 interface FitContainerInterface extends ContainerInterface {
-    padding?: number | string;
 }
 
 /**

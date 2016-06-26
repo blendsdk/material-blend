@@ -14,9 +14,25 @@
  * limitations under the License.
  */
 
-@import "components/blend-container-fit";
-@import "components/blend-container-stack";
-@import "components/_blend-container-box";
-@import "components/blend-application-application";
-@import "components/blend-button-button";
-@import "components/blend-toolbar-toolbar";
+namespace Blend {
+
+    /**
+     * Provided the available media query states when the screen size and the orientation is changed
+     */
+    export enum eMediaQuery {
+        LARGE,
+        MEDIUM,
+        SMALL
+    }
+
+    /**
+     * Element Scroll values
+     */
+    export enum eScrollState {
+        none,
+        auto,
+        both,
+        horizontal,
+        vertical
+    }
+}
