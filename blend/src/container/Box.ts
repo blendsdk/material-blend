@@ -28,6 +28,7 @@ namespace Blend.container {
 
         protected config: BoxContainerInterface;
         protected stretchProperty: string;
+        protected flexedProperty: string;
 
         constructor(config: BoxContainerInterface = {}) {
             super(config);
@@ -45,8 +46,20 @@ namespace Blend.container {
             var me = this;
             me.bodyElement.clearCssClass();
             me.bodyElement.addCssClass(me.getBodyCssClass(), true);
+            me.items.forEach(function (item: Blend.material.Material) {
+                var flexConfig: FlexItemInterface = {};
+                var newBounds: any = {};
+                if (me.config.align === Blend.eBoxAlign.stretch) {
+                    newBounds[me.stretchProperty] = null;
+                }
+                var bounds = <any>item.getBounds();
+                if (bounds[me.flexedProperty]) {
+                    flexConfig.basis = bounds[me.flexedProperty];
+                    newBounds[me.flexedProperty] = null;
+                }
+                item.setStyle(newBounds);
+            });
         }
-
 
         protected getBoxWrap() {
             var me = this;
@@ -72,18 +85,7 @@ namespace Blend.container {
             }
         }
 
-        protected renderBodyElement(): Blend.dom.Element | Blend.dom.ElementConfigBuilder {
-            var me = this,
-                bodyCb = <Blend.dom.ElementConfigBuilder>super.renderBodyElement();
-
-            me.items.forEach(function (material: Blend.material.Material) {
-                material.addCssClass(me.childCssClass);
-                bodyCb.addChild(me.renderChildElement(material));
-            });
-            return bodyCb;
-        }
     }
-
 }
 
 
@@ -94,6 +96,7 @@ namespace Blend.container {
             super(config);
             var me = this;
             me.stretchProperty = "height";
+            me.flexedProperty = "width";
             me.bodyCssClass = "box-horizontal";
         }
     }
@@ -103,6 +106,7 @@ namespace Blend.container {
             super(config);
             var me = this;
             me.stretchProperty = "width";
+            me.flexedProperty = "height";
             me.bodyCssClass = "box-vertical";
         }
     }

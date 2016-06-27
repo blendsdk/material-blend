@@ -29,7 +29,7 @@
         "tests/300020-container-tests.ts",
         "tests/300030-fit-container-tests.ts",
         "tests/300040-stack-container-tests.ts",
-        "tests/300050-box-container-tests.ts",
+        //"tests/300050-box-container-tests.ts",
         "tests/300055-box-container-items-tests.ts"
     ]
 }
