@@ -184,6 +184,13 @@ interface PaddingInterface {
     left?: number;
 }
 
+interface FlexItemInterface {
+    order?: number;
+    grow?: number;
+    shrink?: number;
+    basis?: number | string;
+}
+
 /**
  * Material Types definition
  */
@@ -200,7 +207,7 @@ interface MaterialInterface extends MvcViewInterface {
     visible?: boolean;
     top?: number;
     left?: number;
-    flex?: number | string;
+    flex?: number | Blend.eBoxItemFlex | FlexItemInterface;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;

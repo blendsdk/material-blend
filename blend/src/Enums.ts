@@ -35,4 +35,31 @@ namespace Blend {
         horizontal,
         vertical
     }
+
+    export enum eBoxWrap {
+        yes,
+        no,
+        reverse,
+    }
+
+    export enum eBoxPack {
+        start,
+        center,
+        end,
+        spaceBetween,
+        spaceAround
+    }
+
+    export enum eBoxAlign {
+        start,
+        center,
+        end,
+        stretch,
+        baseline
+    }
+
+    export enum eBoxItemFlex {
+        none,
+        auto
+    }
 }

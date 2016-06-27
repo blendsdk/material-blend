@@ -8,8 +8,6 @@ namespace Blend.container {
      */
     export class Fit extends Blend.container.Container {
 
-        protected config: FitContainerInterface;
-
         constructor(config: FitContainerInterface = {}) {
             super(config);
             var me = this;
@@ -18,7 +16,7 @@ namespace Blend.container {
             me.childCssClass = "fit-cntr-item";
         }
 
-        protected getChildElement(materail: Blend.material.Material): Blend.dom.Element {
+        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
             // Override to prevent the child component setting its own bounds
             return materail.getElement({
                 setBounds: false
@@ -36,7 +34,7 @@ namespace Blend.container {
             if (me.items.length !== 0) {
                 var itm = me.items[0];
                 itm.addCssClass(me.childCssClass);
-                list.push(me.getChildElement(itm));
+                list.push(me.renderChildElement(itm));
             }
             return list;
         }

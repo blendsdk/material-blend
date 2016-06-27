@@ -31,6 +31,13 @@ namespace Blend.container {
             me.fireEvent("activeItemChanged", material);
         }
 
+        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
+            // Override to prevent the child component setting its own bounds
+            return materail.getElement({
+                setBounds: false
+            });
+        }
+
         /**
          * Sets the active item using index, reference, or directly by setting
          * the UI component

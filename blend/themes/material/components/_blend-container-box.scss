@@ -3,6 +3,11 @@
     & > .box-cntr-body {
         display: flex;
         display: -webkit-flex;
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
     }
 
     & > .box-horizontal {
@@ -24,4 +29,85 @@
         -webkit-flex-direction: column;
         flex-direction:         column;
     }
+
+    & > .box-wrap-yes {
+        -webkit-flex-wrap: wrap;
+        flex-wrap:         wrap;
+    }
+
+    & > .box-wrap-no {
+        -webkit-flex-wrap: nowrap;
+        flex-wrap:         nowrap;
+    }
+
+    & > .box-wrap-reverse {
+        -webkit-flex-wrap: wrap-reverse;
+        flex-wrap:         wrap-reverse;
+    }
+
+    & > .box-pack-start {
+        -webkit-justify-content: flex-start;
+        justify-content:         flex-start;
+
+        -webkit-align-content: flex-start;
+        align-content:         flex-start;
+    }
+
+    & > .box-pack-center {
+        -webkit-justify-content: center;
+        justify-content:         center;
+
+        -webkit-align-content: center;
+        align-content:         center;
+    }
+
+    & > .box-pack-end {
+        -webkit-justify-content: flex-end;
+        justify-content:         flex-end;
+
+        -webkit-align-content: flex-end;
+        align-content:         flex-end;
+    }
+
+    & > .box-pack-spacebetween {
+        -webkit-justify-content: space-between;
+        justify-content:         space-between;
+
+        -webkit-align-content: space-between;
+        align-content:         space-between;
+    }
+
+    & > .box-pack-spacearound {
+        -webkit-justify-content: space-around;
+        justify-content:         space-around;
+
+        -webkit-align-content: space-around;
+        align-content:         space-around;
+    }
+
+    & > .box-align-start {
+        -webkit-align-items: flex-start;
+        align-items:         flex-start;
+      }
+
+    & > .box-align-center {
+        -webkit-align-items: center;
+        align-items:         center;
+    }
+
+    & > .box-align-end {
+        -webkit-align-items: flex-end;
+        align-items:         flex-end;
+    }
+
+    & > .box-align-stretch {
+        -webkit-align-items: stretch;
+        align-items:         stretch;
+    }
+
+    & > .box-align-baseline {
+        -webkit-align-items: baseline;
+        align-items:         baseline;
+    }
+
 }
