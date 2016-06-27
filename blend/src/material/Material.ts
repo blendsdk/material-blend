@@ -38,7 +38,7 @@ namespace Blend.material {
             me.useParentControllers = config.useParentController || false;
             me.isRendered = false;
             me.visible = true;
-            me.config = {
+            me.config = Blend.apply({
                 css: [],
                 style: {},
                 visible: true,
@@ -46,18 +46,18 @@ namespace Blend.material {
                 left: null,
                 width: null,
                 height: null,
-                flex: config.flex || null,
-                responsive: config.responsive || false,
-                responseTo: config.responseTo || null
-            };
-            me.addCssClass(config.css || []);
-            me.setStyle(config.style || {});
-            me.setVisible(Blend.isBoolean(config.visible) ? config.visible : me.visible);
+                flex: null,
+                responsive: false,
+                responseTo: null
+            }, config, true, true);
+            me.addCssClass(me.config.css || []);
+            me.setStyle(me.config.style || {});
+            me.setVisible(me.config.visible === true);
             me.setBounds({
-                top: config.top || null,
-                left: config.left || null,
-                width: config.width || null,
-                height: config.height || null
+                top: me.config.top,
+                left: me.config.left,
+                width: me.config.width,
+                height: me.config.height
             });
             me.initializeResponsiveEvents();
             me.canLayout = true;
