@@ -1,4 +1,7 @@
 TestApp.defineTest("Application Run", function (t: Blend.testing.TestRunner) {
+
+    Blend.Runtime.reset();
+
     var app = new Blend.web.Application({
         mainView: {
             ctype: "mb.rect",
@@ -15,6 +18,9 @@ TestApp.defineTest("Application Run", function (t: Blend.testing.TestRunner) {
 });
 
 TestApp.defineTest("Application Run Not Fitted", function (t: Blend.testing.TestRunner) {
+
+    Blend.Runtime.reset();
+
     var app = new Blend.web.Application({
         fitMainView: false,
         mainView: {
