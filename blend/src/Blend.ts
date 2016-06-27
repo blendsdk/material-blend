@@ -60,12 +60,11 @@ namespace Blend {
     /**
      * Returns enum value, either the value as number or its string representation
      */
-    export function parseEnum<T>(objEnum: any, value: string | number, defaultValue: any = null): T {
-        if (Blend.isString(value)) {
-            return objEnum[value] === undefined ? defaultValue : objEnum[value];
-        } else {
-            return objEnum[objEnum[value]] === undefined ? defaultValue : objEnum[objEnum[value]];
+    export function parseEnum<T>(objEnum: any, value: string | number): T {
+        if (!Blend.isString(value)) {
+            value = value.toString();
         }
+        return objEnum[value] === undefined ? null : objEnum[value];
     }
 
     /**
