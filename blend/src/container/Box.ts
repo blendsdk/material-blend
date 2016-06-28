@@ -84,10 +84,14 @@ namespace Blend.container {
                 }
                 item.setProperty("config.flex", flexConfig);
                 var flexValue = me.flexConfigToString(flexConfig);
-                item.setStyle({
+                var styles: StyleInterface = {
                     "flex": flexValue,
                     "-webkit-flex": flexValue
-                });
+                };
+                if (me.config.align === Blend.eBoxAlign.stretch) {
+                    styles[me.stretchProperty] = null;
+                }
+                item.setStyle(styles);
             });
         }
 

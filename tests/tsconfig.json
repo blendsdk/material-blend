@@ -31,6 +31,7 @@
         "tests/300040-stack-container-tests.ts",
         "tests/300050-box-container-tests.ts",
         "tests/300055-box-container-no-flex-tests.ts",
-        "tests/300056-box-container-static-flex-tests.ts"
+        "tests/300056-box-container-static-flex-tests.ts",
+        "tests/300057-box-container-align-pack-tests.ts"
     ]
 }
