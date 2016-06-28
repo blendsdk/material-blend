@@ -6,6 +6,8 @@ TestApp.defineTest("Box Container No Flex", function (t: Blend.testing.TestRunne
     var cntr = new Blend.container.HorizontalBox({
         width: 400,
         height: 400,
+        align: Blend.eBoxAlign.center,
+        pack:Blend.eBoxPack.center,
         style: {
             border: "1px solid grey"
         },

@@ -7,6 +7,7 @@ TestApp.defineTest("Box Container Align & Pack", function (t: Blend.testing.Test
         width: 300,
         height: 400,
         align: Blend.eBoxAlign.stretch,
+        pack: Blend.eBoxPack.center,
         style: {
             border: "1px solid grey"
         },
@@ -15,18 +16,21 @@ TestApp.defineTest("Box Container Align & Pack", function (t: Blend.testing.Test
                 ctype: "mb.rect",
                 color: "red",
                 width: 0,
-                flex: 1
+                flex: 1,
+                height: 0
             },
             {
                 ctype: "mb.rect",
                 color: "blue",
-                width: 200
+                width: 200,
+                height: 0
             },
             {
                 ctype: "mb.rect",
                 color: "orange",
                 flex: 1,
-                width: 0
+                width: 0,
+                height: 0
             }
         ]
     });

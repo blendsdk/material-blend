@@ -88,7 +88,7 @@ namespace Blend.container {
                     "flex": flexValue,
                     "-webkit-flex": flexValue
                 };
-                if (me.config.align === Blend.eBoxAlign.stretch) {
+                if (me.config.align === Blend.eBoxAlign.stretch && !explicit[me.stretchProperty]) {
                     styles[me.stretchProperty] = null;
                 }
                 item.setStyle(styles);
