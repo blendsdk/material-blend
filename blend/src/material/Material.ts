@@ -146,6 +146,16 @@ namespace Blend.material {
             }
         }
 
+        public setProperty(name: string, value: any) {
+            var me = this;
+            if (name.indexOf("config.", 0) === 0) {
+                name = name.replace("config.", "").trim();
+                me.config[name] = value;
+            } else {
+                return super.setProperty(name, value);
+            }
+        }
+
         public getProperty<T>(name: string, defaultValue: any = null): T {
             var me: any = this;
             if (name.indexOf("config.", 0) === 0) {
