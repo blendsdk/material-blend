@@ -25,7 +25,7 @@ namespace Blend.dom {
         private el: HTMLElement;
         private pixelRe = /px$/;
         private UNIT: string = "px";
-        private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
+        private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$|grow$|shrink$|basis$)/;
         private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
 
         constructor(el: HTMLElement) {
@@ -91,7 +91,7 @@ namespace Blend.dom {
          */
         private fromUnit(value: any): any {
             var me = this;
-            if (value !== null && me.pixelRe.test(value)) {
+            if (value !== null && me.pixelRe.test(value) || Blend.isNumeric(value)) {
                 value = parseFloat(value.replace(me.UNIT, ""));
             }
             return value;
