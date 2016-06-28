@@ -66,7 +66,7 @@ namespace Blend.container {
             });
         }
 
-        protected postUpdateLayout() {
+        protected preUpdateLayout() {
             var me = this;
             // Perform layout on children
             me.items.forEach(function (material: Blend.material.Material) {
