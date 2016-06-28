@@ -57,9 +57,4 @@ namespace Blend {
         stretch,
         baseline
     }
-
-    export enum eBoxItemFlex {
-        none,
-        auto
-    }
 }
