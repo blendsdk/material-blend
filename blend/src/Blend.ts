@@ -104,6 +104,14 @@ namespace Blend {
     }
 
     /**
+     * Checks if the given value os a number or a string
+     */
+    export function isNumberOrString(value: any) {
+        // we redundent code here.
+        return (typeof value === "string") || (value - parseFloat(value) >= 0);
+    }
+
+    /**
      * Checks if the given value is an object
      */
     export function isObject(value: any) {
