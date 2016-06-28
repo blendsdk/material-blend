@@ -42,23 +42,67 @@ namespace Blend.container {
             }, true, true);
         }
 
+        /**
+         * Get the explicit size of child UI item
+         */
+        private getExplicitSize(material: Blend.material.Material): any {
+            var me = this,
+                el = material.getElement().getEl(),
+                explicit: any = {
+                    width: el.style.width || null,
+                    height: el.style.height || null
+                };
+            if (explicit[me.flexedProperty]) {
+                return material.getBounds();
+            } else {
+                return {
+                    width: 0,
+                    height: 0
+                };
+            }
+        }
+
         protected updateLayout() {
             var me = this;
             me.bodyElement.clearCssClass();
             me.bodyElement.addCssClass(me.getBodyCssClass(), true);
             me.items.forEach(function (item: Blend.material.Material) {
-                var flexConfig: FlexItemInterface = {};
-                var newBounds: any = {};
-                if (me.config.align === Blend.eBoxAlign.stretch) {
-                    newBounds[me.stretchProperty] = null;
+                var flexConfig = item.getProperty<FlexItemInterface>("config.flex", null);
+                var explicit = me.getExplicitSize(item);
+                if (flexConfig) {
+                    if (explicit[me.flexedProperty]) {
+                        flexConfig = null; // flex and explicit = no flex
+                    } else {
+                        if (Blend.isNumberOrString(flexConfig)) {
+                            flexConfig = {
+                                grow: <any>flexConfig,
+                                shrink: 0,
+                                basis: "auto"
+                            };
+                        }
+                    }
                 }
-                var bounds = <any>item.getBounds();
-                if (bounds[me.flexedProperty]) {
-                    flexConfig.basis = bounds[me.flexedProperty];
-                    newBounds[me.flexedProperty] = null;
-                }
-                item.setStyle(newBounds);
+                item.setProperty("config.flex", flexConfig);
+                var flexValue = me.flexConfigToString(flexConfig);
+                item.setStyle({
+                    "flex": flexValue,
+                    "-webkit-flex": flexValue
+                });
             });
+        }
+
+
+        /**
+         * Converts a given flexConfig to its string representation to be used
+         * as a style value
+         */
+        protected flexConfigToString(flexConfig: FlexItemInterface): string {
+            var me = this;
+            if (!flexConfig) {
+                return "none";
+            } else {
+                return `${flexConfig.grow || 0} ${flexConfig.shrink || 0} ${flexConfig.basis || "auto"}`;
+            }
         }
 
         protected getBoxWrap() {

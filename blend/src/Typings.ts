@@ -186,8 +186,8 @@ interface PaddingInterface {
 
 interface FlexItemInterface {
     order?: number;
-    grow?: number;
-    shrink?: number;
+    grow?: number | string;
+    shrink?: number | string;
     basis?: number | string;
 }
 
@@ -207,7 +207,7 @@ interface MaterialInterface extends MvcViewInterface {
     visible?: boolean;
     top?: number;
     left?: number;
-    flex?: number | Blend.eBoxItemFlex | FlexItemInterface;
+    flex?: number | FlexItemInterface;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;
