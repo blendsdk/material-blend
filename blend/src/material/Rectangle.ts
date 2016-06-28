@@ -30,8 +30,8 @@ namespace Blend.material {
             super(config);
             var me = this;
             me.setBounds({
-                width: config.width || 100,
-                height: config.height || 100
+                width: Blend.isNullOrUndef(config.width) ? 100 : config.width,
+                height: Blend.isNullOrUndef(config.height) ? 100 : config.height
             });
             me.setStyle({
                 "background-color": config.color || "transparent",
