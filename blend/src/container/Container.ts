@@ -34,8 +34,9 @@ namespace Blend.container {
             me.bodyElement = null; // will ensure the OID is set correctly
             me.items = [];
             me.add(config.items || []);
-            Blend.apply(me.config, {
-                padding: config.padding || 0
+            Blend.apply(me.config, <ContainerInterface>{
+                padding: config.padding || 0,
+                defaults: config.defaults || {}
             });
         }
 
@@ -128,7 +129,7 @@ namespace Blend.container {
                 if (Blend.isInstanceOf(itm, Blend.material.Material)) {
                     material = <Blend.material.Material>itm;
                 } else {
-                    material = <Blend.material.Material>Blend.createComponent(itm);
+                    material = <Blend.material.Material>Blend.createComponent(itm, me.config.defaults);
                 }
 
                 if (me.checkComponent(material)) {

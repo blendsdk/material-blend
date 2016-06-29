@@ -220,6 +220,7 @@ interface MaterialInterface extends MvcViewInterface {
 interface ContainerInterface extends MaterialInterface {
     items?: Array<MaterialType>;
     padding?: number | string;
+    defaults?: MaterialInterface;
 }
 
 /**

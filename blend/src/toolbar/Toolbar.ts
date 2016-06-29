@@ -12,7 +12,11 @@ namespace Blend.toolbar {
         public constructor(config: ToolbarInterface = {}) {
             super(Blend.apply(config, <BoxContainerInterface>{
                 align: Blend.eBoxAlign.center,
-                pack: Blend.eBoxPack.start
+                pack: Blend.eBoxPack.start,
+                defaults: Blend.apply(config.defaults || {}, <ButtonInterface>{
+                    hoverFeedback: false,
+                    activeFeedback: false
+                })
             }));
             var me = this;
         }
