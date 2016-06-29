@@ -25,5 +25,6 @@ namespace Blend.container {
             me.bodyCssClass = "box-horizontal";
         }
     }
-
 }
+
+Blend.registerClassWithAlias("lay.hbox", Blend.container.HorizontalBox);

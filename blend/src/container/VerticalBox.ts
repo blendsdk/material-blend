@@ -25,5 +25,6 @@ namespace Blend.container {
             me.bodyCssClass = "box-vertical";
         }
     }
-
 }
+
+Blend.registerClassWithAlias("lay.vbox", Blend.container.VerticalBox);
