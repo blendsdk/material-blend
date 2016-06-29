@@ -33,7 +33,6 @@ namespace Blend.ajax {
             me.xhr.open("POST", me.createURI(), true);
             me.xhr.setRequestHeader("Content-Type", "multipart\/form-data; boundary=" + me.boundary);
             me.boundaryEncodeData(data, function(encodedData: string) {
-                me.xhr.setRequestHeader("Content-Length", encodedData.length.toString());
                 me.xhr.sendAsBinary(encodedData);
             });
         }

@@ -184,10 +184,17 @@ interface PaddingInterface {
     left?: number;
 }
 
+interface FlexItemInterface {
+    order?: number;
+    grow?: number | string;
+    shrink?: number | string;
+    basis?: number | string;
+}
+
 /**
  * Material Types definition
  */
-type MaterialType = string | ComponentClass | MaterialInterface | ContainerMaterialInterface | Blend.material.Material;
+type MaterialType = string | ComponentClass | MaterialInterface | ContainerInterface | Blend.material.Material;
 
 /**
  * Interface for configuring a Material
@@ -200,7 +207,7 @@ interface MaterialInterface extends MvcViewInterface {
     visible?: boolean;
     top?: number;
     left?: number;
-    flex?: number | string;
+    flex?: number | FlexItemInterface;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;
@@ -210,15 +217,15 @@ interface MaterialInterface extends MvcViewInterface {
 /**
  * Interface for configuring a Container
  */
-interface ContainerMaterialInterface extends MaterialInterface {
+interface ContainerInterface extends MaterialInterface {
     items?: Array<MaterialType>;
+    padding?: number | string;
 }
 
 /**
  * Interface to configure a Fit container
  */
-interface FitContainerInterface extends ContainerMaterialInterface {
-    padding?: number | string;
+interface FitContainerInterface extends ContainerInterface {
 }
 
 /**
@@ -226,6 +233,16 @@ interface FitContainerInterface extends ContainerMaterialInterface {
  */
 interface StackContainerInterface extends FitContainerInterface {
     activeItem?: number | string | Blend.material.Material;
+}
+
+/**
+ * Interface for configuring a Box (Flex) container
+ */
+interface BoxContainerInterface extends FitContainerInterface {
+    reverse?: boolean;
+    wrap?: Blend.eBoxWrap;
+    pack?: Blend.eBoxPack;
+    align?: Blend.eBoxAlign;
 }
 
 /**

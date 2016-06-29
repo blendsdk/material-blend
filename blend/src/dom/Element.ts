@@ -23,10 +23,6 @@ namespace Blend.dom {
     export class Element extends Component {
 
         private el: HTMLElement;
-        private pixelRe = /px$/;
-        private UNIT: string = "px";
-        private unitPropertyRe: RegExp = /(width$|height$|size$|radius$|padding|margin$|top$|bottom$|right$|left$)/;
-        private unitTypeRe: RegExp = /(em$|\%$|auto|^calc)/;
         public classList: Blend.dom.ClassList;
         public styleList: Blend.dom.StyleList;
 

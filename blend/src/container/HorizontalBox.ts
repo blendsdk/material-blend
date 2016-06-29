@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-@import "components/blend-container-fit";
-@import "components/blend-container-stack";
-@import "components/_blend-container-box";
-@import "components/blend-application-application";
-@import "components/blend-button-button";
-@import "components/blend-toolbar-toolbar";
+namespace Blend.container {
+
+    export class HorizontalBox extends Blend.container.Box {
+        constructor(config: BoxContainerInterface = {}) {
+            super(config);
+            var me = this;
+            me.stretchProperty = "height";
+            me.flexedProperty = "width";
+            me.bodyCssClass = "box-horizontal";
+        }
+    }
+
+}

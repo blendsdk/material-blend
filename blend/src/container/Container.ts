@@ -21,17 +21,41 @@ namespace Blend.container {
      */
     export abstract class Container extends Blend.material.Material {
 
+        protected config: ContainerInterface;
         protected items: Array<Blend.material.Material>;
         protected bodyElement: Blend.dom.Element;
         protected cssClass: string;
         protected bodyCssClass: string;
         protected childCssClass: string;
 
-        public constructor(config: ContainerMaterialInterface = {}) {
+        public constructor(config: ContainerInterface = {}) {
             super(config);
             var me = this;
+            me.bodyElement = null; // will ensure the OID is set correctly
             me.items = [];
             me.add(config.items || []);
+            Blend.apply(me.config, {
+                padding: config.padding || 0
+            });
+        }
+
+        /**
+         * Internal hook to be able to dynamically override the bodyCssClass
+         */
+        protected getBodyCssClass() {
+            var me = this;
+            return me.bodyCssClass;
+        }
+
+        public setPadding(value: number | string): Blend.container.Container {
+            var me = this;
+            if (me.isRendered) {
+                me.element.setStyle({
+                    padding: value
+                });
+            }
+            me.config.padding = value;
+            return this;
         }
 
         protected postInitialize() {
@@ -42,7 +66,7 @@ namespace Blend.container {
             });
         }
 
-        protected postUpdateLayout() {
+        protected preUpdateLayout() {
             var me = this;
             // Perform layout on children
             me.items.forEach(function (material: Blend.material.Material) {
@@ -50,7 +74,7 @@ namespace Blend.container {
             });
         }
 
-        protected getChildElement(materail: Blend.material.Material): Blend.dom.Element {
+        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
             return materail.getElement();
         }
 
@@ -61,9 +85,37 @@ namespace Blend.container {
         protected renderBodyElement(): Blend.dom.Element | Blend.dom.ElementConfigBuilder {
             var me = this;
             return new Blend.dom.ElementConfigBuilder({
-                cls: [me.bodyCssClass],
+                cls: [me.getBodyCssClass()],
                 oid: "bodyElement",
+                children: me.renderChildren()
             });
+        }
+
+        protected renderChildren(): Array<Blend.dom.Element | Blend.dom.ElementConfigBuilder> {
+            var me = this,
+                list: Array<Blend.dom.Element> = [];
+            me.items.forEach(function (material: Blend.material.Material) {
+                material.addCssClass(me.childCssClass);
+                list.push(me.renderChildElement(material));
+            });
+            return list;
+        }
+
+        protected render(): Blend.dom.Element {
+            var me = this,
+                cb = new Blend.dom.ElementConfigBuilder({
+                    cls: [me.cssClass]
+                });
+            cb.addChild(me.renderBodyElement());
+            return Blend.createElement(cb, me.assignElementByOID, me);
+        }
+
+        protected finalizeRender(config: FinalizeRenderConfig = {}) {
+            var me = this;
+            super.finalizeRender(config);
+            if (me.config.padding !== 0) {
+                me.element.setStyle({ "padding": me.config.padding });
+            }
         }
 
         public add(item: MaterialType | Array<MaterialType>): Container {
@@ -89,10 +141,9 @@ namespace Blend.container {
                     if (me.isRendered) {
                         material.addCssClass(me.childCssClass);
                         material.doInitialize();
-                        docFrag.appendChild(me.getChildElement(material).getEl());
+                        docFrag.appendChild(me.renderChildElement(material).getEl());
                     }
                 }
-
             });
 
             if (docFrag.childNodes.length !== 0) {

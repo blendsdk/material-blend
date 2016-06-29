@@ -16,22 +16,8 @@
 
 namespace Blend {
 
-    export class eMediaQuery {
-        static LARGE: string = "L";
-        static MEDIUM: string = "M";
-        static SMALL: string = "S";
-    }
 
-    /**
-     * Element Scroll values
-     */
-    export enum eScrollState {
-        none,
-        auto,
-        both,
-        horizontal,
-        vertical
-    }
+
 
     export var registry: ClassRegistryInterface = {};
 
@@ -74,12 +60,11 @@ namespace Blend {
     /**
      * Returns enum value, either the value as number or its string representation
      */
-    export function parseEnum<T>(objEnum: any, value: string | number, defaultValue: any = null): T {
-        if (Blend.isString(value)) {
-            return objEnum[value] === undefined ? defaultValue : objEnum[value];
-        } else {
-            return objEnum[objEnum[value]] === undefined ? defaultValue : objEnum[objEnum[value]];
+    export function parseEnum<T>(objEnum: any, value: string | number): T {
+        if (!Blend.isString(value)) {
+            value = value.toString();
         }
+        return objEnum[value] === undefined ? null : objEnum[value];
     }
 
     /**
@@ -116,6 +101,14 @@ namespace Blend {
     export function isNumeric(value: any): boolean {
         // Original source: JQuery
         return value - parseFloat(value) >= 0;
+    }
+
+    /**
+     * Checks if the given value os a number or a string
+     */
+    export function isNumberOrString(value: any) {
+        // we redundent code here.
+        return (typeof value === "string") || (value - parseFloat(value) >= 0);
     }
 
     /**

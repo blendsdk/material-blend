@@ -7,7 +7,7 @@ namespace Blend.container {
      * The container also accept a padding config which is used to apply a padding
      * the active UI component
      */
-    export class Stack extends Blend.container.Fit {
+    export class Stack extends Blend.container.Container {
 
         protected config: StackContainerInterface;
         protected activeItemIndex: number;
@@ -22,17 +22,6 @@ namespace Blend.container {
             me.childCssClass = "stack-cntr-item";
         }
 
-        protected renderBodyElement(): Blend.dom.Element | Blend.dom.ElementConfigBuilder {
-            var me = this,
-                bodyCb = <Blend.dom.ElementConfigBuilder>super.renderBodyElement();
-
-            me.items.forEach(function (material: Blend.material.Material) {
-                material.addCssClass(me.childCssClass);
-                bodyCb.addChild(me.getChildElement(material));
-            });
-            return bodyCb;
-        }
-
         /**
          * Sends notification when the active item is changed
          */
@@ -40,6 +29,13 @@ namespace Blend.container {
             var me = this;
             me.activeItem = material;
             me.fireEvent("activeItemChanged", material);
+        }
+
+        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
+            // Override to prevent the child component setting its own bounds
+            return materail.getElement({
+                setBounds: false
+            });
         }
 
         /**

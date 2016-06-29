@@ -10,23 +10,15 @@ namespace Blend.testing {
         private numFailed = 0;
 
         open(): any {
-            this.logtext = '<div class="container-fluid"><table class="table table-bordered" >'
-                + '<thead><tr><th>Test</th><th>Log</th><th>Context</th></tr></thead><tbody>';
+            this.logtext = "<div class=\"container-fluid\"><table class=\"table table-bordered\" >"
+                + "<thead><tr><th>Test</th><th>Log</th><th>Context</th></tr></thead><tbody>";
             this.info("Starting at " + (new Date()));
         }
 
         close(): any {
 
             var head: HTMLHeadElement = document.head
-                , link: HTMLLinkElement = document.createElement('link');
-
-            link.type = 'text/css';
-            link.rel = 'stylesheet';
-            link.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
-            head.appendChild(link);
-
-            var theme = document.getElementById("theme");
-            theme.parentNode.removeChild(theme);
+                , link: HTMLLinkElement = document.createElement("link");
 
             this.info(`<div class='status'><span class='total'>${this.numAsserts} ASSERTS</span><span class='pass'>${this.numPasses} PASSED</span><span class='fail'>${this.numFailed} FAILED</span></div>`);
 
@@ -40,9 +32,9 @@ namespace Blend.testing {
 
         private updateCounts(type: string) {
             var me = this;
-            if (type === 'pass' || type === 'fail') {
+            if (type === "pass" || type === "fail") {
                 me.numAsserts += 1;
-                if (type === 'pass') {
+                if (type === "pass") {
                     me.numPasses += 1;
                 } else {
                     me.numFailed += 1;
@@ -54,7 +46,7 @@ namespace Blend.testing {
 
             this.updateCounts(type);
 
-            if (type === 'fail') {
+            if (type === "fail") {
                 this.logtext += `<tr class="fail"><td>${context.test}</td><td>${message}</td><td><pre>${JSON.stringify(context, null, 2)}</pre></td></tr>`;
             } else if (type !== "pass") {
                 this.logtext += `<tr class="${type}"><td colspan="3">${message}</td></tr>`;
