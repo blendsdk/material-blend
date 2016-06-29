@@ -236,6 +236,16 @@ interface StackContainerInterface extends FitContainerInterface {
 }
 
 /**
+ * Interface for configuring a Box (Flex) container
+ */
+interface BoxContainerInterface extends FitContainerInterface {
+    reverse?: boolean;
+    wrap?: Blend.eBoxWrap;
+    pack?: Blend.eBoxPack;
+    align?: Blend.eBoxAlign;
+}
+
+/**
  * Interface for configuring an Application
  */
 interface ApplicationInterface extends MaterialInterface {

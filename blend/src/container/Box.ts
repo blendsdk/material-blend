@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-
-interface BoxContainerInterface extends FitContainerInterface {
-    reverse?: boolean;
-    wrap?: Blend.eBoxWrap;
-    pack?: Blend.eBoxPack;
-    align?: Blend.eBoxAlign;
-}
-
 namespace Blend.container {
 
     export abstract class Box extends Blend.container.Container {
@@ -132,31 +124,5 @@ namespace Blend.container {
                 return "box-cntr-body";
             }
         }
-
     }
-}
-
-
-namespace Blend.container {
-
-    export class HorizontalBox extends Blend.container.Box {
-        constructor(config: BoxContainerInterface = {}) {
-            super(config);
-            var me = this;
-            me.stretchProperty = "height";
-            me.flexedProperty = "width";
-            me.bodyCssClass = "box-horizontal";
-        }
-    }
-
-    export class VerticalBox extends Blend.container.Box {
-        constructor(config: BoxContainerInterface = {}) {
-            super(config);
-            var me = this;
-            me.stretchProperty = "width";
-            me.flexedProperty = "height";
-            me.bodyCssClass = "box-vertical";
-        }
-    }
-
 }

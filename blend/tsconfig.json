@@ -32,6 +32,8 @@
         "src/container/Fit.ts",
         "src/container/Stack.ts",
         "src/container/Box.ts",
+        "src/container/HorizontalBox.ts",
+        "src/container/VerticalBox.ts",
         "src/application/Application.ts",
         "src/web/Application.ts",
         "src/material/Rectangle.ts",
