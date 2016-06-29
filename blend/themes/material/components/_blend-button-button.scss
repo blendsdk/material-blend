@@ -71,7 +71,7 @@ $struct-fab-position-small: rem(1.600);
 }
 
 @mixin blend-button-icon-only() {
-    //margin: rem(0.4);
+    margin: rem(0.4);
     padding: $struct-button-icon-only-padding;
     min-width: 0;
     line-height: 0;
@@ -206,7 +206,7 @@ $button-font-size
 ) {
     border-radius: $button-border-radius;
     padding: $button-padding;
-    //margin: $button-margin;
+    margin: $button-margin;
     @if ($button-line-height) {
         line-height: $button-line-height;
         min-height: $button-line-height;
