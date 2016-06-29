@@ -1,5 +1,32 @@
-.mb-tbar-application {
-    height: 56px;
-    @include elevate($elevate-4dp);
-    background-color: $color-pink-c800;
+$struct-default-toolbar-height: rem(4.800);
+
+@mixin toolbar(
+    $name,
+    $elevation,
+    $toolbar-color,
+    $toolbar-height
+) {
+
+    .mb-toolbar-#{$name} {
+        @include elevate($elevation);
+        background-color: $toolbar-color;
+        height: $toolbar-height;
+        @content
+    }
+
+}
+
+@mixin blend-toolbar-theme(
+    $name,
+    $color,
+    $flat
+) {
+    @include toolbar(
+        $name: $name,
+        $elevation:if($flat, $elevate-0dp, $elevate-2dp),
+        $toolbar-color: $color,
+        $toolbar-height: $struct-default-toolbar-height
+    ) {
+        @include border-radius(if($flat, 0, rem(0.2)));
+    }
 }

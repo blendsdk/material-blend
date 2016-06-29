@@ -39,6 +39,7 @@
         "src/material/Rectangle.ts",
         "src/material/effect/Ripple.ts",
         "src/button/Button.ts",
+        "src/toolbar/Toolbar.ts",
         "src/Version.ts"
     ]
 }
