@@ -25,7 +25,7 @@ $global-background-color: $color-grey-c200;
 $color-primary:                 $color-blue-c500;
 $color-primary-light:           $color-blue-c100;
 $color-primary-dark:            $color-blue-c700;
-$color-primary-text-component:  $color-blackandwhite-cwhite;
+$color-primary-text-component:  $color-white;
 $color-primary-text-content:    $color-grey-c900;
 $color-secondary-text-content:  $color-grey-c500;
 $color-accent:                  $color-pink-a200;
@@ -36,8 +36,8 @@ $color-divider:                 $color-grey-c400;
 $default-button-text-color: rgba($color-primary-text-content,0.95);
 $default-button-icon-color: $default-button-text-color;
 $default-button-background-color: rgba($color-grey-c500,0.15);
-$default-button-disbaled-background-color: rgba($color-blackandwhite-cblack,0.12);
-$default-button-disbaled-text-color: rgba($color-blackandwhite-cblack,0.26);
+$default-button-disbaled-background-color: rgba($color-black,0.12);
+$default-button-disbaled-text-color: rgba($color-black,0.26);
 $default-button-focus-background-color: rgba($color-grey-c500,0.4);
 $default-button-hover-background-color: rgba($color-grey-c500,0.2);
 
@@ -62,3 +62,6 @@ $theme-fab-button-icon-color: $default-button-icon-color;
 $theme-fab-button-background-color: $default-button-background-color;
 $theme-fab-button-hover-background-color: $default-button-hover-background-color;
 $theme-fab-button-focus-background-color: $default-button-focus-background-color;
+
+// toolbar
+$theme-application-toolbar-color: $color-primary-dark;

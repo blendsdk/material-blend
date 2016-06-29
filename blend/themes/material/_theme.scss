@@ -157,6 +157,21 @@ $background-color: $global-background-color
                     $button-hover-background-color: false
                     );*/
 
+
+       @include blend-toolbar-theme(
+           $name : "raised",
+           $color: $color-white,
+           $flat: false
+       );
+
+       @include blend-toolbar-theme(
+           $name : "flat",
+           $color: $color-white,
+           $flat: true
+       );
+
+
+
         .debug-surface {
             @include elevate($elevate-1dp);
             background-color: #fff;

@@ -25,46 +25,25 @@ namespace Blend.button {
         protected wrapperElement: Blend.dom.Element = null;
         protected textElement: Blend.dom.Element = null;
         protected iconElement: Blend.dom.Element = null;
-        protected buttonTypes: Array<string>;
-        protected fabPositions: Array<string>;
-        protected iconSizes: DictionaryInterface;
         protected rippleEffect: Blend.material.effect.Ripple;
 
         public constructor(config: ButtonInterface = {}) {
             super(config);
             var me = this;
-            me.buttonTypes = ["flat", "raised", "fab", "fab-mini", "round-flat", "round-raised"];
-            me.fabPositions = [
-                "top-right",
-                "top-center",
-                "top-left",
-                "center-right",
-                "center-center",
-                "center-left",
-                "bottom-right",
-                "bottom-center",
-                "bottom-left",
-                "relative"
-            ];
 
-            me.iconSizes = {
-                "small": 18,
-                "medium": 24,
-                "large": 36,
-                "xlarge": 48
-            };
-
-            me.config = Blend.apply(me.config, {
+            me.config = Blend.apply(me.config, <ButtonInterface>{
                 text: config.text || "",
                 icon: config.icon || null,
                 iconFamily: config.iconFamily || "material-icons",
                 iconAlign: me.getCheckIconAlign(config.iconAlign),
-                buttonType: me.getCheckButtonType(config.buttonType),
-                fabPosition: me.getCheckFabPosition(config.fabPosition),
+                buttonType: config.buttonType || Blend.eButtonType.flat,
+                fabPosition: config.fabPosition || Blend.eFABButtonPosition.relative,
                 theme: config.theme || "default",
                 disabled: config.disabled === true ? true : false,
                 iconSize: config.iconSize || null,
-                ripple: config.ripple === false ? false : true
+                ripple: config.ripple === false ? false : true,
+                hoverFeedback: config.hoverFeedback === false ? false : true,
+                activeFeedback: config.activeFeedback === false ? false : true
             }, true, true);
         }
 
@@ -83,29 +62,9 @@ namespace Blend.button {
             return !this.config.disabled;
         }
 
-        private getCheclIconSize(iconSize: string): string {
-            var me = this;
-            iconSize = iconSize || "default";
-            iconSize = iconSize.inArray(Object.keys(me.iconSizes)) ? iconSize : "default";
-            return iconSize === "default" ? null : iconSize;
-        }
-
-        private getCheckFabPosition(fabPosition: string): string {
-            var me = this;
-            fabPosition = fabPosition || "relative";
-            fabPosition = fabPosition.inArray(me.fabPositions) ? fabPosition : "relative";
-            return fabPosition === "relative" ? null : fabPosition;
-        }
-
         private getCheckIconAlign(iconAlign: string): string {
             iconAlign = iconAlign || "left";
             return iconAlign.inArray(["left", "right"]) ? iconAlign : "left";
-        }
-
-        private getCheckButtonType(buttonType: string): string {
-            var me = this;
-            buttonType = (buttonType || "flat");
-            return buttonType.inArray(me.buttonTypes) ? buttonType : "flat";
         }
 
         public setTheme(theme: string): Blend.button.Button {
@@ -115,9 +74,9 @@ namespace Blend.button {
             return me;
         }
 
-        public setButtonType(buttonType: string): Blend.button.Button {
+        public setButtonType(buttonType: Blend.eButtonType): Blend.button.Button {
             var me = this;
-            me.config.buttonType = me.getCheckButtonType(buttonType);
+            me.config.buttonType = buttonType;
             me.element.clearCssClass().addCssClass(["mb-btn"]);
             me.performLayout();
             return me;
@@ -131,10 +90,10 @@ namespace Blend.button {
             return this;
         }
 
-        public setIconSize(iconSize: string): Blend.button.Button {
+        public setIconSize(iconSize: Blend.eButtonIconSize): Blend.button.Button {
             var me = this,
                 sizeCss = "mb-btn-icon-size";
-            me.config.iconSize = me.getCheclIconSize(iconSize);
+            me.config.iconSize = iconSize;
             me.element.removeCssClassLike([sizeCss]);
             if (iconSize !== null) {
                 me.element.addCssClass([`${sizeCss}-` + me.config.iconSize]);
@@ -152,11 +111,11 @@ namespace Blend.button {
             return this;
         }
 
-        public setFabPosition(fabPosition: string): Blend.button.Button {
+        public setFabPosition(fabPosition: Blend.eFABButtonPosition): Blend.button.Button {
             var me = this,
                 posCss = `mb-${me.config.buttonType}-pos`;
             if (me.isFab()) {
-                me.config.fabPosition = me.getCheckFabPosition(fabPosition);
+                me.config.fabPosition = fabPosition;
                 me.element.removeCssClassLike([posCss]);
                 me.element.addCssClass([`${posCss}-` + me.config.fabPosition]);
                 me.performLayout();
@@ -166,17 +125,22 @@ namespace Blend.button {
 
         protected updateLayout() {
             var me = this,
+                rootName: string = `mb-btn-${me.config.buttonType}`,
                 themeCls: string = `btn-theme-${me.config.buttonType}-${me.config.theme}`,
-                bothCls: string = `mb-btn-${me.config.buttonType}-both`,
-                textOnlyCls: string = `mb-btn-${me.config.buttonType}-text-only`,
-                iconOnlyCls: string = `mb-btn-${me.config.buttonType}-icon-only`,
+                bothCls: string = `${rootName}-both`,
+                hoverFeeback = me.config.hoverFeedback ? `${themeCls}-hover-feedback` : "",
+                activeFeeback = me.config.activeFeedback ? `${themeCls}-active-feedback` : "",
+                textOnlyCls: string = `${rootName}-text-only`,
+                iconOnlyCls: string = `${rootName}-icon-only`,
                 textIconCls: string = "mb-btn-inner-texticon",
                 iconTextCls: string = "mb-btn-inner-icontext",
                 hasIcon: boolean = me.config.icon !== null,
                 hasText: boolean = (me.config.text || "").trim() !== "",
-                roundOrFabButton: boolean = me.config.buttonType.indexOf("round") !== -1 || me.config.buttonType.indexOf("fab") !== -1;
+                roundOrFabButton: boolean =
+                    me.config.buttonType.toString().indexOf("round") !== -1
+                    || me.config.buttonType.toString().indexOf("fab") !== -1;
 
-            me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls, themeCls]);
+            me.element.removeCssClass([textOnlyCls, iconOnlyCls, bothCls, themeCls, hoverFeeback, activeFeeback]);
             me.wrapperElement.removeCssClass([textIconCls, iconTextCls]);
 
             if (me.isFab() || me.isRound()) {
@@ -208,7 +172,7 @@ namespace Blend.button {
                 me.element.addCssClass([iconOnlyCls]);
             }
 
-            me.element.addCssClass([themeCls]);
+            me.element.addCssClass([themeCls, hoverFeeback, activeFeeback]);
             me.setState(!me.config.disabled);
 
             if (me.config.ripple === true) {
@@ -235,14 +199,14 @@ namespace Blend.button {
          * Check if this button is a Floating Action Button
          */
         protected isFab(): boolean {
-            return this.config.buttonType.indexOf("fab") !== -1;
+            return this.config.buttonType.toString().indexOf("fab") !== -1;
         }
 
         /**
          * Check if this button is either a round-flat or round-raised
          */
         protected isRound(): boolean {
-            return this.config.buttonType.indexOf("round") !== -1;
+            return this.config.buttonType.toString().indexOf("round") !== -1;
         }
 
         protected render(): Blend.dom.Element {
