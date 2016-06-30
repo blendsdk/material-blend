@@ -45,7 +45,7 @@ namespace Blend.container {
                     height: el.style.height || null
                 };
             if (explicit[me.flexedProperty]) {
-                return material.getBounds();
+                return material.getBounds(false); // get the purce content size corresponding to the explicit values
             } else {
                 return {
                     width: 0,
