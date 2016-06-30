@@ -249,10 +249,10 @@ namespace Blend.material {
         /**
          * Returns the bounds of this Material based on the ElementBoundsInterface interface
          */
-        getBounds(): ElementBoundsInterface {
+        getBounds(includeBorderSize: boolean = true): ElementBoundsInterface {
             var me = this;
             if (me.isRendered) {
-                return me.element.getBounds();
+                return me.element.getBounds(includeBorderSize);
             } else {
                 return null;
             }

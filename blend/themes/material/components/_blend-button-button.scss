@@ -369,10 +369,8 @@ $button-hover-background-color,
 $button-focus-background-color
 ) {
     @each $btype in $button-types {
-        .btn-theme-#{$btype}-#{$name} {
 
-            background-color: $button-background-color;
-
+        .btn-theme-#{$btype}-#{$name}-hover-feedback {
             @if($button-hover-background-color) {
                 &:not([disabled]) {
                     &:hover {
@@ -380,7 +378,9 @@ $button-focus-background-color
                     }
                 }
             }
+        }
 
+        .btn-theme-#{$btype}-#{$name}-active-feedback {
             @if($button-focus-background-color) {
                 &:not([disabled]) {
                     &:active {
@@ -388,6 +388,11 @@ $button-focus-background-color
                     }
                 }
             }
+        }
+
+        .btn-theme-#{$btype}-#{$name} {
+
+            background-color: $button-background-color;
 
             & > .mb-btn-inner {
 

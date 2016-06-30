@@ -220,6 +220,7 @@ interface MaterialInterface extends MvcViewInterface {
 interface ContainerInterface extends MaterialInterface {
     items?: Array<MaterialType>;
     padding?: number | string;
+    defaults?: MaterialInterface;
 }
 
 /**
@@ -259,13 +260,15 @@ interface ApplicationInterface extends MaterialInterface {
  */
 interface ButtonInterface extends MaterialInterface {
     icon?: string;
-    iconSize?: string;
+    iconSize?: Blend.eButtonIconSize;
     iconFamily?: string;
     theme?: string;
     disabled?: boolean;
     ripple?: boolean;
     text?: string;
     iconAlign?: string;
-    buttonType?: string;
-    fabPosition?: string;
+    buttonType?: Blend.eButtonType;
+    fabPosition?: Blend.eFABButtonPosition;
+    hoverFeedback?: boolean;
+    activeFeedback?: boolean;
 }

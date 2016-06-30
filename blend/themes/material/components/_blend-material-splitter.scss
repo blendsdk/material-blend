@@ -1,0 +1,77 @@
+$struct-splitter-size: rem(0.8); // not in the specs!!
+
+@mixin blend-material-splitter(
+$splitter-color,
+$splitter-hover-color,
+$splitter-active-color,
+$splitter-handle-color,
+$splitter-size : $struct-splitter-size
+) {
+    .mb-splitter {
+        background-color: $splitter-color;
+
+        display: flex;
+        display: -webkit-flex;
+
+        -webkit-justify-content: center;
+        justify-content:         center;
+
+        -webkit-align-items: center;
+        align-items:         center;
+
+        @include user-select(none);
+
+        i {
+            @include user-select(none);
+            color: $splitter-handle-color;
+            &:hover {
+                color: $splitter-color;
+            }
+        }
+    }
+
+    .mb-splitter-hover {
+        background-color: $splitter-hover-color;
+        cursor: pointer;
+    }
+
+    .mb-splitter-active {
+        background-color: $splitter-active-color;
+    }
+
+    .mb-splitter-hbox-cursor {
+        cursor: col-resize;
+    }
+
+    .mb-splitter-vbox-cursor {
+        cursor: row-resize;
+    }
+
+    .mb-splitter-hbox {
+        height: 100%;
+        width: $splitter-size;
+        -webkit-flex-direction: column;
+        flex-direction:         column;
+        text-align: center;
+        i {
+            margin-left: -1px;
+        }
+    }
+
+    .mb-splitter-vbox {
+        width: 100%;
+        height: $splitter-size;
+        -webkit-flex-direction: column;
+        flex-direction:         column;
+        i {
+            line-height: $splitter-size;
+            height: $splitter-size;
+        }
+    }
+}
+
+.mb-splitter-ghost {
+    @include opacity(0.7);
+    z-index: 100000;
+    position: absolute;
+}

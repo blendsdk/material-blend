@@ -80,18 +80,41 @@ namespace Blend.dom {
 
 
         /**
+         * Sets the bounds of this element
+         */
+        public setBounds(bounds: ElementBoundsInterface) {
+            var me = this;
+            me.setStyle(<StyleInterface>bounds);
+        }
+
+        /**
          * Retuns the computed bounds
          */
-        public getBounds(): ElementBoundsInterface {
-            var bounds: ElementBoundsInterface = this.getStyle(["top", "left", "width", "height", "visible"]),
-                borderSize: StyleInterface;
+        public getBounds(includeBorderSize: boolean = true): ElementBoundsInterface {
+            var bounds: ElementBoundsInterface = this.getStyle([
+                "top"
+                , "left"
+                , "width"
+                , "height"
+                , "visible"
+                , "border-top-width"
+                , "border-right-width"
+                , "border-bottom-width"
+                , "border-left-width"]),
+                borderWidth: any = (<any>bounds)["border-left-width"] + (<any>bounds)["border-right-width"],
+                borderHeight: any = (<any>bounds)["border-top-width"] + (<any>bounds)["border-bottom-width"];
 
             if (Blend.Runtime.IE && Blend.Runtime.IEVersion < 12) {
-                borderSize = this.getStyle(["border-top-width", "border-right-width", "border-bottom-width", "border-left-width"]);
-                bounds.width += <any>borderSize["border-left-width"] + <any>borderSize["border-right-width"];
-                bounds.height += <any>borderSize["border-top-width"] + <any>borderSize["border-bottom-width"];
+                if (includeBorderSize === true) {
+                    bounds.width += borderWidth;
+                    bounds.height += borderHeight;
+                }
                 return bounds;
             } else {
+                if (includeBorderSize === false) {
+                    (<any>bounds).width -= <any>borderWidth;
+                    (<any>bounds).height -= <any>borderHeight;
+                }
                 return bounds;
             }
         }

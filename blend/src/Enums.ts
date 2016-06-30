@@ -16,6 +16,35 @@
 
 namespace Blend {
 
+    export enum eButtonIconSize {
+        small = 18,
+        medium = 24,
+        large = 36,
+        xlarge = 48
+    }
+
+    export enum eFABButtonPosition {
+        topRight = <any>"top-right",
+        topCenter = <any>"top-center",
+        topLeft = <any>"top-left",
+        centerRight = <any>"center-right",
+        centerCenter = <any>"center-center",
+        centerLeft = <any>"center-left",
+        bottomRight = <any>"bottom-right",
+        bottomCenter = <any>"bottom-center",
+        bottomLeft = <any>"bottom-left",
+        relative = <any>"relative"
+    }
+
+    export enum eButtonType {
+        flat = <any>"flat",
+        raised = <any>"raised",
+        fab = <any>"fab",
+        fabMini = <any>"fab-mini",
+        roundFlat = <any>"round-flat",
+        roundRaised = <any>"round-raised"
+    }
+
     /**
      * Provided the available media query states when the screen size and the orientation is changed
      */
@@ -23,7 +52,7 @@ namespace Blend {
         LARGE,
         MEDIUM,
         SMALL
-    }
+    };
 
     /**
      * Element Scroll values
@@ -57,4 +86,5 @@ namespace Blend {
         stretch,
         baseline
     }
+
 }

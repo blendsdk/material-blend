@@ -31,9 +31,17 @@ $background-color: $global-background-color
     }
 
     .#{$theme-name} {
-        @include typography();
 
+        @include typography();
         @include init-grid();
+
+        @include blend-material-splitter(
+            $splitter-color : $theme-splitter-color,
+            $splitter-hover-color : $theme-splitter-hover-color,
+            $splitter-active-color: $theme-splitter-active-color,
+            $splitter-handle-color: $theme-splitter-handle-color
+            );
+
 
         // Small
         @media (max-width: $layout-medium-width - 1) {
@@ -157,36 +165,25 @@ $background-color: $global-background-color
                     $button-hover-background-color: false
                     );*/
 
-        .debug-surface {
+
+        @include blend-toolbar-theme(
+        $name : "raised",
+            $color: $color-white,
+            $flat: false
+            );
+
+        @include blend-toolbar-theme(
+        $name : "flat",
+            $color: $color-white,
+            $flat: true
+            );
+
+
+        .paper {
             @include elevate($elevate-1dp);
             background-color: #fff;
-            border:1px solid transparent;
+            border:1px solid #ededed;
             border-radius: 3px;
-            position: relative;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            width: 90%;
-            padding:16px;
-
-            & > .body {
-                display: inline-block;
-                margin-left: auto;
-                margin-right: auto;
-                position: relative;
-                width: 100%;
-                height: 100%;
-            }
-
-            & > .title {
-                color: $color-grey-c900;
-                text-transform: uppercase;
-                width: 100%;
-                text-align: center;
-                font-weight: 500;
-            }
         }
     }
 }
