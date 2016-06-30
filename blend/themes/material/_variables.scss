@@ -31,6 +31,13 @@ $color-secondary-text-content:  $color-grey-c500;
 $color-accent:                  $color-pink-a200;
 $color-divider:                 $color-grey-c400;
 
+// SPLITTER ////////////////////////////////////////////////////////////////////
+
+$theme-splitter-color: $color-primary-dark;
+$theme-splitter-hover-color: $color-primary;
+$theme-splitter-handle-color: $color-white;
+$theme-splitter-active-color: $color-primary-light; // not in the spces!!
+
 // BUTTONS /////////////////////////////////////////////////////////////////////
 
 $default-button-text-color: rgba($color-primary-text-content,0.95);

@@ -34,6 +34,7 @@
         "src/container/Box.ts",
         "src/container/HorizontalBox.ts",
         "src/container/VerticalBox.ts",
+        "src/material/Splitter.ts",
         "src/application/Application.ts",
         "src/web/Application.ts",
         "src/material/Rectangle.ts",
