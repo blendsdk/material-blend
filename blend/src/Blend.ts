@@ -16,9 +16,6 @@
 
 namespace Blend {
 
-
-
-
     export var registry: ClassRegistryInterface = {};
 
     /**
