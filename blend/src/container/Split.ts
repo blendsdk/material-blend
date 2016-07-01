@@ -1,7 +1,6 @@
 interface SplitInterface extends ContainerInterface {
     splitPosition?: (number | Array<number>) | (string | Array<string>);
     splitterSize?: number;
-    splitterActiveSize?: number;
 }
 
 interface SizePositionInterface {
@@ -11,8 +10,6 @@ interface SizePositionInterface {
 
 namespace Blend.container {
 
-
-
     export abstract class Split extends Blend.container.Container {
 
         protected config: SplitInterface;
@@ -21,7 +18,6 @@ namespace Blend.container {
         protected sizeProperty: string;
         protected positionProperty: string;
         protected bounds: ElementBoundsInterface;
-        protected splitterSize: number;
         protected activeSplitterIndex: number;
 
         public constructor(config: SplitInterface = {}) {
@@ -30,11 +26,9 @@ namespace Blend.container {
             me.cssClass = "split-cntr";
             me.childCssClass = "split-cntr-item";
             me.bodyCssClass = "split-cntr-body";
-            me.splitterSize = 1;
             Blend.apply(me.config, {
                 splitPosition: config.splitPosition || [],
-                splitterSize: config.splitterSize || 2,
-                splitterActiveSize: config.splitterActiveSize || 8
+                splitterSize: config.splitterSize || 2
             });
             me.config.splitPosition = <any>Blend.wrapInArray(me.config.splitPosition);
             me.splitPositions = [];
@@ -112,12 +106,11 @@ namespace Blend.container {
             me.calculateSplitPositions();
             me.withItems(function (item: Blend.material.Material) {
                 if (itemIndex % 2) {
-                    var spSize = splitterPos === me.activeSplitterIndex ? me.config.splitterActiveSize : me.config.splitterSize;
                     posIndex.push({
                         position: me.splitPositions[splitterPos],
-                        size: spSize
+                        size: me.config.splitterSize
                     });
-                    nextPosition = (me.splitPositions[splitterPos] + spSize);
+                    nextPosition = (me.splitPositions[splitterPos] + me.config.splitterSize);
                     posIndex[itemIndex - 1].size = (me.splitPositions[splitterPos]) - posIndex[itemIndex - 1].position;
                     splitterPos++;
                 } else {

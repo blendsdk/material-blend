@@ -37,7 +37,6 @@ $background-color: $global-background-color
 
         @include blend-material-splitter(
             $splitter-color : $theme-splitter-color,
-            $splitter-hover-color : $theme-splitter-hover-color,
             $splitter-active-color: $theme-splitter-active-color,
             $splitter-handle-color: $theme-splitter-handle-color
             );
