@@ -126,7 +126,7 @@ namespace Blend.dom {
             var me = this;
             if (styles) {
                 Blend.forEach(styles, function (v: any, k: string) {
-                    if (v === null || (<string>v) === "auto") {
+                    if (v === null) {
                         me.styleList.unset(k);
                     } else {
                         me.styleList.set(k, v);
