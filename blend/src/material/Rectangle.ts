@@ -36,7 +36,8 @@ namespace Blend.material {
             });
             me.setStyle({
                 "background-color": config.color || "transparent",
-                "border": config.border === true ? "1px solid #000" : null
+                "border": config.border === true ? "1px solid #000" : null,
+                overflow: "auto"
             });
             me.layoutCount = 0;
         }
@@ -72,7 +73,7 @@ namespace Blend.material {
         protected finalizeRender(config: FinalizeRenderConfig) {
             var me = this;
             super.finalizeRender(config);
-            me.addCssClass("m-rectangle");
+            me.addCssClass("mb-rectangle");
         }
     }
 }

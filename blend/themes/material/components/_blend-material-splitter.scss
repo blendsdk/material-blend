@@ -1,12 +1,29 @@
 @mixin blend-material-splitter(
 $splitter-color,
-$splitter-hover-color,
 $splitter-active-color,
 $splitter-handle-color
 ) {
+
     .mb-splitter {
         @include user-select(none);
         background-color: $splitter-color;
+    }
+
+     .mb-splitter-horizontal {
+         cursor: row-resize;
+     }
+
+     .mb-splitter-vertical {
+         cursor: col-resize;
+     }
+
+    .mb-split-ghost {
+
+        position: absolute;
+        z-index: 100000;
+        background-color: $splitter-active-color;
+        opacity: 0;
+        transition: opacity 0.2s linear;
 
         display: flex;
         display: -webkit-flex;
@@ -17,121 +34,29 @@ $splitter-handle-color
         -webkit-align-items: center;
         align-items:         center;
 
-        i {
-            @include user-select(none);
-            display: none;
-        }
-
+         i {
+             @include user-select(none);
+             color: $splitter-handle-color;
+         }
     }
 
-    .mb-splitter-hover {
-
-        background-color: $splitter-hover-color;
-        i {
-            display: block;
-            color: $splitter-handle-color;
-        }
-
-    }
-
-    .mb-splitter-horizontal-cursor {
-        cursor: row-resize;
-    }
-
-    .mb-splitter-vertical-cursor {
-        cursor: col-resize;
-    }
-
-    .mb-splitter-active {
-
-
-
-    }
-
-    .mb-splitter-vertical {
+    .mb-split-ghost-vertical {
         -webkit-flex-direction: column;
         flex-direction:         column;
+        height:100%;
         text-align: center;
         i {
             margin-left: -1px;
         }
     }
 
-    .mb-splitter-horizontal {
+    .mb-split-ghost-horizontal {
         -webkit-flex-direction: column;
         flex-direction:         column;
+        width:100%;
         i {
             line-height: rem(1);
             height: rem(1);
         }
     }
-
-    .mb-splitter-ghost {
-        @include opacity(0.5);
-        z-index: 100000;
-        position: absolute;
-    }
-
 }
-
-
-    /*
-    .mb-splitter {
-        background-color: $splitter-color;
-
-        transition: width 0.2s, height 0.2s;
-
-        display: flex;
-        display: -webkit-flex;
-
-        -webkit-justify-content: center;
-        justify-content:         center;
-
-        -webkit-align-items: center;
-        align-items:         center;
-
-        @include user-select(none);
-
-        i {
-            @include user-select(none);
-            color: $splitter-handle-color;
-        }
-    }
-
-    .mb-splitter-ghost {
-        @include opacity(0.95);
-        z-index: 100000;
-        position: absolute;
-    }
-
-    .mb-splitter-hover {
-        background-color: $splitter-hover-color;
-        cursor: pointer;
-    }
-
-    .mb-splitter-active {
-        background-color: $splitter-active-color;
-    }
-
-    .mb-splitter-vertical {
-        height: 100%;
-        //xwidth: $splitter-size;
-        -webkit-flex-direction: column;
-        flex-direction:         column;
-        text-align: center;
-        i {
-            margin-left: -1px;
-        }
-    }
-
-    .mb-splitter-horizontal {
-        width: 100%;
-        xheight: $splitter-size;
-        -webkit-flex-direction: column;
-        flex-direction:         column;
-        i {
-            line-height: $splitter-size;
-            height: $splitter-size;
-        }
-    }
-*/

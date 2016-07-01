@@ -21,24 +21,23 @@ namespace Blend.material {
 
     export class Splitter extends Blend.material.Material {
 
-        protected activeCssClass: string;
-        protected hoverCssClass: string;
-        protected cursorCssClass: string;
+        protected splitterType: Blend.eSplitterType;
         protected isActive: boolean;
+        protected splitterIndex: number;
+        protected beforeComponent: Blend.material.Material;
+        protected afterComponent: Blend.material.Material;
+
         protected positionProperty: string;
         protected sizeProperty: string;
         protected movementProperty: string;
-        protected splitterType: Blend.eSplitterType;
-        protected beforeComponent: Blend.material.Material;
-        protected afterComponent: Blend.material.Material;
-        protected splitterIndex: number;
+        protected currentDisplacement: number;
+        protected origin: ElementBoundsInterface;
+        protected moveHandlerFn: EventListener;
+        protected curPosition: ElementBoundsInterface;
 
         public constructor(config: SplitterInterface = {}) {
             super(config);
             var me = this;
-
-            me.activeCssClass = "mb-splitter-active";
-            me.hoverCssClass = "mb-splitter-hover";
             me.isActive = false;
         }
 
@@ -51,13 +50,6 @@ namespace Blend.material {
             var me = this;
             me.beforeComponent = before;
             me.afterComponent = after;
-        }
-
-        protected updateLayout() {
-            var me = this;
-            me.checkSetSplitterType();
-            me.element.removeCssClass("mb-splitter-" + me.splitterType);
-            me.element.addCssClass(["mb-splitter", "mb-splitter-" + me.splitterType]);
         }
 
         private checkSetSplitterType() {
@@ -74,15 +66,25 @@ namespace Blend.material {
                 me.sizeProperty = "height";
                 me.movementProperty = "screenY";
             }
-            me.cursorCssClass = "mb-splitter-" + me.splitterType + "-cursor";
         }
 
-        protected render(): Blend.dom.Element {
-            var me = this;
+        protected updateLayout() {
+            var me = this,
+                cls = "mb-splitter-" + me.splitterType;
             me.checkSetSplitterType();
-            return Blend.dom.Element.create({
+            me.element.removeCssClass(cls);
+            me.element.addCssClass(["mb-splitter", cls]);
+        }
+
+        protected ghostElement: Blend.dom.Element;
+        protected ghostSize: number = 10;
+
+        private createGhost() {
+            var me = this;
+            me.ghostElement = Blend.createElement({
+                cls: ["mb-split-ghost", "mb-split-ghost-" + me.splitterType],
                 style: {
-                    "transition": "width 0.2s linear, height 0.2s linear, background-color 0.2s ease-in"
+                    [me.sizeProperty]: me.ghostSize
                 },
                 children: [
                     {
@@ -92,39 +94,49 @@ namespace Blend.material {
                     }
                 ]
             });
+            me.ghostElement.addEventListener("mouseleave", function () {
+                if (!me.isActive) {
+                    me.hideGhost();
+                }
+            });
+            me.ghostElement.addEventListener("mousedown", function (ev: MouseEvent) {
+                me.activate.apply(me, arguments);
+            });
+            me.element.getEl().parentElement.appendChild(me.ghostElement.getEl());
         }
 
-        protected currentDisplacement: number;
-        protected origin: ElementBoundsInterface;
-        protected moveHandlerFn: EventListener;
-        protected ghostEl: Blend.dom.Element;
-        protected curPosition: ElementBoundsInterface;
+        private showGhost() {
+            var me = this,
+                bounds = me.getBounds();
 
-        /**
-         * Position the ghost element on top of this splitter
-         */
-        private positionGhost() {
-            var me = this;
-            if (!me.ghostEl) {
+            if (!me.ghostElement) {
                 me.createGhost();
             }
-            var bounds = me.getBounds();
-            me.ghostEl.setStyle({
+            me.ghostElement.setStyle({
+                [me.positionProperty]: <number>(<any>bounds)[me.positionProperty] - (me.ghostSize / 2),
                 display: "flex",
-                left: bounds.left,
-                top: bounds.top,
             });
-            me.curPosition = bounds;
+            setTimeout(function () {
+                me.ghostElement.setStyle({
+                    opacity: 1
+                });
+            }, 1);
+            me.curPosition = me.ghostElement.getBounds();
         }
 
-        /**
-         * Create a ghost element that will act as a visual cue
-         */
-        private createGhost() {
+        private hideGhost() {
             var me = this;
-            me.ghostEl = new Blend.dom.Element(<HTMLElement>me.element.getEl().cloneNode(true));
-            me.ghostEl.addCssClass("mb-splitter-ghost");
-            me.element.getEl().parentElement.appendChild(me.ghostEl.getEl());
+            me.ghostElement.setStyle({
+                opacity: 0,
+                display: "none"
+            });
+        }
+
+        private initHoverEffect() {
+            var me = this;
+            me.element.addEventListener("mouseenter", function () {
+                me.showGhost();
+            });
         }
 
         /**
@@ -150,7 +162,7 @@ namespace Blend.material {
             if (move) {
                 me.currentDisplacement = displacement;
                 setTimeout(function () {
-                    me.ghostEl.setStyle({
+                    me.ghostElement.setStyle({
                         [me.positionProperty]: (<any>me.curPosition)[me.positionProperty] + displacement
                     });
                 }, 1);
@@ -163,13 +175,10 @@ namespace Blend.material {
                 me.currentDisplacement = 0;
                 me.isActive = true;
                 me.origin = { top: ev.screenY, left: ev.screenX };
-                //me.element.addCssClass([me.activeCssClass, me.cursorCssClass]);
-                //me.element.removeCssClass([me.hoverCssClass]);
-                me.positionGhost();
                 //me.prepareMovementLimits();
                 me.moveHandlerFn = function (ev: MouseEvent) {
                     me.handleMovement.apply(me, arguments);
-                }
+                };
                 Blend.Runtime.addEventListener(document, "mousemove", me.moveHandlerFn);
             }
         }
@@ -181,12 +190,9 @@ namespace Blend.material {
             var me = this;
             if (me.isActive) {
                 me.isActive = false;
-                me.element.removeCssClass([me.hoverCssClass, me.activeCssClass, me.cursorCssClass]);
-                //@TODO
-                me.resizeViews();
                 Blend.Runtime.removeEventListener(document, "mousemove", me.moveHandlerFn);
-                me.ghostEl.setStyle({ display: "none" });
-                me.parent.performLayout();  // force to perform layout
+                me.hideGhost();
+                me.resizeViews();
             }
         }
 
@@ -209,27 +215,8 @@ namespace Blend.material {
 
         private initInteraction() {
             var me = this;
-            me.element.addEventListener("mousedown", function (ev: MouseEvent) {
-                me.activate.apply(me, arguments);
-            });
-
             Blend.Runtime.addEventListener(document, "mouseup", function (ev: MouseEvent) {
                 me.deActivate.apply(me, arguments);
-            });
-        }
-
-        private initHoverEffect() {
-            var me = this;
-            me.element.addEventListener("mouseenter", function () {
-                me.element.addCssClass([me.hoverCssClass, me.cursorCssClass]);
-                me.parent.setProperty("activeSplitterIndex", me.splitterIndex);
-                me.parent.performLayout();
-            });
-
-            me.element.addEventListener("mouseleave", function () {
-                me.element.removeCssClass([me.hoverCssClass, me.cursorCssClass]);
-                me.parent.setProperty("activeSplitterIndex", -1);
-                me.parent.performLayout();
             });
         }
 
@@ -245,5 +232,6 @@ namespace Blend.material {
                 throw new Error("The Splitter can only be hosted by a HorizontalSplit or a VerticalSplir container");
             }
         }
+
     }
 }
