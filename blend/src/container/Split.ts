@@ -15,6 +15,7 @@ namespace Blend.container {
         protected config: SplitInterface;
         protected splitType: string;
         protected splitPositions: Array<number>;
+        protected isPctPositions: boolean;
         protected sizeProperty: string;
         protected positionProperty: string;
         protected bounds: ElementBoundsInterface;
@@ -79,7 +80,7 @@ namespace Blend.container {
 
         protected calculateSplitPositions() {
             var me = this,
-                fixed: boolean,
+                noConfig: boolean = false,
                 configSps = <Array<any>>me.config.splitPosition;
 
             if (me.splitPositions.length === 0) {
@@ -91,16 +92,35 @@ namespace Blend.container {
                         pct += (100 / (splitters + 1));
                         configSps.push(pct + "%");
                     }
+                    noConfig = true;
                 }
                 if (configSps.length !== 0) {
-                    // check not fixed ot pct
-                    fixed = Blend.isNumeric(configSps[0]);
-                    if (!fixed) {
+                    // check for fixed or pct
+                    me.isPctPositions = !Blend.isNumeric(configSps[0]);
+                    if (me.isPctPositions) {
                         me.splitPositions = me.parsePercentageValues(configSps);
+                        if (noConfig) {
+                            me.config.splitPosition = configSps;
+                        }
                     } else {
                         me.splitPositions = configSps;
                     }
                 }
+            }
+        }
+
+        /**
+         * Updates the original splitPositions based on the newly splitted
+         * positions if the original values where given as string.
+         */
+        public reflectCurrentPositions() {
+            var me = this;
+            if (me.isPctPositions) {
+                var max: number = <number>(<any>me.bounds)[me.sizeProperty];
+                me.config.splitPosition = [];
+                me.splitPositions.forEach(function (pos: number) {
+                    (<Array<string>>me.config.splitPosition).push(((100 * pos) / max) + "%");
+                });
             }
         }
 

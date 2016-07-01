@@ -231,6 +231,7 @@ namespace Blend.material {
                     splitPos[me.splitterIndex] -= reszie;
                 }
                 me.parent.performLayout();
+                me.parent.reflectCurrentPositions();
             }
         }
 
