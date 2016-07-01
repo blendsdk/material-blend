@@ -208,6 +208,7 @@ interface MaterialInterface extends MvcViewInterface {
     top?: number;
     left?: number;
     flex?: number | FlexItemInterface;
+    minSplittedSize?: number;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;

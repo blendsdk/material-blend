@@ -35,6 +35,11 @@ namespace Blend.material {
         protected moveHandlerFn: EventListener;
         protected curPosition: ElementBoundsInterface;
 
+        protected afterBounds: ElementBoundsInterface;
+        protected beforeBounds: ElementBoundsInterface;
+        protected beforeSizeLimit: number;
+        protected afterSizeLimit: number;
+
         public constructor(config: SplitterInterface = {}) {
             super(config);
             var me = this;
@@ -140,6 +145,19 @@ namespace Blend.material {
         }
 
         /**
+         * Calculate the limita in which this splitter can move
+         */
+        private prepareMovementLimits() {
+            var me = this;
+
+            me.beforeBounds = me.beforeComponent.getBounds();
+            me.afterBounds = me.afterComponent.getBounds();
+
+            me.beforeSizeLimit = me.beforeComponent.getProperty<number>("config.minSplittedSize") || 0;
+            me.afterSizeLimit = me.afterComponent.getProperty<number>("config.minSplittedSize") || 0;
+        }
+
+        /**
          * Move the ghost element and enforce the minimal View sizes
          */
         private handleMovement(ev: MouseEvent) {
@@ -149,15 +167,13 @@ namespace Blend.material {
                 newSize: number,
                 displacement = movementPosition - (<any>me.origin)[me.positionProperty];
 
-            // if (displacement < 0) {
-            //     // towards before View
-            //     move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
-            // } else if (displacement > 0) {
-            //     // towards after View
-            //     move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
-            // }
-
-            move = true;
+             if (displacement < 0) {
+                 // towards before View
+                 move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
+             } else if (displacement > 0) {
+                 // towards after View
+                 move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
+            }
 
             if (move) {
                 me.currentDisplacement = displacement;
@@ -175,7 +191,7 @@ namespace Blend.material {
                 me.currentDisplacement = 0;
                 me.isActive = true;
                 me.origin = { top: ev.screenY, left: ev.screenX };
-                //me.prepareMovementLimits();
+                me.prepareMovementLimits();
                 me.moveHandlerFn = function (ev: MouseEvent) {
                     me.handleMovement.apply(me, arguments);
                 };
