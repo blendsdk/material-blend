@@ -125,6 +125,22 @@ namespace Blend.container {
         }
 
         protected updateLayout() {
+            var me = this;
+            if (Blend.isInstanceOf(me.parent, Blend.container.Split)) {
+                setTimeout(function () {
+                    me.updateLayoutInternal();
+                }, 100);
+            } else {
+                me.updateLayoutInternal();
+            }
+        }
+
+        public performPartialLayout() {
+            var me = this;
+            me.updateLayoutInternal();
+        }
+
+        protected updateLayoutInternal() {
             var me = this,
                 splitterPos = 0,
                 itemIndex: number = 0,
@@ -165,11 +181,18 @@ namespace Blend.container {
                 itemIndex++;
             });
             itemIndex = 0;
+            var max: number = <number>(<any>me.bounds)[me.sizeProperty];
             me.withItems(function (item: Blend.material.Material) {
-                item.setStyle({
-                    [me.sizeProperty]: posIndex[itemIndex].size,
-                    [me.positionProperty]: posIndex[itemIndex].position,
-                });
+                var req: number = (posIndex[itemIndex].size + posIndex[itemIndex].position);
+                if (req > max) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                    item.setStyle({
+                        [me.sizeProperty]: posIndex[itemIndex].size,
+                        [me.positionProperty]: posIndex[itemIndex].position,
+                    });
+                }
                 itemIndex++;
             });
         }

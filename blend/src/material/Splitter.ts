@@ -170,12 +170,12 @@ namespace Blend.material {
                 newSize: number,
                 displacement = movementPosition - (<any>me.origin)[me.positionProperty];
 
-             if (displacement < 0) {
-                 // towards before View
-                 move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
-             } else if (displacement > 0) {
-                 // towards after View
-                 move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
+            if (displacement < 0) {
+                // towards before View
+                move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
+            } else if (displacement > 0) {
+                // towards after View
+                move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
             }
 
             if (move) {
@@ -230,7 +230,7 @@ namespace Blend.material {
                 } else {
                     splitPos[me.splitterIndex] -= reszie;
                 }
-                me.parent.performLayout();
+                me.parent.performPartialLayout();
                 me.parent.reflectCurrentPositions();
             }
         }
