@@ -19,3 +19,5 @@ namespace Blend.container {
         }
     }
 }
+
+Blend.registerClassWithAlias("lay.hsplit", Blend.container.HorizontalSplit);

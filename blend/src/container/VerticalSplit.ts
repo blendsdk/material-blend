@@ -20,3 +20,5 @@ namespace Blend.container {
 
     }
 }
+
+Blend.registerClassWithAlias("lay.vsplit", Blend.container.VerticalSplit);

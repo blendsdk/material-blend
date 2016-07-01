@@ -1,16 +1,85 @@
-$struct-splitter-size: rem(1); // not in the specs!!
-
 @mixin blend-material-splitter(
 $splitter-color,
 $splitter-hover-color,
 $splitter-active-color,
-$splitter-handle-color,
-$splitter-size : $struct-splitter-size
+$splitter-handle-color
 ) {
+    .mb-splitter {
+        @include user-select(none);
+        background-color: $splitter-color;
+
+        display: flex;
+        display: -webkit-flex;
+
+        -webkit-justify-content: center;
+        justify-content:         center;
+
+        -webkit-align-items: center;
+        align-items:         center;
+
+        i {
+            @include user-select(none);
+            display: none;
+        }
+
+    }
+
+    .mb-splitter-hover {
+
+        background-color: $splitter-hover-color;
+        i {
+            display: block;
+            color: $splitter-handle-color;
+        }
+
+    }
+
+    .mb-splitter-horizontal-cursor {
+        cursor: row-resize;
+    }
+
+    .mb-splitter-vertical-cursor {
+        cursor: col-resize;
+    }
+
+    .mb-splitter-active {
+
+
+
+    }
+
+    .mb-splitter-vertical {
+        -webkit-flex-direction: column;
+        flex-direction:         column;
+        text-align: center;
+        i {
+            margin-left: -1px;
+        }
+    }
+
+    .mb-splitter-horizontal {
+        -webkit-flex-direction: column;
+        flex-direction:         column;
+        i {
+            line-height: rem(1);
+            height: rem(1);
+        }
+    }
+
+    .mb-splitter-ghost {
+        @include opacity(0.5);
+        z-index: 100000;
+        position: absolute;
+    }
+
+}
+
+
+    /*
     .mb-splitter {
         background-color: $splitter-color;
 
-        transition: width 0.3s, height 0.3s;
+        transition: width 0.2s, height 0.2s;
 
         display: flex;
         display: -webkit-flex;
@@ -26,9 +95,6 @@ $splitter-size : $struct-splitter-size
         i {
             @include user-select(none);
             color: $splitter-handle-color;
-            &:hover {
-                color: $splitter-color;
-            }
         }
     }
 
@@ -45,14 +111,6 @@ $splitter-size : $struct-splitter-size
 
     .mb-splitter-active {
         background-color: $splitter-active-color;
-    }
-
-    .mb-splitter-horizontal-cursor {
-        cursor: col-resize;
-    }
-
-    .mb-splitter-vertical-cursor {
-        cursor: row-resize;
     }
 
     .mb-splitter-vertical {
@@ -76,4 +134,4 @@ $splitter-size : $struct-splitter-size
             height: $splitter-size;
         }
     }
-}
+*/

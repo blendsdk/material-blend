@@ -182,7 +182,6 @@ $background-color: $global-background-color
         .paper {
             @include elevate($elevate-1dp);
             background-color: #fff;
-            border:1px solid #ededed;
             border-radius: 3px;
         }
     }

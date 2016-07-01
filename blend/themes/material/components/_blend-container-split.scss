@@ -11,6 +11,9 @@
             position: absolute;
         }
 
+        & > .split-cntr-item {
+            transition: width 0.05s linear, height 0.05s linear
+        }
     }
 
     & > .split-cntr-body-horizontal {

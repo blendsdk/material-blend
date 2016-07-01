@@ -74,7 +74,7 @@ namespace Blend.container {
             });
         }
 
-        protected preUpdateLayout() {
+        protected postUpdateLayout() {
             var me = this;
             me.layoutChildren();
         }

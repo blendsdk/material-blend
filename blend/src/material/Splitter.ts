@@ -74,13 +74,16 @@ namespace Blend.material {
                 me.sizeProperty = "height";
                 me.movementProperty = "screenY";
             }
-            me.cursorCssClass = "mb.splitter-" + me.splitterType + "-cursor";
+            me.cursorCssClass = "mb-splitter-" + me.splitterType + "-cursor";
         }
 
         protected render(): Blend.dom.Element {
             var me = this;
             me.checkSetSplitterType();
             return Blend.dom.Element.create({
+                style: {
+                    "transition": "width 0.2s linear, height 0.2s linear, background-color 0.2s ease-in"
+                },
                 children: [
                     {
                         tag: "i",
@@ -109,7 +112,7 @@ namespace Blend.material {
             me.ghostEl.setStyle({
                 display: "flex",
                 left: bounds.left,
-                top: bounds.top
+                top: bounds.top,
             });
             me.curPosition = bounds;
         }
@@ -132,7 +135,7 @@ namespace Blend.material {
                 move: boolean = false,
                 movementPosition = (<any>ev)[me.movementProperty],
                 newSize: number,
-                displacement = movementPosition - (<any>me.origin)[me.positionProperty]
+                displacement = movementPosition - (<any>me.origin)[me.positionProperty];
 
             // if (displacement < 0) {
             //     // towards before View
@@ -160,8 +163,8 @@ namespace Blend.material {
                 me.currentDisplacement = 0;
                 me.isActive = true;
                 me.origin = { top: ev.screenY, left: ev.screenX };
-                me.element.addCssClass([me.activeCssClass, me.cursorCssClass]);
-                me.element.removeCssClass([me.hoverCssClass]);
+                //me.element.addCssClass([me.activeCssClass, me.cursorCssClass]);
+                //me.element.removeCssClass([me.hoverCssClass]);
                 me.positionGhost();
                 //me.prepareMovementLimits();
                 me.moveHandlerFn = function (ev: MouseEvent) {
@@ -218,14 +221,14 @@ namespace Blend.material {
         private initHoverEffect() {
             var me = this;
             me.element.addEventListener("mouseenter", function () {
-                me.element.addCssClass(me.hoverCssClass);
-                me.parent.setProperty("splitterSize", 20);
+                me.element.addCssClass([me.hoverCssClass, me.cursorCssClass]);
+                me.parent.setProperty("activeSplitterIndex", me.splitterIndex);
                 me.parent.performLayout();
             });
 
             me.element.addEventListener("mouseleave", function () {
-                me.element.removeCssClass(me.hoverCssClass);
-                me.parent.setProperty("splitterSize", 2);
+                me.element.removeCssClass([me.hoverCssClass, me.cursorCssClass]);
+                me.parent.setProperty("activeSplitterIndex", -1);
                 me.parent.performLayout();
             });
         }

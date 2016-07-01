@@ -33,8 +33,8 @@ $color-divider:                 $color-grey-c400;
 
 // SPLITTER ////////////////////////////////////////////////////////////////////
 
-$theme-splitter-color: $color-primary-dark;
-$theme-splitter-hover-color: $color-primary;
+$theme-splitter-color:  $color-grey-c300;
+$theme-splitter-hover-color: $color-grey-c600;
 $theme-splitter-handle-color: $color-white;
 $theme-splitter-active-color: darken($theme-splitter-color,5%); // not in the spces!!
 
