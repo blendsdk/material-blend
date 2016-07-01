@@ -26,6 +26,7 @@ namespace Blend.container {
             me.cssClass = "split-cntr";
             me.childCssClass = "split-cntr-item";
             me.bodyCssClass = "split-cntr-body";
+            me.activeSplitterIndex = -1;
             Blend.apply(me.config, {
                 splitPosition: config.splitPosition || [],
                 splitterSize: config.splitterSize || 2
@@ -36,6 +37,16 @@ namespace Blend.container {
                 me.splitPositions = [];
                 me.updateLayout();
             }, me);
+        }
+
+        public setActiveSplitterIndex(value: number) {
+            var me = this;
+            me.activeSplitterIndex = value;
+        }
+
+        public getActiveSplitterIndex(): number {
+            var me = this;
+            return me.activeSplitterIndex;
         }
 
         protected postUpdateLayout() {

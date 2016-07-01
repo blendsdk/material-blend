@@ -39,6 +39,7 @@ namespace Blend.material {
         protected beforeBounds: ElementBoundsInterface;
         protected beforeSizeLimit: number;
         protected afterSizeLimit: number;
+        protected parent: Blend.container.Split;
 
         public constructor(config: SplitterInterface = {}) {
             super(config);
@@ -140,7 +141,9 @@ namespace Blend.material {
         private initHoverEffect() {
             var me = this;
             me.element.addEventListener("mouseenter", function () {
-                me.showGhost();
+                if (me.parent.getActiveSplitterIndex() === -1) {
+                    me.showGhost();
+                }
             });
         }
 
@@ -187,7 +190,7 @@ namespace Blend.material {
 
         private activate(ev: MouseEvent) {
             var me = this;
-            if (!me.isActive) {
+            if (!me.isActive && me.parent.getActiveSplitterIndex() === -1) {
                 me.currentDisplacement = 0;
                 me.isActive = true;
                 me.origin = { top: ev.screenY, left: ev.screenX };
@@ -196,6 +199,7 @@ namespace Blend.material {
                     me.handleMovement.apply(me, arguments);
                 };
                 Blend.Runtime.addEventListener(document, "mousemove", me.moveHandlerFn);
+                me.parent.setActiveSplitterIndex(me.splitterIndex);
             }
         }
 
@@ -209,6 +213,7 @@ namespace Blend.material {
                 Blend.Runtime.removeEventListener(document, "mousemove", me.moveHandlerFn);
                 me.hideGhost();
                 me.resizeViews();
+                me.parent.setActiveSplitterIndex(-1);
             }
         }
 
