@@ -36,7 +36,7 @@ $color-divider:                 $color-grey-c400;
 $theme-splitter-color: $color-primary-dark;
 $theme-splitter-hover-color: $color-primary;
 $theme-splitter-handle-color: $color-white;
-$theme-splitter-active-color: $color-primary-light; // not in the spces!!
+$theme-splitter-active-color: darken($theme-splitter-color,5%); // not in the spces!!
 
 // BUTTONS /////////////////////////////////////////////////////////////////////
 

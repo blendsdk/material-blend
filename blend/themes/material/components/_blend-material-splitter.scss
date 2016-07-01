@@ -1,4 +1,4 @@
-$struct-splitter-size: rem(0.8); // not in the specs!!
+$struct-splitter-size: rem(1); // not in the specs!!
 
 @mixin blend-material-splitter(
 $splitter-color,
@@ -9,6 +9,8 @@ $splitter-size : $struct-splitter-size
 ) {
     .mb-splitter {
         background-color: $splitter-color;
+
+        transition: width 0.3s, height 0.3s;
 
         display: flex;
         display: -webkit-flex;
@@ -30,6 +32,12 @@ $splitter-size : $struct-splitter-size
         }
     }
 
+    .mb-splitter-ghost {
+        @include opacity(0.95);
+        z-index: 100000;
+        position: absolute;
+    }
+
     .mb-splitter-hover {
         background-color: $splitter-hover-color;
         cursor: pointer;
@@ -39,17 +47,17 @@ $splitter-size : $struct-splitter-size
         background-color: $splitter-active-color;
     }
 
-    .mb-splitter-hbox-cursor {
+    .mb-splitter-horizontal-cursor {
         cursor: col-resize;
     }
 
-    .mb-splitter-vbox-cursor {
+    .mb-splitter-vertical-cursor {
         cursor: row-resize;
     }
 
-    .mb-splitter-hbox {
+    .mb-splitter-vertical {
         height: 100%;
-        width: $splitter-size;
+        //xwidth: $splitter-size;
         -webkit-flex-direction: column;
         flex-direction:         column;
         text-align: center;
@@ -58,9 +66,9 @@ $splitter-size : $struct-splitter-size
         }
     }
 
-    .mb-splitter-vbox {
+    .mb-splitter-horizontal {
         width: 100%;
-        height: $splitter-size;
+        xheight: $splitter-size;
         -webkit-flex-direction: column;
         flex-direction:         column;
         i {
@@ -68,10 +76,4 @@ $splitter-size : $struct-splitter-size
             height: $splitter-size;
         }
     }
-}
-
-.mb-splitter-ghost {
-    @include opacity(0.7);
-    z-index: 100000;
-    position: absolute;
 }

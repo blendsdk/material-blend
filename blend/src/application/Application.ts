@@ -78,29 +78,9 @@ namespace Blend.application {
             }
         }
 
-        /**
-         * Install an event listener on the window
-         */
-        protected setupWindowListeners() {
-            var me = this, tm = -1,
-                counts = 0,
-                curSize = -1;
-            Blend.Runtime.addEventListener(window, "resize", function (evt: Event) {
-                curSize = window.innerWidth + window.innerHeight;
-                clearInterval(tm);
-                tm = setInterval(function () {
-                    if (counts >= 3) {
-                        if (curSize === (window.innerWidth + innerHeight)) {
-                            clearInterval(tm);
-                            me.onWindowResize.apply(me, [evt]);
-                        } else {
-                            counts = 0;
-                        }
-                    } else {
-                        counts++;
-                    }
-                }, 50);
-            });
+        private setupWindowListeners() {
+            var me = this;
+            Blend.Runtime.registerWindowResizeListener(me.onWindowResize, me);
         }
 
         /**

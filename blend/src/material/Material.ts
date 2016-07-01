@@ -102,14 +102,14 @@ namespace Blend.material {
         /**
          * Suspends the sub-layout from staring
          */
-        protected suspendLayout() {
+        public suspendLayout() {
             this.canLayout = false;
         }
 
         /**
          * Resumes the sub-layout
          */
-        protected resumeLayout() {
+        public resumeLayout() {
             this.canLayout = true;
         }
 
