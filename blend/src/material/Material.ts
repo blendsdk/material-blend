@@ -214,6 +214,10 @@ namespace Blend.material {
 
         }
 
+        public destruct() {
+
+        }
+
         /**
          * Override this method for creating event listeners for this Material
          */
