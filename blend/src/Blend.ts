@@ -39,7 +39,7 @@ namespace Blend {
 
     /**
      * Bind wraps a function into a new functions so it can run in a given scope
-     * whn the new function is called.
+     * when the new function is called.
      */
     export function bind(scope: any, fn: Function) {
         return function () {
