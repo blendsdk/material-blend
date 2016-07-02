@@ -14,35 +14,34 @@
  * limitations under the License.
  */
 
-$struct-default-toolbar-height: rem(4.800);
+.split-cntr {
 
-@mixin toolbar(
-$name,
-$elevation,
-$toolbar-color,
-$toolbar-height
-) {
+    overflow: hidden;
+    &> .split-cntr-body {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
 
-    .mb-toolbar-#{$name} {
-        @include elevate($elevation);
-        background-color: $toolbar-color;
-        height: $toolbar-height;
-        @content
+        &> .split-cntr-item {
+            position: absolute;
+        }
+
     }
 
-}
+    & > .split-cntr-body-horizontal {
 
-@mixin blend-toolbar-theme(
-$name,
-$color,
-$flat
-) {
-    @include toolbar(
-    $name: $name,
-        $elevation:if($flat, $elevate-0dp, $elevate-2dp),
-        $toolbar-color: $color,
-        $toolbar-height: $struct-default-toolbar-height
-        ) {
-        @include border-radius(if($flat, 0, rem(0.2)));
+        & > .split-cntr-item {
+            width: 100% !important;
+        }
+    }
+
+    & > .split-cntr-body-vertical {
+
+        & > .split-cntr-item {
+            height: 100% !important;
+        }
     }
 }

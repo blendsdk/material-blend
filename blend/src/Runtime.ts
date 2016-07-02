@@ -69,9 +69,9 @@ namespace Blend {
          */
         public triggerMediaQueryCheck() {
             var me = this;
-            Blend.forEach(me.mediaQueryMatchers, function(mql: MediaQueryList, mediaQuery: string) {
+            Blend.forEach(me.mediaQueryMatchers, function (mql: MediaQueryList, mediaQuery: string) {
                 if (mql.matches && me.previousMediaQuery !== mediaQuery) {
-                    me.mediaQueryRegistery[mediaQuery].forEach(function(fn: Function) {
+                    me.mediaQueryRegistery[mediaQuery].forEach(function (fn: Function) {
                         fn.apply(me, [mql]);
                     });
                     me.previousMediaQuery = mediaQuery;
@@ -89,7 +89,7 @@ namespace Blend {
                 me.mediaQueryRegistery[mediaQuery] = [];
                 var mql: MediaQueryList = window.matchMedia(mediaQuery);
                 me.mediaQueryMatchers[mediaQuery] = mql;
-                mql.addListener(function() {
+                mql.addListener(function () {
                     me.triggerMediaQueryCheck();
                 });
             }
@@ -110,6 +110,31 @@ namespace Blend {
             } else {
                 return true;
             }
+        }
+
+        /**
+         * Install a windows resize listener
+         */
+        public registerWindowResizeListener(listenerCallback: Function, scope: any) {
+            var me = this, tm = -1,
+                counts = 0,
+                curSize = -1;
+            Blend.Runtime.addEventListener(window, "resize", function (evt: Event) {
+                curSize = window.innerWidth + window.innerHeight;
+                clearInterval(tm);
+                tm = setInterval(function () {
+                    if (counts >= 3) {
+                        if (curSize === (window.innerWidth + innerHeight)) {
+                            clearInterval(tm);
+                            listenerCallback.apply(scope, [evt]);
+                        } else {
+                            counts = 0;
+                        }
+                    } else {
+                        counts++;
+                    }
+                }, 50);
+            });
         }
 
         /**
@@ -143,11 +168,11 @@ namespace Blend {
         kickStart() {
             var me = this,
                 didRun = false,
-                doCallback = function() {
+                doCallback = function () {
                     if (didRun === false) {
                         didRun = true;
                         if (me.isSupportedBrowser()) {
-                            Blend.forEach(me.readyCallbacks, function(item: IReadCallback) {
+                            Blend.forEach(me.readyCallbacks, function (item: IReadCallback) {
                                 item.fn.apply(item.sc, []);
                             });
                         }
@@ -176,7 +201,7 @@ namespace Blend {
          */
         public addEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
             if (eventName.indexOf(" ") !== -1) {
-                eventName.split(" ").forEach(function(eName) {
+                eventName.split(" ").forEach(function (eName) {
                     eName = eName.trim();
                     if (eName.length !== 0) {
                         el.addEventListener(eName, eventHandler, false);
@@ -193,7 +218,7 @@ namespace Blend {
          */
         public removeEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
             if (eventName.indexOf(" ") !== -1) {
-                eventName.split(" ").forEach(function(eName) {
+                eventName.split(" ").forEach(function (eName) {
                     eName = eName.trim();
                     if (eName.length !== 0) {
                         el.removeEventListener(eName, eventHandler, false);

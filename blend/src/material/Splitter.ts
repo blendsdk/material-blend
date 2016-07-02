@@ -15,50 +15,55 @@
  */
 
 interface SplitterInterface {
-
 }
 
 namespace Blend.material {
 
     export class Splitter extends Blend.material.Material {
 
-        protected activeCssClass: string;
-        protected hoverCssClass: string;
-        protected cursorCssClass: string;
+        protected splitterType: Blend.eSplitterType;
         protected isActive: boolean;
+        protected splitterIndex: number;
+        protected beforeComponent: Blend.material.Material;
+        protected afterComponent: Blend.material.Material;
+
         protected positionProperty: string;
         protected sizeProperty: string;
         protected movementProperty: string;
-        protected splitterType: string;
         protected currentDisplacement: number;
-        protected beforeView: Blend.material.Material;
-        protected afterView: Blend.material.Material;
-        protected beforeBounds: ElementBoundsInterface;
+        protected origin: ElementBoundsInterface;
+        protected moveHandlerFn: EventListener;
+        protected curPosition: ElementBoundsInterface;
+
         protected afterBounds: ElementBoundsInterface;
-
-
+        protected beforeBounds: ElementBoundsInterface;
+        protected beforeSizeLimit: number;
+        protected afterSizeLimit: number;
+        protected parent: Blend.container.Split;
 
         public constructor(config: SplitterInterface = {}) {
             super(config);
             var me = this;
-
-            me.activeCssClass = "mb-splitter-active";
-            me.hoverCssClass = "mb-splitter-hover";
-
             me.isActive = false;
         }
 
-        protected updateLayout() {
+        public setIndex(value: number) {
             var me = this;
-            me.checkSetSplitterType();
-            me.element.clearCssClass();
-            me.element.addCssClass(["mb-splitter", "mb-splitter-" + me.splitterType]);
+            me.splitterIndex = value;
+        }
+
+        public bindComponents(before: Blend.material.Material, after: Blend.material.Material) {
+            var me = this;
+            me.beforeComponent = before;
+            me.afterComponent = after;
         }
 
         private checkSetSplitterType() {
             var me = this;
-            me.splitterType = Blend.isInstanceOf(me.parent, Blend.container.HorizontalBox) ? "hbox" : "vbox";
-            if (me.splitterType === "hbox") {
+            me.splitterType = Blend.isInstanceOf(me.parent, Blend.container.HorizontalSplit)
+                ? Blend.eSplitterType.horizontal : Blend.eSplitterType.vertical;
+
+            if (me.splitterType === Blend.eSplitterType.vertical) {
                 me.positionProperty = "left";
                 me.sizeProperty = "width";
                 me.movementProperty = "screenX";
@@ -67,37 +72,97 @@ namespace Blend.material {
                 me.sizeProperty = "height";
                 me.movementProperty = "screenY";
             }
-            me.cursorCssClass = "mb.splitter-" + me.splitterType + "-cursor";
         }
 
-        protected render(): Blend.dom.Element {
-            var me = this;
+        protected updateLayout() {
+            var me = this,
+                cls = "mb-splitter-" + me.splitterType;
             me.checkSetSplitterType();
-            return Blend.dom.Element.create({
+            me.element.removeCssClass(cls);
+            me.element.addCssClass(["mb-splitter", cls]);
+        }
+
+        protected ghostElement: Blend.dom.Element;
+        protected ghostSize: number = 10;
+
+        private createGhost() {
+            var me = this;
+            me.ghostElement = Blend.createElement({
+                cls: ["mb-split-ghost", "mb-split-ghost-" + me.splitterType],
+                style: {
+                    [me.sizeProperty]: me.ghostSize
+                },
                 children: [
                     {
                         tag: "i",
                         cls: ["material-icons"],
-                        text: me.splitterType === "hbox" ? "more_vert" : "more_horiz"
+                        text: me.splitterType === Blend.eSplitterType.vertical ? "more_vert" : "more_horiz"
                     }
                 ]
+            });
+            me.ghostElement.addEventListener("mouseleave", function () {
+                if (!me.isActive) {
+                    me.hideGhost();
+                }
+            });
+            Runtime.addEventListener(document, "mouseleave", function () {
+                me.deActivate.apply(me, arguments);
+                me.hideGhost();
+            });
+            me.ghostElement.addEventListener("mousedown", function (ev: MouseEvent) {
+                me.activate.apply(me, arguments);
+            });
+            me.element.getEl().parentElement.appendChild(me.ghostElement.getEl());
+        }
+
+        private showGhost() {
+            var me = this,
+                bounds = me.getBounds();
+
+            if (!me.ghostElement) {
+                me.createGhost();
+            }
+            me.ghostElement.setStyle({
+                [me.positionProperty]: <number>(<any>bounds)[me.positionProperty] - (me.ghostSize / 2),
+                display: "flex",
+            });
+            setTimeout(function () {
+                me.ghostElement.setStyle({
+                    opacity: 1
+                });
+            }, 1);
+            me.curPosition = me.ghostElement.getBounds();
+        }
+
+        private hideGhost() {
+            var me = this;
+            me.ghostElement.setStyle({
+                opacity: 0,
+                display: "none"
             });
         }
 
         private initHoverEffect() {
             var me = this;
             me.element.addEventListener("mouseenter", function () {
-                me.element.addCssClass(me.hoverCssClass);
-            });
-
-            me.element.addEventListener("mouseleave", function () {
-                me.element.removeCssClass(me.hoverCssClass);
+                if (me.parent.getActiveSplitterIndex() === -1) {
+                    me.showGhost();
+                }
             });
         }
 
-        protected origin: ElementBoundsInterface;
-        protected moveHandlerFn: EventListener;
+        /**
+         * Calculate the limita in which this splitter can move
+         */
+        private prepareMovementLimits() {
+            var me = this;
 
+            me.beforeBounds = me.beforeComponent.getBounds();
+            me.afterBounds = me.afterComponent.getBounds();
+
+            me.beforeSizeLimit = me.beforeComponent.getProperty<number>("config.minSplittedSize") || 0;
+            me.afterSizeLimit = me.afterComponent.getProperty<number>("config.minSplittedSize") || 0;
+        }
 
         /**
          * Move the ghost element and enforce the minimal View sizes
@@ -109,68 +174,36 @@ namespace Blend.material {
                 newSize: number,
                 displacement = movementPosition - (<any>me.origin)[me.positionProperty];
 
-            console.log(displacement);
-
-            // if (displacement < 0) {
-            //     // towards before View
-            //     move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
-            // } else if (displacement > 0) {
-            //     // towards after View
-            //     move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
-            // }
-
-            move = true;
+            if (displacement < 0) {
+                // towards before View
+                move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
+            } else if (displacement > 0) {
+                // towards after View
+                move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
+            }
 
             if (move) {
                 me.currentDisplacement = displacement;
                 setTimeout(function () {
-                    me.beforeView.setStyle({
-                        [me.sizeProperty]: (<any>me.beforeBounds)[me.sizeProperty] + <any>displacement
+                    me.ghostElement.setStyle({
+                        [me.positionProperty]: (<any>me.curPosition)[me.positionProperty] + displacement
                     });
-                    me.afterView.setStyle({
-                        [me.sizeProperty]: (<any>me.afterBounds)[me.sizeProperty] + <any>displacement
-                    });
-                    me.afterBounds = me.afterView.getBounds();
-                    me.beforeBounds = me.beforeView.getBounds();
-                }, 2);
+                }, 1);
             }
         }
 
-        /**
-         * Kicks in the splitter movement
-         */
         private activate(ev: MouseEvent) {
             var me = this;
-            if (!me.isActive) {
+            if (!me.isActive && me.parent.getActiveSplitterIndex() === -1) {
                 me.currentDisplacement = 0;
                 me.isActive = true;
                 me.origin = { top: ev.screenY, left: ev.screenX };
-                me.element.addCssClass([me.activeCssClass, me.cursorCssClass]);
-                me.element.removeCssClass(me.hoverCssClass);
-
-                me.beforeView = (<any>me.parent).items[0];
-                me.afterView = (<any>me.parent).items[2];
-
-                me.beforeBounds = me.beforeView.getBounds();
-                me.beforeView.getElement().setStyle({
-                    [me.sizeProperty]: (<any>me.beforeBounds)[me.sizeProperty],
-                    flex: null,
-                    "-webkit-flex": null
-                });
-
-                me.afterBounds = me.afterView.getBounds();
-                me.afterView.getElement().setStyle({
-                    [me.sizeProperty]: (<any>me.afterBounds)[me.sizeProperty],
-                    flex: null,
-                    "-webkit-flex": null
-                });
-
-                // @TODO
-                // me.prepareMovementLimits();
+                me.prepareMovementLimits();
                 me.moveHandlerFn = function (ev: MouseEvent) {
                     me.handleMovement.apply(me, arguments);
                 };
                 Blend.Runtime.addEventListener(document, "mousemove", me.moveHandlerFn);
+                me.parent.setActiveSplitterIndex(me.splitterIndex);
             }
         }
 
@@ -181,20 +214,34 @@ namespace Blend.material {
             var me = this;
             if (me.isActive) {
                 me.isActive = false;
-                me.element.removeCssClass([me.activeCssClass, me.cursorCssClass]);
-                me.element.addCssClass(me.hoverCssClass);
-                //me.resizeViews();
                 Blend.Runtime.removeEventListener(document, "mousemove", me.moveHandlerFn);
+                me.hideGhost();
+                me.resizeViews();
+                me.parent.setActiveSplitterIndex(-1);
+            }
+        }
+
+        /**
+         * Resizes the before and the after View by changes the View sizes
+         */
+        private resizeViews() {
+            var me = this,
+                reszie = Math.abs(me.currentDisplacement);
+            if (me.currentDisplacement !== 0) {
+                var splitPos = me.parent.getProperty<Array<number>>("splitPositions");
+                if (me.currentDisplacement > 0) {
+                    splitPos[me.splitterIndex] += reszie;
+                } else {
+                    splitPos[me.splitterIndex] -= reszie;
+                }
+                me.parent.performPartialLayout();
+                me.parent.reflectCurrentPositions();
             }
         }
 
         private initInteraction() {
             var me = this;
-            me.element.addEventListener("mousedown", function (ev: MouseEvent) {
-                me.activate.apply(me, arguments);
-            });
-
-            me.element.addEventListener("mouseup", function (ev: MouseEvent) {
+            Blend.Runtime.addEventListener(document, "mouseup", function (ev: MouseEvent) {
                 me.deActivate.apply(me, arguments);
             });
         }
@@ -205,14 +252,16 @@ namespace Blend.material {
             me.initInteraction();
         }
 
+        public destruct() {
+
+        }
+
         protected preInitialize() {
             var me = this;
-            if (!Blend.isInstanceOf(me.parent, Blend.container.Box)) {
-                throw new Error("The Splitter can only be hosted by a HorizontalBox or a VerticalBox container");
+            if (!Blend.isInstanceOf(me.parent, Blend.container.Split)) {
+                throw new Error("The Splitter can only be hosted by a HorizontalSplit or a VerticalSplir container");
             }
         }
+
     }
 }
-
-Blend.registerClassWithAlias("mb.splitter", Blend.material.Splitter);
-

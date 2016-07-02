@@ -59,18 +59,30 @@ namespace Blend.container {
             return this;
         }
 
+        protected withItems(callback: Function) {
+            var me = this;
+            me.items.forEach(function (material: Blend.material.Material) {
+                callback.apply(me, [material]);
+            });
+        }
+
         protected postInitialize() {
             var me = this;
             // Initialize the child elements
-            me.items.forEach(function (material: Blend.material.Material) {
+            me.withItems(function (material: Blend.material.Material) {
                 material.doInitialize();
             });
         }
 
-        protected preUpdateLayout() {
+        protected postUpdateLayout() {
+            var me = this;
+            me.layoutChildren();
+        }
+
+        protected layoutChildren() {
             var me = this;
             // Perform layout on children
-            me.items.forEach(function (material: Blend.material.Material) {
+            me.withItems(function (material: Blend.material.Material) {
                 material.performLayout();
             });
         }
@@ -95,7 +107,7 @@ namespace Blend.container {
         protected renderChildren(): Array<Blend.dom.Element | Blend.dom.ElementConfigBuilder> {
             var me = this,
                 list: Array<Blend.dom.Element> = [];
-            me.items.forEach(function (material: Blend.material.Material) {
+            me.withItems(function (material: Blend.material.Material) {
                 material.addCssClass(me.childCssClass);
                 list.push(me.renderChildElement(material));
             });
@@ -119,34 +131,48 @@ namespace Blend.container {
             }
         }
 
+        protected createChildComponent(itm: ComponentTypes): Blend.material.Material {
+            var me = this;
+            if (Blend.isInstanceOf(itm, Blend.material.Material)) {
+                return <Blend.material.Material>itm;
+            } else {
+                return <Blend.material.Material>Blend.createComponent(itm, me.config.defaults);
+            }
+        }
+
+        protected initChildComponent(component: Blend.material.Material) {
+            var me = this;
+            component.setContext(me.context);
+            if (component.getProperty("useParentController", true) === true) {
+                component.addController(me.controllers);
+            }
+            component.setProperty("parent", me);
+        }
+
+        protected createChildComponents(components: Array<MaterialType>): Array<Blend.material.Material> {
+            var me = this,
+                list: Array<Blend.material.Material> = [];
+            components.forEach(function (item: MaterialType) {
+                list.push(me.createChildComponent(item));
+            });
+            return list;
+        }
+
         public add(item: MaterialType | Array<MaterialType>): Container {
             var me = this,
-                material: Blend.material.Material,
-                docFrag: DocumentFragment = document.createDocumentFragment();
-
-            Blend.wrapInArray(item).forEach(function (itm: MaterialType) {
-
-                if (Blend.isInstanceOf(itm, Blend.material.Material)) {
-                    material = <Blend.material.Material>itm;
-                } else {
-                    material = <Blend.material.Material>Blend.createComponent(itm, me.config.defaults);
-                }
-
-                if (me.checkComponent(material)) {
-                    me.items.push(material);
-                    material.setContext(me.context);
-                    if (material.getProperty("useParentController", true) === true) {
-                        material.addController(me.controllers);
-                    }
-                    material.setProperty("parent", me);
+                docFrag: DocumentFragment = document.createDocumentFragment(),
+                childComponents = me.createChildComponents(Blend.wrapInArray(item));
+            childComponents.forEach(function (component: Blend.material.Material) {
+                if (me.checkComponent(component)) {
+                    me.items.push(component);
+                    me.initChildComponent(component);
                     if (me.isRendered) {
-                        material.addCssClass(me.childCssClass);
-                        material.doInitialize();
-                        docFrag.appendChild(me.renderChildElement(material).getEl());
+                        component.addCssClass(me.childCssClass);
+                        component.doInitialize();
+                        docFrag.appendChild(me.renderChildElement(component).getEl());
                     }
                 }
             });
-
             if (docFrag.childNodes.length !== 0) {
                 me.bodyElement.appendFragment(docFrag);
                 me.performLayout();

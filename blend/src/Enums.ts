@@ -16,6 +16,11 @@
 
 namespace Blend {
 
+    export enum eSplitterType {
+        horizontal = <any>"horizontal",
+        vertical = <any>"vertical"
+    }
+
     export enum eButtonIconSize {
         small = 18,
         medium = 24,

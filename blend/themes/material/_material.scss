@@ -37,3 +37,6 @@
     display:none !important;
 }
 
+[data-selectable="off"] {
+    @include user-select(none);
+}
