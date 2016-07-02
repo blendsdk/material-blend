@@ -105,6 +105,10 @@ namespace Blend.material {
                     me.hideGhost();
                 }
             });
+            Runtime.addEventListener(document, "mouseleave", function () {
+                me.deActivate.apply(me, arguments);
+                me.hideGhost();
+            });
             me.ghostElement.addEventListener("mousedown", function (ev: MouseEvent) {
                 me.activate.apply(me, arguments);
             });
@@ -246,6 +250,10 @@ namespace Blend.material {
             var me = this;
             me.initHoverEffect();
             me.initInteraction();
+        }
+
+        public destruct() {
+
         }
 
         protected preInitialize() {
