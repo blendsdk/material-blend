@@ -196,37 +196,17 @@ namespace Blend {
         }
 
         /**
-         * Adds an EventListener to an EventTarget. You can add multiple events by
-         * providing event names seperated by spaces (eg. 'mouseup click')
+         * Adds an EventListener to an EventTarget.
          */
         public addEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
-            if (eventName.indexOf(" ") !== -1) {
-                eventName.split(" ").forEach(function (eName) {
-                    eName = eName.trim();
-                    if (eName.length !== 0) {
-                        el.addEventListener(eName, eventHandler, false);
-                    }
-                });
-            } else {
-                el.addEventListener(eventName, eventHandler, false);
-            }
+            el.addEventListener(eventName, eventHandler, false);
         }
 
         /**
-         * Removes an EventListener from an EventTarget. You can remove multiple events by
-         * providing event names seperated by spaces (eg. 'mouseup click')
+         * Removes an EventListener from an EventTarget.
          */
         public removeEventListener(el: EventTarget, eventName: string, eventHandler: EventListener): void {
-            if (eventName.indexOf(" ") !== -1) {
-                eventName.split(" ").forEach(function (eName) {
-                    eName = eName.trim();
-                    if (eName.length !== 0) {
-                        el.removeEventListener(eName, eventHandler, false);
-                    }
-                });
-            } else {
-                el.removeEventListener(eventName, eventHandler, false);
-            }
+            el.removeEventListener(eventName, eventHandler, false);
         }
 
         private detectIE(): number {
