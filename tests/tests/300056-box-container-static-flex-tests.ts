@@ -31,7 +31,7 @@ TestApp.defineTest("Box Container Static Flex", function (t: Blend.testing.TestR
     cntr.doInitialize();
     cntr.performLayout();
 
-    var elements = Blend.selectElements(".m-rectangle");
+    var elements = Blend.selectElements(".mb-rectangle");
     t.assertEquals(elements.length, 3, "correct stretched elements");
     t.assertEquals(elements[0].getBounds().width, 150, "flex: 1");
     t.assertEquals(elements[1].getBounds().width, 200, "static 200");

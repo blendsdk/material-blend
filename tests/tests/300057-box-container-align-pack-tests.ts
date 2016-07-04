@@ -39,7 +39,7 @@ TestApp.defineTest("Box Container Align & Pack", function (t: Blend.testing.Test
     cntr.doInitialize();
     cntr.performLayout();
 
-    var elements = Blend.selectElements(".m-rectangle");
+    var elements = Blend.selectElements(".mb-rectangle");
     elements.forEach(function (el: Blend.dom.Element) {
         t.assertEquals(el.getBounds().height, 398, "height correct");
     });

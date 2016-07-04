@@ -40,18 +40,14 @@ namespace Blend.container {
         private getExplicitSize(material: Blend.material.Material): any {
             var me = this,
                 el = material.getElement().getEl(),
+                parse = function (value: string) {
+                    return parseFloat(value.replace(/px|%/g, ""));
+                },
                 explicit: any = {
-                    width: el.style.width || null,
-                    height: el.style.height || null
+                    width: parse(el.style.width) || null,
+                    height: parse(el.style.height) || null
                 };
-            if (explicit[me.flexedProperty]) {
-                return material.getBounds(false); // get the purce content size corresponding to the explicit values
-            } else {
-                return {
-                    width: 0,
-                    height: 0
-                };
-            }
+            return explicit;
         }
 
         protected updateLayout() {
