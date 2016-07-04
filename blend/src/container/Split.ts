@@ -44,6 +44,10 @@ namespace Blend.container {
             me.initResizeEventListener();
         }
 
+        public getSplitterType(): Blend.eSplitterType {
+            return this.splitterType;
+        }
+
         protected createGhostElement() {
             var me = this;
             me.bodyElement.append(Blend.createElement({

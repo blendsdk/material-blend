@@ -21,6 +21,38 @@ namespace Blend.material {
 
     export class Splitter extends Blend.material.Material {
 
+        protected movementProperty: string;
+        protected splitterIndex: number;
+        protected beforeComponent: Blend.material.Material;
+        protected afterComponent: Blend.material.Material;
+        protected parent: Blend.container.Split;
+
+        public bindComponents(before: Blend.material.Material, after: Blend.material.Material) {
+            var me = this;
+            me.beforeComponent = before;
+            me.afterComponent = after;
+        }
+
+        public setIndex(value: number) {
+            this.splitterIndex = value;
+        }
+
+        protected updateLayout() {
+            var me = this,
+                spt = me.parent.getSplitterType(),
+                cls = "mb-splitter-" + spt;
+
+            me.movementProperty = spt === Blend.eSplitterType.vertical ?
+                "screenX" : "screenY";
+
+            me.element.removeCssClass(cls);
+            me.element.addCssClass(["mb-splitter", cls]);
+        }
+
+    }
+
+    export class z_Splitter extends Blend.material.Material {
+
         protected splitterType: Blend.eSplitterType;
         protected isActive: boolean;
         protected splitterIndex: number;
