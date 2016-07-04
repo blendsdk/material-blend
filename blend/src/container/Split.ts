@@ -13,7 +13,7 @@ namespace Blend.container {
     export abstract class Split extends Blend.container.Container {
 
         protected config: SplitInterface;
-        protected splitType: string;
+        protected splitterType: Blend.eSplitterType;
         protected calculatedPositions: Array<number>;
         protected isPctPositions: boolean;
         protected sizeProperty: string;
@@ -23,9 +23,14 @@ namespace Blend.container {
 
         protected resizeEventListener: EventListener;
 
+        protected ghostElement: Blend.dom.Element;
+        protected ghostHandlerElement: Blend.dom.Element;
+
         public constructor(config: SplitInterface = {}) {
             super(config);
             var me = this;
+            me.ghostElement = null;
+            me.ghostHandlerElement = null;
             me.cssClass = "split-cntr";
             me.childCssClass = "split-cntr-item";
             me.bodyCssClass = "split-cntr-body";
@@ -37,6 +42,40 @@ namespace Blend.container {
             me.config.splitPosition = <any>Blend.wrapInArray(me.config.splitPosition);
             me.calculatedPositions = [];
             me.initResizeEventListener();
+        }
+
+        protected createGhostElement() {
+            var me = this;
+            me.bodyElement.append(Blend.createElement({
+                oid: "ghostElement",
+                style: {
+                    display: "none",
+                    [me.sizeProperty]: me.splitterType
+                },
+                children: [
+                    {
+                        oid: "ghostHandlerElement",
+                        tag: "i",
+                        cls: ["material-icons"]
+                    }
+                ]
+            }, me.assignElementByOID, me));
+        }
+
+        public hideGhost() {
+            var me = this;
+            me.ghostElement.setStyle({ display: "none" });
+        }
+
+        public showGhostAt(location: ElementBoundsInterface) {
+            var me = this;
+            me.ghostElement.setStyle({ display: "flex" });
+        }
+
+        protected finalizeRender(config: FinalizeRenderConfig = {}) {
+            var me = this;
+            super.finalizeRender(config);
+            me.createGhostElement();
         }
 
         private initResizeEventListener() {
@@ -74,6 +113,9 @@ namespace Blend.container {
                     material.performLayout();
                 }
             });
+            me.ghostElement.clearCssClass();
+            me.ghostElement.addCssClass(["mb-split-ghost", "mb-split-ghost-" + me.splitterType]);
+            me.ghostHandlerElement.setHtml(me.splitterType === Blend.eSplitterType.vertical ? "more_vert" : "more_horiz")
         }
 
         /**
@@ -213,7 +255,7 @@ namespace Blend.container {
         protected getBodyCssClass() {
             var me = this;
             if (me.isRendered) {
-                return `${me.bodyCssClass} ${me.bodyCssClass}-${me.splitType}`;
+                return `${me.bodyCssClass} ${me.bodyCssClass}-${me.splitterType}`;
             } else {
                 return me.bodyCssClass;
             }
