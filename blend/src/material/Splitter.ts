@@ -22,10 +22,41 @@ namespace Blend.material {
     export class Splitter extends Blend.material.Material {
 
         protected movementProperty: string;
+        protected sizeProperty: string;
         protected splitterIndex: number;
         protected beforeComponent: Blend.material.Material;
         protected afterComponent: Blend.material.Material;
         protected parent: Blend.container.Split;
+        protected mouseOrigin: ElementBoundsInterface;
+
+        protected afterBounds: ElementBoundsInterface;
+        protected beforeBounds: ElementBoundsInterface;
+        protected beforeSizeLimit: number;
+        protected afterSizeLimit: number;
+        protected currentDisplacement: number;
+
+        protected positionProperty: string;
+
+        protected mouseEnterListener: EventListener;
+
+        protected initEvents() {
+            var me = this;
+            me.mouseEnterListener = Blend.bind(me, function (evt: MouseEvent) {
+                if (me.parent.getActiveSplitterIndex() === -1) {
+                    var bounds = me.getBounds();
+                    me.parent.showGhostAt(me, {
+                        [me.positionProperty]: <number>(<any>bounds)[me.positionProperty] - (me.parent.getGhostSize() / 2),
+                    });
+                }
+            });
+
+            Blend.Runtime.addEventListener(me.element.getEl(), "mouseenter", me.mouseEnterListener);
+        }
+
+        public destruct() {
+            var me = this;
+            Blend.Runtime.removeEventListener(me.element.getEl(), "mouseenter", me.mouseEnterListener);
+        }
 
         public bindComponents(before: Blend.material.Material, after: Blend.material.Material) {
             var me = this;
@@ -33,8 +64,54 @@ namespace Blend.material {
             me.afterComponent = after;
         }
 
+        /**
+         * Calculate the limita in which this splitter can move
+         */
+        private prepareMovementLimits() {
+            var me = this;
+
+            me.beforeBounds = me.beforeComponent.getBounds();
+            me.afterBounds = me.afterComponent.getBounds();
+
+            me.beforeSizeLimit = me.beforeComponent.getProperty<number>("config.minSplittedSize") || 5;
+            me.afterSizeLimit = me.afterComponent.getProperty<number>("config.minSplittedSize") || 5;
+        }
+
+        public setMouseOrigin(bounds: ElementBoundsInterface) {
+            var me = this;
+            me.mouseOrigin = bounds;
+            me.prepareMovementLimits();
+        }
+
+        public getIndex(): number {
+            return this.splitterIndex;
+        }
+
         public setIndex(value: number) {
             this.splitterIndex = value;
+        }
+
+        /**
+         * Move the ghost element and enforce the minimal View sizes
+         */
+        public getMovement(evt: MouseEvent) {
+            var me = this,
+                move: boolean = false,
+                movementPosition = (<any>evt)[me.movementProperty],
+                newSize: number, limit: number,
+                displacement = movementPosition - (<any>me.mouseOrigin)[me.positionProperty];
+
+            if (displacement < 0) {
+                // towards before View
+                move = ((<any>me.beforeBounds)[me.sizeProperty] - Math.abs(displacement)) > me.beforeSizeLimit;
+                limit = -1 * ((<any>me.beforeBounds)[me.sizeProperty] - me.beforeSizeLimit);
+            } else if (displacement > 0) {
+                // towards after View
+                move = ((<any>me.afterBounds)[me.sizeProperty] - Math.abs(displacement)) > me.afterSizeLimit;
+                limit = (<any>me.afterBounds)[me.sizeProperty] - me.afterSizeLimit;
+            }
+
+            return move ? displacement : limit;
         }
 
         protected updateLayout() {
@@ -44,6 +121,10 @@ namespace Blend.material {
 
             me.movementProperty = spt === Blend.eSplitterType.vertical ?
                 "screenX" : "screenY";
+
+            me.sizeProperty = me.parent.getSizeProperty();
+
+            me.positionProperty = me.parent.getPositionProperty();
 
             me.element.removeCssClass(cls);
             me.element.addCssClass(["mb-splitter", cls]);
@@ -204,6 +285,7 @@ namespace Blend.material {
                 move: boolean = false,
                 movementPosition = (<any>ev)[me.movementProperty],
                 newSize: number,
+                limit: number,
                 displacement = movementPosition - (<any>me.origin)[me.positionProperty];
 
             if (displacement < 0) {

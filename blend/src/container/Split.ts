@@ -20,11 +20,18 @@ namespace Blend.container {
         protected positionProperty: string;
         protected bounds: ElementBoundsInterface;
         protected activeSplitterIndex: number;
+        protected currentSplitter: Blend.material.Splitter;
 
-        protected resizeEventListener: EventListener;
+        protected resizeListener: EventListener;
+        protected mouseUpListener: EventListener;
+        protected mouseDownListener: EventListener;
+        protected mouseMoveListener: EventListener;
+        protected mouseLeaveListener: EventListener;
+        protected displacement: number;
 
         protected ghostElement: Blend.dom.Element;
         protected ghostHandlerElement: Blend.dom.Element;
+        protected ghostBounds: ElementBoundsInterface;
 
         public constructor(config: SplitInterface = {}) {
             super(config);
@@ -41,11 +48,18 @@ namespace Blend.container {
             });
             me.config.splitPosition = <any>Blend.wrapInArray(me.config.splitPosition);
             me.calculatedPositions = [];
-            me.initResizeEventListener();
+        }
+
+        public getPositionProperty() {
+            return this.positionProperty;
         }
 
         public getSplitterType(): Blend.eSplitterType {
             return this.splitterType;
+        }
+
+        public getGhostSize() {
+            return 10;
         }
 
         protected createGhostElement() {
@@ -54,7 +68,7 @@ namespace Blend.container {
                 oid: "ghostElement",
                 style: {
                     display: "none",
-                    [me.sizeProperty]: me.splitterType
+                    [me.sizeProperty]: me.getGhostSize()
                 },
                 children: [
                     {
@@ -68,12 +82,23 @@ namespace Blend.container {
 
         public hideGhost() {
             var me = this;
-            me.ghostElement.setStyle({ display: "none" });
+            me.ghostElement.setStyle({ opacity: 0, display: "none" });
         }
 
-        public showGhostAt(location: ElementBoundsInterface) {
+        public showGhostAt(currentSplitter: Blend.material.Splitter, bounds: ElementBoundsInterface) {
             var me = this;
-            me.ghostElement.setStyle({ display: "flex" });
+            me.currentSplitter = currentSplitter;
+            me.ghostElement.setStyle({
+                [me.positionProperty]: (<any>bounds)[me.positionProperty],
+            });
+            me.ghostElement.setStyle({
+                display: "flex",
+            });
+            Blend.delay(30, me, function () {
+                me.ghostElement.setStyle({
+                    opacity: 1
+                });
+            });
         }
 
         protected finalizeRender(config: FinalizeRenderConfig = {}) {
@@ -82,28 +107,105 @@ namespace Blend.container {
             me.createGhostElement();
         }
 
-        private initResizeEventListener() {
+        /**
+         * Resizes the before and the after View by changes the View sizes
+         */
+        private resizeChildren() {
             var me = this;
-            me.resizeEventListener = Blend.Runtime.createWindowResizeListener(function () {
+            if (me.displacement) { // needed on safari!!
+                var reszie = Math.abs(me.displacement);
+                if (me.displacement > 0) {
+                    me.calculatedPositions[me.getActiveSplitterIndex()] += reszie;
+                } else {
+                    me.calculatedPositions[me.getActiveSplitterIndex()] -= reszie;
+                }
+                me.performPartialLayout();
+                me.reflectCurrentPositions();
+            }
+        }
+
+
+        protected initEvents() {
+            var me = this;
+
+            // windows resize
+            me.resizeListener = Blend.Runtime.createWindowResizeListener(function () {
                 me.calculatedPositions = [];
                 me.updateLayout();
             }, me);
-            Blend.Runtime.addEventListener(window, "resize", me.resizeEventListener);
+
+            me.mouseUpListener = Blend.bind(me, function () {
+                me.hideGhost();
+                me.resizeChildren();
+                me.activeSplitterIndex = -1;
+                me.currentSplitter = null;
+            });
+
+            me.mouseDownListener = Blend.bind(me, function (evt: MouseEvent) {
+                me.activeSplitterIndex = me.currentSplitter.getIndex();
+                me.currentSplitter.setMouseOrigin({ top: evt.screenY, left: evt.screenX });
+                me.ghostBounds = me.ghostElement.getBounds();
+            });
+
+            me.mouseLeaveListener = Blend.bind(me, function () {
+                if (me.activeSplitterIndex === -1) {
+                    me.hideGhost();
+                    me.currentSplitter = null;
+                }
+            });
+
+            me.mouseMoveListener = Blend.bind(me, function (evt: MouseEvent) {
+                var primaryButton = (evt.buttons === 1 && evt.button === 0) || evt.which === 1;
+                if (me.activeSplitterIndex !== -1 && primaryButton && me.currentSplitter !== null) {
+                    Blend.delay(1, me, function () {
+                        if (me.currentSplitter !== null) {
+                            me.displacement = me.currentSplitter.getMovement(evt);
+                            if (me.displacement !== 0) {
+                                me.ghostElement.setStyle({
+                                    [me.positionProperty]: (<any>me.ghostBounds)[me.positionProperty] + me.displacement
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+
+            Blend.Runtime.addEventListener(window, "resize", me.resizeListener);
+            Blend.Runtime.addEventListener(document, "mouseup", me.mouseUpListener);
+            Blend.Runtime.addEventListener(document, "mousemove", me.mouseMoveListener);
+            Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
+            Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mousedown", me.mouseDownListener);
+
+
+
+
+            // // mousemove of the container
+            // me.mouseLeaveListener = Blend.bind(me, function (evt: MouseEvent) {
+            //     if (evt.buttons === 0 && me.activeSplitterIndex !== -1) {
+            //         me.hideGhost();
+            //         me.activeSplitterIndex = -1;
+            //     }
+            // });
+            // Blend.Runtime.addEventListener(me.element.getEl(), "mousemove", me.mouseMoveListener);
         }
 
         public destruct() {
             var me = this;
-            Blend.Runtime.removeEventListener(window, "resize", me.resizeEventListener);
+            Blend.Runtime.removeEventListener(window, "resize", me.resizeListener);
+            // Blend.Runtime.removeEventListener(me.element.getEl(), "mousemove", me.mouseMoveListener);
         }
 
         public setActiveSplitterIndex(value: number) {
-            var me = this;
-            me.activeSplitterIndex = value;
+            this.activeSplitterIndex = value;
         }
 
         public getActiveSplitterIndex(): number {
-            var me = this;
-            return me.activeSplitterIndex;
+            return this.activeSplitterIndex;
+        }
+
+        public getSizeProperty(): string {
+            return this.sizeProperty;
         }
 
         protected postUpdateLayout() {
