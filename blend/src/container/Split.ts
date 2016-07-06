@@ -168,7 +168,7 @@ namespace Blend.container {
                     Blend.delay(1, me, function () {
                         if (me.currentSplitter !== null) {
                             me.displacement = me.currentSplitter.getMovement(evt);
-                            if (me.displacement !== 0) {
+                            if (me.displacement && me.displacement !== 0) {
                                 me.ghostElement.setStyle({
                                     [me.positionProperty]: (<any>me.ghostBounds)[me.positionProperty] + me.displacement
                                 });
