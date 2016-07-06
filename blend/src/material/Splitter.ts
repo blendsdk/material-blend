@@ -30,7 +30,6 @@ namespace Blend.material {
         protected beforeBounds: ElementBoundsInterface;
         protected beforeSizeLimit: number;
         protected afterSizeLimit: number;
-        protected currentDisplacement: number;
 
         protected positionProperty: string;
 
