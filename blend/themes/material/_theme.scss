@@ -71,14 +71,9 @@ $background-color: $global-background-color
 
         @include blend-application-application();
 
-        // common structure for all button;
         @include blend-button-struct();
-
-        // flat button
         @include blend-button-flat();
-        // raised button
         @include blend-button-raised();
-        // FAB button
         @include blend-button-fab();
 
         // flat default button
