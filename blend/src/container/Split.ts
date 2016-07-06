@@ -94,6 +94,7 @@ namespace Blend.container {
             me.ghostElement.setStyle({
                 display: "flex",
             });
+
             Blend.delay(30, me, function () {
                 me.ghostElement.setStyle({
                     opacity: 1
@@ -124,6 +125,10 @@ namespace Blend.container {
             }
         }
 
+        protected isPrimaryButtonDown(evt: MouseEvent) {
+            return (evt.buttons === 1 && evt.button === 0) || evt.which === 1;
+        }
+
 
         protected initEvents() {
             var me = this;
@@ -147,16 +152,15 @@ namespace Blend.container {
                 me.ghostBounds = me.ghostElement.getBounds();
             });
 
-            me.mouseLeaveListener = Blend.bind(me, function () {
-                if (me.activeSplitterIndex === -1) {
+            me.mouseLeaveListener = Blend.bind(me, function (evt: MouseEvent) {
+                if (me.activeSplitterIndex === -1 && !me.isPrimaryButtonDown(evt)) {
                     me.hideGhost();
                     me.currentSplitter = null;
                 }
             });
 
             me.mouseMoveListener = Blend.bind(me, function (evt: MouseEvent) {
-                var primaryButton = (evt.buttons === 1 && evt.button === 0) || evt.which === 1;
-                if (me.activeSplitterIndex !== -1 && primaryButton && me.currentSplitter !== null) {
+                if (me.activeSplitterIndex !== -1 && me.isPrimaryButtonDown(evt) && me.currentSplitter !== null) {
                     Blend.delay(1, me, function () {
                         if (me.currentSplitter !== null) {
                             me.displacement = me.currentSplitter.getMovement(evt);
