@@ -48,6 +48,13 @@ namespace Blend {
     }
 
     /**
+     * Runs a function in a given scope on a given timeout
+     */
+    export function delay(timeout: number, scope: any, fn: Function) {
+        setTimeout(Blend.bind(scope, fn), timeout);
+    }
+
+    /**
      * Generates a new sequential ID used internally for debugging
      */
     export function newID(): number {

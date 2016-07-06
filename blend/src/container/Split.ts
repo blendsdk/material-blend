@@ -13,17 +13,31 @@ namespace Blend.container {
     export abstract class Split extends Blend.container.Container {
 
         protected config: SplitInterface;
-        protected splitType: string;
-        protected splitPositions: Array<number>;
+        protected splitterType: Blend.eSplitterType;
+        protected calculatedPositions: Array<number>;
         protected isPctPositions: boolean;
         protected sizeProperty: string;
         protected positionProperty: string;
         protected bounds: ElementBoundsInterface;
         protected activeSplitterIndex: number;
+        protected currentSplitter: Blend.material.Splitter;
+
+        protected resizeListener: EventListener;
+        protected mouseUpListener: EventListener;
+        protected mouseDownListener: EventListener;
+        protected mouseMoveListener: EventListener;
+        protected mouseLeaveListener: EventListener;
+        protected displacement: number;
+
+        protected ghostElement: Blend.dom.Element;
+        protected ghostHandlerElement: Blend.dom.Element;
+        protected ghostBounds: ElementBoundsInterface;
 
         public constructor(config: SplitInterface = {}) {
             super(config);
             var me = this;
+            me.ghostElement = null;
+            me.ghostHandlerElement = null;
             me.cssClass = "split-cntr";
             me.childCssClass = "split-cntr-item";
             me.bodyCssClass = "split-cntr-body";
@@ -33,21 +47,163 @@ namespace Blend.container {
                 splitterSize: config.splitterSize || 2
             });
             me.config.splitPosition = <any>Blend.wrapInArray(me.config.splitPosition);
-            me.splitPositions = [];
-            Blend.Runtime.registerWindowResizeListener(function () {
-                me.splitPositions = [];
+            me.calculatedPositions = [];
+        }
+
+        public getPositionProperty() {
+            return this.positionProperty;
+        }
+
+        public getSplitterType(): Blend.eSplitterType {
+            return this.splitterType;
+        }
+
+        public getGhostSize() {
+            return 10;
+        }
+
+        protected createGhostElement() {
+            var me = this;
+            me.bodyElement.append(Blend.createElement({
+                oid: "ghostElement",
+                style: {
+                    display: "none",
+                    [me.sizeProperty]: me.getGhostSize()
+                },
+                children: [
+                    {
+                        oid: "ghostHandlerElement",
+                        tag: "i",
+                        cls: ["material-icons"]
+                    }
+                ]
+            }, me.assignElementByOID, me));
+        }
+
+        public hideGhost() {
+            var me = this;
+            me.ghostElement.setStyle({ opacity: 0, display: "none" });
+        }
+
+        public showGhostAt(currentSplitter: Blend.material.Splitter, bounds: ElementBoundsInterface) {
+            var me = this;
+            me.currentSplitter = currentSplitter;
+            me.ghostElement.setStyle({
+                [me.positionProperty]: (<any>bounds)[me.positionProperty],
+            });
+            me.ghostElement.setStyle({
+                display: "flex",
+            });
+
+            Blend.delay(30, me, function () {
+                me.ghostElement.setStyle({
+                    opacity: 1
+                });
+            });
+        }
+
+        protected finalizeRender(config: FinalizeRenderConfig = {}) {
+            var me = this;
+            super.finalizeRender(config);
+            me.createGhostElement();
+        }
+
+        /**
+         * Resizes the before and the after View by changes the View sizes
+         */
+        private resizeChildren() {
+            var me = this;
+            if (me.displacement) { // needed on safari!!
+                var reszie = Math.abs(me.displacement);
+                if (me.displacement > 0) {
+                    me.calculatedPositions[me.getActiveSplitterIndex()] += reszie;
+                } else {
+                    me.calculatedPositions[me.getActiveSplitterIndex()] -= reszie;
+                }
+                me.performPartialLayout();
+                me.reflectCurrentPositions();
+            }
+        }
+
+
+        /**
+         * @internal
+         * Checks if the primary button is clicked ona given mouse event
+         */
+        private isPrimaryButtonDown(evt: MouseEvent) {
+            return (evt.buttons === 1 && evt.button === 0) || evt.which === 1;
+        }
+
+        protected initEvents() {
+            var me = this;
+
+            // windows resize
+            me.resizeListener = Blend.Runtime.createWindowResizeListener(function () {
+                me.calculatedPositions = [];
                 me.updateLayout();
             }, me);
+
+            me.mouseUpListener = Blend.bind(me, function () {
+                me.hideGhost();
+                me.resizeChildren();
+                me.activeSplitterIndex = -1;
+                me.currentSplitter = null;
+            });
+
+            me.mouseDownListener = Blend.bind(me, function (evt: MouseEvent) {
+                me.activeSplitterIndex = me.currentSplitter.getIndex();
+                me.currentSplitter.setMouseOrigin({ top: evt.screenY, left: evt.screenX });
+                me.ghostBounds = me.ghostElement.getBounds();
+            });
+
+            me.mouseLeaveListener = Blend.bind(me, function (evt: MouseEvent) {
+                if (me.activeSplitterIndex === -1 && !me.isPrimaryButtonDown(evt)) {
+                    me.hideGhost();
+                    me.currentSplitter = null;
+                }
+            });
+
+            me.mouseMoveListener = Blend.bind(me, function (evt: MouseEvent) {
+                if (me.activeSplitterIndex !== -1 && me.isPrimaryButtonDown(evt) && me.currentSplitter !== null) {
+                    Blend.delay(1, me, function () {
+                        if (me.currentSplitter !== null) {
+                            me.displacement = me.currentSplitter.getMovement(evt);
+                            if (me.displacement !== 0) {
+                                me.ghostElement.setStyle({
+                                    [me.positionProperty]: (<any>me.ghostBounds)[me.positionProperty] + me.displacement
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            Blend.Runtime.addEventListener(window, "resize", me.resizeListener);
+            Blend.Runtime.addEventListener(document, "mouseup", me.mouseUpListener);
+            Blend.Runtime.addEventListener(document, "mousemove", me.mouseMoveListener);
+            Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
+            Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mousedown", me.mouseDownListener);
+        }
+
+        public destruct() {
+            var me = this;
+            Blend.Runtime.removeEventListener(window, "resize", me.resizeListener);
+            Blend.Runtime.removeEventListener(document, "mouseup", me.mouseUpListener);
+            Blend.Runtime.removeEventListener(document, "mousemove", me.mouseMoveListener);
+            Blend.Runtime.removeEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
+            Blend.Runtime.removeEventListener(me.ghostElement.getEl(), "mousedown", me.mouseDownListener);
         }
 
         public setActiveSplitterIndex(value: number) {
-            var me = this;
-            me.activeSplitterIndex = value;
+            this.activeSplitterIndex = value;
         }
 
         public getActiveSplitterIndex(): number {
-            var me = this;
-            return me.activeSplitterIndex;
+            return this.activeSplitterIndex;
+        }
+
+        public getSizeProperty(): string {
+            return this.sizeProperty;
         }
 
         protected postUpdateLayout() {
@@ -61,6 +217,9 @@ namespace Blend.container {
                     material.performLayout();
                 }
             });
+            me.ghostElement.clearCssClass();
+            me.ghostElement.addCssClass(["mb-split-ghost", "mb-split-ghost-" + me.splitterType]);
+            me.ghostHandlerElement.setHtml(me.splitterType === Blend.eSplitterType.vertical ? "more_vert" : "more_horiz")
         }
 
         /**
@@ -83,7 +242,7 @@ namespace Blend.container {
                 noConfig: boolean = false,
                 configSps = <Array<any>>me.config.splitPosition;
 
-            if (me.splitPositions.length === 0) {
+            if (me.calculatedPositions.length === 0) {
                 // either no split positions or not yet calculated
                 if (configSps.length === 0) {
                     // no split positions defined so we try to calculate automatically
@@ -98,12 +257,12 @@ namespace Blend.container {
                     // check for fixed or pct
                     me.isPctPositions = !Blend.isNumeric(configSps[0]);
                     if (me.isPctPositions) {
-                        me.splitPositions = me.parsePercentageValues(configSps);
+                        me.calculatedPositions = me.parsePercentageValues(configSps);
                         if (noConfig) {
                             me.config.splitPosition = configSps;
                         }
                     } else {
-                        me.splitPositions = configSps;
+                        me.calculatedPositions = configSps;
                     }
                 }
             }
@@ -118,7 +277,7 @@ namespace Blend.container {
             if (me.isPctPositions) {
                 var max: number = <number>(<any>me.bounds)[me.sizeProperty];
                 me.config.splitPosition = [];
-                me.splitPositions.forEach(function (pos: number) {
+                me.calculatedPositions.forEach(function (pos: number) {
                     (<Array<string>>me.config.splitPosition).push(((100 * pos) / max) + "%");
                 });
             }
@@ -154,11 +313,11 @@ namespace Blend.container {
             me.withItems(function (item: Blend.material.Material) {
                 if (itemIndex % 2) {
                     posIndex.push({
-                        position: me.splitPositions[splitterPos],
+                        position: me.calculatedPositions[splitterPos],
                         size: me.config.splitterSize
                     });
-                    nextPosition = (me.splitPositions[splitterPos] + me.config.splitterSize);
-                    posIndex[itemIndex - 1].size = (me.splitPositions[splitterPos]) - posIndex[itemIndex - 1].position;
+                    nextPosition = (me.calculatedPositions[splitterPos] + me.config.splitterSize);
+                    posIndex[itemIndex - 1].size = (me.calculatedPositions[splitterPos]) - posIndex[itemIndex - 1].position;
                     splitterPos++;
                 } else {
                     if (itemIndex === 0) {
@@ -200,7 +359,7 @@ namespace Blend.container {
         protected getBodyCssClass() {
             var me = this;
             if (me.isRendered) {
-                return `${me.bodyCssClass} ${me.bodyCssClass}-${me.splitType}`;
+                return `${me.bodyCssClass} ${me.bodyCssClass}-${me.splitterType}`;
             } else {
                 return me.bodyCssClass;
             }

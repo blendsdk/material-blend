@@ -26,6 +26,8 @@ namespace Blend.application {
         protected isResizing: boolean;
         protected mainView: Blend.material.Material;
 
+        protected windowResizeEventListener: EventListener;
+
         public constructor(config: ApplicationInterface = {}) {
             super(Blend.apply(config, <MaterialInterface>{
                 responsive: true
@@ -66,21 +68,21 @@ namespace Blend.application {
             me.fireEvent("applicationResized", evt);
         }
 
-        /**
-         * Handle the resize notification correctly
-         */
-        protected onWindowResize() {
+        public destruct() {
             var me = this;
-            if (!me.isResizing) {
-                me.isResizing = true;
-                me.notifyApplicationResized.apply(me, arguments);
-                me.isResizing = false;
-            }
+            Blend.Runtime.removeEventListener(window, "resize", me.windowResizeEventListener);
         }
 
         private setupWindowListeners() {
             var me = this;
-            Blend.Runtime.registerWindowResizeListener(me.onWindowResize, me);
+            me.windowResizeEventListener = Blend.Runtime.createWindowResizeListener(function () {
+                if (!me.isResizing) {
+                    me.isResizing = true;
+                    me.notifyApplicationResized.apply(me, arguments);
+                    me.isResizing = false;
+                }
+            }, me);
+            Blend.Runtime.addEventListener(window, "resize", me.windowResizeEventListener);
         }
 
         /**

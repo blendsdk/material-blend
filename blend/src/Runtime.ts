@@ -112,14 +112,11 @@ namespace Blend {
             }
         }
 
-        /**
-         * Install a windows resize listener
-         */
-        public registerWindowResizeListener(listenerCallback: Function, scope: any) {
-            var me = this, tm = -1,
-                counts = 0,
-                curSize = -1;
-            Blend.Runtime.addEventListener(window, "resize", function (evt: Event) {
+        public createWindowResizeListener(listenerCallback: EventListener, scope: any) {
+            return function (evt: Event) {
+                var tm = -1,
+                    counts = 0,
+                    curSize = -1;
                 curSize = window.innerWidth + window.innerHeight;
                 clearInterval(tm);
                 tm = setInterval(function () {
@@ -134,7 +131,7 @@ namespace Blend {
                         counts++;
                     }
                 }, 50);
-            });
+            };
         }
 
         /**

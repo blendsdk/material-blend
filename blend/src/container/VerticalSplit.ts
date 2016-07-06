@@ -5,7 +5,7 @@ namespace Blend.container {
         public constructor(config: SplitInterface = {}) {
             super(config);
             var me = this;
-            me.splitType = "vertical";
+            me.splitterType = Blend.eSplitterType.vertical;
             me.sizeProperty = "width";
             me.positionProperty = "left";
         }
