@@ -180,24 +180,11 @@ namespace Blend.container {
             Blend.Runtime.addEventListener(document, "mousemove", me.mouseMoveListener);
             Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
             Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mousedown", me.mouseDownListener);
-
-
-
-
-            // // mousemove of the container
-            // me.mouseLeaveListener = Blend.bind(me, function (evt: MouseEvent) {
-            //     if (evt.buttons === 0 && me.activeSplitterIndex !== -1) {
-            //         me.hideGhost();
-            //         me.activeSplitterIndex = -1;
-            //     }
-            // });
-            // Blend.Runtime.addEventListener(me.element.getEl(), "mousemove", me.mouseMoveListener);
         }
 
         public destruct() {
             var me = this;
             Blend.Runtime.removeEventListener(window, "resize", me.resizeListener);
-            // Blend.Runtime.removeEventListener(me.element.getEl(), "mousemove", me.mouseMoveListener);
         }
 
         public setActiveSplitterIndex(value: number) {
