@@ -32,6 +32,7 @@ namespace Blend.container {
         protected ghostElement: Blend.dom.Element;
         protected ghostHandlerElement: Blend.dom.Element;
         protected ghostBounds: ElementBoundsInterface;
+        protected currentButton: number;
 
         public constructor(config: SplitInterface = {}) {
             super(config);
@@ -125,15 +126,6 @@ namespace Blend.container {
             }
         }
 
-
-        /**
-         * @internal
-         * Checks if the primary button is clicked ona given mouse event
-         */
-        private isPrimaryButtonDown(evt: MouseEvent) {
-            return (evt.buttons === 1 && evt.button === 0) || evt.which === 1;
-        }
-
         protected initEvents() {
             var me = this;
 
@@ -148,23 +140,25 @@ namespace Blend.container {
                 me.resizeChildren();
                 me.activeSplitterIndex = -1;
                 me.currentSplitter = null;
+                me.currentButton = -1;
             });
 
             me.mouseDownListener = Blend.bind(me, function (evt: MouseEvent) {
+                me.currentButton = evt.button;
                 me.activeSplitterIndex = me.currentSplitter.getIndex();
                 me.currentSplitter.setMouseOrigin({ top: evt.screenY, left: evt.screenX });
                 me.ghostBounds = me.ghostElement.getBounds();
             });
 
             me.mouseLeaveListener = Blend.bind(me, function (evt: MouseEvent) {
-                if (me.activeSplitterIndex === -1 && !me.isPrimaryButtonDown(evt)) {
+                if (me.activeSplitterIndex === -1 && me.currentButton !== 0 ) {
                     me.hideGhost();
                     me.currentSplitter = null;
                 }
             });
 
             me.mouseMoveListener = Blend.bind(me, function (evt: MouseEvent) {
-                if (me.activeSplitterIndex !== -1 && me.isPrimaryButtonDown(evt) && me.currentSplitter !== null) {
+                if (me.activeSplitterIndex !== -1 && me.currentButton === 0 && me.currentSplitter !== null) {
                     Blend.delay(1, me, function () {
                         if (me.currentSplitter !== null) {
                             me.displacement = me.currentSplitter.getMovement(evt);
