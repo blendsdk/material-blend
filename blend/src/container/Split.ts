@@ -125,10 +125,14 @@ namespace Blend.container {
             }
         }
 
-        protected isPrimaryButtonDown(evt: MouseEvent) {
+
+        /**
+         * @internal
+         * Checks if the primary button is clicked ona given mouse event
+         */
+        private isPrimaryButtonDown(evt: MouseEvent) {
             return (evt.buttons === 1 && evt.button === 0) || evt.which === 1;
         }
-
 
         protected initEvents() {
             var me = this;
@@ -174,7 +178,6 @@ namespace Blend.container {
                 }
             });
 
-
             Blend.Runtime.addEventListener(window, "resize", me.resizeListener);
             Blend.Runtime.addEventListener(document, "mouseup", me.mouseUpListener);
             Blend.Runtime.addEventListener(document, "mousemove", me.mouseMoveListener);
@@ -185,6 +188,10 @@ namespace Blend.container {
         public destruct() {
             var me = this;
             Blend.Runtime.removeEventListener(window, "resize", me.resizeListener);
+            Blend.Runtime.removeEventListener(document, "mouseup", me.mouseUpListener);
+            Blend.Runtime.removeEventListener(document, "mousemove", me.mouseMoveListener);
+            Blend.Runtime.removeEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
+            Blend.Runtime.removeEventListener(me.ghostElement.getEl(), "mousedown", me.mouseDownListener);
         }
 
         public setActiveSplitterIndex(value: number) {
