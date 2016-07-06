@@ -29,3 +29,21 @@
         clear: both;
     }
 }
+
+@mixin on-small-screen() {
+    @media (max-width: $layout-medium-width - 1) {
+        @content;
+    }
+}
+
+@mixin on-medium-screen() {
+    @media (min-width: $layout-medium-width) and (max-width: $layout-large-width - 1) {
+        @content;
+    }
+}
+
+@mixin on-large-screen() {
+    @media (min-width: $layout-large-width) {
+        @content;
+    }
+}

@@ -43,7 +43,7 @@ $background-color: $global-background-color
 
 
         // Small
-        @media (max-width: $layout-medium-width - 1) {
+        @include on-small-screen () {
             @include create-grid('sm'
             ,$layout-small-columns
             ,$layout-small-gutter
@@ -52,7 +52,7 @@ $background-color: $global-background-color
         }
 
         // Medium
-        @media (min-width: $layout-medium-width) and (max-width: $layout-large-width - 1) {
+        @include on-medium-screen () {
             @include create-grid('md'
             ,$layout-medium-columns
             ,$layout-medium-gutter
@@ -61,7 +61,7 @@ $background-color: $global-background-color
         }
 
         // Large
-        @media (min-width: $layout-large-width) {
+        @include on-large-screen () {
             @include create-grid('lg'
             ,$layout-large-columns
             ,$layout-large-gutter
