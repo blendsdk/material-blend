@@ -123,6 +123,7 @@ namespace Blend.container {
                 }
                 me.performPartialLayout();
                 me.reflectCurrentPositions();
+                me.displacement = 0;
             }
         }
 
