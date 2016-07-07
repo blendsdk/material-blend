@@ -30,6 +30,11 @@
             width: 100%;
             height: 100%;
         }
+
+        & > .fit-cntr-item-stretch {
+            height: 100% !important;
+        }
+
     }
 
 }

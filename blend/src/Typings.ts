@@ -191,6 +191,12 @@ interface FlexItemInterface {
     basis?: number | string;
 }
 
+interface ResponsiveSize {
+    small?: number;
+    medium?: number;
+    large?: number;
+}
+
 /**
  * Material Types definition
  */
@@ -213,6 +219,7 @@ interface MaterialInterface extends MvcViewInterface {
     height?: number | string;
     responsive?: boolean;
     responseTo?: MediaQueryConfig;
+    grid?: ResponsiveSize;
 }
 
 /**

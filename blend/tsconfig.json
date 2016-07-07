@@ -38,6 +38,7 @@
         "src/container/Split.ts",
         "src/container/HorizontalSplit.ts",
         "src/container/VerticalSplit.ts",
+        "src/container/Responsive.ts",
         "src/application/Application.ts",
         "src/web/Application.ts",
         "src/material/Rectangle.ts",

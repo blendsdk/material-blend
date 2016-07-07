@@ -16,6 +16,11 @@
 
 namespace Blend {
 
+    export enum eResponsiveType {
+        containerSize = <any>"container-size",
+        windowSize = <any>"window-size"
+    }
+
     export enum eSplitterType {
         horizontal = <any>"horizontal",
         vertical = <any>"vertical"
