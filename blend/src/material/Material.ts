@@ -30,6 +30,8 @@ namespace Blend.material {
         protected isInitialized: boolean;
         protected canLayout: boolean;
 
+        protected windowResizeListener: EventListener;
+
         public constructor(config: MaterialInterface = {}) {
             super(config);
             var me = this;
@@ -186,6 +188,7 @@ namespace Blend.material {
         public doInitialize(): Blend.material.Material {
             var me = this;
             me.initEvents();
+            me.initWindowResizeEvent();
             me.preInitialize();
             me.initialize();
             me.postInitialize();
@@ -215,7 +218,16 @@ namespace Blend.material {
         }
 
         public destruct() {
+            var me = this;
+            Blend.Runtime.removeEventListener(window, "resize", me.windowResizeListener);
+        }
 
+        protected initWindowResizeEvent() {
+            var me = this;
+            if (Blend.isFunction((<any>me)["windowResizeHandler"])) {
+                me.windowResizeListener = Blend.Runtime.createWindowResizeListener(<EventListener>(<any>me)["windowResizeHandler"], me);
+                Blend.Runtime.addEventListener(window, "resize", me.windowResizeListener);
+            }
         }
 
         /**
