@@ -248,6 +248,14 @@ interface BoxContainerInterface extends FitContainerInterface {
 }
 
 /**
+ * Interface for configuring a Split container
+ */
+interface SplitContainerInterface extends ContainerInterface {
+    splitPosition?: (number | Array<number>) | (string | Array<string>);
+    splitterSize?: number;
+}
+
+/**
  * Interface for configuring an Application
  */
 interface ApplicationInterface extends MaterialInterface {
