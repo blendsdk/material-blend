@@ -33,13 +33,14 @@ namespace Blend.container {
         protected numColumns: number;
         protected sizeName: string;
         protected columnsSize: number;
+        protected gutterSize: number;
 
         public constructor(config: ResponsiveContainerInterface = {}) {
             super(config);
             var me = this;
             Blend.apply(me.config, <ResponsiveContainerInterface>{
                 responsiveType: config.responsiveType || Blend.eResponsiveType.windowSize,
-                gutterSize: 16
+                gutterSize: Blend.isNullOrUndef(config.gutterSize) ? 16 : config.gutterSize
             }, true, true);
             me.cssClass = "resp-cntr";
             me.bodyCssClass = "resp-cntr-body";
@@ -86,6 +87,7 @@ namespace Blend.container {
             }
             me.numColumns = count;
             me.sizeName = name;
+            console.log(me.sizeName, me.numColumns);
         }
 
         protected initCurrentBounds() {
@@ -97,21 +99,41 @@ namespace Blend.container {
         }
 
         protected buildGridSystem() {
-            var me = this,
-                colSize = (100 / me.numColumns);
-
-            me.withItems(function (item: Blend.material.Material) {
-                item.setStyle({
-                    width: 
-                })
-            });
+            var me = this;
+            me.columnsSize = ((<number>me.currentBounds.width / me.numColumns) * 100) / <number>me.currentBounds.width;
+            me.gutterSize = (me.config.gutterSize * 100) / <number>me.currentBounds.width;
         }
 
         protected updateLayout() {
-            var me = this;
+            var me = this,
+                index = 0,
+                gutter = 0;
             me.initCurrentBounds();
             me.initNumberOfColumns();
             me.buildGridSystem();
+
+            var defConfig: ResponsiveSize = {
+                small: me.numColumns,
+                medium: me.numColumns,
+                large: me.numColumns
+            };
+
+            me.withItems(function (item: Blend.material.Material) {
+                var conf = item.getProperty<ResponsiveSize>("config.grid", defConfig);
+                var colSize = <number>(<any>conf)[me.sizeName] * me.columnsSize;
+                if (colSize === me.numColumns) {
+                    gutter = 0;
+                } else {
+                    gutter = me.gutterSize / 2;
+                }
+                item.setStyle({
+                    width: (colSize - (gutter * 2)) + "%",
+                    "margin-left": gutter + "%",
+                    "margin-right": gutter + "%"
+                });
+                index++;
+            });
+
         }
 
         protected windowResizeHandler() {
