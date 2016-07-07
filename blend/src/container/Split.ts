@@ -1,8 +1,23 @@
-interface SplitInterface extends ContainerInterface {
-    splitPosition?: (number | Array<number>) | (string | Array<string>);
-    splitterSize?: number;
-}
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+/**
+ * @private
+ * @internal
+ */
 interface SizePositionInterface {
     size: number;
     position: number;
@@ -12,7 +27,7 @@ namespace Blend.container {
 
     export abstract class Split extends Blend.container.Container {
 
-        protected config: SplitInterface;
+        protected config: SplitContainerInterface;
         protected splitterType: Blend.eSplitterType;
         protected calculatedPositions: Array<number>;
         protected isPctPositions: boolean;
@@ -34,7 +49,7 @@ namespace Blend.container {
         protected ghostBounds: ElementBoundsInterface;
         protected currentButton: number;
 
-        public constructor(config: SplitInterface = {}) {
+        public constructor(config: SplitContainerInterface = {}) {
             super(config);
             var me = this;
             me.ghostElement = null;
