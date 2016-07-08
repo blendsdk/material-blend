@@ -16,7 +16,7 @@
 
 namespace Blend {
 
-    export enum eResponsiveType {
+    export enum eResponsiveTrigger {
         containerSize = <any>"container-size",
         windowSize = <any>"window-size"
     }

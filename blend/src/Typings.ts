@@ -191,10 +191,16 @@ interface FlexItemInterface {
     basis?: number | string;
 }
 
-interface ResponsiveSize {
-    small?: number;
-    medium?: number;
-    large?: number;
+interface GridColumnConfigValue {
+    size?: number;
+    offset?: number;
+    hide?: boolean;
+}
+
+interface GridColumnConfigInterface extends DictionaryInterface {
+    small?: number | GridColumnConfigValue;
+    medium?: number | GridColumnConfigValue;
+    large?: number | GridColumnConfigValue;
 }
 
 /**
@@ -213,13 +219,13 @@ interface MaterialInterface extends MvcViewInterface {
     visible?: boolean;
     top?: number;
     left?: number;
-    flex?: number | FlexItemInterface;
     minSplittedSize?: number;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;
     responseTo?: MediaQueryConfig;
-    grid?: ResponsiveSize;
+    flex?: number | FlexItemInterface;
+    grid?: GridColumnConfigInterface;
 }
 
 /**
