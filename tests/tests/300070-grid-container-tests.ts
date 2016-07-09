@@ -8,7 +8,6 @@ TestApp.defineTest("Grid Container", function (t: Blend.testing.TestRunner) {
         return <MaterialInterface>{
             ctype: "mb.rect",
             grid: config,
-            height: 100,
             color: color
         };
     };
@@ -123,6 +122,9 @@ TestApp.defineTest("Grid Container", function (t: Blend.testing.TestRunner) {
         testSet.tests.forEach(function (test: any) {
 
             var gridContainer = new Blend.container.Grid({
+                defaults: {
+                    height: "33%"
+                },
                 items: testSet.items(),
                 width: test.size,
                 height: 100,
