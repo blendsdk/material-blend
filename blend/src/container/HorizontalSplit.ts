@@ -2,7 +2,7 @@ namespace Blend.container {
 
     export class HorizontalSplit extends Blend.container.Split {
 
-        public constructor(config: SplitInterface = {}) {
+        public constructor(config: SplitContainerInterface = {}) {
             super(config);
             var me = this;
             me.splitterType = Blend.eSplitterType.horizontal;

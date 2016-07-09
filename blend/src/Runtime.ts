@@ -130,7 +130,7 @@ namespace Blend {
                     } else {
                         counts++;
                     }
-                }, 50);
+                }, 25);
             };
         }
 

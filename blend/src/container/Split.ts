@@ -1,8 +1,23 @@
-interface SplitInterface extends ContainerInterface {
-    splitPosition?: (number | Array<number>) | (string | Array<string>);
-    splitterSize?: number;
-}
+/**
+ * Copyright 2016 TrueSoftware B.V. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+/**
+ * @private
+ * @internal
+ */
 interface SizePositionInterface {
     size: number;
     position: number;
@@ -12,7 +27,7 @@ namespace Blend.container {
 
     export abstract class Split extends Blend.container.Container {
 
-        protected config: SplitInterface;
+        protected config: SplitContainerInterface;
         protected splitterType: Blend.eSplitterType;
         protected calculatedPositions: Array<number>;
         protected isPctPositions: boolean;
@@ -34,7 +49,7 @@ namespace Blend.container {
         protected ghostBounds: ElementBoundsInterface;
         protected currentButton: number;
 
-        public constructor(config: SplitInterface = {}) {
+        public constructor(config: SplitContainerInterface = {}) {
             super(config);
             var me = this;
             me.ghostElement = null;
@@ -127,14 +142,20 @@ namespace Blend.container {
             }
         }
 
+        protected windowResizeHandler() {
+            var me = this;
+            me.calculatedPositions = [];
+            me.updateLayout();
+        }
+
         protected initEvents() {
             var me = this;
 
             // windows resize
-            me.resizeListener = Blend.Runtime.createWindowResizeListener(function () {
-                me.calculatedPositions = [];
-                me.updateLayout();
-            }, me);
+            // me.resizeListener = Blend.Runtime.createWindowResizeListener(function () {
+            //     me.calculatedPositions = [];
+            //     me.updateLayout();
+            // }, me);
 
             me.mouseUpListener = Blend.bind(me, function () {
                 me.hideGhost();
@@ -152,7 +173,7 @@ namespace Blend.container {
             });
 
             me.mouseLeaveListener = Blend.bind(me, function (evt: MouseEvent) {
-                if (me.activeSplitterIndex === -1 && me.currentButton !== 0 ) {
+                if (me.activeSplitterIndex === -1 && me.currentButton !== 0) {
                     me.hideGhost();
                     me.currentSplitter = null;
                 }
@@ -173,7 +194,6 @@ namespace Blend.container {
                 }
             });
 
-            Blend.Runtime.addEventListener(window, "resize", me.resizeListener);
             Blend.Runtime.addEventListener(document, "mouseup", me.mouseUpListener);
             Blend.Runtime.addEventListener(document, "mousemove", me.mouseMoveListener);
             Blend.Runtime.addEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
@@ -182,7 +202,7 @@ namespace Blend.container {
 
         public destruct() {
             var me = this;
-            Blend.Runtime.removeEventListener(window, "resize", me.resizeListener);
+            super.destruct();
             Blend.Runtime.removeEventListener(document, "mouseup", me.mouseUpListener);
             Blend.Runtime.removeEventListener(document, "mousemove", me.mouseMoveListener);
             Blend.Runtime.removeEventListener(me.ghostElement.getEl(), "mouseleave", me.mouseLeaveListener);
@@ -204,14 +224,6 @@ namespace Blend.container {
         protected postUpdateLayout() {
             var me = this;
             super.postUpdateLayout();
-            // update any child Split container. This is needed because
-            // the Split conrainer does not automatically act on its
-            // parent component's size change
-            me.withItems(function (material: Blend.material.Material) {
-                if (Blend.isInstanceOf(material, Blend.container.Split)) {
-                    material.performLayout();
-                }
-            });
             me.ghostElement.clearCssClass();
             me.ghostElement.addCssClass(["mb-split-ghost", "mb-split-ghost-" + me.splitterType]);
             me.ghostHandlerElement.setHtml(me.splitterType === Blend.eSplitterType.vertical ? "more_vert" : "more_horiz")

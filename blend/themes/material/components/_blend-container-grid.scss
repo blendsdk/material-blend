@@ -14,12 +14,30 @@
  * limitations under the License.
  */
 
-@import "components/blend-material-splitter";
-@import "components/blend-container-fit";
-@import "components/blend-container-stack";
-@import "components/blend-container-box";
-@import "components/blend-container-split";
-@import "components/blend-container-grid";
-@import "components/blend-application-application";
-@import "components/blend-button-button";
-@import "components/blend-toolbar-toolbar";
+.grid-cntr {
+
+    @include clearfix();
+
+    & > .grid-cntr-body {
+        @include clearfix();
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+
+    }
+
+    & > .grid-cntr-body-ltr {
+        & > .grid-cntr-item {
+            float:left
+        }
+    }
+
+    & > .grid-cntr-body-rtl {
+        & > .grid-cntr-item {
+            float:right
+        }
+    }
+}
+

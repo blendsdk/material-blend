@@ -191,6 +191,18 @@ interface FlexItemInterface {
     basis?: number | string;
 }
 
+interface GridColumnConfigValue {
+    size?: number;
+    offset?: number;
+    hide?: boolean;
+}
+
+interface GridColumnConfigInterface extends DictionaryInterface {
+    small?: number | GridColumnConfigValue;
+    medium?: number | GridColumnConfigValue;
+    large?: number | GridColumnConfigValue;
+}
+
 /**
  * Material Types definition
  */
@@ -207,12 +219,13 @@ interface MaterialInterface extends MvcViewInterface {
     visible?: boolean;
     top?: number;
     left?: number;
-    flex?: number | FlexItemInterface;
     minSplittedSize?: number;
     width?: number | string;
     height?: number | string;
     responsive?: boolean;
     responseTo?: MediaQueryConfig;
+    flex?: number | FlexItemInterface;
+    grid?: GridColumnConfigInterface;
 }
 
 /**
@@ -245,6 +258,14 @@ interface BoxContainerInterface extends FitContainerInterface {
     wrap?: Blend.eBoxWrap;
     pack?: Blend.eBoxPack;
     align?: Blend.eBoxAlign;
+}
+
+/**
+ * Interface for configuring a Split container
+ */
+interface SplitContainerInterface extends ContainerInterface {
+    splitPosition?: (number | Array<number>) | (string | Array<string>);
+    splitterSize?: number;
 }
 
 /**
