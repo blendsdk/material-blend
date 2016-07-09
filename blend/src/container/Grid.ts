@@ -32,24 +32,25 @@ namespace Blend.container {
         protected currentBounds: ElementBoundsInterface;
         protected numColumns: number;
         protected sizeName: string;
-        protected columnsSize: number;
         protected gutterSize: number;
+        protected direction: string;
 
         public constructor(config: GridContainerInterface = {}) {
             super(config);
             var me = this;
             Blend.apply(me.config, <GridContainerInterface>{
-                responsiveTrigger: config.responsiveTrigger || Blend.eResponsiveTrigger.windowSize,
+                responsiveTrigger: config.responsiveTrigger || Blend.eResponsiveTrigger.containerSize,
                 gutterSize: Blend.isNullOrUndef(config.gutterSize) ? 16 : config.gutterSize
             }, true, true);
             me.cssClass = "grid-cntr";
             me.bodyCssClass = "grid-cntr-body";
             me.childCssClass = "grid-cntr-item";
+            me.direction = window.getComputedStyle(document.body, null).getPropertyValue("direction") === "rtl" ? "rtl" : "ltr";
         }
 
         protected getBodyCssClass() {
             var me = this;
-            return "grid-cntr-body grid-cntr-body-" + (window.getComputedStyle(document.body, null).getPropertyValue("direction") === "rtl" ? "rtl" : "ltr");
+            return "grid-cntr-body grid-cntr-body-" + me.direction;
         }
 
         protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
@@ -78,16 +79,18 @@ namespace Blend.container {
             if (width <= 479) {
                 count = 4;
                 name = "small";
+                me.gutterSize = 16;
             } else if (width >= 480 && width <= 839) {
                 count = 8;
                 name = "medium";
+                me.gutterSize = 16; // specs say 24 here!
             } else if (width >= 840) {
                 count = 12;
                 name = "large";
+                me.gutterSize = 24;
             }
             me.numColumns = count;
             me.sizeName = name;
-            console.log(me.sizeName, me.numColumns);
         }
 
         protected initCurrentBounds() {
@@ -96,12 +99,6 @@ namespace Blend.container {
                 me.config.responsiveTrigger === Blend.eResponsiveTrigger.windowSize ?
                     me.getWindowSize() : me.bodyElement.getBounds(false)
             );
-        }
-
-        protected buildGridSystem() {
-            var me = this;
-            me.columnsSize = ((<number>me.currentBounds.width / me.numColumns) * 100) / <number>me.currentBounds.width;
-            me.gutterSize = (me.config.gutterSize * 100) / <number>me.currentBounds.width;
         }
 
         protected normalizeColumnConfig(value: number | GridColumnConfigValue): GridColumnConfigValue {
@@ -130,31 +127,36 @@ namespace Blend.container {
 
             me.initCurrentBounds();
             me.initNumberOfColumns();
-            me.buildGridSystem();
 
-            var defConfig: GridColumnConfigInterface = {
-                small: me.numColumns,
-                medium: me.numColumns,
-                large: me.numColumns
-            };
+            var columnsSize = <number>me.currentBounds.width / me.numColumns,
+                gutterHalf = me.gutterSize / 2,
+                defConfig: GridColumnConfigInterface = {
+                    small: me.numColumns,
+                    medium: me.numColumns,
+                    large: me.numColumns
+                };
 
             me.withItems(function (item: Blend.material.Material) {
 
                 var me = this,
                     itemGridConfig = item.getProperty<GridColumnConfigInterface>("config.grid", defConfig),
-                    columnConfig = me.normalizeColumnConfig((<any>itemGridConfig)[me.sizeName]),
-                    colSize = columnConfig.size * me.columnsSize;
+                    columnConfig = me.normalizeColumnConfig(
+                        Blend.isNullOrUndef((<any>itemGridConfig)[me.sizeName])
+                            ? defConfig[me.sizeName] : (<any>itemGridConfig)[me.sizeName]
+                    ),
+                    colSize = columnConfig.size * columnsSize,
+                    offset = columnConfig.offset * columnsSize;
 
                 if (colSize === me.numColumns) {
                     gutter = 0;
                 } else {
-                    gutter = me.gutterSize / 2;
+                    gutter = gutterHalf;
                 }
 
                 item.setStyle({
-                    width: (colSize - (gutter * 2)) + "%",
-                    "margin-left": gutter + "%",
-                    "margin-right": gutter + "%"
+                    width: (colSize - me.gutterSize),
+                    "margin-left": gutter + (me.direction === "ltr" ? offset : 0),
+                    "margin-right": gutter + + (me.direction === "rtl" ? offset : 0)
                 });
                 index++;
             });
