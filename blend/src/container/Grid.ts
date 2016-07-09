@@ -152,7 +152,7 @@ namespace Blend.container {
                 } else {
                     gutter = gutterHalf;
                 }
-
+                item.setVisible(!columnConfig.hide);
                 item.setStyle({
                     width: (colSize - me.gutterSize),
                     "margin-left": gutter + (me.direction === "ltr" ? offset : 0),
