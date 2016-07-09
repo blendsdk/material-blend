@@ -53,13 +53,9 @@ namespace Blend.container {
             return "grid-cntr-body grid-cntr-body-" + me.direction;
         }
 
-        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
-            // render without the explicit child size
-            return materail.getElement(<FinalizeRenderConfig>{
-                setBounds: false
-            });
-        }
-
+        /**
+         * Gets the current Window size
+         */
         private getWindowSize(): ElementBoundsInterface {
             var w = window,
                 d = document,
