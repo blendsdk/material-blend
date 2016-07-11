@@ -37,7 +37,6 @@ namespace Blend.container {
         protected activeSplitterIndex: number;
         protected currentSplitter: Blend.material.Splitter;
 
-        protected resizeListener: EventListener;
         protected mouseUpListener: EventListener;
         protected mouseDownListener: EventListener;
         protected mouseMoveListener: EventListener;
@@ -59,6 +58,7 @@ namespace Blend.container {
             me.bodyCssClass = "split-cntr-body";
             me.activeSplitterIndex = -1;
             Blend.apply(me.config, {
+                responsive: true,
                 splitPosition: config.splitPosition || [],
                 splitterSize: config.splitterSize || 2
             });
