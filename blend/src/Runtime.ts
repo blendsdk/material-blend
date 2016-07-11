@@ -26,23 +26,6 @@ namespace Blend {
     }
 
     /**
-     * @private
-     * Media Query registery that hold a lisneters for the Views
-     * responding to a media query
-      */
-    interface IMediaQueryRegistery extends DictionaryInterface {
-        [name: string]: Array<Function>;
-    }
-
-    /**
-     * @private
-     * Media Query matcher registery
-     */
-    interface IMediaQueryMatcher extends DictionaryInterface {
-        [name: string]: MediaQueryList;
-    }
-
-    /**
      * Provides functionality to get Blend kickstarted and check for
      * brower compatibility
      */
@@ -50,50 +33,41 @@ namespace Blend {
 
         private readyCallbacks: Array<IReadCallback>;
         private kickStarted: boolean = false;
-        private mediaQueryRegistery: IMediaQueryRegistery;
-        private mediaQueryMatchers: IMediaQueryMatcher;
-        private previousMediaQuery: string; // used to prevent multiple events of same alias
+        private responsiveWindowResizeListener: EventListener;
 
         public Binder: Blend.binding.BindingProvider;
         public IE: boolean;
         public IEVersion: number;
 
         public constructor() {
-            this.Binder = new Blend.binding.BindingProvider();
-            this.mediaQueryRegistery = {};
-            this.mediaQueryMatchers = {};
+            var me = this;
+            me.Binder = new Blend.binding.BindingProvider();
         }
 
         /**
-         * Used to trigger the media query matching on application.
+         * Gets the current Window size. The window size is calculated by the size of the BODY
+         * tag which should be 100% x 100%
          */
-        public triggerMediaQueryCheck() {
-            var me = this;
-            Blend.forEach(me.mediaQueryMatchers, function (mql: MediaQueryList, mediaQuery: string) {
-                if (mql.matches && me.previousMediaQuery !== mediaQuery) {
-                    me.mediaQueryRegistery[mediaQuery].forEach(function (fn: Function) {
-                        fn.apply(me, [mql]);
-                    });
-                    me.previousMediaQuery = mediaQuery;
-                    return false;
-                }
-            });
+        public getWindowSize(): ElementBoundsInterface {
+            return Blend.getElement(document.getElementsByTagName("body")[0]).getBounds();
         }
 
         /**
-         * Adds a media query listener
+         * Gets the device size as in small/medium/large base on the
+         * provided width
          */
-        public addMediaQueryListener(mediaQuery: string, listener: Function) {
+        public getDeviceSize(width: number = null): Blend.eDeviceSize {
             var me = this;
-            if (me.mediaQueryRegistery[mediaQuery] === undefined) {
-                me.mediaQueryRegistery[mediaQuery] = [];
-                var mql: MediaQueryList = window.matchMedia(mediaQuery);
-                me.mediaQueryMatchers[mediaQuery] = mql;
-                mql.addListener(function () {
-                    me.triggerMediaQueryCheck();
-                });
+            width = width || <number>me.getWindowSize().width;
+            if (width <= 479) {
+                return Blend.eDeviceSize.small;
+            } else if (width >= 480 && width <= 839) {
+                return Blend.eDeviceSize.medium;
+            } else if (width >= 840) {
+                return Blend.eDeviceSize.large;
+            } else {
+                return null; // should never reach here!
             }
-            me.mediaQueryRegistery[mediaQuery].push(listener);
         }
 
         /**
@@ -112,6 +86,10 @@ namespace Blend {
             }
         }
 
+        /**
+         * Creates a window resize listener. The resize trigger is debounced to get fewer
+         * event callbacks for when the window resize is done manually
+         */
         public createWindowResizeListener(listenerCallback: EventListener, scope: any) {
             return function (evt: Event) {
                 var tm = -1,
