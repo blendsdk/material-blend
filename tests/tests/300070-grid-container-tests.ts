@@ -125,6 +125,7 @@ TestApp.defineTest("Grid Container", function (t: Blend.testing.TestRunner) {
                 defaults: {
                     height: "33%"
                 },
+                responseTo:Blend.eResponsiveTrigger.containerSize,
                 items: testSet.items(),
                 width: test.size,
                 height: 100,

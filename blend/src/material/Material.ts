@@ -50,7 +50,7 @@ namespace Blend.material {
                 height: null,
                 flex: null,
                 responsive: false,
-                responseTo: null
+                responseTo: Blend.eResponsiveTrigger.windowSize
             }, config, true, true);
             me.addCssClass(me.config.css || []);
             me.setStyle(me.config.style || {});
@@ -61,7 +61,6 @@ namespace Blend.material {
                 width: me.config.width,
                 height: me.config.height
             });
-            me.initializeResponsiveEvents();
             me.canLayout = true;
         }
 
@@ -123,28 +122,6 @@ namespace Blend.material {
             var me: any = this;
             if (me[oid] === null) {
                 me[oid] = el;
-            }
-        }
-
-        /**
-         * Initialized a responsive listener for this Material by adding a listener to the
-         * Runtime.addMediaQueryListener
-         */
-        protected initializeResponsiveEvents() {
-            var me = this, config: MediaQueryConfig;
-
-            config = me.config.responsive === true ? Blend.COMMON_MEDIA_QUERIES
-                : me.config.responseTo || null;
-
-            if (config !== null) {
-                Blend.forEach(config, function (queries: Array<string>, alias: string) {
-                    queries = Blend.wrapInArray<string>(queries);
-                    queries.forEach(function (mediaQuery: string) {
-                        Blend.Runtime.addMediaQueryListener(mediaQuery, function (mql: MediaQueryList) {
-                            me.fireEvent("responsiveChanged", alias, mql);
-                        });
-                    });
-                });
             }
         }
 
@@ -222,10 +199,44 @@ namespace Blend.material {
             Blend.Runtime.removeEventListener(window, "resize", me.windowResizeListener);
         }
 
+        /**
+         * Gets the device size based on the responseTo configuration paremeter
+         */
+        protected getDeviceSize(el: Blend.dom.Element = null): Blend.eDeviceSize {
+            var me = this,
+                width: number = null;
+            el = el || me.element;
+            if (me.config.responseTo === Blend.eResponsiveTrigger.containerSize) {
+                width = <number>el.getBounds(false).width;
+            }
+            return Blend.Runtime.getDeviceSize(width);
+        }
+
+        /**
+         * Responsive notification event
+         */
+        protected notifyResponsiveChanged() {
+            var me = this;
+            me.fireEvent("responsiveChanged", me.getDeviceSize());
+        }
+
+        /**
+         * A hook function that can be used to handle window/component resize
+         * events should there be a reason not to use the controller event
+         */
+        protected windowResizeHandler() {
+        }
+
+        private windowResizeHandlerInternal() {
+            var me = this;
+            me.windowResizeHandler.apply(me, arguments);
+            me.notifyBoundsChanged();
+        }
+
         protected initWindowResizeEvent() {
             var me = this;
-            if (Blend.isFunction((<any>me)["windowResizeHandler"])) {
-                me.windowResizeListener = Blend.Runtime.createWindowResizeListener(<EventListener>(<any>me)["windowResizeHandler"], me);
+            if (me.config.responsive === true) {
+                me.windowResizeListener = Blend.Runtime.createWindowResizeListener(me.windowResizeHandlerInternal, me);
                 Blend.Runtime.addEventListener(window, "resize", me.windowResizeListener);
             }
         }

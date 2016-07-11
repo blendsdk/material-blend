@@ -16,6 +16,12 @@
 
 namespace Blend {
 
+    export enum eDeviceSize {
+        small = <any>"small",
+        medium = <any>"medium",
+        large = <any>"large"
+    }
+
     export enum eResponsiveTrigger {
         containerSize = <any>"container-size",
         windowSize = <any>"window-size"

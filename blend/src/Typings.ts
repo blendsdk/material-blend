@@ -212,6 +212,8 @@ type MaterialType = string | ComponentClass | MaterialInterface | ContainerInter
  * Interface for configuring a Material
  */
 interface MaterialInterface extends MvcViewInterface {
+    responsive?: boolean;
+    responseTo?: Blend.eResponsiveTrigger;
     parent?: Blend.material.Material;
     useParentController?: boolean;
     css?: string | Array<string>;
@@ -222,8 +224,6 @@ interface MaterialInterface extends MvcViewInterface {
     minSplittedSize?: number;
     width?: number | string;
     height?: number | string;
-    responsive?: boolean;
-    responseTo?: MediaQueryConfig;
     flex?: number | FlexItemInterface;
     grid?: GridColumnConfigInterface;
 }
@@ -266,6 +266,17 @@ interface BoxContainerInterface extends FitContainerInterface {
 interface SplitContainerInterface extends ContainerInterface {
     splitPosition?: (number | Array<number>) | (string | Array<string>);
     splitterSize?: number;
+}
+
+/**
+ * Interface for configuraing a (responsive) Grid container
+ */
+interface GridContainerInterface extends ContainerInterface {
+    responsiveTrigger?: Blend.eResponsiveTrigger;
+    /**
+     * Defaults to rem(1.6) or 16px according to MD specs
+     */
+    gutterSize?: number;
 }
 
 /**

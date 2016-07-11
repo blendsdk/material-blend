@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-
-
-interface GridContainerInterface extends ContainerInterface {
-    responsiveTrigger?: Blend.eResponsiveTrigger;
-    /**
-     * Defaults to rem(1.6) or 16px according to MD specs
-     */
-    gutterSize?: number;
-}
-
 namespace Blend.container {
 
     export class Grid extends Blend.container.Container {
@@ -39,8 +29,9 @@ namespace Blend.container {
             super(config);
             var me = this;
             Blend.apply(me.config, <GridContainerInterface>{
-                responsiveTrigger: config.responsiveTrigger || Blend.eResponsiveTrigger.containerSize,
-                gutterSize: Blend.isNullOrUndef(config.gutterSize) ? 16 : config.gutterSize
+                responsiveTrigger: config.responsiveTrigger || Blend.eResponsiveTrigger.windowSize,
+                gutterSize: Blend.isNullOrUndef(config.gutterSize) ? 16 : config.gutterSize,
+                responsive: true // force the Grdi to be responsize
             }, true, true);
             me.cssClass = "grid-cntr";
             me.bodyCssClass = "grid-cntr-body";
@@ -54,49 +45,37 @@ namespace Blend.container {
         }
 
         /**
-         * Gets the current Window size
+         * @override
          */
-        private getWindowSize(): ElementBoundsInterface {
-            var w = window,
-                d = document,
-                e = d.documentElement,
-                g = d.getElementsByTagName("body")[0];
-            return {
-                width: w.innerWidth || e.clientWidth || g.clientWidth,
-                height: w.innerHeight || e.clientHeight || g.clientHeight
-            };
+        protected getDeviceSize(): Blend.eDeviceSize {
+            // overridden to get the bodyElement bounds as size
+            var me = this;
+            me.currentBounds = me.bodyElement.getBounds(false);
+            return super.getDeviceSize(me.bodyElement);
         }
 
         protected initNumberOfColumns() {
             var me = this,
-                width = <number>me.currentBounds.width,
-                count: number,
-                name: string;
-            if (width <= 479) {
-                count = 4;
-                name = "small";
+                deviceSize = me.getDeviceSize();
+
+            if (deviceSize === Blend.eDeviceSize.small) {
+                me.numColumns = 4;
+                me.sizeName = "small";
                 me.gutterSize = 16;
-            } else if (width >= 480 && width <= 839) {
-                count = 8;
-                name = "medium";
+            } else if (deviceSize === Blend.eDeviceSize.medium) {
+                me.numColumns = 8;
+                me.sizeName = "medium";
                 me.gutterSize = 16; // specs say 24 here!
-            } else if (width >= 840) {
-                count = 12;
-                name = "large";
+            } else if (deviceSize === Blend.eDeviceSize.large) {
+                me.numColumns = 12;
+                me.sizeName = "large";
                 me.gutterSize = 24;
             }
-            me.numColumns = count;
-            me.sizeName = name;
         }
 
-        protected initCurrentBounds() {
-            var me = this;
-            me.currentBounds = (
-                me.config.responsiveTrigger === Blend.eResponsiveTrigger.windowSize ?
-                    me.getWindowSize() : me.bodyElement.getBounds(false)
-            );
-        }
-
+        /**
+         * Normalizes the column configuration and places default values where needed
+         */
         protected normalizeColumnConfig(value: number | GridColumnConfigValue): GridColumnConfigValue {
             var me = this,
                 conf: GridColumnConfigValue = {};
@@ -121,7 +100,6 @@ namespace Blend.container {
                 index = 0,
                 gutter = 0;
 
-            me.initCurrentBounds();
             me.initNumberOfColumns();
 
             var columnsSize = <number>me.currentBounds.width / me.numColumns,
@@ -159,6 +137,9 @@ namespace Blend.container {
 
         }
 
+        /**
+         * @override
+         */
         protected windowResizeHandler() {
             var me = this;
             me.updateLayout();

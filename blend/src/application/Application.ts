@@ -93,10 +93,6 @@ namespace Blend.application {
             me.fireEvent("applicationReady");
         }
 
-        protected performInitialMediaQuery() {
-            Blend.Runtime.triggerMediaQueryCheck();
-        }
-
         protected asyncRun() {
             var me = this,
                 body: Blend.dom.Element = Blend.getElement(document.body);
@@ -105,7 +101,6 @@ namespace Blend.application {
                 body.addCssClass(me.config.theme, false);
                 body.append(me.getElement());
                 me.setupWindowListeners();
-                me.performInitialMediaQuery();
                 me.doInitialize();
                 me.performLayout();
                 me.notifyApplicationReady();
