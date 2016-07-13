@@ -280,6 +280,14 @@ interface GridContainerInterface extends ContainerInterface {
 }
 
 /**
+ * Interface for configuring a Flow container
+ */
+interface FlowContainerInterface extends ContainerInterface {
+    scrollState?: Blend.eScrollState;
+    direction?: Blend.eFlowDirection;
+}
+
+/**
  * Interface for configuring an Application
  */
 interface ApplicationInterface extends MaterialInterface {

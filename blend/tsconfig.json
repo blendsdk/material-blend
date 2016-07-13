@@ -39,6 +39,7 @@
         "src/container/HorizontalSplit.ts",
         "src/container/VerticalSplit.ts",
         "src/container/Grid.ts",
+        "src/container/Flow.ts",
         "src/application/Application.ts",
         "src/web/Application.ts",
         "src/material/Rectangle.ts",
