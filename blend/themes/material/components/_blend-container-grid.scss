@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-.grid-cntr {
+.mb-grid-cntr {
 
     @include clearfix();
 
-    & > .grid-cntr-body {
+    & > .mb-grid-cntr-body {
         @include clearfix();
         position: relative;
         top: 0px;
@@ -28,14 +28,14 @@
 
     }
 
-    & > .grid-cntr-body-ltr {
-        & > .grid-cntr-item {
+    & > .mb-grid-cntr-body-ltr {
+        & > .mb-grid-cntr-item {
             float:left
         }
     }
 
-    & > .grid-cntr-body-rtl {
-        & > .grid-cntr-item {
+    & > .mb-grid-cntr-body-rtl {
+        & > .mb-grid-cntr-item {
             float:right
         }
     }

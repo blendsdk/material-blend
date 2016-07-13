@@ -23,11 +23,11 @@ TestApp.defineTest("Box Container Rverse Check", function (t: Blend.testing.Test
         box.performLayout();
     });
 
-    var elements = Blend.selectElements(".box-cntr-body");
+    var elements = Blend.selectElements(".mb-box-cntr-body");
     t.assertEquals(elements.length, 3, "correct body count");
-    t.assertTrue(elements[0].hasCssClass("box-horizontal"), "box horizontal 1");
-    t.assertTrue(elements[1].hasCssClass("box-horizontal"), "box horizontal 2");
-    t.assertTrue(elements[2].hasCssClass("box-horizontal-reverse"), "box reverse");
+    t.assertTrue(elements[0].hasCssClass("mb-box-horizontal"), "box horizontal 1");
+    t.assertTrue(elements[1].hasCssClass("mb-box-horizontal"), "box horizontal 2");
+    t.assertTrue(elements[2].hasCssClass("mb-box-horizontal-reverse"), "box reverse");
 
     t.done();
 
@@ -60,13 +60,13 @@ TestApp.defineTest("Box Container Wrap Check", function (t: Blend.testing.TestRu
         box.performLayout();
     });
 
-    var elements = Blend.selectElements(".box-cntr-body");
+    var elements = Blend.selectElements(".mb-box-cntr-body");
     t.assertEquals(elements.length, 4, "correct body count");
 
-    t.assertTrue(elements[0].hasCssClass("box-wrap-no"), "correct wrap no");
-    t.assertTrue(elements[1].hasCssClass("box-wrap-no"), "correct wrap no");
-    t.assertTrue(elements[2].hasCssClass("box-wrap-yes"), "correct wrap yes");
-    t.assertTrue(elements[3].hasCssClass("box-wrap-reverse"), "correct wrap reverse");
+    t.assertTrue(elements[0].hasCssClass("mb-box-wrap-no"), "correct wrap no");
+    t.assertTrue(elements[1].hasCssClass("mb-box-wrap-no"), "correct wrap no");
+    t.assertTrue(elements[2].hasCssClass("mb-box-wrap-yes"), "correct wrap yes");
+    t.assertTrue(elements[3].hasCssClass("mb-box-wrap-reverse"), "correct wrap reverse");
 
     t.done();
 
@@ -107,15 +107,15 @@ TestApp.defineTest("Box Container Pack Check", function (t: Blend.testing.TestRu
         box.performLayout();
     });
 
-    var elements = Blend.selectElements(".box-cntr-body");
+    var elements = Blend.selectElements(".mb-box-cntr-body");
     t.assertEquals(elements.length, 6, "correct body count");
 
-    t.assertTrue(elements[0].hasCssClass("box-pack-start"), "correct pack start");
-    t.assertTrue(elements[1].hasCssClass("box-pack-start"), "correct pack start");
-    t.assertTrue(elements[2].hasCssClass("box-pack-center"), "correct pack center");
-    t.assertTrue(elements[3].hasCssClass("box-pack-end"), "correct pack end");
-    t.assertTrue(elements[4].hasCssClass("box-pack-spacebetween"), "correct pack space between");
-    t.assertTrue(elements[5].hasCssClass("box-pack-spacearound"), "correct pack space around");
+    t.assertTrue(elements[0].hasCssClass("mb-box-pack-start"), "correct pack start");
+    t.assertTrue(elements[1].hasCssClass("mb-box-pack-start"), "correct pack start");
+    t.assertTrue(elements[2].hasCssClass("mb-box-pack-center"), "correct pack center");
+    t.assertTrue(elements[3].hasCssClass("mb-box-pack-end"), "correct pack end");
+    t.assertTrue(elements[4].hasCssClass("mb-box-pack-spacebetween"), "correct pack space between");
+    t.assertTrue(elements[5].hasCssClass("mb-box-pack-spacearound"), "correct pack space around");
 
     t.done();
 
@@ -157,15 +157,15 @@ TestApp.defineTest("Box Container Align Check", function (t: Blend.testing.TestR
         box.performLayout();
     });
 
-    var elements = Blend.selectElements(".box-cntr-body");
+    var elements = Blend.selectElements(".mb-box-cntr-body");
     t.assertEquals(elements.length, 6, "correct body count");
 
-    t.assertTrue(elements[0].hasCssClass("box-align-start"), "correct align start");
-    t.assertTrue(elements[1].hasCssClass("box-align-start"), "correct align start");
-    t.assertTrue(elements[2].hasCssClass("box-align-center"), "correct align center");
-    t.assertTrue(elements[3].hasCssClass("box-align-end"), "correct align end");
-    t.assertTrue(elements[4].hasCssClass("box-align-stretch"), "correct align stretch");
-    t.assertTrue(elements[5].hasCssClass("box-align-baseline"), "correct align baseline");
+    t.assertTrue(elements[0].hasCssClass("mb-box-align-start"), "correct align start");
+    t.assertTrue(elements[1].hasCssClass("mb-box-align-start"), "correct align start");
+    t.assertTrue(elements[2].hasCssClass("mb-box-align-center"), "correct align center");
+    t.assertTrue(elements[3].hasCssClass("mb-box-align-end"), "correct align end");
+    t.assertTrue(elements[4].hasCssClass("mb-box-align-stretch"), "correct align stretch");
+    t.assertTrue(elements[5].hasCssClass("mb-box-align-baseline"), "correct align baseline");
 
     t.done();
 

@@ -53,9 +53,9 @@ namespace Blend.container {
             var me = this;
             me.ghostElement = null;
             me.ghostHandlerElement = null;
-            me.cssClass = "split-cntr";
-            me.childCssClass = "split-cntr-item";
-            me.bodyCssClass = "split-cntr-body";
+            me.cssClass = "mb-split-cntr";
+            me.childCssClass = "mb-split-cntr-item";
+            me.bodyCssClass = "mb-split-cntr-body";
             me.activeSplitterIndex = -1;
             Blend.apply(me.config, {
                 responsive: true,
@@ -150,13 +150,7 @@ namespace Blend.container {
 
         protected initEvents() {
             var me = this;
-
-            // windows resize
-            // me.resizeListener = Blend.Runtime.createWindowResizeListener(function () {
-            //     me.calculatedPositions = [];
-            //     me.updateLayout();
-            // }, me);
-
+            
             me.mouseUpListener = Blend.bind(me, function () {
                 me.hideGhost();
                 me.resizeChildren();

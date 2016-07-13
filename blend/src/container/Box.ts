@@ -25,7 +25,7 @@ namespace Blend.container {
         constructor(config: BoxContainerInterface = {}) {
             super(config);
             var me = this;
-            me.cssClass = "box-cntr";
+            me.cssClass = "mb-box-cntr";
             Blend.apply(me.config, {
                 reverse: config.reverse || false,
                 wrap: Blend.isNullOrUndef(config.wrap) ? Blend.eBoxWrap.no : config.wrap,
@@ -99,25 +99,25 @@ namespace Blend.container {
 
         protected getBoxWrap() {
             var me = this;
-            return `box-wrap-${Blend.parseEnum(Blend.eBoxWrap, me.config.wrap)}`;
+            return `mb-box-wrap-${Blend.parseEnum(Blend.eBoxWrap, me.config.wrap)}`;
         }
 
         protected getBoxPack() {
             var me = this;
-            return `box-pack-${Blend.parseEnum<string>(Blend.eBoxPack, me.config.pack).toLowerCase()}`;
+            return `mb-box-pack-${Blend.parseEnum<string>(Blend.eBoxPack, me.config.pack).toLowerCase()}`;
         }
 
         protected getBoxAlign() {
             var me = this;
-            return `box-align-${Blend.parseEnum<string>(Blend.eBoxAlign, me.config.align)}`;
+            return `mb-box-align-${Blend.parseEnum<string>(Blend.eBoxAlign, me.config.align)}`;
         }
 
         protected getBodyCssClass() {
             var me = this;
             if (me.isRendered) {
-                return `box-cntr-body ${me.bodyCssClass}${me.config.reverse ? "-reverse" : ""} ${me.getBoxWrap()} ${me.getBoxPack()} ${me.getBoxAlign()}`;
+                return `mb-box-cntr-body ${me.bodyCssClass}${me.config.reverse ? "-reverse" : ""} ${me.getBoxWrap()} ${me.getBoxPack()} ${me.getBoxAlign()}`;
             } else {
-                return "box-cntr-body";
+                return "mb-box-cntr-body";
             }
         }
     }

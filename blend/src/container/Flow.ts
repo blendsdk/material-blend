@@ -28,14 +28,14 @@ namespace Blend.container {
                 scrollState: config.scrollState || Blend.eScrollState.auto,
                 direction: config.direction || Blend.eFlowDirection.vertical
             }, true, true);
-            me.cssClass = "flow-cntr";
-            me.bodyCssClass = "flow-cntr-body";
-            me.childCssClass = "flow-cntr-item";
+            me.cssClass = "mb-flow-cntr";
+            me.bodyCssClass = "mb-flow-cntr-body";
+            me.childCssClass = "mb-flow-cntr-item";
         }
 
         protected getBodyCssClass() {
             var me = this;
-            return "flow-cntr-body flow-cntr-body-" + me.config.direction;
+            return "mb-flow-cntr-body mb-flow-cntr-body-" + me.config.direction;
         }
 
         protected updateLayout() {

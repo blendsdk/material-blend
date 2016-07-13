@@ -17,9 +17,9 @@ namespace Blend.container {
             super(config);
             var me = this;
             me.activeItemIndex = me.getItemIndex(config.activeItem || 0);
-            me.cssClass = "stack-cntr";
-            me.bodyCssClass = "stack-cntr-body";
-            me.childCssClass = "stack-cntr-item";
+            me.cssClass = "mb-stack-cntr";
+            me.bodyCssClass = "mb-stack-cntr-body";
+            me.childCssClass = "mb-stack-cntr-item";
         }
 
         /**
