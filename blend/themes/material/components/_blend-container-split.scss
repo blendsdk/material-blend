@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-.split-cntr {
+.mb-split-cntr {
 
     overflow: hidden;
-    &> .split-cntr-body {
+    &> .mb-split-cntr-body {
         position: relative;
         top: 0px;
         left: 0px;
@@ -25,22 +25,22 @@
         height: 100%;
         overflow: hidden;
 
-        &> .split-cntr-item {
+        &> .mb-split-cntr-item {
             position: absolute;
         }
 
     }
 
-    & > .split-cntr-body-horizontal {
+    & > .mb-split-cntr-body-horizontal {
 
-        & > .split-cntr-item {
+        & > .mb-split-cntr-item {
             width: 100% !important;
         }
     }
 
-    & > .split-cntr-body-vertical {
+    & > .mb-split-cntr-body-vertical {
 
-        & > .split-cntr-item {
+        & > .mb-split-cntr-item {
             height: 100% !important;
         }
     }

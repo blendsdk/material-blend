@@ -33,15 +33,15 @@ namespace Blend.container {
                 gutterSize: Blend.isNullOrUndef(config.gutterSize) ? 16 : config.gutterSize,
                 responsive: true // force the Grdi to be responsize
             }, true, true);
-            me.cssClass = "grid-cntr";
-            me.bodyCssClass = "grid-cntr-body";
-            me.childCssClass = "grid-cntr-item";
+            me.cssClass = "mb-grid-cntr";
+            me.bodyCssClass = "mb-grid-cntr-body";
+            me.childCssClass = "mb-grid-cntr-item";
             me.direction = window.getComputedStyle(document.body, null).getPropertyValue("direction") === "rtl" ? "rtl" : "ltr";
         }
 
         protected getBodyCssClass() {
             var me = this;
-            return "grid-cntr-body grid-cntr-body-" + me.direction;
+            return "mb-grid-cntr-body mb-grid-cntr-body-" + me.direction;
         }
 
         /**

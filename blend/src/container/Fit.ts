@@ -11,9 +11,9 @@ namespace Blend.container {
         constructor(config: FitContainerInterface = {}) {
             super(config);
             var me = this;
-            me.cssClass = "fit-cntr";
-            me.bodyCssClass = "fit-cntr-body";
-            me.childCssClass = "fit-cntr-item";
+            me.cssClass = "mb-fit-cntr";
+            me.bodyCssClass = "mb-fit-cntr-body";
+            me.childCssClass = "mb-fit-cntr-item";
         }
 
         protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {

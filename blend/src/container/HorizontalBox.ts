@@ -22,7 +22,7 @@ namespace Blend.container {
             var me = this;
             me.stretchProperty = "height";
             me.flexedProperty = "width";
-            me.bodyCssClass = "box-horizontal";
+            me.bodyCssClass = "mb-box-horizontal";
         }
     }
 }

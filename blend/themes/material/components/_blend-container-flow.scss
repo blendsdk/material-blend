@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-.flow-cntr {
+.mb-flow-cntr {
 
-    & > .flow-cntr-body {
+    & > .mb-flow-cntr-body {
         position: relative;
         top: 0px;
         left: 0px;
@@ -25,14 +25,14 @@
 
     }
 
-    & > .flow-cntr-body-vertical {
-        & > .flow-cntr-item {
+    & > .mb-flow-cntr-body-vertical {
+        & > .mb-flow-cntr-item {
             display:block !important;
         }
     }
 
-    & > .flow-cntr-body-horizontal {
-        & > .flow-cntr-item {
+    & > .mb-flow-cntr-body-horizontal {
+        & > .mb-flow-cntr-item {
             display:inline-block !important;
         }
     }
