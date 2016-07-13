@@ -16,6 +16,11 @@
 
 namespace Blend {
 
+    export enum eFlowDirection {
+        horizontal = <any>"horizontal",
+        vertical = <any>"vertical"
+    }
+
     export enum eDeviceSize {
         small = <any>"small",
         medium = <any>"medium",
@@ -74,11 +79,11 @@ namespace Blend {
      * Element Scroll values
      */
     export enum eScrollState {
-        none,
-        auto,
-        both,
-        horizontal,
-        vertical
+        none = <any>"none",
+        auto = <any>"auto",
+        both = <any>"both",
+        horizontal = <any>"horizontal",
+        vertical = <any>"vertical"
     }
 
     export enum eBoxWrap {

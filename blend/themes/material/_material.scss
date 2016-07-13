@@ -40,3 +40,25 @@
 [data-selectable="off"] {
     @include user-select(none);
 }
+
+[data-scroll="none"] {
+    overflow: hidden;
+}
+
+[data-scroll="auto"] {
+    overflow: auto;
+}
+
+[data-scroll="both"] {
+    overflow: scroll;
+}
+
+[data-scroll="vertical"] {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+[data-scroll="horizontal"] {
+    overflow-x: auto;
+    overflow-y: hidden;
+}

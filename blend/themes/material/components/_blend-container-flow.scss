@@ -14,13 +14,27 @@
  * limitations under the License.
  */
 
-@import "components/blend-material-splitter";
-@import "components/blend-container-fit";
-@import "components/blend-container-stack";
-@import "components/blend-container-box";
-@import "components/blend-container-split";
-@import "components/blend-container-grid";
-@import "components/blend-container-flow";
-@import "components/blend-application-application";
-@import "components/blend-button-button";
-@import "components/blend-toolbar-toolbar";
+.flow-cntr {
+
+    & > .flow-cntr-body {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+
+    }
+
+    & > .flow-cntr-body-vertical {
+        & > .flow-cntr-item {
+            display:block !important;
+        }
+    }
+
+    & > .flow-cntr-body-horizontal {
+        & > .flow-cntr-item {
+            display:inline-block !important;
+        }
+    }
+}
+

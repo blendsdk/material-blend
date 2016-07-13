@@ -46,7 +46,11 @@ namespace Blend.application {
         protected createMainView(config: MaterialType): Blend.material.Material {
             var me = this;
             if (config) {
-                var view = <Blend.material.Material>Blend.createComponent(config);
+
+                var view = Blend.isInstanceOf(config, Blend.material.Material)
+                    ? <Blend.material.Material>config
+                    : <Blend.material.Material>Blend.createComponent(config);
+
                 view.setContext(me.context);
                 if (view.getProperty("useParentController", true) === true) {
                     view.addController(me.controllers);
@@ -123,7 +127,7 @@ namespace Blend.application {
                 cb = new Blend.dom.ElementConfigBuilder({
                     cls: "mb-application"
                 });
-            me.mainView = me.createMainView(me.config.mainView);
+            me.mainView = me.createMainView(me.mainView || me.config.mainView);
             if (me.mainView) {
                 cb.addChild(me.mainView.getElement({
                     setBounds: me.config.fitMainView === true ? false : true,
