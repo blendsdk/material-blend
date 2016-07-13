@@ -44,19 +44,26 @@ namespace Blend.container {
          */
         public setActiveItem(item: number | string | Blend.material.Material) {
             var me = this, index = me.getItemIndex(item);
-            if (index !== -1) {
+            if (index !== -1 && index !== me.activeItemIndex) {
                 if (me.isRendered) {
                     me.activeItemIndex = index;
                     Blend.forEach(me.items, function (material: Blend.material.Material, itemIndex: number) {
                         if (index === itemIndex) {
-                            material.setVisible(true);
+                            material.withLayoutSuspended(() => {
+                                material.setVisible(true);
+                                me.notifyActiveItemChanged(material);
+                            });
                         } else {
-                            material.setVisible(false);
+                            material.withLayoutSuspended(() => {
+                                material.setVisible(false);
+                                me.notifyActiveItemChanged(material);
+                            });
                         }
                     });
                 } else {
                     me.activeItemIndex = index;
                 }
+                me.performLayout();
             }
         }
 
