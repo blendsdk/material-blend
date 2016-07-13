@@ -38,6 +38,22 @@ namespace Blend.container {
             return "mb-flow-cntr-body mb-flow-cntr-body-" + me.config.direction;
         }
 
+        public getDirection(): Blend.eFlowDirection {
+            return this.config.direction;
+        }
+
+        public setDirection(direction: Blend.eFlowDirection) {
+            var me = this;
+            me.config.direction = direction;
+            me.notifyDirectionChanged();
+        }
+
+        protected notifyDirectionChanged() {
+            var me = this;
+            me.fireEvent("directionChanged", me.config.direction);
+            me.performLayout();
+        }
+
         protected updateLayout() {
             var me = this;
             me.bodyElement.scrollState(me.config.scrollState);
