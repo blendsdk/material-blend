@@ -52,6 +52,7 @@ namespace Blend.application {
                     : <Blend.material.Material>Blend.createComponent(config);
 
                 view.setContext(me.context);
+                view.setProperty("parent", me);
                 if (view.getProperty("useParentController", true) === true) {
                     view.addController(me.controllers);
                 }
@@ -119,7 +120,9 @@ namespace Blend.application {
 
         protected postUpdateLayout() {
             var me = this;
+            me.mainView.setInLayoutContext(true);
             me.mainView.performLayout();
+            me.mainView.setInLayoutContext(false);
         }
 
         protected render(): Blend.dom.Element {
