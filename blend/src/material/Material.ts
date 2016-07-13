@@ -30,6 +30,7 @@ namespace Blend.material {
         protected isInitialized: boolean;
         protected isInLayoutContext: boolean;
         protected canLayout: boolean;
+        protected boundsCache: string;
 
         protected windowResizeListener: EventListener;
 
@@ -64,21 +65,45 @@ namespace Blend.material {
                 height: me.config.height
             });
             me.canLayout = true;
+            me.boundsCache = null;
         }
 
         /**
-         * Utility method to be used in setter and notify methods to initiate a layout
-         * cycle
+         * Perform a work item with the layout subsystem of the current component disabled
          */
-        protected autoLayout() {
+        public withLayoutSuspended(work: Function) {
             var me = this;
-            if (me.isRendered && me.isInitialized && me.isInLayoutContext === false) {
-                if (me.parent) {
-                    me.parent.performLayout();
+            me.suspendLayout();
+            work();
+            me.resumeLayout();
+        }
+
+        private needsParentLayout(): boolean {
+            var me = this,
+                cache = JSON.stringify(me.getBounds());
+            return cache !== me.boundsCache;
+        }
+
+        /**
+         * Initiates a sub-layout process.
+         */
+        public performLayout() {
+            var me = this;
+            if (me.canLayout === true && me.isRendered && me.isInitialized) {
+                if (me.isInLayoutContext === false) {
+                    if (me.parent && me.needsParentLayout()) {
+                        me.parent.performLayout();
+                    } else {
+                        me.performLayoutInternal();
+                    }
                 } else {
-                    me.performLayout();
+                    me.performLayoutInternal();
                 }
             }
+        }
+
+        public setInLayoutContext(state: boolean) {
+            this.isInLayoutContext = state;
         }
 
         /**
@@ -103,18 +128,15 @@ namespace Blend.material {
 
         }
 
-        /**
-         * Initiates a sub-layout process.
-         */
-        public performLayout() {
+        private performLayoutInternal() {
             var me = this;
-            if (me.canLayout === true) {
-                me.suspendLayout();
-                me.preUpdateLayout();
-                me.updateLayout();
-                me.postUpdateLayout();
-                me.resumeLayout();
-            }
+            me.suspendLayout();
+            me.preUpdateLayout();
+            me.updateLayout();
+            me.postUpdateLayout();
+            me.resumeLayout();
+            me.boundsCache = JSON.stringify(me.getBounds());
+            console.log(me);
         }
 
         /**
@@ -239,7 +261,7 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.fireEvent("responsiveChanged", me.getDeviceSize());
-                me.autoLayout();
+                me.performLayout();
             }
         }
 
@@ -329,7 +351,7 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.fireEvent("boundsChanged", me.getBounds());
-                me.autoLayout();
+                me.performLayout();
             }
         }
 
@@ -368,7 +390,7 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.fireEvent("visibilityChanged", me.visible);
-                me.autoLayout();
+                me.performLayout();
             }
         }
 
@@ -383,7 +405,6 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.element.setStyle(style);
-                me.notifyStyleOrCSSChanged();
             } else {
                 Blend.apply(me.config.style, style, false, true);
             }
@@ -396,21 +417,11 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.element.addCssClass(css);
-                me.notifyStyleOrCSSChanged();
             } else {
                 Blend.wrapInArray(css).forEach(function (itm: string) {
                     (<Array<string>>me.config.css).push(itm);
                 });
             }
-        }
-
-        /**
-         * Sends a visibilityChanged notification
-         */
-        protected notifyStyleOrCSSChanged() {
-            var me = this;
-            me.fireEvent("styleChanged", me.visible);
-            me.autoLayout();
         }
 
         /**

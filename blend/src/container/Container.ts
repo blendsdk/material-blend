@@ -83,7 +83,9 @@ namespace Blend.container {
             var me = this;
             // Perform layout on children
             me.withItems(function (material: Blend.material.Material) {
+                material.setInLayoutContext(true);
                 material.performLayout();
+                material.setInLayoutContext(false);
             });
         }
 
