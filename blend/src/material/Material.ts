@@ -28,6 +28,7 @@ namespace Blend.material {
         protected config: MaterialInterface;
         protected useParentControllers: boolean;
         protected isInitialized: boolean;
+        protected isInLayoutContext: boolean;
         protected canLayout: boolean;
 
         protected windowResizeListener: EventListener;
@@ -36,6 +37,7 @@ namespace Blend.material {
             super(config);
             var me = this;
             me.isInitialized = false;
+            me.isInLayoutContext = false;
             me.parent = config.parent || null;
             me.useParentControllers = config.useParentController || false;
             me.isRendered = false;
@@ -62,6 +64,21 @@ namespace Blend.material {
                 height: me.config.height
             });
             me.canLayout = true;
+        }
+
+        /**
+         * Utility method to be used in setter and notify methods to initiate a layout
+         * cycle
+         */
+        protected autoLayout() {
+            var me = this;
+            if (me.isRendered && me.isInitialized && me.isInLayoutContext === false) {
+                if (me.parent) {
+                    me.parent.performLayout();
+                } else {
+                    me.performLayout();
+                }
+            }
         }
 
         /**
@@ -164,12 +181,15 @@ namespace Blend.material {
           */
         public doInitialize(): Blend.material.Material {
             var me = this;
-            me.initEvents();
-            me.initWindowResizeEvent();
-            me.preInitialize();
-            me.initialize();
-            me.postInitialize();
-            me.notifyMaterialInitialized();
+            if (!me.isInitialized) {
+                me.isInitialized = true;
+                me.initEvents();
+                me.initWindowResizeEvent();
+                me.preInitialize();
+                me.initialize();
+                me.postInitialize();
+                me.notifyMaterialInitialized();
+            }
             return me;
         }
 
@@ -217,7 +237,10 @@ namespace Blend.material {
          */
         protected notifyResponsiveChanged() {
             var me = this;
-            me.fireEvent("responsiveChanged", me.getDeviceSize());
+            if (me.isRendered) {
+                me.fireEvent("responsiveChanged", me.getDeviceSize());
+                me.autoLayout();
+            }
         }
 
         /**
@@ -230,7 +253,7 @@ namespace Blend.material {
         private windowResizeHandlerInternal() {
             var me = this;
             me.windowResizeHandler.apply(me, arguments);
-            me.notifyBoundsChanged();
+            me.notifyResponsiveChanged();
         }
 
         protected initWindowResizeEvent() {
@@ -306,6 +329,7 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.fireEvent("boundsChanged", me.getBounds());
+                me.autoLayout();
             }
         }
 
@@ -342,7 +366,10 @@ namespace Blend.material {
          */
         protected notifyVisibilityChanged() {
             var me = this;
-            me.fireEvent("visibilityChanged", me.visible);
+            if (me.isRendered) {
+                me.fireEvent("visibilityChanged", me.visible);
+                me.autoLayout();
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////
@@ -356,10 +383,10 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.element.setStyle(style);
+                me.notifyStyleOrCSSChanged();
             } else {
                 Blend.apply(me.config.style, style, false, true);
             }
-            me.notifyStyleOrCSSChanged();
         }
 
         /**
@@ -369,12 +396,12 @@ namespace Blend.material {
             var me = this;
             if (me.isRendered) {
                 me.element.addCssClass(css);
+                me.notifyStyleOrCSSChanged();
             } else {
                 Blend.wrapInArray(css).forEach(function (itm: string) {
                     (<Array<string>>me.config.css).push(itm);
                 });
             }
-            me.notifyStyleOrCSSChanged();
         }
 
         /**
@@ -383,6 +410,7 @@ namespace Blend.material {
         protected notifyStyleOrCSSChanged() {
             var me = this;
             me.fireEvent("styleChanged", me.visible);
+            me.autoLayout();
         }
 
         /**
