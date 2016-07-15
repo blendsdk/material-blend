@@ -33,7 +33,7 @@ $background-color: $global-background-color
     .#{$theme-name} {
 
         @include typography();
-        @include init-grid();
+        @include ripple-effect();
         @include elevate-struct();
         @include box-container();
         @include fit-container();
