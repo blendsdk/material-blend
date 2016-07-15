@@ -52,6 +52,7 @@ namespace Blend.material {
                 width: null,
                 height: null,
                 flex: null,
+                elevation: null,
                 responsive: false,
                 responseTo: Blend.eResponsiveTrigger.windowSize
             }, config, true, true);
@@ -64,8 +65,30 @@ namespace Blend.material {
                 width: me.config.width,
                 height: me.config.height
             });
+            me.elevate(config.elevation || null);
             me.canLayout = true;
             me.boundsCache = null;
+        }
+
+        /**
+         * Elevates the z axes of this Component to a given elevation value 0 - 24
+         * 0 t be droped elevation and 24 the maxium provided in the spces
+         */
+        public elevate(value: number) {
+            var me = this;
+            if (me.isRendered) {
+                me.element.setData("elevate", Blend.isNullOrUndef(value) ? 1 : value);
+            } else {
+                me.config.elevation = value;
+            }
+        }
+
+        /**
+         * Drop the elevation to 0. This function is equivalent to elecate(0)
+         */
+        public dropElevation() {
+            var me = this;
+            me.elevate(0);
         }
 
         /**
@@ -429,10 +452,11 @@ namespace Blend.material {
          */
         protected finalizeRender(config: FinalizeRenderConfig = {}) {
             var me = this,
-                cfg: FinalizeRenderConfig = Blend.apply({
+                cfg: FinalizeRenderConfig = Blend.apply(<FinalizeRenderConfig>{
                     setCss: true,
                     setBounds: true,
-                    setStyles: true
+                    setStyles: true,
+                    setElevation: true
                 }, config, true, true);
             if (cfg.setCss === true) {
                 me.addCssClass(me.config.css);
@@ -451,6 +475,9 @@ namespace Blend.material {
                     // should be set only when not visible
                     me.setVisible(false);
                 }
+            }
+            if (cfg.setElevation === true && !Blend.isNullOrUndef(me.config.elevation)) {
+                me.elevate(me.config.elevation);
             }
             if (Blend.DEBUG === true) {
                 var id = "m" + Blend.newID();

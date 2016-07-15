@@ -172,6 +172,7 @@ interface FinalizeRenderConfig {
     setCss?: boolean;
     setBounds?: boolean;
     setStyles?: boolean;
+    setElevation?: boolean;
 }
 
 /**
@@ -226,6 +227,7 @@ interface MaterialInterface extends MvcViewInterface {
     height?: number | string;
     flex?: number | FlexItemInterface;
     grid?: GridColumnConfigInterface;
+    elevation?: number;
 }
 
 /**
