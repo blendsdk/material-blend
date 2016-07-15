@@ -42,7 +42,7 @@ $background-color: $global-background-color
         @include stack-container();
 
         @include blend-material-splitter(
-            $splitter-color : $theme-splitter-color,
+        $splitter-color : $theme-splitter-color,
             $splitter-active-color: $theme-splitter-active-color,
             $splitter-handle-color: $theme-splitter-handle-color
             );
