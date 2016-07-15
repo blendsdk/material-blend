@@ -186,7 +186,6 @@ $struct-fab-position-small: rem(1.600);
         }
 
         &[disabled] {
-            background-color: $default-button-disbaled-background-color;
             & > .mb-btn-inner {
                 & > .mb-btn-text, & > .mb-btn-icon {
                     color: $default-button-disbaled-text-color;

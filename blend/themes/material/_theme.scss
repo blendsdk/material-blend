@@ -35,46 +35,12 @@ $background-color: $global-background-color
         @include typography();
         @include ripple-effect();
         @include elevate-struct();
+
         @include box-container();
         @include fit-container();
         @include flow-container();
         @include grid-container();
         @include stack-container();
-
-        @include blend-material-splitter(
-        $splitter-color : $theme-splitter-color,
-            $splitter-active-color: $theme-splitter-active-color,
-            $splitter-handle-color: $theme-splitter-handle-color
-            );
-
-
-        // Small
-        @include on-small-screen () {
-            @include create-grid('sm'
-            ,$layout-small-columns
-            ,$layout-small-gutter
-            ,$layout-small-margin
-            ,$layout-max-columns)
-        }
-
-        // Medium
-        @include on-medium-screen () {
-            @include create-grid('md'
-            ,$layout-medium-columns
-            ,$layout-medium-gutter
-            ,$layout-medium-margin
-            ,$layout-max-columns)
-        }
-
-        // Large
-        @include on-large-screen () {
-            @include create-grid('lg'
-            ,$layout-large-columns
-            ,$layout-large-gutter
-            ,$layout-large-margin
-            ,$layout-max-columns)
-        }
-
         @include blend-application-application();
 
         @include blend-button-struct();
@@ -82,7 +48,13 @@ $background-color: $global-background-color
         @include blend-button-raised();
         @include blend-button-fab();
 
-        // flat default button
+        @include blend-material-splitter(
+        $splitter-color : $theme-splitter-color,
+            $splitter-active-color: $theme-splitter-active-color,
+            $splitter-handle-color: $theme-splitter-handle-color
+            );
+
+        // DEFAULT BUTTON THEMES //////////////////////////////////////////////////////////
         @include blend-button-theme(
         $name: 'default',
             $button-types: $flat-buttons,
@@ -104,17 +76,6 @@ $background-color: $global-background-color
             );
 
         @include blend-button-theme(
-        $name: 'primary',
-            $button-types: $raised-buttons,
-            $button-text-color: #fff,
-            $button-icon-color: #fff,
-            $button-background-color: $color-blue-c700,
-            $button-hover-background-color: $color-blue-c800,
-            $button-focus-background-color: false
-            );
-
-
-        @include blend-button-theme(
         $name: 'default',
             $button-types: $fab-buttons,
             $button-text-color: $theme-fab-button-text-color,
@@ -124,46 +85,37 @@ $background-color: $global-background-color
             $button-focus-background-color: $theme-fab-button-focus-background-color
             );
 
+        // PRIMARY BUTTON THEMES //////////////////////////////////////////////////////////
         @include blend-button-theme(
-        $name: 'pink',
-            $button-types: $fab-buttons,
-            $button-text-color: #fff,
-            $button-icon-color: #fff,
-            $button-background-color: $color-pink-a200,
-            $button-hover-background-color: false,
-            $button-focus-background-color: false
+        $name: 'primary',
+            $button-types: $flat-buttons,
+            $button-text-color: $color-primary,
+            $button-icon-color: $color-primary,
+            $button-background-color: transparent,
+            $button-hover-background-color: $theme-flat-button-hover-background-color,
+            $button-focus-background-color: $theme-flat-button-focus-background-color
             );
 
+        @include blend-button-theme(
+        $name: 'default',
+            $button-types: $raised-buttons,
+            $button-text-color: $theme-raised-button-text-color,
+            $button-icon-color: $theme-raised-button-icon-color,
+            $button-background-color: $theme-raised-button-background-color,
+            $button-hover-background-color: $theme-raised-button-hover-background-color,
+            $button-focus-background-color: $theme-raised-button-focus-background-color
+            );
 
-        /*        // raised default button
+        // @include blend-button-theme(
+        // $name: 'default',
+        //     $button-types: $fab-buttons,
+        //     $button-text-color: $theme-fab-button-text-color,
+        //     $button-icon-color: $theme-fab-button-icon-color,
+        //     $button-background-color: $theme-fab-button-background-color,
+        //     $button-hover-background-color: $theme-fab-button-hover-background-color,
+        //     $button-focus-background-color: $theme-fab-button-focus-background-color
+        //     );
 
-                // flat default button
-                @include blend-button-theme(
-                $name: 'primary',
-                    $button-types: $flat-buttons,
-                    $button-text-color: $color-indigo-c500,
-                    $button-icon-color: $color-indigo-c500,
-                    $button-background-color: transparent,
-                    $button-hover-background-color: $theme-flat-button-hover-background-color
-                    );
-
-                @include blend-button-theme(
-                $name: 'primary',
-                    $button-types: $all-raised-buttons,
-                    $button-text-color: $color-blackandwhite-cwhite,
-                    $button-icon-color: $color-blackandwhite-cwhite,
-                    $button-background-color: $color-indigo-c500,
-                    $button-hover-background-color: false
-                    );
-
-                @include blend-button-theme(
-                $name: 'danger',
-                    $button-types: $all-raised-buttons,
-                    $button-text-color: $color-blackandwhite-cwhite,
-                    $button-icon-color: $color-blackandwhite-cwhite,
-                    $button-background-color: $color-pink-c400,
-                    $button-hover-background-color: false
-                    );*/
 
 
         @include blend-toolbar-theme(

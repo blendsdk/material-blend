@@ -42,6 +42,9 @@ namespace Blend.material.effect {
         private removeQueue: Array<Blend.dom.Element>;
         protected color: string;
 
+        private mouseUpListener: EventListener;
+        private mouseDownListener: EventListener;
+
         public constructor(config: RippleInterface = {}) {
             super(config);
             var me = this;
@@ -59,8 +62,13 @@ namespace Blend.material.effect {
         protected bindEvents() {
             var me = this;
             if (me.element.getProperty("hasRipple", false) === false) {
-                me.element.addEventListener("mousedown", Blend.bind(me, me.handleDownEvent));
-                me.element.addEventListener("mouseup mouseleave", Blend.bind(me, me.handleHandleUpEvent));
+
+                me.mouseDownListener = Blend.bind(me, me.startRippleEfect);
+                me.mouseUpListener = Blend.bind(me, me.finishRippleEffect);
+
+                me.element.addEventListener("mousedown", me.mouseDownListener);
+                me.element.addEventListener("mouseup", me.mouseUpListener);
+                me.element.addEventListener("mouseleave", me.mouseUpListener);
                 me.element.setProperty("hasRipple", true);
                 me.createRippleContainer();
             }
@@ -75,7 +83,7 @@ namespace Blend.material.effect {
             }));
         }
 
-        protected handleDownEvent(evt: Event) {
+        protected startRippleEfect(evt: Event) {
             var me = this, top: number, left: number, mouseEvent: MouseEvent;
             if (me.center === true) {
                 left = me.container.getEl().clientWidth / 2;
@@ -94,16 +102,16 @@ namespace Blend.material.effect {
             me.initiateRipple(left, top);
         }
 
-        protected handleHandleUpEvent() {
+        protected finishRippleEffect() {
             var me = this;
             while (me.removeQueue.length !== 0) {
                 var ripple = me.removeQueue.splice(0, 1)[0];
-                setTimeout(function() {
+                setTimeout(function () {
                     ripple.removeCssClass(["mb-ripple-active"]);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         ripple.getEl().parentNode.removeChild(ripple.getEl());
                     }, 2000);
-                }, me.rippleDuration * 0.4);
+                }, me.rippleDuration * 0.3);
             }
         }
 
@@ -127,7 +135,7 @@ namespace Blend.material.effect {
                 "background-color": me.color,
             });
             ripple.addCssClass(["mb-ripple-placed"]);
-            setTimeout(function() {
+            setTimeout(function () {
                 ripple.addCssClass(["mb-ripple-scaled"]);
                 ripple.addCssClass(["mb-ripple-active"]);
             }, 5);
