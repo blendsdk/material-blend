@@ -46,5 +46,43 @@ $elevate-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 
 
 
 @mixin elevate($elevation) {
-    box-shadow: $elevation;
+    @include box-shadow($elevation);
+}
+
+@mixin elevate-struct() {
+
+    $list: (
+        $elevate-0dp,
+        $elevate-1dp,
+        $elevate-2dp,
+        $elevate-3dp,
+        $elevate-4dp,
+        $elevate-5dp,
+        $elevate-6dp,
+        $elevate-7dp,
+        $elevate-8dp,
+        $elevate-9dp,
+        $elevate-10dp,
+        $elevate-11dp,
+        $elevate-12dp,
+        $elevate-13dp,
+        $elevate-14dp,
+        $elevate-15dp,
+        $elevate-16dp,
+        $elevate-17dp,
+        $elevate-18dp,
+        $elevate-19dp,
+        $elevate-20dp,
+        $elevate-21dp,
+        $elevate-22dp,
+        $elevate-23dp,
+        $elevate-24dp
+    );
+
+    @each $item in $list {
+        $i: index($list, $item);
+        [data-elevate="#{$i - 1}"] {
+            @include elevate($item);
+        }
+    }
 }
