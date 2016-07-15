@@ -14,34 +14,36 @@
  * limitations under the License.
  */
 
-.mb-split-cntr {
+@mixin split-container() {
+    .mb-split-cntr {
 
-    overflow: hidden;
-    &> .mb-split-cntr-body {
-        position: relative;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
         overflow: hidden;
+        &> .mb-split-cntr-body {
+            position: relative;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
 
-        &> .mb-split-cntr-item {
-            position: absolute;
+            &> .mb-split-cntr-item {
+                position: absolute;
+            }
+
         }
 
-    }
+        & > .mb-split-cntr-body-horizontal {
 
-    & > .mb-split-cntr-body-horizontal {
-
-        & > .mb-split-cntr-item {
-            width: 100% !important;
+            & > .mb-split-cntr-item {
+                width: 100% !important;
+            }
         }
-    }
 
-    & > .mb-split-cntr-body-vertical {
+        & > .mb-split-cntr-body-vertical {
 
-        & > .mb-split-cntr-item {
-            height: 100% !important;
+            & > .mb-split-cntr-item {
+                height: 100% !important;
+            }
         }
     }
 }

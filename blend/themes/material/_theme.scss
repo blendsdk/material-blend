@@ -35,6 +35,11 @@ $background-color: $global-background-color
         @include typography();
         @include init-grid();
         @include elevate-struct();
+        @include box-container();
+        @include fit-container();
+        @include flow-container();
+        @include grid-container();
+        @include stack-container();
 
         @include blend-material-splitter(
             $splitter-color : $theme-splitter-color,
