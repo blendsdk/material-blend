@@ -1,0 +1,45 @@
+@mixin themed-button-flat() {
+
+    @include blend-button-theme(
+    $name: 'default',
+        $button-types: $flat-buttons,
+        $button-text-color: $theme-flat-button-text-color,
+        $button-icon-color: $theme-flat-button-icon-color,
+        $button-background-color: transparent,
+        $button-hover-background-color: $theme-flat-button-hover-background-color,
+        $button-focus-background-color: $theme-flat-button-focus-background-color
+        );
+
+    @include blend-button-theme(
+    $name: 'primary',
+        $button-types: $flat-buttons,
+        $button-text-color: $color-primary,
+        $button-icon-color: $color-primary,
+        $button-background-color: transparent,
+        $button-hover-background-color: $theme-flat-button-hover-background-color,
+        $button-focus-background-color: $theme-flat-button-focus-background-color
+        );
+}
+
+@mixin themed-button-raised() {
+
+    @include blend-button-theme(
+    $name: 'default',
+        $button-types: $raised-buttons,
+        $button-text-color: $theme-raised-button-text-color,
+        $button-icon-color: $theme-raised-button-icon-color,
+        $button-background-color: $theme-raised-button-background-color,
+        $button-hover-background-color: $theme-raised-button-hover-background-color,
+        $button-focus-background-color: $theme-raised-button-focus-background-color
+        );
+
+    @include blend-button-theme(
+    $name: 'primary',
+        $button-types: $raised-buttons,
+        $button-text-color: $color-white,
+        $button-icon-color: $color-white,
+        $button-background-color: $color-primary,
+        $button-hover-background-color: $color-primary-dark,
+        $button-focus-background-color: $color-primary
+        );
+}

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@import "buttons";
+
 @mixin theme(
 $theme-name,
 $background-color: $global-background-color
@@ -41,12 +43,16 @@ $background-color: $global-background-color
         @include flow-container();
         @include grid-container();
         @include stack-container();
+        @include split-container();
         @include blend-application-application();
 
         @include blend-button-struct();
         @include blend-button-flat();
         @include blend-button-raised();
         @include blend-button-fab();
+
+        @include themed-button-flat();
+        @include themed-button-raised();
 
         @include blend-material-splitter(
         $splitter-color : $theme-splitter-color,
@@ -55,25 +61,7 @@ $background-color: $global-background-color
             );
 
         // DEFAULT BUTTON THEMES //////////////////////////////////////////////////////////
-        @include blend-button-theme(
-        $name: 'default',
-            $button-types: $flat-buttons,
-            $button-text-color: $theme-flat-button-text-color,
-            $button-icon-color: $theme-flat-button-icon-color,
-            $button-background-color: transparent,
-            $button-hover-background-color: $theme-flat-button-hover-background-color,
-            $button-focus-background-color: $theme-flat-button-focus-background-color
-            );
 
-        @include blend-button-theme(
-        $name: 'default',
-            $button-types: $raised-buttons,
-            $button-text-color: $theme-raised-button-text-color,
-            $button-icon-color: $theme-raised-button-icon-color,
-            $button-background-color: $theme-raised-button-background-color,
-            $button-hover-background-color: $theme-raised-button-hover-background-color,
-            $button-focus-background-color: $theme-raised-button-focus-background-color
-            );
 
         @include blend-button-theme(
         $name: 'default',
@@ -86,15 +74,6 @@ $background-color: $global-background-color
             );
 
         // PRIMARY BUTTON THEMES //////////////////////////////////////////////////////////
-        @include blend-button-theme(
-        $name: 'primary',
-            $button-types: $flat-buttons,
-            $button-text-color: $color-primary,
-            $button-icon-color: $color-primary,
-            $button-background-color: transparent,
-            $button-hover-background-color: $theme-flat-button-hover-background-color,
-            $button-focus-background-color: $theme-flat-button-focus-background-color
-            );
 
         @include blend-button-theme(
         $name: 'default',
