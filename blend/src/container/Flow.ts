@@ -61,5 +61,6 @@ namespace Blend.container {
             me.bodyElement.addCssClass(me.getBodyCssClass());
         }
     }
-
 }
+
+Blend.registerClassWithAlias("lay.flow", Blend.container.Flow);
