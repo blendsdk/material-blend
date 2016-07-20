@@ -159,7 +159,6 @@ namespace Blend.material {
             me.postUpdateLayout();
             me.resumeLayout();
             me.boundsCache = JSON.stringify(me.getBounds());
-            console.log(me);
         }
 
         /**
