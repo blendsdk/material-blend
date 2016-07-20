@@ -31,7 +31,7 @@ namespace Blend.container {
             Blend.apply(me.config, <GridContainerInterface>{
                 responsiveTrigger: config.responsiveTrigger || Blend.eResponsiveTrigger.windowSize,
                 gutterSize: Blend.isNullOrUndef(config.gutterSize) ? 16 : config.gutterSize,
-                responsive: true // force the Grdi to be responsize
+                responsive: true // force the Grid to be responsize
             }, true, true);
             me.cssClass = "mb-grid-cntr";
             me.bodyCssClass = "mb-grid-cntr-body";
