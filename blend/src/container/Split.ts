@@ -59,9 +59,10 @@ namespace Blend.container {
             me.activeSplitterIndex = -1;
             Blend.apply(me.config, {
                 responsive: true,
+                responsiveTrigger: Blend.eResponsiveTrigger.windowSize,
                 splitPosition: config.splitPosition || [],
                 splitterSize: config.splitterSize || 2
-            });
+            }, true, true);
             me.config.splitPosition = <any>Blend.wrapInArray(me.config.splitPosition);
             me.calculatedPositions = [];
         }
@@ -145,12 +146,13 @@ namespace Blend.container {
         protected windowResizeHandler() {
             var me = this;
             me.calculatedPositions = [];
+            me.boundsCache = null;
             me.updateLayout();
         }
 
         protected initEvents() {
             var me = this;
-            
+
             me.mouseUpListener = Blend.bind(me, function () {
                 me.hideGhost();
                 me.resizeChildren();
