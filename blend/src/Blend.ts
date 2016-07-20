@@ -288,3 +288,17 @@ namespace Blend {
     }
 
 }
+
+if (typeof console === "object") {
+    console.log(
+        " __  __       _            _       _   ____  _                _ \n" +
+        "|  \\/  | __ _| |_ ___ _ __(_) __ _| | | __ )| | ___ _ __   __| |\n" +
+        "| |\\/| |/ _` | __/ _ \\ '__| |/ _` | | |  _ \\| |/ _ \\ '_ \\ / _` |\n" +
+        "| |  | | (_| | ||  __/ |  | | (_| | | | |_) | |  __/ | | | (_| |\n" +
+        "|_|  |_|\\__,_|\\__\\___|_|  |_|\\__,_|_| |____/|_|\\___|_| |_|\\__,_|\n\n" +
+        "Hi there, fellow developer!\n\n" +
+        "I hope this library can help you create great many applications.\n\n" +
+        "Thanks for visiting and if you happen to find any bugs please\n" +
+        "let me know. https://github.com/blendsdk/material-blend\n\n"
+    );
+}

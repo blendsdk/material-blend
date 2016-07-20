@@ -45,6 +45,17 @@ namespace Blend {
         }
 
         /**
+         * Checks if the current running environment supports device
+         * orientation
+         */
+        public getOrientation(): Blend.eDeviceOrientation {
+            var size = Blend.Runtime.getWindowSize();
+            return size.width > size.height
+                ? Blend.eDeviceOrientation.landscape
+                : Blend.eDeviceOrientation.portrait;
+        }
+
+        /**
          * Gets the current Window size. The window size is calculated by the size of the BODY
          * tag which should be 100% x 100%
          */

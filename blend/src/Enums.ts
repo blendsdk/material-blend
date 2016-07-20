@@ -21,6 +21,11 @@ namespace Blend {
         vertical = <any>"vertical"
     }
 
+    export enum eDeviceOrientation {
+        portrait = <any>"portrait",
+        landscape = <any>"landscape"
+    }
+
     export enum eDeviceSize {
         small = <any>"small",
         medium = <any>"medium",
