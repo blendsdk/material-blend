@@ -298,6 +298,10 @@ interface ApplicationInterface extends MaterialInterface {
     theme?: string;
 }
 
+interface WebApplicationInterface extends ApplicationInterface {
+    fitMainView?: boolean;
+}
+
 /**
  * Interface for configuring a Button
  */

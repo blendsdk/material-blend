@@ -15,9 +15,70 @@
  */
 
 namespace Blend.web {
+
     /**
-     * Base class for a web/desktop application
+     * Base class for implementing an Application component
      */
     export class Application extends Blend.application.Application {
+
+        protected config: WebApplicationInterface;
+        protected mainView: Blend.material.Material;
+
+        public constructor(config: WebApplicationInterface = {}) {
+            super(config);
+            var me = this;
+            me.config.mainView = config.mainView || null;
+            me.config.fitMainView = config.fitMainView === false ? false : true;
+        }
+
+        protected createMainView(config: MaterialType): Blend.material.Material {
+            var me = this;
+            if (config) {
+
+                var view = Blend.isInstanceOf(config, Blend.material.Material)
+                    ? <Blend.material.Material>config
+                    : <Blend.material.Material>Blend.createComponent(config);
+
+                view.setContext(me.context);
+                view.setProperty("parent", me);
+                if (view.getProperty("useParentController", true) === true) {
+                    view.addController(me.controllers);
+                }
+                if (me.config.fitMainView === true) {
+                    view.addCssClass("mb-mainview-fit");
+                }
+                return view;
+            } else {
+                return null;
+            }
+        }
+
+        protected postInitialize() {
+            var me = this;
+            me.mainView.doInitialize();
+        }
+
+        protected postUpdateLayout() {
+            var me = this;
+            me.mainView.setInLayoutContext(true);
+            me.mainView.performLayout();
+            me.mainView.setInLayoutContext(false);
+        }
+
+        protected render(): Blend.dom.Element {
+            var me = this,
+                el: Blend.dom.Element = super.render(),
+                cb = new Blend.dom.ElementConfigBuilder({
+                    cls: "mb-application"
+                });
+            me.mainView = me.createMainView(me.mainView || me.config.mainView);
+            if (me.mainView) {
+                el.append(me.mainView.getElement({
+                    setBounds: me.config.fitMainView === true ? false : true,
+                }));
+            }
+            return el;
+        }
+
     }
 }
