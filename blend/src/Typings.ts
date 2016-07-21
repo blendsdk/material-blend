@@ -59,7 +59,7 @@ interface CreateElementEventListenersInterface {
 /**
  * Interface for configuring the Dom.createElement utility
  */
-interface CreateElementInterface {
+interface CreateElementInterface extends DictionaryInterface {
     tag?: string;
     scope?: any;
     oid?: string;
@@ -298,8 +298,27 @@ interface ApplicationInterface extends MaterialInterface {
     theme?: string;
 }
 
+/**
+ * Interface for configuring a WebApplication
+ */
 interface WebApplicationInterface extends ApplicationInterface {
     fitMainView?: boolean;
+}
+
+interface SideNavigationInterface extends MaterialInterface {
+    navigationStyle?: Blend.eNavigationStyle;
+    component?: MaterialType;
+}
+
+/**
+ * Interface for configuring a Material Application
+ */
+interface MaterialApplicationInterface extends ApplicationInterface {
+    content?: MaterialType;
+    applicationBar?: MaterialType;
+    bottomBar?: MaterialType;
+    leftNavigation?: MaterialType;
+    rightNavigation?: MaterialType;
 }
 
 /**

@@ -43,6 +43,8 @@
         "src/container/Flow.ts",
         "src/application/Application.ts",
         "src/web/Application.ts",
+        "src/material/SideNavigation.ts",
+        "src/material/Application.ts",
         "src/material/Rectangle.ts",
         "src/material/effect/Ripple.ts",
         "src/button/Button.ts",

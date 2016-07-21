@@ -35,6 +35,7 @@ $background-color: $global-background-color
     .#{$theme-name} {
 
         @include typography();
+        @include mask-struct();
         @include ripple-effect();
         @include elevate-struct();
 

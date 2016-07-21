@@ -123,6 +123,14 @@ namespace Blend.material {
                     me.performLayoutInternal();
                 }
             }
+            me.layoutMask();
+        }
+
+        protected layoutMask() {
+            var me = this;
+            if (me.element.hasCssClass("mb-masked")) {
+                me.element.mask();
+            }
         }
 
         public setInLayoutContext(state: boolean) {

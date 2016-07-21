@@ -23,14 +23,61 @@ namespace Blend.dom {
     export class Element extends Component {
 
         private el: HTMLElement;
+        private maskEl: Blend.dom.Element;
+        private maskState: StyleInterface;
+
         public classList: Blend.dom.ClassList;
         public styleList: Blend.dom.StyleList;
 
         constructor(el: HTMLElement) {
             super();
-            this.el = el;
-            this.classList = new Blend.dom.ClassList(this.el);
-            this.styleList = new Blend.dom.StyleList(this.el);
+            var me = this;
+            me.el = el;
+            me.classList = new Blend.dom.ClassList(me.el);
+            me.styleList = new Blend.dom.StyleList(me.el);
+
+            var mId = me.getData("maskid", null);
+            if (mId !== null) {
+                me.maskEl = Blend.getElement(document.getElementById(mId));
+            } else {
+                me.maskEl = null;
+            }
+        }
+
+        /**
+         * Places a mask over this element
+         */
+        public mask() {
+            var me = this,
+                bounds = me.getEl().getBoundingClientRect();
+            if (me.maskEl === null) {
+                var mId = Blend.newID();
+                me.maskEl = Blend.createElement({
+                    cls: ["mb-mask"],
+                    id: mId
+                });
+                me.setData("maskid", mId);
+                document.body.appendChild(me.maskEl.getEl());
+            }
+            me.maskEl.setBounds({
+                top: bounds.top,
+                left: bounds.left,
+                width: bounds.width,
+                height: bounds.height
+            });
+            me.maskEl.addCssClass("mb-mask-visible");
+            me.addCssClass("mb-masked");
+        }
+
+        /**
+         * Removes previously created mask from this element
+         */
+        public unmask() {
+            var me = this;
+            if (me.maskEl !== null) {
+                me.maskEl.removeCssClass("mb-mask-visible");
+                me.removeCssClass("mb-masked");
+            }
         }
 
         /**

@@ -149,7 +149,7 @@ namespace Blend.container {
             var me = this;
             me.calculatedPositions = [];
             me.boundsCache = null;
-            me.updateLayout();
+            me.performLayout();
         }
 
         protected initEvents() {

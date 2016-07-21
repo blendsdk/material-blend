@@ -142,7 +142,7 @@ namespace Blend.container {
          */
         protected windowResizeHandler() {
             var me = this;
-            me.updateLayout();
+            me.performLayout();
         }
 
     }

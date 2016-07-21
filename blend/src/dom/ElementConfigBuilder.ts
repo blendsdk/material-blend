@@ -47,7 +47,7 @@ namespace Blend.dom {
         public addChild(child: string | Blend.dom.ElementConfigBuilder | CreateElementInterface | Blend.dom.Element): Blend.dom.ElementConfigBuilder {
             var me = this;
             if (Blend.isInstanceOf(child, Blend.dom.ElementConfigBuilder) || Blend.isInstanceOf(child, Blend.dom.Element)) {
-                me.config.children.push(child);
+                me.config.children.push(<any>child);
                 return <Blend.dom.ElementConfigBuilder>child;
             } else {
                 var c = new Blend.dom.ElementConfigBuilder(<CreateElementInterface>child);
