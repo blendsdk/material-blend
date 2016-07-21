@@ -290,13 +290,7 @@ namespace Blend.container {
 
         protected updateLayout() {
             var me = this;
-            if (Blend.isInstanceOf(me.parent, Blend.container.Split)) {
-                setTimeout(function () {
-                    me.updateLayoutInternal();
-                }, 100);
-            } else {
-                me.updateLayoutInternal();
-            }
+            me.updateLayoutInternal();
         }
 
         public performPartialLayout() {
@@ -352,7 +346,7 @@ namespace Blend.container {
                     item.setVisible(false);
                 } else {
                     item.setVisible(true);
-                    item.setStyle({
+                    item.setBounds({
                         [me.sizeProperty]: posIndex[itemIndex].size,
                         [me.positionProperty]: posIndex[itemIndex].position,
                     });
