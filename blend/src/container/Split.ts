@@ -47,7 +47,9 @@ namespace Blend.container {
         protected ghostHandlerElement: Blend.dom.Element;
         protected ghostBounds: ElementBoundsInterface;
         protected currentButton: number;
-
+        /**
+         * @param  {SplitContainerInterface={}} config
+         */
         public constructor(config: SplitContainerInterface = {}) {
             super(config);
             var me = this;
@@ -126,16 +128,16 @@ namespace Blend.container {
         }
 
         /**
-         * Resizes the before and the after View by changes the View sizes
+         * Resize the before and the after View by changes the View sizes
          */
         private resizeChildren() {
             var me = this;
             if (me.displacement) { // needed on safari!!
-                var reszie = Math.abs(me.displacement);
+                var resize = Math.abs(me.displacement);
                 if (me.displacement > 0) {
-                    me.calculatedPositions[me.getActiveSplitterIndex()] += reszie;
+                    me.calculatedPositions[me.getActiveSplitterIndex()] += resize;
                 } else {
-                    me.calculatedPositions[me.getActiveSplitterIndex()] -= reszie;
+                    me.calculatedPositions[me.getActiveSplitterIndex()] -= resize;
                 }
                 me.performPartialLayout();
                 me.reflectCurrentPositions();
@@ -222,7 +224,7 @@ namespace Blend.container {
             super.postUpdateLayout();
             me.ghostElement.clearCssClass();
             me.ghostElement.addCssClass(["mb-split-ghost", "mb-split-ghost-" + me.splitterType]);
-            me.ghostHandlerElement.setHtml(me.splitterType === Blend.eSplitterType.vertical ? "more_vert" : "more_horiz")
+            me.ghostHandlerElement.setHtml(me.splitterType === Blend.eSplitterType.vertical ? "more_vert" : "more_horiz");
         }
 
         /**
@@ -272,7 +274,7 @@ namespace Blend.container {
         }
 
         /**
-         * Updates the original splitPositions based on the newly splitted
+         * Updates the original splitPositions based on the newly split
          * positions if the original values where given as string.
          */
         public reflectCurrentPositions() {
