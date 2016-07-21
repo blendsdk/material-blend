@@ -17,7 +17,8 @@
 namespace Blend.web {
 
     /**
-     * Base class for implementing an Application component
+     * A basic application implementation containing a mainView
+     * This class does not follow the material design specs!
      */
     export class Application extends Blend.application.Application {
 
