@@ -3,7 +3,7 @@ namespace Blend.container {
 
     /**
      * This class implements a container that can stack UI component on top each other.
-     * The hosted UI components are stackted into the bounds of this container.
+     * The hosted UI components are stacked into the bounds of this container.
      * The container also accept a padding config which is used to apply a padding
      * the active UI component
      */
@@ -31,9 +31,9 @@ namespace Blend.container {
             me.fireEvent("activeItemChanged", material);
         }
 
-        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
+        protected renderChildElement(material: Blend.material.Material): Blend.dom.Element {
             // Override to prevent the child component setting its own bounds
-            return materail.getElement({
+            return material.getElement({
                 setBounds: false
             });
         }

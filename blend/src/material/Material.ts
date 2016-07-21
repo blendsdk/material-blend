@@ -72,7 +72,7 @@ namespace Blend.material {
 
         /**
          * Elevates the z axes of this Component to a given elevation value 0 - 24
-         * 0 t be droped elevation and 24 the maxium provided in the spces
+         * 0 t be dropped elevation and 24 the maximum provided in the spaces
          */
         public elevate(value: number) {
             var me = this;
@@ -84,7 +84,7 @@ namespace Blend.material {
         }
 
         /**
-         * Drop the elevation to 0. This function is equivalent to elecate(0)
+         * Drop the elevation to 0. This function is equivalent to elevate(0)
          */
         public dropElevation() {
             var me = this;
@@ -153,7 +153,7 @@ namespace Blend.material {
         }
 
         /**
-         * Post updatelayout hook
+         * Post update layout hook
          */
         protected postUpdateLayout() {
 
@@ -246,7 +246,7 @@ namespace Blend.material {
         }
 
         /**
-         * Pre initilization hook
+         * Pre initialization hook
          */
         protected preInitialize() {
 
@@ -260,7 +260,7 @@ namespace Blend.material {
         }
 
         /**
-         * This function can be overriden to do custom initialization on this Material
+         * This function can be overridden to do custom initialization on this Material
          */
         public initialize() {
 
