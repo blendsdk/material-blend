@@ -38,9 +38,11 @@ namespace Blend {
         public Binder: Blend.binding.BindingProvider;
         public IE: boolean;
         public IEVersion: number;
+        public Device: Blend.Device;
 
         public constructor() {
             var me = this;
+            me.Device = new Blend.Device();
             me.Binder = new Blend.binding.BindingProvider();
         }
 

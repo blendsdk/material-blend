@@ -10,6 +10,7 @@
     "files": [
         "src/Enums.ts",
         "src/Blend.ts",
+        "src/Device.ts",
         "src/binding/BindingProvider.ts",
         "src/Runtime.ts",
         "src/common/Utils.ts",
