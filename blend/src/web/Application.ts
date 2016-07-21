@@ -68,10 +68,7 @@ namespace Blend.web {
 
         protected render(): Blend.dom.Element {
             var me = this,
-                el: Blend.dom.Element = super.render(),
-                cb = new Blend.dom.ElementConfigBuilder({
-                    cls: "mb-application"
-                });
+                el: Blend.dom.Element = super.render();
             me.mainView = me.createMainView(me.mainView || me.config.mainView);
             if (me.mainView) {
                 el.append(me.mainView.getElement({
