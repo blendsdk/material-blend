@@ -298,7 +298,7 @@ if (typeof console === "object") {
         "|_|  |_|\\__,_|\\__\\___|_|  |_|\\__,_|_| |____/|_|\\___|_| |_|\\__,_|\n\n" +
         "Hi there, fellow developer!\n\n" +
         "I hope this library can help you create great many applications.\n\n" +
-        "Thanks for visiting and if you happen to find any bugs please\n" +
-        "let me know. https://github.com/blendsdk/material-blend\n\n"
+        "Thanks for visiting and please let me know if you happen to find\n" +
+        "any bugs. https://github.com/blendsdk/material-blend\n\n"
     );
 }
