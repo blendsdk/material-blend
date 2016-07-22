@@ -122,8 +122,8 @@ namespace Blend.material {
                 } else {
                     me.performLayoutInternal();
                 }
+                me.layoutMask();
             }
-            me.layoutMask();
         }
 
         protected layoutMask() {
