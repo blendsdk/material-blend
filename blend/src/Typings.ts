@@ -319,6 +319,7 @@ interface MaterialApplicationInterface extends ApplicationInterface {
     bottomBar?: MaterialType;
     leftNavigation?: MaterialType;
     rightNavigation?: MaterialType;
+    actionButton?: MaterialType;
 }
 
 /**

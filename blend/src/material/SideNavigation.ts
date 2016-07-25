@@ -8,7 +8,7 @@ namespace Blend.material {
             super(config);
             var me = this;
             Blend.apply(me.config, <SideNavigationInterface>{
-                navigationStyle: config.navigationStyle || Blend.eNavigationStyle.auto
+                navigationStyle: config.navigationStyle || Blend.eNavigationStyle.responsive
             }, true, true);
         }
     }

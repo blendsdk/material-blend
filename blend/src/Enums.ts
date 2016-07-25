@@ -17,11 +17,9 @@
 namespace Blend {
 
     export enum eNavigationStyle {
-        fixedFullHeight = <any>"fixed-full-height",
-        fixedUnderAppBar = <any>"fixed-under-appbar",
-        slideOver = <any>"slide-over",
-        slideOverAndPush = <any>"slide-over-push",
-        auto = <any>"auto"
+        pinned = <any>"pinned",
+        ovarlay = <any>"ovarlay",
+        responsive = <any>"responsive"
     }
 
     export enum eFlowDirection {

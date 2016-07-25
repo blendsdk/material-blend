@@ -23,34 +23,97 @@ namespace Blend.material {
     export class Application extends Blend.application.Application {
 
         protected config: MaterialApplicationInterface;
-        protected mainView: Blend.material.Material;
+        // content?: MaterialType;
+        // applicationBar?: MaterialType;
+        // bottomBar?: MaterialType;
+        // leftNavigation?: MaterialType;
+        // rightNavigation?: MaterialType;
+        // actionButton?: MaterialType;
+
+        protected content: Blend.material.Material;
+        protected applicationBar: Blend.toolbar.ApplicationBar;
+        protected leftNavigation: Blend.material.SideNavigation;
+        protected rightNavigation: Blend.material.SideNavigation;
+
+        protected leftElement: Blend.dom.Element;
+        protected centerElement: Blend.dom.Element;
+        protected rightElement: Blend.dom.Element;
+
 
         public constructor(config: MaterialApplicationInterface = {}) {
             super(config);
             var me = this;
+            Blend.apply(me.config, <MaterialApplicationInterface>{
+                content: Blend.isNullOrUndef(config.content) ? null : config.content,
+                applicationBar: Blend.isNullOrUndef(config.applicationBar) ? null : config.applicationBar,
+                bottomBar: Blend.isNullOrUndef(config.bottomBar) ? null : config.bottomBar,
+                leftNavigation: Blend.isNullOrUndef(config.leftNavigation) ? null : config.leftNavigation,
+                rightNavigation: Blend.isNullOrUndef(config.rightNavigation) ? null : config.rightNavigation,
+                actionButton: Blend.isNullOrUndef(config.actionButton) ? null : config.actionButton,
+            }, true, true);
+            me.createContent();
+            me.createApplicationBar();
+            // me.createBottomBar();
+            me.createLeftNavigation();
+            me.createRightNavigation();
+            // me.createActionButton();
         }
 
-        // protected createMainView(config: MaterialType): Blend.material.Material {
-        //     var me = this;
-        //     if (config) {
+        protected createContent() {
+            var me = this;
+            me.content = me.createComponentInternal<Blend.material.Material>(me.config.content);
+            if (!me.content) {
+                throw new Error("Unable to create a content component");
+            }
+        }
 
-        //         var view = Blend.isInstanceOf(config, Blend.material.Material)
-        //             ? <Blend.material.Material>config
-        //             : <Blend.material.Material>Blend.createComponent(config);
+        protected createApplicationBar() {
+            var me = this;
+            me.applicationBar = me.createComponentInternal<Blend.toolbar.ApplicationBar>(me.config.applicationBar);
+            if (!me.applicationBar) {
+                me.applicationBar = me.createComponentInternal<Blend.toolbar.ApplicationBar>({
+                    ctype: "mb.appbar"
+                });
+            } else if (!Blend.isInstanceOf(me.applicationBar, Blend.toolbar.ApplicationBar)) {
+                throw new Error("Unable to create an ApplicationBar component");
+            }
+        }
 
-        //         view.setContext(me.context);
-        //         view.setProperty("parent", me);
-        //         if (view.getProperty("useParentController", true) === true) {
-        //             view.addController(me.controllers);
-        //         }
-        //         if (me.config.fitMainView === true) {
-        //             view.addCssClass("mb-mainview-fit");
-        //         }
-        //         return view;
-        //     } else {
-        //         return null;
-        //     }
-        // }
+        protected createLeftNavigation() {
+            var me = this;
+            me.leftNavigation = me.createComponentInternal<Blend.material.SideNavigation>(me.config.leftNavigation);
+            if (me.leftNavigation && !Blend.isInstanceOf(me.leftNavigation, Blend.material.SideNavigation)) {
+                throw new Error("Invalid component type for left navigation");
+            }
+        }
+
+        protected createRightNavigation() {
+            var me = this;
+            me.rightNavigation = me.createComponentInternal<Blend.material.SideNavigation>(me.config.rightNavigation);
+            if (me.rightNavigation && !Blend.isInstanceOf(me.rightNavigation, Blend.material.SideNavigation)) {
+                throw new Error("Invalid component type for right navigation");
+            }
+        }
+
+        private createComponentInternal<T>(config: MaterialType): T {
+            var me = this;
+            if (config) {
+                // create the view anyway, we will check the type later
+                var view = Blend.isInstanceOf(config, Blend.material.Material)
+                    ? <Blend.material.Material>config
+                    : <Blend.material.Material>Blend.createComponent(config);
+
+                view.setContext(me.context);
+                view.setProperty("parent", me);
+                if (view.getProperty("useParentController", true) === true) {
+                    view.addController(me.controllers);
+                }
+
+            } else {
+                return null;
+            }
+        }
+
 
         protected postInitialize() {
             var me = this;
@@ -62,21 +125,6 @@ namespace Blend.material {
             // me.mainView.setInLayoutContext(true);
             // me.mainView.performLayout();
             // me.mainView.setInLayoutContext(false);
-        }
-
-        protected render(): Blend.dom.Element {
-            var me = this,
-                el: Blend.dom.Element = super.render();
-            //     cb = new Blend.dom.ElementConfigBuilder({
-            //         cls: "mb-application"
-            //     });
-            // me.mainView = me.createMainView(me.mainView || me.config.mainView);
-            // if (me.mainView) {
-            //     el.append(me.mainView.getElement({
-            //         setBounds: me.config.fitMainView === true ? false : true,
-            //     }));
-            // }
-            return el;
         }
 
     }

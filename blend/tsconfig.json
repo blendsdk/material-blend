@@ -49,6 +49,7 @@
         "src/material/effect/Ripple.ts",
         "src/button/Button.ts",
         "src/toolbar/Toolbar.ts",
+        "src/toolbar/ApplicationBar.ts",
         "src/Version.ts"
     ]
 }
