@@ -73,17 +73,17 @@ namespace Blend.material {
                 };
             }
             me.applicationBar = Blend.createComponent<Blend.toolbar.ApplicationBar>(me.config.applicationBar);
-            if (!me.applicationBar || Blend.isInstanceOf(me.applicationBar, Blend.toolbar.ApplicationBar)) {
+            if (!me.applicationBar || !Blend.isInstanceOf(me.applicationBar, Blend.toolbar.ApplicationBar)) {
                 throw new Error("Unable to create or an invalid ApplicationBar configuration!");
             }
         }
 
         protected createContent() {
             var me = this;
-            me.content = Blend.createComponent<Blend.material.Material>(me.config.content);
-            if (!me.content) {
+            if (!me.config.content) {
                 throw new Error("Unable to create a content component!");
             }
+            me.content = Blend.createComponent<Blend.material.Material>(me.config.content);
         }
 
         protected render(): Blend.dom.Element {
