@@ -227,6 +227,10 @@ interface MaterialInterface extends MvcViewInterface {
     height?: number | string;
     flex?: number | FlexItemInterface;
     grid?: GridColumnConfigInterface;
+    /**
+     * Applied only when this component is used as side navigation in an material application
+     */
+    navigationConfig?: SideNavigationInterface;
     elevation?: number;
 }
 
@@ -307,7 +311,6 @@ interface WebApplicationInterface extends ApplicationInterface {
 
 interface SideNavigationInterface extends MaterialInterface {
     navigationStyle?: Blend.eNavigationStyle;
-    component?: MaterialType;
 }
 
 /**
