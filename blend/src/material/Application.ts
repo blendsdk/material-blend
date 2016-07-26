@@ -89,7 +89,7 @@ namespace Blend.material {
         protected render(): Blend.dom.Element {
             var me = this,
                 cb = new Blend.dom.ElementConfigBuilder(<CreateElementInterface>{
-                    cls: "mb-application mb-material-application",
+                    cls: "mb-material-application",
                     children: [
                         {
                             tag: "nav",

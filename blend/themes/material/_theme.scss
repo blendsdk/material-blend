@@ -46,6 +46,7 @@ $background-color: $global-background-color
         @include stack-container();
         @include split-container();
         @include blend-application-application();
+        @include blend-material-application();
 
         @include blend-button-struct();
         @include blend-button-flat();

@@ -21,4 +21,10 @@ $default-application-bar-size: 64px;
 
 @mixin blend-material-application() {
 
+    .mb-material-application {
+        @include display-flex;
+        @include flex-direction(row);
+        @include flex-wrap(not);
+    }
+
 }
