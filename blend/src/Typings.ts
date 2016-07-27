@@ -209,6 +209,11 @@ interface GridColumnConfigInterface extends DictionaryInterface {
  */
 type MaterialType = string | ComponentClass | MaterialInterface | ContainerInterface | Blend.material.Material;
 
+interface SideNavigationConfig {
+    open?: boolean;
+    modalWhenOpen?: boolean;
+}
+
 /**
  * Interface for configuring a Material
  */
@@ -230,7 +235,7 @@ interface MaterialInterface extends MvcViewInterface {
     /**
      * Applied only when this component is used as side navigation in an material application
      */
-    navigationConfig?: SideNavigationInterface;
+    navigationConfig?: SideNavigationConfig;
     elevation?: number;
 }
 
@@ -307,10 +312,6 @@ interface ApplicationInterface extends MaterialInterface {
  */
 interface WebApplicationInterface extends ApplicationInterface {
     fitMainView?: boolean;
-}
-
-interface SideNavigationInterface extends MaterialInterface {
-    navigationStyle?: Blend.eNavigationStyle;
 }
 
 /**

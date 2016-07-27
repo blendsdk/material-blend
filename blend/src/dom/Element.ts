@@ -59,11 +59,12 @@ namespace Blend.dom {
                 me.setData("maskid", mId);
                 document.body.appendChild(me.maskEl.getEl());
             }
-            me.maskEl.setBounds({
+            me.maskEl.setStyle({
                 top: bounds.top,
                 left: bounds.left,
                 width: bounds.width,
-                height: bounds.height
+                height: bounds.height,
+                "z-index": me.el.style.zIndex
             });
             me.maskEl.addCssClass("mb-mask-visible");
             me.addCssClass("mb-masked");

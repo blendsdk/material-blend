@@ -16,12 +16,6 @@
 
 namespace Blend {
 
-    export enum eNavigationStyle {
-        pinned = <any>"pinned",
-        ovarlay = <any>"ovarlay",
-        responsive = <any>"responsive"
-    }
-
     export enum eFlowDirection {
         horizontal = <any>"horizontal",
         vertical = <any>"vertical"

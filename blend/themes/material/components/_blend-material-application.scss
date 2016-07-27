@@ -24,7 +24,20 @@ $default-application-bar-size: 64px;
     .mb-material-application {
         @include display-flex;
         @include flex-direction(row);
-        @include flex-wrap(not);
+        @include flex-wrap(nowrap);
+
+        & > .content {
+            @include flex(1);
+        }
+
+        & > .leftnav , .rightnav {
+            @include translateZ(0);
+            @include transform-style(preserve-3d);
+            @include transition-delay(0.1s);
+            @include transition-duration(0.1s);
+            @include transition-property(transform,left,margin-left,margin-right);
+            @include transition-timing-function(cubic-bezier(0.4, 0, 0.2, 1));
+        }
     }
 
 }
