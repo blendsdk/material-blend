@@ -21,13 +21,17 @@ $default-application-bar-size: 64px;
 
 @mixin blend-material-application() {
 
-    .mb-material-application {
-        @include display-flex;
-        @include flex-direction(row);
-        @include flex-wrap(nowrap);
+    .mb-mapp {
+
+        & > .mb-appbar {
+            display: block;
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+        }
 
         & > .content {
-            @include flex(1);
         }
 
         & > .leftnav , .rightnav {

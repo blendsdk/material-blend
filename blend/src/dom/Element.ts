@@ -317,7 +317,7 @@ namespace Blend.dom {
          * Appends a child Element to this Element
          */
         public append(child: Blend.dom.Element): Blend.dom.Element {
-            this.el.appendChild((child.getEl()));
+            this.el.appendChild(child.getEl());
             return child;
         }
 

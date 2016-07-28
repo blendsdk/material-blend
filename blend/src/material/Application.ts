@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+/**
+ * Interface for configuring a Material Application
+ */
+interface MaterialApplicationInterface extends ApplicationInterface {
+    content?: MaterialType;
+    applicationBar?: MaterialType;
+    bottomBar?: MaterialType;
+    leftNavigation?: MaterialType;
+    rightNavigation?: MaterialType;
+    actionButton?: MaterialType;
+}
+
 namespace Blend.material {
 
     /**
@@ -31,13 +43,6 @@ namespace Blend.material {
         protected bottomBar: Blend.material.Material;
         protected actionButton: Blend.button.Button;
 
-        protected leftNavElement: Blend.dom.Element;
-        protected rightNavElement: Blend.dom.Element;
-        protected contentElement: Blend.dom.Element;
-
-        private lastOrientation: Blend.eDeviceOrientation;
-
-
         public constructor(config: MaterialApplicationInterface = {}) {
             super(config);
             var me = this;
@@ -51,103 +56,10 @@ namespace Blend.material {
                 responsive: true
             }, true, true);
 
-            me.leftNavElement = null;
-            me.rightNavElement = null;
-            me.contentElement = null;
             me.createContent();
             me.createApplicationBar();
             me.createNevigations();
             me.createActionButton();
-        }
-
-        private orientationChaned() {
-            var me = this,
-                result: boolean;
-            if (me.lastOrientation === null) {
-                me.lastOrientation = Blend.Runtime.getOrientation();
-            }
-            result = me.lastOrientation !== Blend.Runtime.getOrientation();
-            me.lastOrientation = Blend.Runtime.getOrientation(); // update on call everytime
-            return result;
-        }
-
-        protected windowResizeHandler() {
-            var me = this;
-            me.performLayout();
-        }
-
-        private updateLayoutLeft(style: string) {
-            var me = this;
-            if (me.leftNavElement) {
-                var navBounds = me.leftNavElement.getBounds();
-
-                if (style !== "m") {
-                    me.contentElement.unmask();
-                }
-
-                if (style === "p") {
-                    me.leftNavElement.setStyle({
-                        "margin-left": null
-                    });
-                    me.contentElement.setStyle({
-                        "margin-left": null,
-                        "z-index": null
-                    });
-                } else if (style === "o" || style === "m") {
-                    me.leftNavElement.setStyle({
-                        "margin-left": 0
-                    });
-                    me.contentElement.setStyle({
-                        "margin-left": -1 * <number>navBounds.width,
-                        "z-index": -2
-                    });
-                    if (style === "m") {
-                        Blend.delay(10, me.contentElement, me.contentElement.mask);
-                    }
-                } else if (style === "c") {
-                    me.leftNavElement.setStyle({
-                        "margin-left": -1 * <number>navBounds.width
-                    });
-                    me.contentElement.setStyle({
-                        "margin-left": null,
-                        "z-index": null
-                    });
-                }
-            } else {
-                me.contentElement.setStyle({
-                    margin: 0
-                });
-            }
-        }
-
-        public updateLayout() {
-            var me = this,
-                deviceSize = Blend.Runtime.getDeviceSize();
-            switch (deviceSize) {
-                case Blend.eDeviceSize.large:
-                    if (me.leftNavigation.isOpen() === null || me.leftNavigation.isOpen() === true) {
-                        me.updateLayoutLeft("p");
-                    } else {
-                        me.updateLayoutLeft("c");
-                    }
-                    break;
-                case Blend.eDeviceSize.medium:
-                    if (me.leftNavigation.isOpen()) {
-                        me.updateLayoutLeft(me.leftNavigation.isModal() ? "m" : "o");
-                    } else {
-                        me.updateLayoutLeft("c");
-                    }
-                    break;
-                case Blend.eDeviceSize.small:
-                    if (me.leftNavigation.isOpen()) {
-                        me.updateLayoutLeft(me.leftNavigation.isModal() ? "m" : "o");
-                    } else {
-                        me.updateLayoutLeft("c");
-                    }
-                    break;
-                default:
-                    break;
-            }
         }
 
         protected createActionButton() {
@@ -190,9 +102,15 @@ namespace Blend.material {
                 };
             }
             me.applicationBar = Blend.createComponent<Blend.toolbar.ApplicationBar>(me.config.applicationBar);
+            me.applicationBar.addCssClass("mb-appbar");
             if (!me.applicationBar || !Blend.isInstanceOf(me.applicationBar, Blend.toolbar.ApplicationBar)) {
                 throw new Error("Unable to create or an invalid ApplicationBar configuration!");
             }
+        }
+
+        protected postInitialize() {
+            var me = this;
+            me.applicationBar.doInitialize();
         }
 
         protected createContent() {
@@ -203,32 +121,30 @@ namespace Blend.material {
             me.content = Blend.createComponent<Blend.material.Material>(me.config.content);
         }
 
+
+        protected finalizeRender(config: FinalizeRenderConfig = {}) {
+            var me = this;
+            super.finalizeRender(config);
+            Blend.getElement(document.body).scrollState(Blend.eScrollState.vertical);
+        }
+
+        protected updateLayout() {
+            var me = this;
+            me.applicationBar.performLayout();
+        }
+
         protected render(): Blend.dom.Element {
             var me = this,
-                el: Blend.dom.Element = Blend.createElement({
-                    cls: "mb-material-application"
+                cb = new Blend.dom.ElementConfigBuilder(<CreateElementInterface>{
+                    cls: "mb-mapp",
+                    children: [
+                        me.applicationBar.getElement(),
+                        {
+                            cls: "content"
+                        }
+                    ]
                 });
-            if (me.leftNavigation) {
-                me.leftNavElement = me.leftNavigation.getElement();
-                me.leftNavElement.addCssClass("leftnav");
-                el.append(me.leftNavElement);
-            }
-            if (me.content) {
-                me.contentElement = Blend.createElement({
-                    cls: "content",
-                    text: "This is the content",
-                    style: {
-                        "background-color": "yellow"
-                    }
-                });
-                el.append(me.contentElement);
-            }
-            if (me.rightNavigation) {
-                me.rightNavElement = me.rightNavigation.getElement();
-                me.rightNavElement.addCssClass("rightnav");
-                el.append(me.rightNavElement);
-            }
-            return el;
+            return Blend.createElement(cb);
         }
     }
 }

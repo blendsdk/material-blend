@@ -13,10 +13,11 @@ namespace Blend.toolbar {
             super(Blend.apply(config, <BoxContainerInterface>{
                 align: Blend.eBoxAlign.center,
                 pack: Blend.eBoxPack.start,
+                type: "raised",
                 defaults: Blend.apply(config.defaults || {}, <ButtonInterface>{
                     hoverFeedback: false,
                     activeFeedback: false
-                })
+                }, true, true)
             }));
             var me = this;
         }

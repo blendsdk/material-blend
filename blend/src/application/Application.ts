@@ -37,7 +37,7 @@ namespace Blend.application {
             me.config.theme = config.theme || "default";
             me.config.style = {}; // remove use provided styles
             me.setContext(new Blend.mvc.Context());
-            me.addCssClass("mb-application");
+            me.addCssClass("mb-app");
         }
 
         /**
@@ -89,14 +89,11 @@ namespace Blend.application {
         }
 
         protected render(): Blend.dom.Element {
-            var me = this,
-                cb = new Blend.dom.ElementConfigBuilder({
-                    cls: "mb-application"
-                });
-            return Blend.dom.Element.create(cb);
+            var me = this;
+            return Blend.createElement({});
         }
 
-        protected finalizeRender() {
+         protected finalizeRender(config: FinalizeRenderConfig = {}) {
             var me = this;
             super.finalizeRender({
                 setBounds: false,

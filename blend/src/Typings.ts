@@ -315,18 +315,6 @@ interface WebApplicationInterface extends ApplicationInterface {
 }
 
 /**
- * Interface for configuring a Material Application
- */
-interface MaterialApplicationInterface extends ApplicationInterface {
-    content?: MaterialType;
-    applicationBar?: MaterialType;
-    bottomBar?: MaterialType;
-    leftNavigation?: MaterialType;
-    rightNavigation?: MaterialType;
-    actionButton?: MaterialType;
-}
-
-/**
  * Interface for configuring a Button
  */
 interface ButtonInterface extends MaterialInterface {
