@@ -37,7 +37,7 @@ namespace Blend.toolbar {
             var me = this,
                 deviceSize: Blend.eDeviceSize = Blend.Runtime.getDeviceSize(),
                 or: Blend.eDeviceOrientation = Blend.Runtime.getOrientation(),
-                height: number;
+                height: string;
 
             /*
               Mobile Landscape: 48dp
@@ -46,22 +46,19 @@ namespace Blend.toolbar {
             */
 
             if (deviceSize === Blend.eDeviceSize.large) {
-                height = 64; // desktop, tablet lanscape
+                height = "large"; // desktop, tablet lanscape
             } else if (deviceSize === Blend.eDeviceSize.medium) {
                 if (or === Blend.eDeviceOrientation.landscape) {
-                    height = 48; // mobile landscape
+                    height = "small"; // mobile landscape
                 } else {
-                    height = 64; // tablet portait
+                    height = "large"; // tablet portait
                 }
             } else if (deviceSize === Blend.eDeviceSize.small) {
-                height = 56; // mobile portait
+                height = "medium"; // mobile portait
             }
 
-            me.setBounds({
-                height: height
-            });
-
-            console.log(deviceSize, or, height);
+            me.element.removeCssClassLike("mb-toolbar-height");
+            me.element.addCssClass("mb-toolbar-height-" + height);
 
             super.updateLayout();
         }
