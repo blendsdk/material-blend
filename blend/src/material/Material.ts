@@ -33,10 +33,12 @@ namespace Blend.material {
         protected boundsCache: string;
 
         protected windowResizeListener: EventListener;
+        protected themePrefix: string;
 
         public constructor(config: MaterialInterface = {}) {
             super(config);
             var me = this;
+            me.themePrefix = "";
             me.isInitialized = false;
             me.isInLayoutContext = false;
             me.parent = config.parent || null;
@@ -54,18 +56,9 @@ namespace Blend.material {
                 flex: null,
                 elevation: null,
                 responsive: false,
+                theme: null,
                 responseTo: Blend.eResponsiveTrigger.windowSize
             }, config, true, true);
-            me.addCssClass(me.config.css || []);
-            me.setStyle(me.config.style || {});
-            me.setVisible(me.config.visible === true);
-            me.setBounds({
-                top: me.config.top,
-                left: me.config.left,
-                width: me.config.width,
-                height: me.config.height
-            });
-            me.elevate(config.elevation || null);
             me.canLayout = true;
             me.boundsCache = null;
         }
@@ -455,6 +448,23 @@ namespace Blend.material {
         }
 
         /**
+         * Sets a theme for this Component
+         */
+        public setTheme(theme: string) {
+            var me = this;
+            theme = theme || "";
+            if (theme !== "") {
+                if (me.isRendered) {
+                    var prefix = (me.themePrefix || "");
+                    prefix += (prefix !== "" ? "-" : "");
+                    me.addCssClass(prefix + theme);
+                } else {
+                    me.config.theme = theme;
+                }
+            }
+        }
+
+        /**
          *Helps configuring the this Material before the rendering cycle is complete
          */
         protected finalizeRender(config: FinalizeRenderConfig = {}) {
@@ -463,7 +473,8 @@ namespace Blend.material {
                     setCss: true,
                     setBounds: true,
                     setStyles: true,
-                    setElevation: true
+                    setElevation: true,
+                    setTheme: true
                 }, config, true, true);
             if (cfg.setCss === true) {
                 me.addCssClass(me.config.css);
@@ -485,6 +496,9 @@ namespace Blend.material {
             }
             if (cfg.setElevation === true && !Blend.isNullOrUndef(me.config.elevation)) {
                 me.elevate(me.config.elevation);
+            }
+            if (cfg.setTheme === true) {
+                me.setTheme(me.config.theme);
             }
             if (Blend.DEBUG === true) {
                 var id = "m" + Blend.newID();

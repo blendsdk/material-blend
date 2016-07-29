@@ -173,6 +173,7 @@ interface FinalizeRenderConfig {
     setBounds?: boolean;
     setStyles?: boolean;
     setElevation?: boolean;
+    setTheme?: boolean;
 }
 
 /**
@@ -223,6 +224,7 @@ interface MaterialInterface extends MvcViewInterface {
     parent?: Blend.material.Material;
     useParentController?: boolean;
     css?: string | Array<string>;
+    theme?: string;
     style?: StyleInterface;
     visible?: boolean;
     top?: number;
@@ -296,6 +298,20 @@ interface GridContainerInterface extends ContainerInterface {
 interface FlowContainerInterface extends ContainerInterface {
     scrollState?: Blend.eScrollState;
     direction?: Blend.eFlowDirection;
+}
+
+/**
+ * Interface for configuring a Toolbar
+ */
+interface ToolbarInterface extends ContainerInterface {
+    type?: Blend.eToolbarType;
+}
+
+/**
+ * Interface for configuring an ApplicationBar
+ */
+
+interface ApplicationBarInterface extends ContainerInterface {
 }
 
 /**

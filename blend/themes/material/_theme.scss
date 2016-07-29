@@ -98,19 +98,11 @@ $background-color: $global-background-color
         //     );
 
 
+        @include blend-applicationbar-struct();
+        @include blend-toolbar-struct();
 
-        @include blend-toolbar-theme(
-        $name : "raised",
-            $color: $color-white,
-            $flat: false
-            );
-
-        @include blend-toolbar-theme(
-        $name : "flat",
-            $color: $color-white,
-            $flat: true
-            );
-
+        @include blend-toolbar-theme($name : "default", $color: $color-white);
+        @include blend-toolbar-theme($name : "appbar",  $color: $color-primary);
 
         .paper {
             @include elevate($elevate-1dp);

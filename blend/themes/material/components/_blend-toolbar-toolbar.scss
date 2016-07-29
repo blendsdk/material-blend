@@ -16,33 +16,36 @@
 
 $struct-default-toolbar-height: rem(4.800);
 
-@mixin toolbar(
-$name,
-$elevation,
-$toolbar-color,
-$toolbar-height
-) {
+@mixin blend-toolbar-struct() {
 
-    .mb-toolbar-#{$name} {
-        @include elevate($elevation);
-        background-color: $toolbar-color;
-        height: $toolbar-height;
-        @content
+    .mb-toolbar {
+            @include transform-style(preserve-3d);
+            @include transition-delay(0.02s);
+            @include transition-duration(0.02s);
+            @include transition-property(box-shadow,left,right,height);
+            @include transition-timing-function(cubic-bezier(0.4, 0, 0.2, 1));
+    }
+
+    .mb-toolbar-flat {
+        @include elevate($elevate-0dp);
+    }
+
+    .mb-toolbar-raised {
+        @include elevate($elevate-2dp);
+    }
+
+    .mb-toolbar-appbar {
+        @include elevate($elevate-3dp);
     }
 
 }
 
 @mixin blend-toolbar-theme(
 $name,
-$color,
-$flat
+$color
 ) {
-    @include toolbar(
-    $name: $name,
-        $elevation:if($flat, $elevate-0dp, $elevate-2dp),
-        $toolbar-color: $color,
-        $toolbar-height: $struct-default-toolbar-height
-        ) {
-        @include border-radius(if($flat, 0, rem(0.2)));
+    .mb-toolbar-#{$name} {
+        background-color: $color;
+        @content
     }
 }

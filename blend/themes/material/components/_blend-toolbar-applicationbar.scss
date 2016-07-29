@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-@import "components/blend-material-splitter";
-@import "components/blend-container-fit";
-@import "components/blend-container-stack";
-@import "components/blend-container-box";
-@import "components/blend-container-split";
-@import "components/blend-container-grid";
-@import "components/blend-container-flow";
-@import "components/blend-application-application";
-@import "components/blend-material-application";
-@import "components/blend-button-button";
-@import "components/blend-toolbar-toolbar";
-@import "components/blend-toolbar-applicationbar";
+ @mixin blend-applicationbar-struct() {
+
+     .mb-appbar {
+         position: fixed;
+         top: 0;
+         left:0;
+         right: 0;
+     }
+
+ }

@@ -16,6 +16,12 @@
 
 namespace Blend {
 
+    export enum eToolbarType {
+        raised = <any>"raised",
+        flat = <any>"flat",
+        appbar = <any>"appbar"
+    }
+
     export enum eFlowDirection {
         horizontal = <any>"horizontal",
         vertical = <any>"vertical"
