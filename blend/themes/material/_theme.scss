@@ -101,8 +101,9 @@ $background-color: $global-background-color
         @include blend-applicationbar-struct();
         @include blend-toolbar-struct();
 
-        @include blend-toolbar-theme($name : "default", $color: $color-white);
-        @include blend-toolbar-theme($name : "appbar",  $color: $color-primary);
+        @include blend-toolbar-theme($name : "default", $color: $color-white, $icon-color: $color-grey-c500 );
+
+        @include blend-toolbar-theme($name : "appbar",  $color: $theme-appbar-color, $icon-color: $theme-appbar-icon-color);
 
         .paper {
             @include elevate($elevate-1dp);

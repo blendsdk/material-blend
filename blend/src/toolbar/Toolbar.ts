@@ -37,7 +37,7 @@ namespace Blend.toolbar {
 
         protected finalizeRender(config: FinalizeRenderConfig = {}) {
             var me = this;
-            me.addCssClass("mb-toolbar-" + me.config.type);
+            me.addCssClass("mb-toolbar mb-toolbar-" + me.config.type);
             super.finalizeRender(config);
         }
     }

@@ -20,7 +20,6 @@ $struct-default-toolbar-height: rem(4.800);
 
     .mb-toolbar {
             @include transform-style(preserve-3d);
-            @include transition-delay(0.02s);
             @include transition-duration(0.02s);
             @include transition-property(box-shadow,left,right,height);
             @include transition-timing-function(cubic-bezier(0.4, 0, 0.2, 1));
@@ -42,10 +41,21 @@ $struct-default-toolbar-height: rem(4.800);
 
 @mixin blend-toolbar-theme(
 $name,
-$color
+$color,
+$icon-color
 ) {
     .mb-toolbar-#{$name} {
         background-color: $color;
+
+        & > .mb-box-horizontal {
+            & > .mb-btn {
+                & > .mb-btn-inner {
+                    & > .mb-btn-icon {
+                        color:$icon-color
+                    }
+                }
+            }
+        }
         @content
     }
 }
