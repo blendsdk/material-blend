@@ -19,10 +19,12 @@ namespace Blend.toolbar {
     export class Toolbar extends Blend.container.HorizontalBox {
 
         protected config: ToolbarInterface;
+        public title: Blend.toolbar.Title;
 
         public constructor(config: ToolbarInterface = {}) {
             super(Blend.apply(config, <BoxContainerInterface>{
                 theme: config.theme || "default",
+                title: config.title || null,
                 align: Blend.eBoxAlign.center,
                 pack: Blend.eBoxPack.start,
                 type: config.type || Blend.eToolbarType.flat,
@@ -33,11 +35,25 @@ namespace Blend.toolbar {
             }));
             var me = this;
             me.themePrefix = "mb-toolbar";
+            me.createToolbarTitle();
+        }
+
+        protected createToolbarTitle() {
+            var me = this;
+            me.title = new Blend.toolbar.Title({ title: me.config.title });
+            me.insertAt(0, me.title);
+        }
+
+        protected renderChildElement(materail: Blend.material.Material): Blend.dom.Element {
+            materail.addCssClass("mb-toolbar-item");
+            return materail.getElement();
         }
 
         protected finalizeRender(config: FinalizeRenderConfig = {}) {
             var me = this;
-            me.addCssClass("mb-toolbar mb-toolbar-" + me.config.type);
+            me.addCssClass("mb-toolbar");
+            me.addCssClass("mb-toolbar-" + me.config.type);
+            me.title.setTitle(me.config.title);
             super.finalizeRender(config);
         }
     }
