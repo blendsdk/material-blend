@@ -17,7 +17,7 @@
 /**
  * Structure variables
  */
-$m-font-family: Roboto, 'Helvetica Neue', sans-serif !default;
+$m-font-family: "Roboto","Helvetica","Arial",sans-serif;
 
 $m-display-4-font-size: rem(11.20) !default;
 $m-display-3-font-size: rem(5.600) !default;
@@ -74,7 +74,7 @@ $m-caption-font-size:   rem(1.300) !default;
     }
 
     h5 {
-        @include typo-style($m-title-font-size, 500, -0.005em);
+        @include typo-style($m-title-font-size, 400, .02em);
     }
 
     h6 {

@@ -26,7 +26,8 @@ $all-raised-buttons: join($fab-buttons,$raised-buttons);
 $struct-button-min-width: rem(8.800) !default;
 $struct-button-height: rem(3.60);
 $struct-button-padding: 0 rem(1.600) !default;
-$struct-button-icon-only-padding: rem(0.600) !default;
+$struct-button-icon-only-margin: rem(0.200) !default;
+$struct-button-icon-only-padding: rem(0.800) !default;
 $struct-button-margin: rem(0.600) rem(0.800) !default;
 $struct-button-border-radius: rem(0.2) !default;
 // FAB
@@ -71,7 +72,7 @@ $struct-fab-position-small: rem(1.600);
 }
 
 @mixin blend-button-icon-only() {
-    margin: rem(0.4);
+    margin: $struct-button-icon-only-margin;
     padding: $struct-button-icon-only-padding;
     min-width: 0;
     line-height: 0;

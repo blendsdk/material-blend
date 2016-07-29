@@ -35,6 +35,12 @@
 @import "components";
 @import "theme";
 
+$struct-keyline-large: 2.4;
+$struct-keyline-medium: 2.4;
+$struct-keyline-small: 1.6;
+
+$struct-content-start: 5.6;
+
 [data-fitted="true"] {
     display: block;
     position: relative;

@@ -16,6 +16,36 @@
 
 $struct-default-toolbar-height: rem(4.800);
 
+@mixin toolbar-size(
+    $name,
+    $height,
+    $keyline
+) {
+    .mb-toolbar-height-#{$name} {
+        height:rem($height);
+        & > .mb-box-horizontal {
+
+            & > .mb-toolbar-item:first-child {
+                margin-left:rem($keyline);
+            }
+
+            & > .mb-toolbar-item:last-child {
+                margin-right:rem($keyline);
+            }
+
+            & > .mb-toolbar-title:first-child {
+                margin-left: rem($keyline + $struct-content-start);
+            }
+
+            & > .mb-toolbar-title:nth-child(2) {
+
+                margin-left: rem(($keyline + $struct-content-start) - ($keyline + 4.0)); // 4.0 assuming 40px of the first child
+            }
+
+        }
+    }
+}
+
 @mixin blend-toolbar-struct() {
 
     .mb-toolbar {
@@ -23,7 +53,20 @@ $struct-default-toolbar-height: rem(4.800);
             @include transition-duration(0.02s);
             @include transition-property(box-shadow,left,right,height);
             @include transition-timing-function(cubic-bezier(0.4, 0, 0.2, 1));
+
+        & > .mb-box-horizontal {
+            & > .mb-toolbar-title {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                @include flex-shrink(1 !important);
+            }
+        }
     }
+
+    @include toolbar-size("large", 6.4, $struct-keyline-large);
+    @include toolbar-size("medium", 5.6, $struct-keyline-medium);
+    @include toolbar-size("small", 4.8, $struct-keyline-small);
 
     .mb-toolbar-flat {
         @include elevate($elevate-0dp);
@@ -51,11 +94,21 @@ $icon-color
             & > .mb-btn {
                 & > .mb-btn-inner {
                     & > .mb-btn-icon {
-                        color:$icon-color
+                        color:$icon-color;
                     }
                 }
             }
+
+            & > .mb-toolbar-title {
+                color:$icon-color;
+                @include typo-style($m-title-font-size, 400, .02em);
+            }
+
+            & > .mb-toolbar-title-spacer {
+                margin-left:rem(7.2);
+            }
         }
+
         @content
     }
 }

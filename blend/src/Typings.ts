@@ -305,13 +305,16 @@ interface FlowContainerInterface extends ContainerInterface {
  */
 interface ToolbarInterface extends ContainerInterface {
     type?: Blend.eToolbarType;
+    title?: string;
 }
 
 /**
  * Interface for configuring an ApplicationBar
  */
 
-interface ApplicationBarInterface extends ContainerInterface {
+interface ApplicationBarInterface extends ToolbarInterface {
+    items?: Array<MaterialType>;
+    defaults?: MaterialInterface;
 }
 
 /**
