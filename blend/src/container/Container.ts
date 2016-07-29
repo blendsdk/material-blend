@@ -160,6 +160,16 @@ namespace Blend.container {
             return list;
         }
 
+        public insertAt(index: number, item: MaterialType | Array<MaterialType>): Container {
+            var me = this,
+                items = me.items;
+            me.items = [];
+            me.add(item);
+            items.splice(index, 0, me.items[0]);
+            me.items = items;
+            return me;
+        }
+
         public add(item: MaterialType | Array<MaterialType>): Container {
             var me = this,
                 docFrag: DocumentFragment = document.createDocumentFragment(),
