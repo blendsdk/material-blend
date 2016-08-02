@@ -15,6 +15,7 @@
         "testapp/ConsoleLogger.ts",
         "testapp/TestApp.ts",
         "tests/100000-sanity-tests.ts",
+        "tests/100011-blend-collection-tests.ts",
         "tests/100010-blend-tests.ts",
         "tests/100020-runtime-tests.ts",
         "tests/100030-element-tests.ts",

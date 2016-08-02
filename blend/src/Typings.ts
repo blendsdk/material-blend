@@ -36,6 +36,21 @@ interface LoggerInterface {
 }
 
 /**
+ * Interface for implementing a class that can act as a collection
+ */
+interface CollectionProviderInterface<T> {
+    clearItems(): void;
+    countItems(): number;
+    indexOf(item: T): number;
+    getItems(): Array<T>;
+    itemAtIndex(index: number): T;
+    add(item: T | Array<T>): void;
+    remove(item: T | number): void;
+    insertAt(index: number, item: T): void;
+    forEach(callback: (item: T, index?: number) => void): void;
+}
+
+/**
  * Interface for configuring a dictioany
  */
 interface DictionaryInterface {
@@ -300,22 +315,22 @@ interface FlowContainerInterface extends ContainerInterface {
     direction?: Blend.eFlowDirection;
 }
 
-/**
- * Interface for configuring a Toolbar
- */
-interface ToolbarInterface extends ContainerInterface {
-    type?: Blend.eToolbarType;
-    title?: string;
-}
+// /**
+//  * Interface for configuring a Toolbar
+//  */
+// interface ToolbarInterface extends ContainerInterface {
+//     type?: Blend.eToolbarType;
+//     title?: string;
+// }
 
 /**
  * Interface for configuring an ApplicationBar
  */
 
-interface ApplicationBarInterface extends ToolbarInterface {
-    items?: Array<MaterialType>;
-    defaults?: MaterialInterface;
-}
+// interface ApplicationBarInterface extends ToolbarInterface {
+//     items?: Array<MaterialType>;
+//     defaults?: MaterialInterface;
+// }
 
 /**
  * Interface for configuring an Application

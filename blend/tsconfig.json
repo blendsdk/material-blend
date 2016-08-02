@@ -8,8 +8,10 @@
         "outFile": "../build/blend/blend.js"
     },
     "files": [
+        "src/Typings.ts",
         "src/Enums.ts",
         "src/Blend.ts",
+        "src/Collection.ts",
         "src/Device.ts",
         "src/binding/BindingProvider.ts",
         "src/Runtime.ts",
@@ -25,7 +27,6 @@
         "src/mvc/View.ts",
         "src/mvc/Controller.ts",
         "src/material/Material.ts",
-        "src/Typings.ts",
         "src/ajax/AjaxRequest.ts",
         "src/ajax/AjaxGetRequest.ts",
         "src/ajax/AjaxPostRequest.ts",
@@ -48,7 +49,7 @@
         "src/material/Rectangle.ts",
         "src/material/effect/Ripple.ts",
         "src/button/Button.ts",
-        //"src/toolbar/Toolbar.ts",
+        "src/toolbar/Toolbar.ts",
         //"src/toolbar/Title.ts",
         //"src/toolbar/ApplicationBar.ts",
         "src/Version.ts"
