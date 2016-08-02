@@ -43,7 +43,7 @@ namespace Blend {
      */
     export function bind(scope: any, fn: Function) {
         return function () {
-            fn.apply(scope, arguments);
+            return fn.apply(scope, arguments);
         };
     }
 
