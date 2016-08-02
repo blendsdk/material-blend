@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
+
 /**
  * Structure variables
  */
-$flat-buttons: ('flat','round-flat');
-$raised-buttons: ('raised','round-raised');
-$fab-buttons: ('fab', 'fab-mini');
-$all-raised-buttons: join($fab-buttons,$raised-buttons);
 
+$flat-buttons: ('flat', 'round-flat');
+$raised-buttons: ('raised', 'round-raised');
+$fab-buttons: ('fab', 'fab-mini');
+$all-raised-buttons: join($fab-buttons, $raised-buttons);
 // Button structure
 $struct-button-min-width: rem(8.800) !default;
 $struct-button-height: rem(3.60);
@@ -40,7 +41,6 @@ $struct-button-fab-mini-icon-size: rem(2.400) !default;
 // FAB Position edge
 $struct-fab-position-edge: rem(2.400);
 $struct-fab-position-small: rem(1.600);
-
 @mixin blend-button-raised-shadow() {
     @include elevate($elevate-2dp);
 }
@@ -61,10 +61,10 @@ $struct-fab-position-small: rem(1.600);
     box-shadow: none;
 }
 
-@mixin blend-icon-size($name,$size) {
+@mixin blend-icon-size($name, $size) {
     .mb-btn-icon-size-#{$name} {
-        & > .mb-btn-inner {
-            & > .mb-btn-icon {
+        &> .mb-btn-inner {
+            &> .mb-btn-icon {
                 font-size: $size;
             }
         }
@@ -76,19 +76,18 @@ $struct-fab-position-small: rem(1.600);
     padding: $struct-button-icon-only-padding;
     min-width: 0;
     line-height: 0;
-    & > .mb-btn-inner {
-        & > .mb-btn-text {
+    &> .mb-btn-inner {
+        &> .mb-btn-text {
             display: none;
         }
     }
-
     &[disabled] {
         background-color: transparent !important;
     }
 }
 
 // Position a FAB button.
-@mixin fab-position($fabtype , $position, $top: auto, $right: auto, $bottom: auto, $left: auto, $translate: false) {
+@mixin fab-position($fabtype, $position, $top: auto, $right: auto, $bottom: auto, $left: auto, $translate: false) {
     .mb-#{$fabtype}-pos-#{$position} {
         top: $top;
         right: $right;
@@ -103,27 +102,22 @@ $struct-fab-position-small: rem(1.600);
 
 @mixin fab-positions($fabtype, $fab-size, $edge) {
     $edge-min: -1 * $edge;
-    @include fab-position($fabtype,'top-left',0, auto, auto, 0, translate($edge, $edge));
-    @include fab-position($fabtype,'top-center',0, 50%, auto, 50%, translate(-50%, $edge));
-    @include fab-position($fabtype,'top-right',0, 0, auto, auto, translate($edge-min, $edge));
-
-    @include fab-position($fabtype,'center-left',50%, auto, auto, 0, translate($edge, -50%));
-    @include fab-position($fabtype,'center-center',50%, 50%, auto, 50%, translate(-50%, -50%));
-    @include fab-position($fabtype,'center-right',50%, 0, auto, auto, translate($edge-min, -50%));
-
-    @include fab-position($fabtype,'bottom-left',auto, auto, 0, 0, translate($edge, $edge-min));
-    @include fab-position($fabtype,'bottom-center',auto, 50%, 0, 50%, translate(-50%, $edge-min));
-    @include fab-position($fabtype,'bottom-right',auto, 0, 0, auto, translate($edge-min, $edge-min));
-
+    @include fab-position($fabtype, 'top-left', 0, auto, auto, 0, translate($edge, $edge));
+    @include fab-position($fabtype, 'top-center', 0, 50%, auto, 50%, translate(-50%, $edge));
+    @include fab-position($fabtype, 'top-right', 0, 0, auto, auto, translate($edge-min, $edge));
+    @include fab-position($fabtype, 'center-left', 50%, auto, auto, 0, translate($edge, -50%));
+    @include fab-position($fabtype, 'center-center', 50%, 50%, auto, 50%, translate(-50%, -50%));
+    @include fab-position($fabtype, 'center-right', 50%, 0, auto, auto, translate($edge-min, -50%));
+    @include fab-position($fabtype, 'bottom-left', auto, auto, 0, 0, translate($edge, $edge-min));
+    @include fab-position($fabtype, 'bottom-center', auto, 50%, 0, 50%, translate(-50%, $edge-min));
+    @include fab-position($fabtype, 'bottom-right', auto, 0, 0, auto, translate($edge-min, $edge-min));
 }
 
 @mixin blend-button-struct() {
-
-    @include blend-icon-size('small',rem(1.800));
-    @include blend-icon-size('medium',rem(2.400));
-    @include blend-icon-size('large',rem(3.600));
-    @include blend-icon-size('xlarge',rem(4.800));
-
+    @include blend-icon-size('small', rem(1.800));
+    @include blend-icon-size('medium', rem(2.400));
+    @include blend-icon-size('large', rem(3.600));
+    @include blend-icon-size('xlarge', rem(4.800));
     .mb-btn {
         position: relative;
         outline: none;
@@ -134,61 +128,50 @@ $struct-fab-position-small: rem(1.600);
         overflow: hidden;
         text-decoration: none;
         cursor: pointer;
-
         font-style: inherit;
         font-variant: inherit;
         font-family: inherit;
         text-decoration: none;
-
-        transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
-            background-color $swift-ease-out-duration $swift-ease-out-timing-function;
-
+        transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function, background-color $swift-ease-out-duration $swift-ease-out-timing-function;
         &::-moz-focus-inner {
             border: 0;
         }
-
         &:focus {
             outline: none;
         }
-
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
             text-decoration: none;
         }
-
         @include user-select(none);
-
-        & > .mb-btn-inner-icontext {
-            & > .mb-btn-icon {
+        &> .mb-btn-inner-icontext {
+            &> .mb-btn-icon {
                 margin-right: rem(1.6);
             }
         }
-
-        & > .mb-btn-inner-texticon {
-            & > .mb-btn-icon {
+        &> .mb-btn-inner-texticon {
+            &> .mb-btn-icon {
                 margin-left: rem(1.6);
             }
         }
-
-        & > .mb-btn-inner {
+        &> .mb-btn-inner {
             height: 100%;
             display: inline-block;
             position: relative;
             @include clearfix();
-
-            & > .mb-btn-text {
+            &> .mb-btn-text {
                 text-transform: uppercase;
                 text-align: center;
                 vertical-align: middle;
             }
-
-            & > .mb-btn-icon {
+            &> .mb-btn-icon {
                 vertical-align: middle;
             }
         }
-
         &[disabled] {
-            & > .mb-btn-inner {
-                & > .mb-btn-text, & > .mb-btn-icon {
+            &> .mb-btn-inner {
+                &> .mb-btn-text,
+                &> .mb-btn-icon {
                     color: $default-button-disbaled-text-color;
                 }
             }
@@ -196,14 +179,7 @@ $struct-fab-position-small: rem(1.600);
     }
 }
 
-@mixin blend-button-type(
-$button-border-radius,
-$button-padding,
-$button-margin,
-$button-line-height,
-$button-min-width,
-$button-font-size
-) {
+@mixin blend-button-type( $button-border-radius, $button-padding, $button-margin, $button-line-height, $button-min-width, $button-font-size) {
     border-radius: $button-border-radius;
     padding: $button-padding;
     margin: $button-margin;
@@ -220,21 +196,14 @@ $button-font-size
 }
 
 @mixin blend-button-flat() {
-    .mb-btn-flat-both , .mb-btn-flat-text-only {
-        @include blend-button-type(
-        $button-border-radius: $struct-button-border-radius,
-            $button-padding: $struct-button-padding,
-            $button-margin: $struct-button-margin,
-            $button-line-height: $struct-button-height,
-            $button-min-width: $struct-button-min-width,
-            $button-font-size: $m-body-font-size);
+    .mb-btn-flat-both,
+    .mb-btn-flat-text-only {
+        @include blend-button-type( $button-border-radius: $struct-button-border-radius, $button-padding: $struct-button-padding, $button-margin: $struct-button-margin, $button-line-height: $struct-button-height, $button-min-width: $struct-button-min-width, $button-font-size: $m-body-font-size);
     }
-
     .mb-btn-flat-icon-only {
         @include blend-button-icon-only();
         border-radius: $struct-button-border-radius;
     }
-
     .mb-btn-round-flat-icon-only {
         @include blend-button-icon-only();
         border-radius: 50%;
@@ -242,30 +211,22 @@ $button-font-size
 }
 
 @mixin blend-button-raised() {
-    .mb-btn-raised-both , .mb-btn-raised-text-only {
-        @include blend-button-type(
-        $button-border-radius: $struct-button-border-radius,
-            $button-padding: $struct-button-padding,
-            $button-margin: $struct-button-margin,
-            $button-line-height: $struct-button-height,
-            $button-min-width: $struct-button-min-width,
-            $button-font-size: $m-body-font-size) {
+    .mb-btn-raised-both,
+    .mb-btn-raised-text-only {
+        @include blend-button-type( $button-border-radius: $struct-button-border-radius, $button-padding: $struct-button-padding, $button-margin: $struct-button-margin, $button-line-height: $struct-button-height, $button-min-width: $struct-button-min-width, $button-font-size: $m-body-font-size) {
             @include blend-button-raised-shadow();
         }
     }
-
     .mb-btn-raised-icon-only {
         @include blend-button-icon-only();
         @include blend-button-raised-shadow();
         border-radius: $struct-button-border-radius;
     }
-
     .mb-btn-round-raised-icon-only {
         @include blend-button-icon-only();
         @include blend-button-raised-shadow();
         border-radius: 50%;
     }
-
     .mb-btn-raised-both,
     .mb-btn-raised-text-only,
     .mb-btn-raised-icon-only,
@@ -275,7 +236,6 @@ $button-font-size
                 @include blend-button-raised-press-shadow
             }
         }
-
         &[disabled] {
             @include blend-no-shadow();
         }
@@ -283,93 +243,63 @@ $button-font-size
 }
 
 @mixin blend-button-fab() {
-
-    .mb-btn-fab-icon-only , .mb-btn-fab-mini-icon-only {
-
+    .mb-btn-fab-icon-only,
+    .mb-btn-fab-mini-icon-only {
         transition: $swift-ease-in;
         transition-property: background-color, box-shadow;
-
-        & > .mb-btn-inner {
-            & > .mb-btn-text {
+        &> .mb-btn-inner {
+            &> .mb-btn-text {
                 display: none;
             }
         }
-
-        & > .mb-btn-inner {
+        &> .mb-btn-inner {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0px;
             left: 0px;
         }
-
         &:not([disabled]) {
             &:active {
                 @include blend-button-fab-press-shadow();
             }
         }
-
-        @include blend-button-type(
-        $button-border-radius: $struct-button-fab-border-radius,
-            $button-padding: $struct-button-padding,
-            $button-margin: 0,
-            $button-line-height: false,
-            $button-min-width: false,
-            $button-font-size: $m-body-font-size) {
+        @include blend-button-type( $button-border-radius: $struct-button-fab-border-radius, $button-padding: $struct-button-padding, $button-margin: 0, $button-line-height: false, $button-min-width: false, $button-font-size: $m-body-font-size) {
             @include blend-button-fab-shadow();
         }
     }
-
     .mb-btn-fab-icon-only {
-
         min-width: $struct-button-fab-size;
         width: $struct-button-fab-size;
         height: $struct-button-fab-size;
         line-height: $struct-button-fab-size;
-
-        & > .mb-btn-inner {
-            & > .mb-btn-icon {
+        &> .mb-btn-inner {
+            &> .mb-btn-icon {
                 font-size: $struct-button-fab-icon-size;
             }
         }
     }
-
     .mb-btn-fab-mini-icon-only {
-
         min-width: $struct-button-fab-mini-size;
         width: $struct-button-fab-mini-size;
         height: $struct-button-fab-mini-size;
         line-height: $struct-button-fab-mini-size;
-
-        & > .mb-btn-inner {
-            & > .mb-btn-icon {
+        &> .mb-btn-inner {
+            &> .mb-btn-icon {
                 font-size: $struct-button-fab-mini-icon-size;
             }
         }
     }
-
     @include fab-positions('fab', $struct-button-fab-size, $struct-fab-position-edge);
     @include fab-positions('fab-mini', $struct-button-fab-mini-icon-size, $struct-fab-position-edge);
-
     @media (max-width: $layout-medium-width - 1) {
-        @include fab-positions('fab',$struct-button-fab-size ,$struct-fab-position-small);
-        @include fab-positions('fab-mini',$struct-button-fab-mini-icon-size ,$struct-fab-position-small);
+        @include fab-positions('fab', $struct-button-fab-size, $struct-fab-position-small);
+        @include fab-positions('fab-mini', $struct-button-fab-mini-icon-size, $struct-fab-position-small);
     }
 }
 
-
-
-@mixin blend-button-theme(
-$name,
-$button-types,
-$button-text-color,
-$button-icon-color,
-$button-background-color,
-$button-hover-background-color,
-$button-focus-background-color
-) {
+@mixin blend-button-theme( $name, $button-types, $button-text-color, $button-icon-color, $button-background-color, $button-hover-background-color, $button-focus-background-color) {
     @each $btype in $button-types {
-
         .btn-theme-#{$btype}-#{$name}-hover-feedback {
             @if($button-hover-background-color) {
                 &:not([disabled]) {
@@ -379,7 +309,6 @@ $button-focus-background-color
                 }
             }
         }
-
         .btn-theme-#{$btype}-#{$name}-active-feedback {
             @if($button-focus-background-color) {
                 &:not([disabled]) {
@@ -389,18 +318,13 @@ $button-focus-background-color
                 }
             }
         }
-
         .btn-theme-#{$btype}-#{$name} {
-
             background-color: $button-background-color;
-
-            & > .mb-btn-inner {
-
-                & > .mb-btn-text {
+            &> .mb-btn-inner {
+                &> .mb-btn-text {
                     color: $button-text-color
                 }
-
-                & > .mb-btn-icon {
+                &> .mb-btn-icon {
                     color: $button-icon-color
                 }
             }
