@@ -35,6 +35,19 @@ namespace Blend {
             me.scope = scope;
         }
 
+        public mixin() {
+            var me = this;
+            if (me.scope) {
+                Blend.forEach(Blend.Collection.prototype, function (member: Function, memberName: string) {
+                    if (Blend.isFunction(member) && me.scope[memberName] === null) {
+                        me.scope[memberName] = Blend.bind(me.scope, function () {
+                            return member.apply(me, arguments);
+                        });
+                    }
+                });
+            }
+        }
+
         public getItems(): Array<T> {
             var me = this,
                 result: Array<T> = [];
